@@ -82,8 +82,6 @@
 | `/pattern`           | 从光标处向文件尾搜索 pattern                     |
 | `?pattern`           | 从光标处向文件头搜索 pattern                     |
 | `//`                 | 搜索选中部分的内容                               |
-| `n`                  | 向同一方向执行上一次搜索                         |
-| `N`                  | 向相反方向执行上一次搜索                         |
 | `*`                  | 向前搜索光标下的单词                             |
 | `#`                  | 向后搜索光标下的单词                             |
 | `:s/p1/p2/g`         | 替换当前行的p1为p2                               |
@@ -103,13 +101,14 @@
 | `:%s/^.\{10\}//`     | 删除每行前10个字符                               |
 | `:%s/.\{10\}$//`     | 删除每行尾10个字符                               |
 | `:%s/\s\+$//g`       | 删除每行尾空格字符                               |
-| `:w !sudo tee %`    | 无权限时强制修改                                 |
+| `:w !sudo tee %`     | 无权限时强制修改                                 |
 | `:retab`             | 将tab转化为空格                                  |
 | `:mark A`            | 标记A，使用'A 跳转到A处，[a-z]:文件内 [A-Z]:全局 |
 | `:marks`             | 查看使用的标记                                   |
 | `:delmarks A`        | 删除标记 A                                       |
 
-| `:cdo %s/old_symbol/new_symbol/cg` | 将quickfix 中搜索的符号用新的符号替换                                           |
+
+## 文件替换
 | sed -i "s/原字符串/新字符串/g" `grep "原字符串" -rl 所在目录` | 借助linux 外部命令实现某个目录下的全局替换           |
 | 例：sed -i "s/https:\/\/libs.baidu.com/https:\/\/cdn.static.runoob.com\/libs/g" `grep -rl "libs.baidu.com" ./`       |
 
@@ -128,7 +127,6 @@
 | `H`     | 调到屏幕顶上                             |
 | `M`     | 调到屏幕中间                             |
 | `L`     | 调到屏幕下方                             |
-| `:n`    | 跳到第n行                                |
 | `w`     | 跳到下一个单词开头(标点或空格分隔的单词) |
 | `W`     | 跳到下一个单词开头(空格分隔的单词)       |
 | `e`     | 跳到下一个单词尾部(标点或空格分隔的单词) |
@@ -336,29 +334,12 @@
 | `:normal@a` | 播放名字为a的宏直到自动结束 |
 
 
-## 帮助
-
-| 快捷键                 | 说明                         |
-| -------                | -----                        |
-| `h tutor`              | 入门文档                     |
-| `h quickref`           | 快速帮助                     |
-| `h index`              | 查询Vim所有键盘命令定义      |
-| `h summary`            | 帮助你更好的使用内置帮助系统 |
-| `h pattern.txt`        | 正则表达式帮助               |
-| `h eval`               | 脚本编写帮助                 |
-| `h function-list`      | 查看VimScript的函数列表      |
-| `h windows.txt`        | 窗口使用帮助                 |
-| `h tabpage.txt`        | 标签页使用帮助               |
-| `h tips`               | 查看Vim内置的常用技巧文档    |
-| `h quote`              | 寄存器                       |
-| `h autocommand-events` | 所有可能事件                 |
-| `h write-plugin`       | 编写插件                     |
-
-
 ## 其他
 
-| 快捷键                | 说明                       |
-| -------               | -----                      |
-| `vim -u NONE -N`      | 开启vim时不加载vimrc文件   |
-| `vimdiff file1 file2` | 显示文件差异               |
-| `vim -R filename`     | 以只读方式打开（阅读模式） |
+| 快捷键                                | 说明                       |
+| -------                               | -----                      |
+| `vimdiff file1 file2`                 | 显示文件差异               |
+| `vim -R filename`                     | 以只读方式打开（阅读模式） |
+| `vim --startuptime startup.log`       | 记录vim 启动时间           |
+| `sudo chrt -r -a -p 50 ".getpid()`    | 修改vim进程为实时进程      |
+
