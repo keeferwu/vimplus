@@ -1,4 +1,4 @@
-源码来自 https://github.com/chxuan/vimplus.git
+源码来自 https://github.com/chxuan/vimplus.git 
 基于自己的使用习惯，做了部分修改，适用于 c/c++ 开发语言
 
 #### 安装vimplus

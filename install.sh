@@ -440,7 +440,9 @@ function install_vim_plugin()
 {
     PLUGDIR=${PWD}/plugged
     if [ ! -d $PLUGDIR ]; then
-        mkdir $PLUGDIR
+        wget https://gitee.com/keeferwu/vimplus/releases/download/plugged/plugged.tar.gz
+        sudo tar -xzvf ${PWD}/plugged.tar.gz
+        sudo chown $USER:$USER $PLUGDIR -R
     fi
 
     vim -c "PlugInstall" -c "q" -c "q"
