@@ -195,12 +195,12 @@ Plug 'bronson/vim-trailing-whitespace'   "行尾空格
 Plug 'camspiers/lens.vim'                "自动调整当前窗口
 Plug 'Yggdroot/LeaderF'                  "比ctrlp更强大的文件的模糊搜索工具
 Plug 'keeferwu/LeaderF-gtags-history'    "显示leaderf gtags 搜索历史
-Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
 Plug 'SirVer/ultisnips'                  "需要和vim-snippets or vim-easycomplete 配合使用
-Plug 'vim-scripts/OmniCppComplete'       "与vim-easycomplete 冲突,代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
-Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
-Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
-"Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
+Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
+"Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
+"Plug 'vim-scripts/OmniCppComplete'       "与vim-easycomplete 冲突,代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
+"Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
+"Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 "Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }           "python ide 环境
 

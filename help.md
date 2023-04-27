@@ -315,12 +315,13 @@
 
 ## 使用外部程序
 
-| 快捷键           | 说明                            |
-| -------          | -----                           |
-| `!`              | 告诉vim正在执行一个过滤操作     |
-| `!5Gsort<Enter>` | 使用外部sort命令对1-5行文本排序 |
-| `!!`             | 对当前行执行过滤命令            |
-| `!!date<Enter>`  | 用"date"的输出代替当前行        |
+| 快捷键           | 说明                                |
+| -------          | -----                               |
+| `!`              | 告诉vim正在执行一个过滤操作         |
+| `!5Gsort<Enter>` | 使用外部sort命令对1-5行文本排序     |
+| `!!`             | 对当前行执行过滤命令                |
+| `!!date<Enter>`  | 用"date"的输出代替当前行            |
+| `execute system("sudo chrt -r -a -p 50 ".getpid())`    | 修改vim进程为实时进程      |
 
 
 ## 宏录制
@@ -341,5 +342,4 @@
 | `vimdiff file1 file2`                 | 显示文件差异               |
 | `vim -R filename`                     | 以只读方式打开（阅读模式） |
 | `vim --startuptime startup.log`       | 记录vim 启动时间           |
-| `sudo chrt -r -a -p 50 ".getpid()`    | 修改vim进程为实时进程      |
 
