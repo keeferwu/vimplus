@@ -196,11 +196,12 @@ Plug 'camspiers/lens.vim'                "自动调整当前窗口
 Plug 'Yggdroot/LeaderF'                  "比ctrlp更强大的文件的模糊搜索工具
 Plug 'keeferwu/LeaderF-gtags-history'    "显示leaderf gtags 搜索历史
 Plug 'SirVer/ultisnips'                  "需要和vim-snippets or vim-easycomplete 配合使用
-Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
 "Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
+Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
 "Plug 'vim-scripts/OmniCppComplete'       "与vim-easycomplete 冲突,代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
 "Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 "Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
+Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 "Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }           "python ide 环境
 
@@ -548,6 +549,15 @@ let g:easycomplete_lsp_checking = 1           " check LSP server 是否安装
 let g:easycomplete_signature_enable = 1       " lsp signature checking
 let g:easycomplete_tabnine_enable = 0         " disable TabNine
 let g:easycomplete_diagnostics_enable = 0     " 语法检测
+
+
+" vim-terminal-help
+let g:terminal_rootmarkers = ['.root']
+let g:terminal_key = '<m-t>'            " which key will be used to toggle terminal window, default to .<m-=>
+let g:terminal_cwd = 2                  " initialize working dir: for unchanged, for file path and for project root.012
+let g:terminal_height = 10              " new terminal height, default to 10.
+let g:terminal_list = 0                 " set to 0 to hide terminal buffer in the buffer list.
+let g:terminal_close = 1                " set to 1 to close window if process finished.
 
 
 "nnoremap <F5> :call CompileRunPython()<cr>
