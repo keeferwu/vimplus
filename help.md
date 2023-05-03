@@ -32,6 +32,7 @@
 | `<leader>lb`        | 搜索打开过的buffer                        |
 | `<leader>lt`        | 搜索当前buffer下tag                       |
 | `<leader>ll`        | 搜索当前buffer下内容                      |
+| `<leader>lq`        | 打开quickfix中的内容                      |
 | `<leader>lm`        | 搜索MRU下的文件                           |
 | `<leader>rg`        | 搜索输入的字符                            |  LeaderF rg
 | `<leader>rw`        | 搜索光标下的字符                          |
@@ -84,7 +85,7 @@
 | `g/pattern`          | 搜索文件中匹配 pattern 的字符行                  |
 | `/pattern`           | 从光标处向文件尾搜索 pattern                     |
 | `?pattern`           | 从光标处向文件头搜索 pattern                     |
-| `//`                 | 搜索选中部分的内容                               |
+| `//`                 | 搜索选中部分的或光标下的内容并输出到quickfix     |
 | `*`                  | 向前搜索光标下的单词                             |
 | `#`                  | 向后搜索光标下的单词                             |
 | `:s/p1/p2/g`         | 替换当前行的p1为p2                               |

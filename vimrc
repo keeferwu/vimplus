@@ -134,7 +134,8 @@ nnoremap <silent> <c-z> :undo<cr>
 nnoremap <silent> d   "_d
 vnoremap <silent> d   "_d
 " 命令行输入// 搜索选中内容
-vnoremap // y/<c-r>"<cr>
+vnoremap <silent> // y :vimgrep <c-r>" %<cr>
+nnoremap <silent> // :execute 'vimgrep '.expand("<cword>").' %'<cr>
 " 分屏窗口移动
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
@@ -426,6 +427,7 @@ nnoremap <leader>lf :LeaderfFile<space>
 nnoremap <leader>lb :LeaderfBuffer<cr>
 nnoremap <leader>lt :LeaderfBufTag<cr>
 nnoremap <leader>ll :LeaderfLine<cr>
+nnoremap <leader>lq :LeaderfQuickFix<cr>
 nnoremap <leader>lm :LeaderfMru<cr>
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 let g:Lf_IgnoreCurrentBufferName = 1
