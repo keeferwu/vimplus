@@ -133,9 +133,10 @@ nnoremap <silent> <c-z> :undo<cr>
 " 重新映射d 为仅删除不剪切
 nnoremap <silent> d   "_d
 vnoremap <silent> d   "_d
-" 命令行输入// 搜索选中内容
-vnoremap <silent> // y :vimgrep <c-r>" %<cr>
-nnoremap <silent> // :execute 'vimgrep '.expand("<cword>").' %'<cr>
+" 命令行输入ctrl+/ 搜索选中内容
+vnoremap <silent> <c-_> y :vimgrep <c-r>" %\|copen <cr>
+nnoremap <silent> <c-_> :execute 'vimgrep '.expand("<cword>").' %\|copen'<cr>
+autocmd FileType qf nnoremap <silent><buffer> q :cclose<cr>
 " 分屏窗口移动
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
@@ -197,11 +198,11 @@ Plug 'camspiers/lens.vim'                "自动调整当前窗口
 Plug 'Yggdroot/LeaderF'                  "比ctrlp更强大的文件的模糊搜索工具
 Plug 'keeferwu/LeaderF-gtags-history'    "显示leaderf gtags 搜索历史
 Plug 'SirVer/ultisnips'                  "需要和vim-snippets or vim-easycomplete 配合使用
-"Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
-Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
-"Plug 'vim-scripts/OmniCppComplete'       "与vim-easycomplete 冲突,代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
-"Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
-"Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
+Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
+"Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
+Plug 'vim-scripts/OmniCppComplete'       "与vim-easycomplete 冲突,代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
+Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
+Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
 Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 "Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }           "python ide 环境
@@ -381,7 +382,7 @@ map <c-]> g<c-]>        " 默认情况下crl+] 只会跳到tags中的第一个�
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
 let g:gutentags_project_root = ['.root', '.project']
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
-"let g:gutentags_file_list_command = 'find ./ \( -path "./boot*" -o -path "./os*" -o -path "*.git*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" \) -a -prune -o \( -type f -not -wholename "*.exe" -not -wholename "*.o" -not -wholename "*.tgt" -not -wholename ".gitignore" \) -print'
+let g:gutentags_file_list_command = 'find ./ \( -path "./boot*" -o -path "./os*" -o -path "*.git*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" \) -a -prune -o \( -type f -not -wholename "*.exe" -not -wholename "*.o" -not -wholename "*.tgt" -not -wholename ".gitignore" \) -print'
 let g:gutentags_ctags_exclude = ['compile_commands.json']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = '.tags'

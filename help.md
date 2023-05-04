@@ -7,10 +7,11 @@
 
 | `<leader>H`         | 十六进制显示文件                          |
 | `<leader>B`         | 二进制显示文件                            |
-| `<c-q>`             | 退出vim                                   |
-| `<c-s>`             | 保存内容                                  |
-| `<c-c>`             | 文本复制                                  |
-| `<c-v>`             | 文本粘贴                                  |
+| `Ctrl+q`            | 退出vim                                   |
+| `Ctrl+s`            | 保存内容                                  |
+| `Ctrl+c`            | 文本复制                                  |
+| `Ctrl+v`            | 文本粘贴                                  |
+| `Ctrl+/`            | 搜索内容输出到quickfix                    |
 | `F2`                | 代码折叠与展开                            |
 | `zR`                | 代码展开                                  |
 
@@ -19,14 +20,14 @@
 
 | `F3`                | 打开/关闭代码资源管理器                   |  easytree/netrw
 | `F4`                | 打开/关闭函数列表                         |  tagbar
-| `Alt + t`           | 打开/隐藏终端                             |  vim-terminal-help
-| `Alt + q`           | 终端切换早normal模式                      |
-| `Alt + -`           | 粘贴寄存器0的内容到终端                   |
+| `Alt+t`             | 打开/隐藏终端                             |  vim-terminal-help
+| `Alt+q`             | 终端切换早normal模式                      |
+| `Alt+-`             | 粘贴寄存器0的内容到终端                   |
 
-| `<c-b>`             | 上一页                                    |  vim-smooth-scroll
-| `<c-f>`             | 下一页                                    |
-| `<c-u>`             | 上移半屏                                  |
-| `<c-d>`             | 下移半屏                                  |
+| `Ctrl+b`            | 上一页                                    |  vim-smooth-scroll
+| `Ctrl+f`            | 下一页                                    |
+| `Ctrl+u`            | 上移半屏                                  |
+| `Ctrl+d`            | 下移半屏                                  |
 
 | `<leader>lf`        | 搜索~目录下的文件                         |  LeaderF
 | `<leader>lb`        | 搜索打开过的buffer                        |
@@ -85,7 +86,6 @@
 | `g/pattern`          | 搜索文件中匹配 pattern 的字符行                  |
 | `/pattern`           | 从光标处向文件尾搜索 pattern                     |
 | `?pattern`           | 从光标处向文件头搜索 pattern                     |
-| `//`                 | 搜索选中部分的或光标下的内容并输出到quickfix     |
 | `*`                  | 向前搜索光标下的单词                             |
 | `#`                  | 向后搜索光标下的单词                             |
 | `:s/p1/p2/g`         | 替换当前行的p1为p2                               |
