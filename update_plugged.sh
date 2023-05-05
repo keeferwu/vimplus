@@ -2,7 +2,7 @@
 PLUGDIR=${PWD}/plugged
 
 read -p "Do you want to download new plugged.tar.gz ? [Y/N] " ch
-if [[ $ch == "Y" ]] || [[ $ch == :"y" ]]; then
+if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
     wget https://gitee.com/keeferwu/vimplus/releases/download/plugged/plugged.tar.gz
     if [ $? -eq 0 ]; then
         if [ -d $PLUGDIR ]; then
