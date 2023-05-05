@@ -1,16 +1,19 @@
 #!/bin/bash
 PLUGDIR=${PWD}/plugged
 
-wget https://gitee.com/keeferwu/vimplus/releases/download/plugged/plugged.tar.gz
-if [ $? -eq 0 ]; then
-    if [ -d $PLUGDIR ]; then
-        echo -e "\033[33m rm $PLUGDIR directory \033[0m"
-        rm $PLUGDIR -rf
-        echo #打印空行
+read -p "Do you want to download new plugged.tar.gz ? [Y/N] " ch
+if [[ $ch == "Y" ]] || [[ $ch == :"y" ]]; then
+    wget https://gitee.com/keeferwu/vimplus/releases/download/plugged/plugged.tar.gz
+    if [ $? -eq 0 ]; then
+        if [ -d $PLUGDIR ]; then
+            echo -e "\033[33m rm $PLUGDIR directory \033[0m"
+            rm $PLUGDIR -rf
+            echo #打印空行
+        fi
+        tar -xzf ${PWD}/plugged.tar.gz && rm plugged.tar.gz
+        sudo chown $USER:$USER $PLUGDIR -R
     fi
-    tar -xzf ${PWD}/plugged.tar.gz && rm plugged.tar.gz
 fi
-
 for sub_dir in `ls $PLUGDIR` #通过 ls root_dir 遍历出子目录，装入子目录 sub_dir 中
 do
     curr_dir=$PLUGDIR"/"$sub_dir #将根目录 $1 与子目录 sub_dir 拼接成完整的目录
