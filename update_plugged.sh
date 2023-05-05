@@ -1,13 +1,15 @@
 #!/bin/bash
 PLUGDIR=${PWD}/plugged
 
-if [ -d $PLUGDIR ]; then
-    echo -e "\033[33m rm $PLUGDIR directory \033[0m"
-    rm $PLUGDIR -rf
-    echo #打印空行
+wget https://gitee.com/keeferwu/vimplus/releases/download/plugged/plugged.tar.gz
+if [ $? -eq 0 ]; then
+    if [ -d $PLUGDIR ]; then
+        echo -e "\033[33m rm $PLUGDIR directory \033[0m"
+        rm $PLUGDIR -rf
+        echo #打印空行
+    fi
+    tar -xzf ${PWD}/plugged.tar.gz && rm plugged.tar.gz
 fi
-
-tar -xzf ${PWD}/plugged.tar.gz
 
 for sub_dir in `ls $PLUGDIR` #通过 ls root_dir 遍历出子目录，装入子目录 sub_dir 中
 do
