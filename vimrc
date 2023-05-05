@@ -204,6 +204,7 @@ Plug 'vim-scripts/OmniCppComplete'       "与vim-easycomplete 冲突,代码补�
 Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
 Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
+Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 "Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }           "python ide 环境
 
@@ -561,6 +562,14 @@ let g:terminal_cwd = 2                  " initialize working dir: for unchanged,
 let g:terminal_height = 10              " new terminal height, default to 10.
 let g:terminal_list = 0                 " set to 0 to hide terminal buffer in the buffer list.
 let g:terminal_close = 1                " set to 1 to close window if process finished.
+
+
+" codeium.vim
+let g:codeium_disable_bindings = 1      " disabled Codeium's default keybindings
+imap <script><silent><nowait><expr> <C-l> codeium#Accept()
+imap <C-j>  <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <C-k>  <Cmd>call codeium#CycleCompletions(-1)<CR>
+imap <C-h>  <Cmd>call codeium#Clear()<CR>
 
 
 "nnoremap <F5> :call CompileRunPython()<cr>
