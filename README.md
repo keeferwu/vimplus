@@ -48,21 +48,22 @@ OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件�
 
 注：若vim-gutentags 插件生成db 文件时失败考虑添加如下内容：
 
-	let l:file_list_cmd = gutentags#get_project_file_list_cmd(a:proj_dir)
-	if !empty(l:file_list_cmd)
+    let l:file_list_cmd = gutentags#get_project_file_list_cmd(a:proj_dir)
+    if !empty(l:file_list_cmd)
         exec 'silent !'.l:file_list_cmd.' > gtags.files'
     endif
 
 leaderF 插件对c进行更快速的搜索可以Install the C extension
 
-	:LeaderfInstallCExtension
+    :LeaderfInstallCExtension
 
 检查是否安装成功：
 
     echo g:Lf_fuzzyEngine_C, if the value is 1, it means the C extension is loaded sucessfully.
 
 Codeium 是一款AI智能插件，需要科学上网后登录到官方生成token 类似于：
-	eyJhbGciOiJSUzI1NiIsImtpZCI6ImI2NzE1ZTJmZjcxZDIyMjQ5ODk1MDAyMzY2ODMwNDc3Mjg2Nzg0ZTMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoia2VlZmVyIHd1IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXjltvA9bNUbX2B2-vDJtyq8WDlQYu2iA-QCatwvRpPbYfIXuPz39FO1S-6IRKnfOsH9mSU2E5M3nsqeDHvUlKMoFu91ELKqkEzdJSA0IC9xIsl12Zew7mGixPso3scce9ZUPAeVoX01tfapSM4sAtSe2hZ-eivvHo1UV53eCJ0cYxqMraGKK3b4HmbOpdt4wkyyspfpx3_mDjdGkQQ634AZ4rv0d4TiHKXe8hecB80rlrXXtK-pjw
+
+    eyJhbGciOiJSUzI1NiIsImtpZCI6ImI2NzE1ZTJmZjcxZDIyMjQ5ODk1MDAyMzY2ODMwNDc3Mjg2Nzg0ZTMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoia2VlZmVyIHd1IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXjltvA9bNUbX2B2-vDJtyq8WDlQYu2iA-QCatwvRpPbYfIXuPz39FO1S-6IRKnfOsH9mSU2E5M3nsqeDHvUlKMoFu91ELKqkEzdJSA0IC9xIsl12Zew7mGixPso3scce9ZUPAeVoX01tfapSM4sAtSe2hZ-eivvHo1UV53eCJ0cYxqMraGKK3b4HmbOpdt4wkyyspfpx3_mDjdGkQQ634AZ4rv0d4TiHKXe8hecB80rlrXXtK-pjw
 
 #### gtags 支持更多语言
 
