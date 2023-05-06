@@ -61,6 +61,9 @@ leaderF 插件对c进行更快速的搜索可以Install the C extension
 
     echo g:Lf_fuzzyEngine_C, if the value is 1, it means the C extension is loaded sucessfully.
 
+Codeium 是一款AI智能插件，需要科学上网后登录到官方生成token 类似于：
+	eyJhbGciOiJSUzI1NiIsImtpZCI6ImI2NzE1ZTJmZjcxZDIyMjQ5ODk1MDAyMzY2ODMwNDc3Mjg2Nzg0ZTMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoia2VlZmVyIHd1IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXjltvA9bNUbX2B2-vDJtyq8WDlQYu2iA-QCatwvRpPbYfIXuPz39FO1S-6IRKnfOsH9mSU2E5M3nsqeDHvUlKMoFu91ELKqkEzdJSA0IC9xIsl12Zew7mGixPso3scce9ZUPAeVoX01tfapSM4sAtSe2hZ-eivvHo1UV53eCJ0cYxqMraGKK3b4HmbOpdt4wkyyspfpx3_mDjdGkQQ634AZ4rv0d4TiHKXe8hecB80rlrXXtK-pjw
+
 #### gtags 支持更多语言
 
 gtags 原生支持 C/C++/Java  如想要更多语言，那么 gtags 是支持使用 ctags/universal-ctags 或者 pygments 来作为分析前端支持 50+ 种语言。
