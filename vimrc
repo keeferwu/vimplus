@@ -383,7 +383,7 @@ map <c-]> g<c-]>        " 默认情况下crl+] 只会跳到tags中的第一个�
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
 let g:gutentags_project_root = ['.root', '.project']
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
-let g:gutentags_file_list_command = 'find ./ \( -path "./boot*" -o -path "./os*" -o -path "*.git*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" \) -a -prune -o \( -type f -not -wholename "*.exe" -not -wholename "*.o" -not -wholename "*.tgt" -not -wholename ".gitignore" \) -print'
+let g:gutentags_file_list_command = 'find ./ \( -path "./boot*" -o -path "./os*" -o -path "*.git*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" -o -path "*obj*" \) -a -prune -o \( -type f -not -wholename "*.map" -not -wholename "*.o" -not -wholename ".gitignore" \) -print'
 let g:gutentags_ctags_exclude = ['compile_commands.json']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = '.tags'
@@ -589,6 +589,7 @@ endfunc
 
 
 " vim-buffer
+autocmd BufAdd * if len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) > 100 |  execute 'bdelete ' . bufnr('#') | endif
 nnoremap <silent> <leader>d :call CloseBuffer()<cr>
 nnoremap <silent> <leader>D :call BufOnly()<cr>
 function! CloseBuffer()
