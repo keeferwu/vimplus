@@ -11,7 +11,6 @@ if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
             echo #打印空行
         fi
         tar -xzf ${PWD}/plugged.tar.gz && rm plugged.tar.gz
-        sudo chown $USER:$USER $PLUGDIR -R
     fi
 fi
 for sub_dir in `ls $PLUGDIR` #通过 ls root_dir 遍历出子目录，装入子目录 sub_dir 中
