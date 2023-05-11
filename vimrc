@@ -136,7 +136,7 @@ vnoremap <silent> d   "_d
 " 命令行输入ctrl+/ 搜索选中内容
 vnoremap <silent> <c-_> y :vimgrep <c-r>" %\|copen <cr>
 nnoremap <silent> <c-_> :execute 'vimgrep '.expand("<cword>").' %\|copen'<cr>
-autocmd FileType qf nnoremap <silent><buffer> q :cclose<cr>
+autocmd FileType qf nnoremap <silent><buffer> q :cclose \| lclose<cr>
 " 分屏窗口移动
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
@@ -206,7 +206,6 @@ Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
 Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
 Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
-"Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }           "python ide 环境
 
 call plug#end()
 
@@ -390,10 +389,10 @@ let g:gutentags_ctags_tagfile = '.tags'
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
 if executable('ctags')
-	let g:gutentags_modules += ['ctags']
+    let g:gutentags_modules += ['ctags']
 endif
 if executable('gtags-cscope') && executable('gtags')
-"	let g:gutentags_modules += ['gtags_cscope']
+"   let g:gutentags_modules += ['gtags_cscope']
 endif
 " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
 let s:vim_tags = expand('~/.cache/tags')
