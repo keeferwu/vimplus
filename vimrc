@@ -377,8 +377,7 @@ let g:lens#width_resize_min = 20
 
 " vim-gutentags
 "let $GTAGSLABEL = 'native-pygments'   "gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-"set cscopetag          " 使用 cscope 作为 tags 命令,crl+] 会用作cscope
-map <c-]> g<c-]>        " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
+"map <c-]> g<c-]>        " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
 let g:gutentags_project_root = ['.root', '.project']
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
@@ -478,6 +477,7 @@ let g:Lf_GtagsSkipUnreadable = 1
 let g:Lf_GtagsAcceptDotfiles = 0
 nmap <silent><leader>q :Leaderf! gtags --recall<cr>
 nmap <silent><leader>F :Leaderf! gtags_history<cr>
+nmap <silent><C-]> <Plug>LeaderfGtagsDefinition
 
 " Note: use vim-gutentags to generate gtags and use leaderf show result should do 
 " g:gutentags_modules += ['gtags_cscope']
