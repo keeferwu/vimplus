@@ -62,9 +62,6 @@
 | `<leader>c$`        | 注释光标所在位置，直到行尾                |
 | `<leader>c<space>`  | 加上/解开注释, 智能判断                   |
 
-| `<leader>l`         | 按竖线对齐                                | tabular
-| `<leader>=`         | 按等号对齐                                |
-
 | `<leader><space>`   | 去除选中行尾部空格                        | vim-trailing-whitespace
 | `<leader><Tab>`     | 修改选中行开头的空格为tab                 |
 | `<leader><S-Tab>`   | 修改选中行开头的tab为空格                 |
