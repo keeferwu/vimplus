@@ -182,7 +182,7 @@ Plug 'troydm/easytree.vim'
 Plug 'preservim/tagbar'
 Plug 'easymotion/vim-easymotion'         "强大的光标快速移动工具，强大到颠覆你的插件观
 Plug 'terryma/vim-smooth-scroll'         "让翻页更顺畅
-Plug 'godlygeek/tabular'                 "代码、注释、表格对齐
+Plug 'vim-autoformat/vim-autoformat'     "代码格式化
 Plug 'vim-scripts/indentpython.vim'      "python自动对齐
 Plug 'Yggdroot/indentLine'               "显示对齐标线
 Plug 'liuchengxu/eleline.vim'            "功能同 airline，比较精简
@@ -314,9 +314,13 @@ let g:echodoc_enable_at_startup = 1
 let g:indentLine_enabled = 1
 
 
-" tabular
-nnoremap <leader>l :Tab /\|<cr>
-nnoremap <leader>= :Tab /=<cr>
+" vim-autoformat
+"autocmd BufWrite * :Autoformat
+let g:autoformat_verbosemode = 1
+let g:formatdef_google = '"clang-format -style=google"'              " google 风格的代码
+let g:formatdef_allman = '"astyle --style=allman --pad-oper"'        " allman风格的代码：{}读占一行
+let g:formatters_cpp = ['allman']
+let g:formatters_c = ['allman']
 
 
 " vim-smooth-scroll

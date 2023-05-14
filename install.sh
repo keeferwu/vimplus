@@ -287,7 +287,7 @@ function install_prepare_software_on_ubuntu()
 
     sudo apt-get install -y  build-essential python python-dev python3 python3-dev python3-pip fontconfig libfile-next-perl
 
-    sudo apt-get install -y  universal-ctags ripgrep clang ccls global xclip
+    sudo apt-get install -y  universal-ctags ripgrep clang astyle ccls global xclip
     
     read -p "Do you want to re-install VIM ? [Y/N] " ch
     if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
