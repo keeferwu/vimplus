@@ -401,7 +401,8 @@ endif
 let s:vim_tags = expand('~/.cache/tags')
 let g:gutentags_cache_dir = s:vim_tags
 let g:gutentags_cache_dir = expand('~/.LfCache/gtags')
-let g:gutentags_ctags_extra_args = ['-I', '--fields=+niazS', '--extras=+q']
+let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
+let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--extras=+q']
 let g:gutentags_ctags_extra_args += ['--language-force=c']
 " 为声明生成索引
 "let g:gutentags_ctags_extra_args += ['--c++-kinds=+px', '--c-kinds=+px']
