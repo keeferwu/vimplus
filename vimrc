@@ -381,12 +381,12 @@ let g:lens#width_resize_min = 20
 
 " vim-gutentags
 "let $GTAGSLABEL = 'native-pygments'   "gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-"map <c-]> g<c-]>        " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
+map <c-]> g<c-]>        " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
 let g:gutentags_project_root = ['.root', '.project']
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
-let g:gutentags_file_list_command = 'find ./ \( -path "./boot*" -o -path "./os*" -o -path "*.git*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" -o -path "*obj*" \) -a -prune -o \( -type f -not -wholename "*.map" -not -wholename "*.o" -not -wholename ".gitignore" \) -print'
-let g:gutentags_ctags_exclude = ['compile_commands.json']
+let g:gutentags_file_list_command = 'find ./ \( -path "./os*" -o -path "*.git*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" -o -path "*obj*" -o -path "*htmlpages*" \) -a -prune -o \( -type f -not -wholename "*.map" -not -wholename "*.o" -not -wholename "*.tgt" -not -wholename "*.x86" -not -wholename ".gitignore" \) -print'
+let g:gutentags_ctags_exclude = ['sdk/','boot/','host/','configs/','utility/','*.json','*.txt','*.mib','*.db','*.lua','*.def']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = '.tags'
 " 同时开启 ctags 和 gtags 支持：
@@ -395,14 +395,13 @@ if executable('ctags')
     let g:gutentags_modules += ['ctags']
 endif
 if executable('gtags-cscope') && executable('gtags')
-"   let g:gutentags_modules += ['gtags_cscope']
+   let g:gutentags_modules += ['gtags_cscope']
 endif
 " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
 let s:vim_tags = expand('~/.cache/tags')
 let g:gutentags_cache_dir = s:vim_tags
-"let g:gutentags_cache_dir = expand('~/.LfCache/gtags')
-let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
-let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--extras=+q']
+let g:gutentags_cache_dir = expand('~/.LfCache/gtags')
+let g:gutentags_ctags_extra_args = ['-I', '--fields=+niazS', '--extras=+q']
 let g:gutentags_ctags_extra_args += ['--language-force=c']
 " 为声明生成索引
 "let g:gutentags_ctags_extra_args += ['--c++-kinds=+px', '--c-kinds=+px']
@@ -474,14 +473,13 @@ let g:Lf_CtagsFuncOpts = {
             \ }
 " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
 let g:Lf_Gtagslabel = 'native-pygments'
-let g:Lf_GtagsAutoGenerate = 1 "auto create gtags
-let g:Lf_GtagsAutoUpdate = 1   "auto update
-let g:Lf_GtagsGutentags = 0
+let g:Lf_GtagsAutoGenerate = 0 "auto create gtags
+let g:Lf_GtagsAutoUpdate = 0   "auto update
+let g:Lf_GtagsGutentags = 1
 let g:Lf_GtagsSkipUnreadable = 1
 let g:Lf_GtagsAcceptDotfiles = 0
 nmap <silent><leader>q :Leaderf! gtags --recall<cr>
 nmap <silent><leader>F :Leaderf! gtags_history<cr>
-nmap <silent><C-]> <Plug>LeaderfGtagsDefinition
 
 " Note: use vim-gutentags to generate gtags and use leaderf show result should do 
 " g:gutentags_modules += ['gtags_cscope']
