@@ -591,10 +591,25 @@ endfunc
 
 
 " vim-buffer
-autocmd BufAdd * if len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) > 100 |  execute 'bdelete ' . bufnr('#') | endif
-nnoremap <silent> <leader>d :call CloseBuffer()<cr>
-nnoremap <silent> <leader>D :call BufOnly()<cr>
-function! CloseBuffer()
+autocmd BufAdd * if &filetype != "easytree" && &filetype != "tagbar" && &filetype != "qf" | call DeleteFirstBuffer() | endif
+nnoremap <silent> <leader>d :call CloseCurrentBuffer()<cr>
+nnoremap <silent> <leader>D :call CurrentBufOnly()<cr>
+function! DeleteFirstBuffer()
+    let oldest_buf = bufnr("%")
+    let oldest_time = localtime()
+    let buf_info = filter(getbufinfo(), 'buflisted(v:val.bufnr)')
+    if len(buf_info) <= 100
+        return
+    endif
+    for buf in buf_info
+        if buf.lastused < oldest_time
+            let oldest_buf = buf.bufnr
+            let oldest_time = buf.lastused
+        endif
+    endfor
+    execute 'bdelete ' . oldest_buf
+endfunction
+function! CloseCurrentBuffer()
     if &filetype == "easytree" || &filetype == "tagbar" || &filetype == "qf"
         echo "Window not support change buffer!"
     else
@@ -605,7 +620,7 @@ function! CloseBuffer()
         execute ":bd"
     endif
 endfunction
-function! BufOnly()
+function! CurrentBufOnly()
     let curr = bufnr("%")
     let last = bufnr("$")
     let n = 1
