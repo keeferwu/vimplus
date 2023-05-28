@@ -591,49 +591,37 @@ endfunc
 
 
 " vim-buffer
-autocmd BufAdd * if &filetype != "easytree" && &filetype != "tagbar" && &filetype != "qf" | call DeleteFirstBuffer() | endif
-nnoremap <silent> <leader>d :call CloseCurrentBuffer()<cr>
-nnoremap <silent> <leader>D :call CurrentBufOnly()<cr>
-function! DeleteFirstBuffer()
-    let oldest_buf = bufnr("%")
-    let oldest_time = localtime()
-    let buf_info = filter(getbufinfo(), 'buflisted(v:val.bufnr)')
-    if len(buf_info) <= 100
+autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
+nnoremap <silent> <leader>d :call CloseBuffer(1)<cr>
+function! CloseBuffer(action)
+    if &filetype == "easytree" || &filetype == "tagbar" || &filetype == "qf"
+        echo "Window not support close buffer!"
         return
     endif
-    for buf in buf_info
-        if buf.lastused < oldest_time
-            let oldest_buf = buf.bufnr
-            let oldest_time = buf.lastused
-        endif
-    endfor
-    execute 'bdelete ' . oldest_buf
-endfunction
-function! CloseCurrentBuffer()
-    if &filetype == "easytree" || &filetype == "tagbar" || &filetype == "qf"
-        echo "Window not support change buffer!"
-    else
-        let win_count = winnr('$')
-        if win_count > 1
+    if a:action == 1
+        "关闭当前的buffer
+        if winnr('$') > 1
             execute ":only"
         endif
         execute ":bd"
-    endif
-endfunction
-function! CurrentBufOnly()
-    let curr = bufnr("%")
-    let last = bufnr("$")
-    let n = 1
-    if &filetype == "easytree" || &filetype == "tagbar" || &filetype == "qf"
-        echo "Window not support change buffer!"
     else
-        execute ":only"
-        while n <= last
-            if n != curr && buflisted(n)
-                execute ":bd " . n
+        let curr_buf = bufnr("%")
+        let oldest_buf = curr_buf
+        let oldest_time = localtime()
+        let buf_info = filter(getbufinfo(), 'buflisted(v:val.bufnr)')
+        if len(buf_info) <= b:max_buffer_num
+            return
+        endif
+        for buf in buf_info
+            "关闭最早打开的buffer
+            if buf.lastused < oldest_time
+                let oldest_buf = buf.bufnr
+                let oldest_time = buf.lastused
             endif
-            let n += 1
-        endwhile
+        endfor
+        if oldest_buf != curr_buf
+            execute 'bdelete ' . oldest_buf
+        endif
     endif
 endfunction
 
