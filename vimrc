@@ -581,7 +581,7 @@ let g:terminal_close = 1                " set to 1 to close window if process fi
 
 " codeium.vim
 let g:codeium_no_map_tab = 1            " disabled Codeium use tab keybindings
-imap <script><silent><nowait><expr> <M-;> codeium#Accept()
+imap <script><silent><nowait><expr> <M-=> codeium#Accept()
 
 
 "nnoremap <F5> :call CompileRunPython()<cr>
