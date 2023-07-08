@@ -420,10 +420,10 @@ endif
 "let g:gutentags_trace = 1
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
-"g:gutentags_generate_on_new 默认为 1，即每次打开vim时ctags和gtags都会重新更新，添加判断仅在有.root 的目录才进行更新，降低cpu 资源
-autocmd BufReadPost * if empty(findfile(".root")) | let g:gutentags_generate_on_new = 0 | endif
 let g:gutentags_generate_on_write = 0
-
+let g:gutentags_generate_on_new = 0
+"仅有通过startify session 打开文件，gtags数据才进行更新
+autocmd FileType startify let g:gutentags_generate_on_new = 1
 
 " LeaderF
 let g:Lf_ShortcutF = ''
