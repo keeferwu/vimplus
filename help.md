@@ -18,8 +18,8 @@
 | `:SSave`            | 保存当前状态为某个session                 |  vimplus-startify
 | `:SDelete`          | 删除某个session                           |
 
-| `F3`                | 打开/关闭代码资源管理器                   |  easytree/netrw
-| `F4`                | 打开/关闭函数列表                         |  tagbar
+| `F4`                | 打开/关闭代码资源管理器                   |  easytree/netrw
+| `F5`                | 打开/关闭函数列表                         |  tagbar
 | `Alt+t`             | 打开/隐藏终端                             |  vim-terminal-help
 | `Alt+q`             | 终端切换早normal模式                      |
 | `Alt+-`             | 粘贴寄存器0的内容到终端                   |

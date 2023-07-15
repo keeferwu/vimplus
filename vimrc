@@ -251,7 +251,7 @@ function! ToggleEasyTree()
     silent EasyTreeBufferToggle  "当前buffer目录
   let g:lens#disabled = 0
 endfunction
-nnoremap <silent> <F3> :call ToggleEasyTree()<CR>
+nnoremap <silent> <F4> :call ToggleEasyTree()<CR>
 let g:easytree_width_auto_fit = 0
 let g:easytree_ignore_files = ['*.x86','*.tgt','*.obj']
 "let g:easytree_ignore_dirs = []
@@ -297,7 +297,7 @@ nmap <leader>w <Plug>(easymotion-overwin-w)
 
 
 " tagbar
-nnoremap <silent> <F4> :TagbarToggle<cr>
+nnoremap <silent> <F5> :TagbarToggle<cr>
 let g:tagbar_width = 40    " 设置 tagbar 的宽度为 40 列
 let g:tagbar_ctags_bin = 'ctags' " tagbar 依赖 ctags 插件
 let g:tagbar_autofocus = 1   " 打开 tagbar 时光标在 tagbar 页面内，默认在 vim 打开的文件内
