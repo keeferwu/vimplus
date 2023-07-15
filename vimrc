@@ -123,7 +123,7 @@ endif
 " 复制当前选中到系统剪切板
 vnoremap  <silent> <c-c> "+y
 " 将系统剪切板内容粘贴到vim
-vnoremap  <silent> <c-v> "+p
+noremap  <silent> <c-v> "+p
 "退出
 noremap <silent> <c-q> :qa<cr>
 "保存
