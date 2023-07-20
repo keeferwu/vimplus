@@ -65,7 +65,7 @@ set foldcolumn=0         " 设置折叠区域的宽度
 set foldlevelstart=99    " 打开文件是默认不折叠代码
 setlocal foldlevel=1     " 设置折叠层数
 "autocmd BufWinEnter * silent! :%foldopen! "打开文件是默认不折叠代码
-nnoremap <silent> <F2> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>  "空格控制代码的折叠与展开
+nnoremap <silent> <F2> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 "注：<space> 不可以随便映射，因为ctrl+] 会应用<space> 映射的命令
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -111,9 +111,6 @@ set selectmode=mouse,key
 " set cursorcolumn
 set colorcolumn =101
 
-" 设置path 使gf能进入到自定义头文件,已通过startify 配置
-"set path+=~/project/**
-
 if has("nvim")
     " unnamedplus:所有的操作都会自动被粘贴进 system clipboard 中
     " unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
@@ -141,6 +138,19 @@ nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
+
+" 打开文件自动定位到最后编辑的位置
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
+
+" 主题设置
+set background=dark
+let g:onedark_termcolors=256
+colorscheme onedark
+" 背景透明
+"hi Normal  ctermfg=252 ctermbg=none
+
+" 查看vimplus的help文件
+nnoremap <leader>h :sview +let\ &l:modifiable=0 ~/.vim/help.md<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " gvim/macvim设置
@@ -211,53 +221,13 @@ call plug#end()
 " load vim default plugin
 runtime macros/matchit.vim
 
-" 查看vimplus的help文件
-nnoremap <leader>h :sview +let\ &l:modifiable=0 ~/.vim/help.md<cr>
-
-" 打开当前光标所在单词的vim帮助文档
-nnoremap <leader>hw :execute ":help " . expand("<cword>")<cr>
-
 " 重新加载vimrc文件
-nnoremap <leader><leader>l :source $MYVIMRC<cr>
+"nnoremap <leader><leader>l :source $MYVIMRC<cr>
 
 " 安装、更新、删除插件
 nnoremap <leader><leader>i :PlugInstall<cr>
 nnoremap <leader><leader>u :PlugUpdate<cr>
 nnoremap <leader><leader>c :PlugClean<cr>
-
-"十六进制显示文件
-nmap <leader>H :%!xxd<CR>
-"二进制显示文件
-nmap <leader>B :%!xxd -r<CR>
-
-" 打开文件自动定位到最后编辑的位置
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
-
-
-" 主题设置
-set background=dark
-let g:onedark_termcolors=256
-colorscheme onedark
-" 背景透明
-"hi Normal  ctermfg=252 ctermbg=none
-
-
-" easytree.vim
-function! ToggleEasyTree()
-  let g:lens#disabled = 1
-    "silent EasyTreeToggle       "根目录
-    silent EasyTreeBufferToggle  "当前buffer目录
-  let g:lens#disabled = 0
-endfunction
-nnoremap <silent> <F4> :call ToggleEasyTree()<CR>
-let g:easytree_width_auto_fit = 0
-let g:easytree_ignore_files = ['*.x86','*.tgt','*.obj']
-"let g:easytree_ignore_dirs = []
-
-
-" eleline
-let g:relative_path_file = 1
-let g:eleline_slim = 0
 
 
 " vimplus-startify
@@ -277,21 +247,17 @@ let g:startify_session_savecmds = [
            \ ]
 
 
-" vim-trailing-whitespace
-let g:extra_whitespace_ignored_filetypes = ['startify', 'easytree', 'tagbar', 'qf', 'leaderf']
-vnoremap <silent><leader><space> : FixWhitespace<cr>
-vnoremap <silent><leader><Tab> : SpaceToTab<cr>
-vnoremap <silent><leader><S-Tab> : TabToSpace<cr>
-
-
-" vim-interestingwords
-let g:interestingWordsCycleColors = 1
-
-
-" vim-easymotion
-let g:EasyMotion_smartcase = 1
-map <leader>w <Plug>(easymotion-bd-w)
-nmap <leader>w <Plug>(easymotion-overwin-w)
+" easytree.vim
+function! ToggleEasyTree()
+  let g:lens#disabled = 1
+    "silent EasyTreeToggle       "根目录
+    silent EasyTreeBufferToggle  "当前buffer目录
+  let g:lens#disabled = 0
+endfunction
+nnoremap <silent> <F4> :call ToggleEasyTree()<CR>
+let g:easytree_width_auto_fit = 0
+let g:easytree_ignore_files = ['*.x86','*.tgt','*.obj']
+"let g:easytree_ignore_dirs = []
 
 
 " tagbar
@@ -305,12 +271,43 @@ let g:tagbar_sort = 0        " 标签不排序，默认排序
 "autocmd BufReadPost *.cpp,*.c,*.lua,*.hpp,*.cc,*.cxx call tagbar#autoopen()
 
 
+" eleline
+let g:relative_path_file = 1
+let g:eleline_slim = 0
+
+
+" vim-trailing-whitespace
+let g:extra_whitespace_ignored_filetypes = ['startify', 'easytree', 'tagbar', 'qf', 'leaderf']
+vnoremap <silent><leader><space> : FixWhitespace<cr>
+vnoremap <silent><leader><Tab> : SpaceToTab<cr>
+vnoremap <silent><leader><S-Tab> : TabToSpace<cr>
+
+
+" lens
+let g:lens#animate = 0  "取消动画
+let g:lens#disabled_filetypes = ['easytree', 'tagbar', 'qf']
+let g:lens#height_resize_max = 40
+let g:lens#height_resize_min = 5
+let g:lens#width_resize_max = 120
+let g:lens#width_resize_min = 20
+
+
 " echodoc.vim
 let g:echodoc_enable_at_startup = 1
 
 
 " indentLine 开启代码对齐线
 let g:indentLine_enabled = 1
+
+
+" vim-interestingwords
+let g:interestingWordsCycleColors = 1
+
+
+" vim-easymotion
+let g:EasyMotion_smartcase = 1
+map <leader>w <Plug>(easymotion-bd-w)
+nmap <leader>w <Plug>(easymotion-overwin-w)
 
 
 " vim-autoformat
@@ -369,15 +366,6 @@ hi ChangesSignTextDummyCh  ctermfg=NONE ctermbg=blue guifg=NONE guibg=blue
 hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green
 
 
-" lens
-let g:lens#animate = 0  "取消动画
-let g:lens#disabled_filetypes = ['easytree', 'tagbar', 'qf']
-let g:lens#height_resize_max = 40
-let g:lens#height_resize_min = 5
-let g:lens#width_resize_max = 120
-let g:lens#width_resize_min = 20
-
-
 " vim-gutentags
 "let $GTAGSLABEL = 'native-pygments'   "gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
 map <c-]> g<c-]>        " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
@@ -422,6 +410,7 @@ let g:gutentags_generate_on_write = 0
 let g:gutentags_generate_on_new = 0
 "仅有通过startify session 打开文件，gtags数据才进行更新
 autocmd FileType startify let g:gutentags_generate_on_new = 1
+
 
 " LeaderF
 let g:Lf_ShortcutF = ''
@@ -582,25 +571,6 @@ let g:codeium_no_map_tab = 1            " disabled Codeium use tab keybindings
 imap <script><silent><nowait><expr> <M-=> codeium#Accept()
 
 
-"nnoremap <F5> :call CompileRunPython()<cr>
-func! CompileRunPython()
-  exec "w"
-  if &filetype == 'python'
-    if search("@profile")
-        exec "AsyncRun kernprof -l -v %"
-        exec "copen"
-        exec "wincmd p"
-    elseif search("set_trace()")
-        exec "!python3 %"
-    else
-        exec "AsyncRun -raw python3 %"
-        exec "copen"
-        exec "wincmd p"
-    endif
-  endif
-endfunc
-
-
 " vim-buffer
 noremap <silent> <c-q> :call CloseBuffer(0)<cr>
 nnoremap <silent> <leader>d :call CloseBuffer(1)<cr>
@@ -639,4 +609,23 @@ function! CloseBuffer(action)
         execute ":q"
     endif
 endfunction
+
+
+"nnoremap <F5> :call CompileRunPython()<cr>
+func! CompileRunPython()
+  exec "w"
+  if &filetype == 'python'
+    if search("@profile")
+        exec "AsyncRun kernprof -l -v %"
+        exec "copen"
+        exec "wincmd p"
+    elseif search("set_trace()")
+        exec "!python3 %"
+    else
+        exec "AsyncRun -raw python3 %"
+        exec "copen"
+        exec "wincmd p"
+    endif
+  endif
+endfunc
 

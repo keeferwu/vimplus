@@ -5,8 +5,6 @@
 | `,`                 | Leader Key                                |
 | `<leader>h`         | 打开vimplus帮助文档                       |
 
-| `<leader>H`         | 十六进制显示文件                          |
-| `<leader>B`         | 二进制显示文件                            |
 | `Ctrl+q`            | 退出vim                                   |
 | `Ctrl+s`            | 保存内容                                  |
 | `Ctrl+c`            | 文本复制                                  |
@@ -18,8 +16,10 @@
 | `:SSave`            | 保存当前状态为某个session                 |  vimplus-startify
 | `:SDelete`          | 删除某个session                           |
 
-| `F4`                | 打开/关闭代码资源管理器                   |  easytree/netrw
+| `F4`                | 打开/关闭代码资源管理器                   |  easytree
+
 | `F5`                | 打开/关闭函数列表                         |  tagbar
+
 | `Alt+t`             | 打开/隐藏终端                             |  vim-terminal-help
 | `Alt+q`             | 终端切换早normal模式                      |
 | `Alt+-`             | 粘贴寄存器0的内容到终端                   |
@@ -71,8 +71,7 @@
 | `]h`                | 跳转到下一处修改的位置                    | changesPlugin
 | `[h`                | 跳转到上一处修改的位置                    |
 
-| `<leader><leader>l` | 重新加载~/.vimrc文件                      | vim-plug
-| `<leader><leader>i` | 插件安装                                  |
+| `<leader><leader>i` | 插件安装                                  | vim-plug
 | `<leader><leader>u` | 插件跟新                                  |
 | `<leader><leader>c` | 插件删除                                  |
 
@@ -82,11 +81,6 @@
 
 | 快捷键               | 说明                                             |
 | -------              | -----                                            |
-| `g/pattern`          | 搜索文件中匹配 pattern 的字符行                  |
-| `/pattern`           | 从光标处向文件尾搜索 pattern                     |
-| `?pattern`           | 从光标处向文件头搜索 pattern                     |
-| `*`                  | 向前搜索光标下的单词                             |
-| `#`                  | 向后搜索光标下的单词                             |
 | `:s/p1/p2/g`         | 替换当前行的p1为p2                               |
 | `:%s/p1/p2/g`        | 替换当前文件中的p1为p2                           |
 | `:%s/<p1>/p2/g`      | 替换当前文件中的p1单词为p2                       |
@@ -109,11 +103,6 @@
 | `:mark A`            | 标记A，使用'A 跳转到A处，[a-z]:文件内 [A-Z]:全局 |
 | `:marks`             | 查看使用的标记                                   |
 | `:delmarks A`        | 删除标记 A                                       |
-
-
-## 文件替换
-| sed -i "s/原字符串/新字符串/g" `grep "原字符串" -rl 所在目录` | 借助linux 外部命令实现某个目录下的全局替换           |
-| 例：sed -i "s/https:\/\/libs.baidu.com/https:\/\/cdn.static.runoob.com\/libs/g" `grep -rl "libs.baidu.com" ./`       |
 
 
 ## 光标移动
@@ -341,10 +330,13 @@
 ## 其他
 
 | 快捷键                                | 说明                       |
-| -------                               | -----                      |
-| `vimdiff file1 file2`                 | 显示文件差异               |
-| `vim -R filename`                     | 以只读方式打开（阅读模式） |
-| `vim --startuptime startup.log`       | 记录vim 启动时间           |
+| -------                             | -----                    |
+| vimdiff file1 file2                  | 显示文件差异               |
+| vim -b filename                      | 打开二进制文件 -> :%!xxd(转换16进制编辑) -> :%!xxd -r(转换回二进制) |
+| vim -R filename                      | 以只读方式打开（阅读模式）   |
+| vim --startuptime startup.log        | 记录vim 启动时间           |
+| sed -i "s/原字符串/新字符串/g" `grep "原字符串" -rl 所在目录` | 借助linux 外部命令实现某个目录下的全局替换           |
+| 例：sed -i "s/https:\/\/libs.baidu.com/https:\/\/cdn.static.runoob.com\/libs/g" `grep -rl "libs.baidu.com" ./`       |
 
 
 ## 注意事项
