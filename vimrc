@@ -124,9 +124,7 @@ endif
 vnoremap  <silent> <c-c> "+y
 " 将系统剪切板内容粘贴到vim
 noremap  <silent> <c-v> "+p
-"退出
-noremap <silent> <c-q> :qa<cr>
-"保存
+" 保存
 noremap <silent> <c-s> :w<cr>
 inoremap <silent> <c-s> <Esc>:w<cr>
 " 将crl+z 映射为撤销
@@ -586,55 +584,59 @@ imap <script><silent><nowait><expr> <M-=> codeium#Accept()
 
 "nnoremap <F5> :call CompileRunPython()<cr>
 func! CompileRunPython()
-    exec "w"
-    if &filetype == 'python'
-        if search("@profile")
-            exec "AsyncRun kernprof -l -v %"
-            exec "copen"
-            exec "wincmd p"
-        elseif search("set_trace()")
-            exec "!python3 %"
-        else
-            exec "AsyncRun -raw python3 %"
-            exec "copen"
-            exec "wincmd p"
-        endif
+  exec "w"
+  if &filetype == 'python'
+    if search("@profile")
+        exec "AsyncRun kernprof -l -v %"
+        exec "copen"
+        exec "wincmd p"
+    elseif search("set_trace()")
+        exec "!python3 %"
+    else
+        exec "AsyncRun -raw python3 %"
+        exec "copen"
+        exec "wincmd p"
     endif
+  endif
 endfunc
 
 
 " vim-buffer
-autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
+noremap <silent> <c-q> :call CloseBuffer(0)<cr>
 nnoremap <silent> <leader>d :call CloseBuffer(1)<cr>
+autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
 function! CloseBuffer(action)
-    if &filetype == "easytree" || &filetype == "tagbar" || &filetype == "qf"
-        echo "Window not support close buffer!"
+  if &filetype == "easytree" || &filetype == "tagbar" || &filetype == "qf"
+    echo "Window not support close buffer!"
+    return
+  endif
+  if a:action == 2
+    let curr_buf = bufnr("%")
+    let oldest_buf = curr_buf
+    let oldest_time = localtime()
+    let buf_info = filter(getbufinfo(), 'buflisted(v:val.bufnr)')
+    if len(buf_info) <= b:max_buffer_num
         return
+    endif
+    for buf in buf_info
+        "关闭最早打开的buffer
+        if buf.lastused < oldest_time
+            let oldest_buf = buf.bufnr
+            let oldest_time = buf.lastused
+        endif
+    endfor
+    if oldest_buf != curr_buf
+        execute 'bdelete ' . oldest_buf
+    endif
+  else
+    if winnr('$') > 1
+        execute ":only"
     endif
     if a:action == 1
         "关闭当前的buffer
-        if winnr('$') > 1
-            execute ":only"
-        endif
         execute ":bd"
     else
-        let curr_buf = bufnr("%")
-        let oldest_buf = curr_buf
-        let oldest_time = localtime()
-        let buf_info = filter(getbufinfo(), 'buflisted(v:val.bufnr)')
-        if len(buf_info) <= b:max_buffer_num
-            return
-        endif
-        for buf in buf_info
-            "关闭最早打开的buffer
-            if buf.lastused < oldest_time
-                let oldest_buf = buf.bufnr
-                let oldest_time = buf.lastused
-            endif
-        endfor
-        if oldest_buf != curr_buf
-            execute 'bdelete ' . oldest_buf
-        endif
+        execute ":q"
     endif
 endfunction
 
