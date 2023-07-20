@@ -580,6 +580,16 @@ function! CloseBuffer(action)
     echo "Window not support close buffer!"
     return
   endif
+  if a:action == 0
+    execute ":only | q"
+  endif
+  if a:action == 1
+    if winnr('$') > 1
+        execute ":only"
+    endif
+    "关闭当前的buffer
+    execute ":bd"
+  endif
   if a:action == 2
     let curr_buf = bufnr("%")
     let oldest_buf = curr_buf
@@ -598,16 +608,7 @@ function! CloseBuffer(action)
     if oldest_buf != curr_buf
         execute 'bdelete ' . oldest_buf
     endif
-  else
-    if winnr('$') > 1
-        execute ":only"
-    endif
-    if a:action == 1
-        "关闭当前的buffer
-        execute ":bd"
-    else
-        execute ":q"
-    endif
+  endif
 endfunction
 
 
