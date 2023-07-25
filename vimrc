@@ -199,7 +199,7 @@ Plug 'preservim/nerdcommenter'           " 添加注释
 Plug 'luochen1990/rainbow'               "彩虹括号
 Plug 'justinmk/vim-syntax-extra'         "增强语法高亮
 Plug 'octol/vim-cpp-enhanced-highlight'  "cpp扩展高亮
-Plug 'yianwillis/vimcdoc'
+"Plug 'yianwillis/vimcdoc'
 Plug 'chrisbra/changesPlugin'            "修改显示
 Plug 'lfv89/vim-interestingwords'        "单词高亮
 Plug 'bronson/vim-trailing-whitespace'   "行尾空格
