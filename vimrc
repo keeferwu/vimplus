@@ -479,8 +479,8 @@ let g:Lf_GtagsAutoUpdate = 0   "auto update
 let g:Lf_GtagsGutentags = 1
 let g:Lf_GtagsSkipUnreadable = 1
 let g:Lf_GtagsAcceptDotfiles = 0
-nmap <silent><leader>q :Leaderf! gtags --recall<cr>
-nmap <silent><leader>F :Leaderf! gtags_history<cr>
+nmap <silent><leader>q :Leaderf gtags --recall<cr>
+nmap <silent><leader>F :Leaderf gtags_history<cr>
 
 " Note: use vim-gutentags to generate gtags and use leaderf show result should do 
 " g:gutentags_modules += ['gtags_cscope']
