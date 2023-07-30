@@ -187,7 +187,11 @@ command! -nargs=1 -bar UnPlug call s:deregister(<args>)
 call plug#begin('~/.vim/plugged')
 
 Plug 'chxuan/vimplus-startify'           "vimplus开始页面
+if has("nvim")
+Plug 'Shougo/defx.nvim', {'do': ':UpdateRemotePlugins'}
+else
 Plug 'troydm/easytree.vim'
+endif
 Plug 'preservim/tagbar'
 Plug 'easymotion/vim-easymotion'         "强大的光标快速移动工具，强大到颠覆你的插件观
 Plug 'terryma/vim-smooth-scroll'         "让翻页更顺畅
@@ -199,7 +203,6 @@ Plug 'preservim/nerdcommenter'           " 添加注释
 Plug 'luochen1990/rainbow'               "彩虹括号
 Plug 'justinmk/vim-syntax-extra'         "增强语法高亮
 Plug 'octol/vim-cpp-enhanced-highlight'  "cpp扩展高亮
-"Plug 'yianwillis/vimcdoc'
 Plug 'chrisbra/changesPlugin'            "修改显示
 Plug 'lfv89/vim-interestingwords'        "单词高亮
 Plug 'bronson/vim-trailing-whitespace'   "行尾空格
@@ -247,6 +250,50 @@ let g:startify_session_savecmds = [
            \ ]
 
 
+if has("nvim")
+"defx.nvim
+call defx#custom#option('_', {
+            \ 'winwidth': 30,
+            \ 'split': 'vertical',
+            \ 'direction': 'topleft',
+            \ 'show_ignored_files': 0,
+            \ 'buffer_name': '',
+            \ 'toggle': 1,
+            \ 'resume': 1,
+            \ })
+call defx#custom#column('icon', {
+      \ 'directory_icon': '▸',
+      \ 'opened_icon': '▾',
+      \ 'root_icon': ' ',
+      \ })
+nnoremap <silent> <F4> :Defx `escape(expand('%:p:h'), ' :')` -search=`expand('%:p')`<CR>
+autocmd BufWritePost * call defx#redraw()
+autocmd FileType defx call s:defx_mappings()
+function! s:defx_mappings() abort
+    setl nonu                            " 勿在 defx 栏显示行号
+    nnoremap <silent><buffer><expr> <CR>
+                \ defx#is_directory() ?
+                \ defx#do_action('open_or_close_tree') :
+                \ defx#do_action('drop',) " 点击 enter 键打开
+    nnoremap <silent><buffer><expr> yy        defx#do_action('copy')
+    nnoremap <silent><buffer><expr> dd        defx#do_action('move')
+    nnoremap <silent><buffer><expr> pp        defx#do_action('paste')
+    nnoremap <silent><buffer><expr> N         defx#do_action('new_file')
+    nnoremap <silent><buffer><expr> M         defx#do_action('new_multiple_files')
+    nnoremap <silent><buffer><expr> R         defx#do_action('rename')
+    nnoremap <silent><buffer><expr> E         defx#do_action('open', 'vsplit')
+    nnoremap <silent><buffer><expr> P         defx#do_action('preview')
+    nnoremap <silent><buffer><expr> .         defx#do_action('toggle_ignored_files')
+    nnoremap <silent><buffer><expr> h         defx#do_action('cd', getcwd())
+    nnoremap <silent><buffer><expr> q         defx#do_action('quit')
+    nnoremap <silent><buffer><expr> <Space>   defx#do_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr> *         defx#do_action('toggle_select_all')
+    nnoremap <silent><buffer><expr> m         defx#do_action('clear_select_all')
+    nnoremap <silent><buffer><expr> <         defx#do_action('resize',  defx#get_context().winwidth - 10)
+    nnoremap <silent><buffer><expr> >         defx#do_action('resize',  defx#get_context().winwidth + 10)
+endfunction
+
+else
 " easytree.vim
 function! ToggleEasyTree()
   let g:lens#disabled = 1
@@ -258,6 +305,7 @@ nnoremap <silent> <F4> :call ToggleEasyTree()<CR>
 let g:easytree_width_auto_fit = 0
 let g:easytree_ignore_files = ['*.x86','*.tgt','*.obj']
 "let g:easytree_ignore_dirs = []
+endif
 
 
 " tagbar
@@ -277,7 +325,7 @@ let g:eleline_slim = 0
 
 
 " vim-trailing-whitespace
-let g:extra_whitespace_ignored_filetypes = ['startify', 'easytree', 'tagbar', 'qf', 'leaderf']
+let g:extra_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
 vnoremap <silent><leader><space> : FixWhitespace<cr>
 vnoremap <silent><leader><Tab> : SpaceToTab<cr>
 vnoremap <silent><leader><S-Tab> : TabToSpace<cr>
@@ -285,7 +333,7 @@ vnoremap <silent><leader><S-Tab> : TabToSpace<cr>
 
 " lens
 let g:lens#animate = 0  "取消动画
-let g:lens#disabled_filetypes = ['easytree', 'tagbar', 'qf']
+let g:lens#disabled_filetypes = ['easytree', 'defx', 'tagbar']
 let g:lens#height_resize_max = 40
 let g:lens#height_resize_min = 5
 let g:lens#width_resize_max = 120
@@ -576,7 +624,7 @@ noremap <silent> <c-q> :call CloseBuffer(0)<cr>
 nnoremap <silent> <leader>d :call CloseBuffer(1)<cr>
 autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
 function! CloseBuffer(action)
-  if &filetype == "easytree" || &filetype == "tagbar" || &filetype == "qf"
+  if &filetype == "easytree" ||&filetype == "defx" || &filetype == "tagbar" || &filetype == "qf"
     echo "Window not support close buffer!"
     return
   endif
