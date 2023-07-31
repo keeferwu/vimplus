@@ -435,7 +435,6 @@ endif
 " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
 let s:vim_tags = expand('~/.cache/tags')
 let g:gutentags_cache_dir = s:vim_tags
-let g:gutentags_cache_dir = expand('~/.LfCache/gtags')
 let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
 let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--extras=+q']
 let g:gutentags_ctags_extra_args += ['--language-force=c']
@@ -530,9 +529,10 @@ let g:Lf_GtagsAcceptDotfiles = 0
 nmap <silent><leader>q :Leaderf gtags --recall<cr>
 nmap <silent><leader>F :Leaderf gtags_history<cr>
 
+let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
 " Note: use vim-gutentags to generate gtags and use leaderf show result should do 
 " g:gutentags_modules += ['gtags_cscope']
-" g:gutentags_cache_dir = expand('~/.LfCache/gtags')
+" g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
 " g:Lf_GtagsAutoGenerate = 0
 " g:Lf_GtagsAutoUpdate = 0
 " g:Lf_GtagsGutentags = 1
