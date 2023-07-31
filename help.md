@@ -11,12 +11,12 @@
 | `Ctrl+v`            | 文本粘贴                                  |
 | `Ctrl+/`            | 搜索内容输出到quickfix                    |
 | `F2`                | 代码折叠与展开                            |
-| `zR`                | 代码展开                                  |
+| `zR`                | 展开所有代码                                  |
 
 | `:SSave`            | 保存当前状态为某个session                 |  vimplus-startify
 | `:SDelete`          | 删除某个session                           |
 
-| `F4`                | 打开/关闭代码资源管理器                   |  easytree
+| `F4`                | 打开/关闭代码资源管理器                   |  easytree/defx
 
 | `F5`                | 打开/关闭函数列表                         |  tagbar
 
@@ -24,10 +24,10 @@
 | `Alt+q`             | 终端切换早normal模式                      |
 | `Alt+-`             | 粘贴寄存器0的内容到终端                   |
 
-| `Alt+=`             | 接受智能补全填充（插入模式）              |  codeium
-| `Alt+[`             | 智能补全上一条目（插入模式）              |
-| `Alt+]`             | 智能补全下一条目（插入模式）              |
-| `Alt+\`             | 清除智能补全填充（插入模式）              |
+| `Ctrl+Alt+=`             | 接受智能补全填充（插入模式）              |  codeium
+| `CTRL+Alt+[`             | 智能补全上一条目（插入模式）              |
+| `CTRL+Alt+]`             | 智能补全下一条目（插入模式）              |
+| `CTRL+Alt+-`             | 清除智能补全填充（插入模式）              |
 
 | `Ctrl+b`            | 上一页                                    |  vim-smooth-scroll
 | `Ctrl+f`            | 下一页                                    |
@@ -48,7 +48,8 @@
 | `<leader>fr`        | reference光标下字符                       |
 | `<leader>fs`        | symbol光标下字符                          |
 | `<leader>fg`        | grep光标下字符                            |
-| `<leader>F`         | 查看gtags搜索历史                         |
+| `<leader>G`         | 重新打开gtags搜索窗                       |
+| `<leader>gh`        | 查看gtags搜索历史                         |
 
 | `<Leader>w`         | 光标快速移动                              |  vim-easymotion
 

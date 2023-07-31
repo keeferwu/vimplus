@@ -215,8 +215,8 @@ Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
 Plug 'vim-scripts/OmniCppComplete'       "与vim-easycomplete 冲突,代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
 Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
-Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
 Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
+"Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 
 call plug#end()
@@ -526,8 +526,8 @@ let g:Lf_GtagsAutoUpdate = 0   "auto update
 let g:Lf_GtagsGutentags = 1
 let g:Lf_GtagsSkipUnreadable = 1
 let g:Lf_GtagsAcceptDotfiles = 0
-nmap <silent><leader>q :Leaderf gtags --recall<cr>
-nmap <silent><leader>F :Leaderf gtags_history<cr>
+nmap <silent><leader>G :Leaderf! gtags --recall<cr>
+nmap <silent><leader>gh :Leaderf gtags_history<cr>
 
 let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
 " Note: use vim-gutentags to generate gtags and use leaderf show result should do 
@@ -605,6 +605,15 @@ let g:easycomplete_tabnine_enable = 0         " disable TabNine
 let g:easycomplete_diagnostics_enable = 0     " 语法检测
 
 
+" codeium.vim
+let g:codeium_disable_bindings = 1      " disable default keybindings
+let g:codeium_no_map_tab = 1            " disabled Codeium use tab keybindings
+imap <script><silent><nowait><expr> <C-M-=> codeium#Accept()
+imap <C-M-->   <Cmd>call codeium#Clear()<CR>
+imap <C-M-[>   <Cmd>call codeium#CycleCompletions(-1)<CR>
+imap <C-M-]>   <Cmd>call codeium#CycleCompletions(1)<CR>
+
+
 " vim-terminal-help
 let g:terminal_rootmarkers = ['.root']
 let g:terminal_key = '<m-t>'            " which key will be used to toggle terminal window, default to .<m-=>
@@ -612,11 +621,6 @@ let g:terminal_cwd = 2                  " initialize working dir: for unchanged,
 let g:terminal_height = 10              " new terminal height, default to 10.
 let g:terminal_list = 0                 " set to 0 to hide terminal buffer in the buffer list.
 let g:terminal_close = 1                " set to 1 to close window if process finished.
-
-
-" codeium.vim
-let g:codeium_no_map_tab = 1            " disabled Codeium use tab keybindings
-imap <script><silent><nowait><expr> <M-=> codeium#Accept()
 
 
 " vim-buffer
