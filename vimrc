@@ -608,10 +608,10 @@ let g:easycomplete_diagnostics_enable = 0     " 语法检测
 " codeium.vim
 let g:codeium_disable_bindings = 1      " disable default keybindings
 let g:codeium_no_map_tab = 1            " disabled Codeium use tab keybindings
-imap <script><silent><nowait><expr> <C-M-=> codeium#Accept()
-imap <C-M-->   <Cmd>call codeium#Clear()<CR>
-imap <C-M-[>   <Cmd>call codeium#CycleCompletions(-1)<CR>
-imap <C-M-]>   <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <script><silent><nowait><expr> <M-=> codeium#Accept()
+imap <M-->   <Cmd>call codeium#Clear()<CR>
+imap <M-[>   <Cmd>call codeium#CycleCompletions(-1)<CR>
+imap <M-]>   <Cmd>call codeium#CycleCompletions(1)<CR>
 
 
 " vim-terminal-help
