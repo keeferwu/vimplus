@@ -124,8 +124,6 @@ noremap  <silent> <c-v> "+p
 " 保存
 noremap <silent> <c-s> :w<cr>
 inoremap <silent> <c-s> <Esc>:w<cr>
-" 将crl+z 映射为撤销
-nnoremap <silent> <c-z> :undo<cr>
 " 重新映射d 为仅删除不剪切
 nnoremap <silent> d   "_d
 vnoremap <silent> d   "_d
