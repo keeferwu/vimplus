@@ -491,10 +491,10 @@ let g:Lf_MruWildIgnore = {
             \ 'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','obj'],
             \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
             \}
-
+let g:Lf_WindowHeight = 0.40
 let g:Lf_PreviewInPopup = 1 "启用预览这个功能 P 弹出窗口
-let g:Lf_PreviewHorizontalPosition = 'right' "设置预览窗口位置
 let g:Lf_PreviewPopupWidth = 0  "设置预览窗口大小
+let g:Lf_PreviewPosition = 'topright' "设置预览窗口位置
 let g:Lf_PreviewResult = {
             \ 'File': 0,
             \ 'Buffer': 0,
@@ -504,8 +504,8 @@ let g:Lf_PreviewResult = {
             \ 'Function': 1,
             \ 'Line': 0,
             \ 'Colorscheme': 0,
-            \ 'Rg': 0,
-            \ 'Gtags': 0
+            \ 'Rg': 1,
+            \ 'Gtags': 1
             \}
 
 " 使用leaderf 生成gtags 数据时不正常，考虑在项目跟目录添加gtags.file 文件，内容参考g:gutentags_file_list_command中命令去生成
