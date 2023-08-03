@@ -520,6 +520,12 @@ let g:Lf_GtagsGutentags = 1
 let g:Lf_GtagsSkipUnreadable = 1
 let g:Lf_GtagsAcceptDotfiles = 0
 nmap <silent><leader>G :Leaderf! gtags --recall<cr>
+map <silent> <leader>ga <Plug>LeaderfGtagsInternel
+map <silent> <leader>gd <Plug>LeaderfGtagsDefinition
+map <silent> <leader>gr <Plug>LeaderfGtagsReference
+map <silent> <leader>gs <Plug>LeaderfGtagsSymbol
+map <silent> <leader>gg <Plug>LeaderfGtagsGrep
+let g:leader_gtags_nomap = 1
 nmap <silent><leader>gh :Leaderf gtags_history<cr>
 
 let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')

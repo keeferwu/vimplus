@@ -42,11 +42,11 @@
 | `<leader>rg`        | 搜索输入的字符                            |  LeaderF rg
 | `<leader>rw`        | 搜索光标下的字符                          |
 | `<leader>R`         | 查看上次rg 的搜索结果                     |
-| `<leader>fa`        | 输入要查询的字符                          |  LeaderF gtags
-| `<leader>fd`        | definition光标下字符                      |
-| `<leader>fr`        | reference光标下字符                       |
-| `<leader>fs`        | symbol光标下字符                          |
-| `<leader>fg`        | grep光标下字符                            |
+| `<leader>ga`        | 输入要查询的字符                          |  LeaderF gtags
+| `<leader>gd`        | definition光标下字符                      |
+| `<leader>gr`        | reference光标下字符                       |
+| `<leader>gs`        | symbol光标下字符                          |
+| `<leader>gg`        | grep光标下字符                            |
 | `<leader>G`         | 重新打开gtags搜索窗                       |
 | `<leader>gh`        | 查看gtags搜索历史                         |
 | `<leader>lg`        | 当前文件搜索内容输出到quickfix            |  LeaderF quifix
