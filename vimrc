@@ -127,10 +127,6 @@ inoremap <silent> <c-s> <Esc>:w<cr>
 " 重新映射d 为仅删除不剪切
 nnoremap <silent> d   "_d
 vnoremap <silent> d   "_d
-" 命令行输入ctrl+/ 搜索选中内容
-vnoremap <silent> <c-_> y :vimgrep <c-r>" %\|copen <cr>
-nnoremap <silent> <c-_> :execute 'vimgrep '.expand("<cword>").' %\|copen'<cr>
-autocmd FileType qf nnoremap <silent><buffer> q :cclose \| lclose<cr>
 " 分屏窗口移动
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
@@ -464,7 +460,6 @@ nnoremap <leader>lf :LeaderfFile<space>
 nnoremap <leader>lb :LeaderfBuffer<cr>
 nnoremap <leader>lt :LeaderfBufTag<cr>
 nnoremap <leader>ll :LeaderfLine<cr>
-nnoremap <leader>lq :LeaderfQuickFix<cr>
 nnoremap <leader>lm :LeaderfMru<cr>
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 let g:Lf_IgnoreCurrentBufferName = 1
@@ -558,6 +553,11 @@ nmap <leader>rg <Plug>LeaderfRgPrompt
 nmap <silent> <leader>rw :LeaderfRgInteractive<cr>
 "上次 rg 搜索结果
 noremap <silent> <leader>R :LeaderfRgRecall<cr>
+
+" 搜索当前文件选中内容输出到quickfix
+vnoremap <silent> <leader>lg y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
+nnoremap <silent> <leader>lg :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
+noremap <silent> <leader>Q :LeaderfQuickFix<cr>
 
 
 " OmniCppComplete

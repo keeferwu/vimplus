@@ -9,7 +9,6 @@
 | `Ctrl+s`            | 保存内容                                  |
 | `Ctrl+c`            | 文本复制                                  |
 | `Ctrl+v`            | 文本粘贴                                  |
-| `Ctrl+/`            | 搜索内容输出到quickfix                    |
 | `F2`                | 代码折叠与展开                            |
 | `zR`                | 展开所有代码                                  |
 
@@ -50,6 +49,8 @@
 | `<leader>fg`        | grep光标下字符                            |
 | `<leader>G`         | 重新打开gtags搜索窗                       |
 | `<leader>gh`        | 查看gtags搜索历史                         |
+| `<leader>lg`        | 当前文件搜索内容输出到quickfix            |  LeaderF quifix
+| `<leader>Q`         | 打开Quickfix窗口                          |
 
 | `<Leader>w`         | 光标快速移动                              |  vim-easymotion
 
