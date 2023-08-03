@@ -37,8 +37,9 @@
 | `<leader>lb`        | 搜索打开过的buffer                        |
 | `<leader>lt`        | 搜索当前buffer下tag                       |
 | `<leader>ll`        | 搜索当前buffer下内容                      |
-| `<leader>lq`        | 打开quickfix中的内容                      |
 | `<leader>lm`        | 搜索MRU下的文件                           |
+| `<leader>lg`        | 当前文件搜索内容输出到quickfix            |
+| `<leader>Q`         | 打开quickfix窗口                          |
 | `<leader>rg`        | 搜索输入的字符                            |  LeaderF rg
 | `<leader>rw`        | 搜索光标下的字符                          |
 | `<leader>R`         | 查看上次rg 的搜索结果                     |
@@ -48,9 +49,7 @@
 | `<leader>gs`        | symbol光标下字符                          |
 | `<leader>gg`        | grep光标下字符                            |
 | `<leader>G`         | 重新打开gtags搜索窗                       |
-| `<leader>gh`        | 查看gtags搜索历史                         |
-| `<leader>lg`        | 当前文件搜索内容输出到quickfix            |  LeaderF quifix
-| `<leader>Q`         | 打开Quickfix窗口                          |
+| `<leader>gh`        | 查看gtags搜索历史                         |  LeaderF gtags history
 
 | `<Leader>w`         | 光标快速移动                              |  vim-easymotion
 
@@ -59,21 +58,21 @@
 | `<Leader>n`         | 当前单词的下一处高亮                      |
 | `<Leader>N`         | 当前单词的上一处高亮                      |
 
-| `<leader>cc`        | 注释当前行                                | nerdcommenter
+| `<leader>cc`        | 注释当前行                                |  nerdcommenter
 | `<leader>cu`        | 取消注释                                  |
 | `<leader>ca`        | 切换注释符                                |
 | `<leader>cs`        | 以”性感”的方式注释                        |
 | `<leader>c$`        | 注释光标所在位置，直到行尾                |
 | `<leader>c<space>`  | 加上/解开注释, 智能判断                   |
 
-| `<leader><space>`   | 去除选中行尾部空格                        | vim-trailing-whitespace
+| `<leader><space>`   | 去除选中行尾部空格                        |  vim-trailing-whitespace
 | `<leader><Tab>`     | 修改选中行开头的空格为tab                 |
 | `<leader><S-Tab>`   | 修改选中行开头的tab为空格                 |
 
-| `]h`                | 跳转到下一处修改的位置                    | changesPlugin
+| `]h`                | 跳转到下一处修改的位置                    |  changesPlugin
 | `[h`                | 跳转到上一处修改的位置                    |
 
-| `<leader><leader>i` | 插件安装                                  | vim-plug
+| `<leader><leader>i` | 插件安装                                  |  vim-plug
 | `<leader><leader>u` | 插件跟新                                  |
 | `<leader><leader>c` | 插件删除                                  |
 
