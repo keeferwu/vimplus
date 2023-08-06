@@ -205,11 +205,12 @@ Plug 'Yggdroot/LeaderF'                  "比ctrlp更强大的文件的模糊搜
 Plug 'keeferwu/LeaderF-gtags-history'    "显示leaderf gtags 搜索历史
 Plug 'SirVer/ultisnips'                  "需要和vim-snippets or vim-easycomplete 配合使用
 Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
-"Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
 Plug 'vim-scripts/OmniCppComplete'       "与vim-easycomplete 冲突,代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
 Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
 Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
+Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
+"Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
 "Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 
@@ -409,7 +410,7 @@ hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green
 
 
 " vim-gutentags
-"let $GTAGSLABEL = 'native-pygments'   "gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
+let $GTAGSLABEL = 'native-pygments'   "gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
 map <c-]> g<c-]>        " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
 let g:gutentags_project_root = ['.root', '.project']
@@ -444,6 +445,10 @@ let g:gutentags_auto_add_gtags_cscope = 0
 if !isdirectory(s:vim_tags)
    silent! call mkdir(s:vim_tags, 'p')
 endif
+" Setup gutentags to use rusty-tags
+let g:gutentags_project_info = []
+call add(g:gutentags_project_info, {'type': 'rust', 'file': 'Cargo.toml'})
+let g:gutentags_ctags_executable_rust = 'rusty-tags'
 "let g:gutentags_trace = 1
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
