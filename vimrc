@@ -197,6 +197,7 @@ Plug 'preservim/nerdcommenter'           " 添加注释
 Plug 'luochen1990/rainbow'               "彩虹括号
 Plug 'justinmk/vim-syntax-extra'         "增强语法高亮
 Plug 'octol/vim-cpp-enhanced-highlight'  "cpp扩展高亮
+Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
 Plug 'chrisbra/changesPlugin'            "修改显示
 Plug 'lfv89/vim-interestingwords'        "单词高亮
 Plug 'bronson/vim-trailing-whitespace'   "行尾空格
@@ -210,7 +211,6 @@ Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一
 Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
 Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
-Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
 "Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 
@@ -335,10 +335,6 @@ let g:lens#width_resize_max = 120
 let g:lens#width_resize_min = 20
 
 
-" echodoc.vim
-let g:echodoc_enable_at_startup = 1
-
-
 " indentLine 开启代码对齐线
 let g:indentLine_enabled = 1
 
@@ -416,7 +412,7 @@ map <c-]> g<c-]>        " 默认情况下crl+] 只会跳到tags中的第一个�
 let g:gutentags_project_root = ['.root', '.project']
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
 let g:gutentags_file_list_command = 'find ./ \( -path "./os*" -o -path "*.git*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" -o -path "*obj*" -o -path "*htmlpages*" \) -a -prune -o \( -type f -not -wholename "*.map" -not -wholename "*.o" -not -wholename "*.tgt" -not -wholename "*.x86" -not -wholename ".gitignore" \) -print'
-let g:gutentags_ctags_exclude = ['*./sdk/*','*./boot/*','*./host/*','*./configs/*', '*.json','*.txt','*.mib','*.db','*.lua','*.def']
+let g:gutentags_ctags_exclude = ['*./sdk/*','*./boot/*','*./host/*','*./configs/*', '*.json','*.txt','*.mib','*.db']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = '.tags'
 " 同时开启 ctags 和 gtags 支持：
@@ -428,8 +424,7 @@ if executable('gtags-cscope') && executable('gtags')
    let g:gutentags_modules += ['gtags_cscope']
 endif
 " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
-let s:vim_tags = expand('~/.cache/tags')
-let g:gutentags_cache_dir = s:vim_tags
+let g:gutentags_cache_dir = expand('~/.cache/tags')
 let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
 let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--extras=+q']
 let g:gutentags_ctags_extra_args += ['--language-force=c']
@@ -441,10 +436,6 @@ let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 let g:gutentags_gtags_cscope_executable = 'gtags-cscope'
 " 禁用 gutentags 自动加载 gtags 数据库的行为,否则当多个项目生成数据文件后，会相互影响
 let g:gutentags_auto_add_gtags_cscope = 0
-" 检测 ~/.cache/tags 不存在就新建
-if !isdirectory(s:vim_tags)
-   silent! call mkdir(s:vim_tags, 'p')
-endif
 " Setup gutentags to use rusty-tags
 let g:gutentags_project_info = []
 call add(g:gutentags_project_info, {'type': 'rust', 'file': 'Cargo.toml'})
