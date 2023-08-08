@@ -436,10 +436,6 @@ let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 let g:gutentags_gtags_cscope_executable = 'gtags-cscope'
 " 禁用 gutentags 自动加载 gtags 数据库的行为,否则当多个项目生成数据文件后，会相互影响
 let g:gutentags_auto_add_gtags_cscope = 0
-" Setup gutentags to use rusty-tags
-let g:gutentags_project_info = []
-call add(g:gutentags_project_info, {'type': 'rust', 'file': 'Cargo.toml'})
-let g:gutentags_ctags_executable_rust = 'rusty-tags'
 "let g:gutentags_trace = 1
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
