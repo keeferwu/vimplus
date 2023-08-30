@@ -273,19 +273,53 @@ function! s:defx_mappings() abort
     nnoremap <silent><buffer><expr> yy        defx#do_action('copy')
     nnoremap <silent><buffer><expr> dd        defx#do_action('move')
     nnoremap <silent><buffer><expr> pp        defx#do_action('paste')
-    nnoremap <silent><buffer><expr> N         defx#do_action('new_file')
-    nnoremap <silent><buffer><expr> M         defx#do_action('new_multiple_files')
-    nnoremap <silent><buffer><expr> R         defx#do_action('rename')
-    nnoremap <silent><buffer><expr> E         defx#do_action('open', 'vsplit')
-    nnoremap <silent><buffer><expr> P         defx#do_action('preview')
+    nnoremap <silent><buffer><expr> c         defx#do_action('new_file')
+    nnoremap <silent><buffer><expr> r         defx#do_action('rename')
+    nnoremap <silent><buffer><expr> v         defx#do_action('open', 'vsplit')
     nnoremap <silent><buffer><expr> .         defx#do_action('toggle_ignored_files')
     nnoremap <silent><buffer><expr> h         defx#do_action('cd', getcwd())
+    nnoremap <silent><buffer><expr> u         defx#do_action('cd', ['..'])
     nnoremap <silent><buffer><expr> q         defx#do_action('quit')
-    nnoremap <silent><buffer><expr> <Space>   defx#do_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr> s         defx#do_action('toggle_select') . 'j'
     nnoremap <silent><buffer><expr> *         defx#do_action('toggle_select_all')
-    nnoremap <silent><buffer><expr> m         defx#do_action('clear_select_all')
+    nnoremap <silent><buffer><expr> #         defx#do_action('clear_select_all')
     nnoremap <silent><buffer><expr> <         defx#do_action('resize',  defx#get_context().winwidth - 10)
     nnoremap <silent><buffer><expr> >         defx#do_action('resize',  defx#get_context().winwidth + 10)
+endfunction
+autocmd FileType defx let s:short_help = 0 | nnoremap <silent><buffer> ? :call DefxHelp()<cr>
+function! DefxHelp()
+    setlocal modifiable
+    silent %delete _
+    if s:short_help == 0
+        let s:short_help = 1
+        let help_cmds = [
+                \ ['h ',              'Jump to home directory'],
+                \ ['u ',              'Jump to up directory'],
+                \ ['v ',              'Open file at vsplit buffer'],
+                \ ['r ',              'Rename cursor file'],
+                \ ['c ',              'Create a new file'],
+                \ ['q ',              'Close defx window'],
+                \ ['< ',              'Increase defx window width'],
+                \ ['> ',              'Decrease defx window width'],
+                \ ['. ',              'Show ignore file'],
+                \ ['s ',              'Select cursor file'],
+                \ ['* ',              'Select all files'],
+                \ ['# ',              'Clear selected files'],
+                \ ['dd',              'Move cursor or selected file'],
+                \ ['yy',              'Copy cursor or selected file'],
+                \ ['pp ',             'Paste chip board files'],
+            \ ]
+        silent 0put ='\" defx keybindings'
+        silent  put ='\"'
+        for [cmd, desc] in help_cmds
+            silent put ='\" ' . cmd . ': ' . desc
+        endfor
+        silent  put _
+    else
+        let s:short_help = 0
+        call defx#redraw()
+    endif
+    setlocal nomodifiable
 endfunction
 
 else
@@ -598,7 +632,7 @@ let g:easycomplete_scheme="dark"
 let g:easycomplete_lsp_checking = 1           " check LSP server 是否安装
 let g:easycomplete_signature_enable = 1       " lsp signature checking
 let g:easycomplete_tabnine_enable = 0         " disable TabNine
-let g:easycomplete_diagnostics_enable = 0     " 语法检测
+let g:easycomplete_diagnostics_enable = 1     " 语法检测
 
 
 " codeium.vim
