@@ -307,7 +307,7 @@ function! DefxHelp()
                 \ ['# ',              'Clear selected files'],
                 \ ['dd',              'Move cursor or selected file'],
                 \ ['yy',              'Copy cursor or selected file'],
-                \ ['pp ',             'Paste chip board files'],
+                \ ['pp',              'Paste chip board files'],
             \ ]
         silent 0put ='\" defx keybindings'
         silent  put ='\"'
