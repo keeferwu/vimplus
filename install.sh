@@ -67,43 +67,26 @@ function is_exist_dir()
     fi
 }
 
-#备份原有的.vimrc文件
-function backup_vimrc_file()
+# 安装配置文件
+function install_config_files()
 {
-    old_vimrc=$HOME"/.vimrc"
-    is_exist=$(is_exist_file $old_vimrc)
-    if [ $is_exist == 1 ]; then
-        time=$(get_datetime)
-        backup_vimrc=$old_vimrc"_bak_"$time
-        read -p "Find "$old_vimrc" already exists,backup "$old_vimrc" to "$backup_vimrc"? [Y/N] " ch
-        if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
-            cp $old_vimrc $backup_vimrc
-        fi
+    vimrc_file=$HOME"/.vimrc"
+    vimrc_exist=$(is_exist_file $vimrc_file)
+    if [ $vimrc_exist == 1 ]; then
+        rm -rf $vimrc_file
     fi
-}
-
-
-
-#备份原有的.vim目录
-function backup_vim_dir()
-{
-    old_vim=$HOME"/.vim"
-    is_exist=$(is_exist_dir $old_vim)
-    if [ $is_exist == 1 ]; then
-        time=$(get_datetime)
-        backup_vim=$old_vim"_bak_"$time
-        read -p "Find "$old_vim" already exists,backup "$old_vim" to "$backup_vim"? [Y/N] " ch
-        if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
-            cp -R $old_vim $backup_vim
-        fi
+    vim_dir=$HOME"/.vim"
+    vim_exist=$(is_exist_dir $vim_dir)
+    if [ $vim_exist == 1 ]; then
+        rm -rf $vim_dir"/*"
     fi
-}
 
-# 备份原有的.vimrc和.vim
-function backup_vimrc_and_vim()
-{
-    backup_vimrc_file
-    backup_vim_dir
+    ln -s ${PWD}/vimrc       $vimrc_file
+    ln -s ${PWD}/help.md     $vim_dir
+    ln -s ${PWD}/colors      $vim_dir
+    ln -s ${PWD}/ftplugin    $vim_dir
+    ln -s ${PWD}/autoload    $vim_dir
+    ln -s ${PWD}/plugged     $vim_dir
 }
 
 # 获取ubuntu版本
@@ -391,21 +374,6 @@ function install_prepare_software_on_opensuse()
     sudo zypper install -y vim ctags gcc gcc-c++ cmake python-devel python3-devel ack fontconfig git ncurses5-devel
 }
 
-# 拷贝文件
-function copy_files()
-{
-    rm -rf ~/.vimrc
-    rm -rf ~/.vim
-    mkdir ~/.vim
-
-    ln -s ${PWD}/vimrc ~/.vimrc
-    ln -s ${PWD}/help.md ~/.vim
-    ln -s ${PWD}/colors ~/.vim
-    ln -s ${PWD}/ftplugin ~/.vim
-    ln -s ${PWD}/autoload ~/.vim
-    ln -s ${PWD}/plugged ~/.vim
-}
-
 # 安装mac平台字体
 function install_fonts_on_mac()
 {
@@ -524,9 +492,8 @@ function print_logo()
 # 在mac平台安装vimplus
 function install_vimplus_on_mac()
 {
-    backup_vimrc_and_vim
     install_prepare_software_on_mac
-    copy_files
+    install_config_files
     install_fonts_on_mac
     #install_ycm
     install_vim_plugin
@@ -536,7 +503,6 @@ function install_vimplus_on_mac()
 # 在FreeBSD上安装vimplus
 function install_vimplus_on_freebsd()
 {
-    backup_vimrc_and_vim
     install_prepare_software_on_freebsd
     begin_install_vimplus
 }
@@ -544,9 +510,8 @@ function install_vimplus_on_freebsd()
 # 在android平台安装vimplus
 function install_vimplus_on_android()
 {
-    backup_vimrc_and_vim
     install_prepare_software_on_android
-    copy_files
+    install_config_files
     install_fonts_on_android
     #install_ycm_on_android
     install_vim_plugin
@@ -556,7 +521,7 @@ function install_vimplus_on_android()
 # 开始安装vimplus
 function begin_install_vimplus()
 {
-    copy_files
+    install_config_files
     install_fonts_on_linux
     #install_ycm
     install_vim_plugin
@@ -566,7 +531,6 @@ function begin_install_vimplus()
 # 在ubuntu上安装vimplus
 function install_vimplus_on_ubuntu()
 {
-    backup_vimrc_and_vim
     install_prepare_software_on_ubuntu
     begin_install_vimplus
 }
@@ -574,7 +538,6 @@ function install_vimplus_on_ubuntu()
 # 在ubuntu系上安装vimplus
 function install_vimplus_on_ubuntu_like()
 {
-    backup_vimrc_and_vim
     install_prepare_software_on_ubuntu_like
     begin_install_vimplus
 }
@@ -582,7 +545,6 @@ function install_vimplus_on_ubuntu_like()
 # 在debian上安装vimplus
 function install_vimplus_on_debian()
 {
-    backup_vimrc_and_vim
     install_prepare_software_on_debian
     begin_install_vimplus
 }
@@ -590,7 +552,6 @@ function install_vimplus_on_debian()
 # 在parrot上安装vimplus
 function install_vimplus_on_parrot()
 {
-    backup_vimrc_and_vim
     install_prepare_software_on_parrot
     begin_install_vimplus
 }
@@ -598,7 +559,6 @@ function install_vimplus_on_parrot()
 # 在centos上安装vimplus
 function install_vimplus_on_centos()
 {
-    backup_vimrc_and_vim
     install_prepare_software_on_centos
     begin_install_vimplus
 }
@@ -606,7 +566,6 @@ function install_vimplus_on_centos()
 # 在fedora上安装vimplus
 function install_vimplus_on_fedora()
 {
-    backup_vimrc_and_vim
     install_prepare_software_on_fedora
     begin_install_vimplus
 }
@@ -614,7 +573,6 @@ function install_vimplus_on_fedora()
 # 在archlinux上安装vimplus
 function install_vimplus_on_archlinux()
 {
-    backup_vimrc_and_vim
     install_prepare_software_on_archlinux
     begin_install_vimplus
 }
@@ -622,7 +580,6 @@ function install_vimplus_on_archlinux()
 # 在Gentoo上安装vimplus
 function install_vimplus_on_gentoo()
 {
-    backup_vimrc_and_vim
     install_prepare_software_on_gentoo
     begin_install_vimplus
 }
@@ -630,7 +587,6 @@ function install_vimplus_on_gentoo()
 # 在opensuse上安装vimplus
 function install_vimplus_on_opensuse()
 {
-    backup_vimrc_and_vim
     install_prepare_software_on_opensuse
     begin_install_vimplus
 }
