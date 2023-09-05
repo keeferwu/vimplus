@@ -75,18 +75,26 @@ function install_config_files()
     if [ $vimrc_exist == 1 ]; then
         rm -rf $vimrc_file
     fi
+    ln -s ${PWD}/vimrc    $vimrc_file
+
     vim_dir=$HOME"/.vim"
     vim_exist=$(is_exist_dir $vim_dir)
     if [ $vim_exist == 1 ]; then
-        rm -rf $vim_dir"/*"
+        rm -rf $vim_dir
     fi
+    mkdir $vim_dir
+    ln -s ${PWD}/help.md  $vim_dir
+    ln -s ${PWD}/colors   $vim_dir
+    ln -s ${PWD}/ftplugin $vim_dir
+    ln -s ${PWD}/autoload $vim_dir
+    ln -s ${PWD}/plugged  $vim_dir
 
-    ln -s ${PWD}/vimrc       $vimrc_file
-    ln -s ${PWD}/help.md     $vim_dir
-    ln -s ${PWD}/colors      $vim_dir
-    ln -s ${PWD}/ftplugin    $vim_dir
-    ln -s ${PWD}/autoload    $vim_dir
-    ln -s ${PWD}/plugged     $vim_dir
+    nvim_dir=$HOME"/.config/nvim"
+    nvim_exist=$(is_exist_dir $nvim_dir)
+    if [ $nvim_exist == 0 ]; then
+        mkdir $nvim_dir
+    fi
+    cp ${PWD}/init.vim  $nvim_dir
 }
 
 # 获取ubuntu版本
@@ -282,11 +290,11 @@ function install_prepare_software_on_ubuntu()
             compile_vim_on_ubuntu
         fi
     fi
-    read -p "Do you want to re-install NEOVIM ? [Y/N] " ch
+    read -p "Do you want to re-install NEOVIM(0.8.3) ? [Y/N] " ch
     if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
-        sudo add-apt-repository ppa:neovim-ppa/stable
-        sudo apt-get update
-        sudo apt-get install neovim
+        wget https://gitee.com/keeferwu/vimplus/releases/download/nvim-0.8.3/nvim-linux64-0.8.3.deb
+        sudo dpkg -i nvim-linux64-0.8.3.deb
+        rm nvim-linux64-0.8.3.deb
     fi
 }
 
