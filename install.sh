@@ -88,13 +88,6 @@ function install_config_files()
     ln -s ${PWD}/ftplugin $vim_dir
     ln -s ${PWD}/autoload $vim_dir
     ln -s ${PWD}/plugged  $vim_dir
-
-    nvim_dir=$HOME"/.config/nvim"
-    nvim_exist=$(is_exist_dir $nvim_dir)
-    if [ $nvim_exist == 0 ]; then
-        mkdir $nvim_dir
-    fi
-    cp ${PWD}/init.vim  $nvim_dir
 }
 
 # 获取ubuntu版本
