@@ -292,7 +292,7 @@ function install_prepare_software_on_ubuntu()
     fi
     read -p "Do you want to re-install NEOVIM(0.8.3) ? [Y/N] " ch
     if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
-        wget https://gitee.com/keeferwu/vimplus/releases/download/nvim-0.8.3/nvim-linux64-0.8.3.deb
+        wget https://gitee.com/keeferwu/vimplus/releases/download/append/nvim-linux64-0.8.3.deb
         sudo dpkg -i nvim-linux64-0.8.3.deb
         rm nvim-linux64-0.8.3.deb
     fi
@@ -416,7 +416,7 @@ function install_vim_plugin()
 {
     PLUGDIR=${PWD}/plugged
     if [ ! -d $PLUGDIR ]; then
-        wget https://gitee.com/keeferwu/vimplus/releases/download/plugged/plugged.tar.gz
+        wget https://gitee.com/keeferwu/vimplus/releases/download/append/plugged.tar.gz
         tar -xzf ${PWD}/plugged.tar.gz && rm plugged.tar.gz
         sudo chown $USER:$USER $PLUGDIR -R
     fi

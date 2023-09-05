@@ -3,7 +3,7 @@ PLUGDIR=${PWD}/plugged
 
 read -p "Do you want to download new plugged.tar.gz ? [Y/N] " ch
 if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
-    wget https://gitee.com/keeferwu/vimplus/releases/download/plugged/plugged.tar.gz
+    wget https://gitee.com/keeferwu/vimplus/releases/download/append/plugged.tar.gz
     if [ $? -eq 0 ]; then
         if [ -d $PLUGDIR ]; then
             echo -e "\033[33m rm $PLUGDIR directory \033[0m"
