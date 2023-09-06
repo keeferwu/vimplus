@@ -290,7 +290,7 @@ function install_prepare_software_on_ubuntu()
         read -p "Do you want to re-install NEOVIM(0.8.3) ? [Y/N] " ch
         if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
             wget https://gitee.com/keeferwu/vimplus/releases/download/append/nvim-linux64-0.8.3.deb
-            sudo apt remove neovim --purge
+            sudo apt-get remove neovim --purge
             sudo dpkg -i nvim-linux64-0.8.3.deb
             rm nvim-linux64-0.8.3.deb
         fi
