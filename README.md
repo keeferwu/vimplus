@@ -61,7 +61,6 @@ vim .confg/nvim/init.vim
         echo g:Lf_fuzzyEngine_C, if the value is 1, it means the C extension is loaded sucessfully.
 
 * Codeium 是一款AI智能插件，需要登录到官方生成token，由于官网国内无法访问，所以需要科学上网来注册账户。
-    如果不需要可自行在vimrc中注释，避免其加载
 
         :Codeium Auth
 
@@ -80,7 +79,6 @@ gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  p
 
     GTAGSLABEL 告诉 gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
     实际使用 pygments 时，gtags 会启动 python 运行名为 pygments_parser.py 的脚本，通过管道和它通信，完成源代码分析，故需保证 gtags 能在 $PATH 里调用 python，且这个 python 安装了 pygments 模块。
-    **注：设置 $GTAGLABEL 后在有些 ssh 终端打开vim 后发现vim-gutentags 在创建 gtags 数据库时会失败，在vimrc 中将 let $GTAGSLABEL = 'native-pygments' 注释掉后就没问题了**
 
 * 搜索 gtags.conf or gtags.conf.gz(gunzip) 拷贝到家目录.globalrc
 
