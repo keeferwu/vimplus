@@ -42,3 +42,54 @@ vim .confg/nvim/init.vim
     let &packpath = &runtimepath
     source ~/.vimrc
 
+
+#### 插件特殊需求
+* vim-easycomplete 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt，可借助 bear工具，
+
+        bear make
+        cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+* OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件：
+
+        cd /usr/include/
+        sudo ctags -I __THROW -I __THROWNL -I __nonnull -R --c-kinds=+p  --fields=+iaS --extra=+q
+
+* leaderF 插件对c进行更快速的搜索可以Install the C extension
+
+        :LeaderfInstallCExtension
+        检查是否安装成功：
+        echo g:Lf_fuzzyEngine_C, if the value is 1, it means the C extension is loaded sucessfully.
+
+* Codeium 是一款AI智能插件，需要登录到官方生成token，由于官网国内无法访问，所以需要科学上网来注册账户。
+    如果不需要可自行在vimrc中注释，避免其加载
+
+        :Codeium Auth
+
+#### gtags 支持更多语言
+
+gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  pygments 支持 50+ 种语言。因此我们要安装 pygments 
+
+* 保证你的 $PATH 里面有 python
+
+        pip install pygments
+
+* 保证 Vim 里要设置过两个环境变量才能正常工作：
+
+        vim-gutentags:      let $GTAGSLABEL = 'native-pygments'
+        LeaderF:            let g:Lf_Gtagslabel = 'native-pygments'
+
+    GTAGSLABEL 告诉 gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
+    实际使用 pygments 时，gtags 会启动 python 运行名为 pygments_parser.py 的脚本，通过管道和它通信，完成源代码分析，故需保证 gtags 能在 $PATH 里调用 python，且这个 python 安装了 pygments 模块。
+    **注：设置 $GTAGLABEL 后在有些 ssh 终端打开vim 后发现vim-gutentags 在创建 gtags 数据库时会失败，在vimrc 中将 let $GTAGSLABEL = 'native-pygments' 注释掉后就没问题了**
+
+* 搜索 gtags.conf or gtags.conf.gz(gunzip) 拷贝到家目录.globalrc
+
+        cp /usr/share/doc/global/examples/gtags.conf ~/.globalrc
+
+* 如果项目中添加了一些特殊后缀的文件，可通过编辑 .globalrc 来让gtags生成索引
+
+        例如：.hbc和.hbh 生成c索引
+        修改 .globalrc
+        :langmap=c\:.c.h,yacc\:.y,asm\:.s.S,java\:.java,cpp\:.c++.cc.cpp.cxx.hxx.hpp.C.H,php\:.php.php3.phtml:
+        为
+        :langmap=c\:.c.h.hbc.hbh,yacc\:.y,asm\:.s.S,java\:.java,cpp\:.c++.cc.cpp.cxx.hxx.hpp.C.H,php\:.php.php3.phtml:
