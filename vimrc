@@ -655,7 +655,7 @@ let g:terminal_close = 1                " set to 1 to close window if process fi
 
 " vim-buffer
 noremap <silent> <c-q> :call CloseBuffer(0)<cr>
-nnoremap <silent> <leader>d :call CloseBuffer(1)<cr>
+nnoremap <silent> <leader>bd :call CloseBuffer(1)<cr>
 autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
 function! CloseBuffer(action)
   if &filetype == "easytree" ||&filetype == "defx" || &filetype == "tagbar" || &filetype == "qf"
