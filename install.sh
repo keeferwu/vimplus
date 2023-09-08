@@ -67,6 +67,150 @@ function is_exist_dir()
     fi
 }
 
+#备份原有的.vimrc文件
+function backup_vimrc_file()
+{
+    user=$1
+    home_path=$2
+    old_vimrc=$home_path".vimrc"
+    is_exist=$(is_exist_file $old_vimrc)
+    if [ $is_exist == 1 ]; then
+        time=$(get_datetime)
+        backup_vimrc=$old_vimrc"_bak_"$time
+        read -p "Find "$old_vimrc" already exists,backup "$old_vimrc" to "$backup_vimrc"? [Y/N] " ch
+        if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
+            cp $old_vimrc $backup_vimrc
+            chown $user":"$user $backup_vimrc
+        fi
+    fi
+}
+
+#备份原有的.vim目录
+function backup_vim_dir()
+{
+    user=$1
+    home_path=$2
+    old_vim=$home_path".vim"
+    is_exist=$(is_exist_dir $old_vim)
+    if [ $is_exist == 1 ]; then
+        time=$(get_datetime)
+        backup_vim=$old_vim"_bak_"$time
+        read -p "Find "$old_vim" already exists,backup "$old_vim" to "$backup_vim"? [Y/N] " ch
+        if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
+            cp -R $old_vim $backup_vim
+            chown -R $user":"$user $backup_vim
+        fi
+    fi
+}
+
+# 备份原有的.vimrc和.vim
+function backup_vimrc_and_vim()
+{
+    backup_vimrc_file $1 $2
+    backup_vim_dir $1 $2
+}
+
+# 在linux上获取当前用户
+function get_current_username_on_linux()
+{
+    current_path=$PWD
+    array=(${current_path//// })
+
+    if [ ${array[0]} == "root" ]; then
+        echo ${array[0]}
+    else
+        echo ${array[1]}
+    fi
+}
+
+# 在linux上判断用户是否存在
+function is_valid_user_on_linux()
+{
+    desc_username=$1
+    usernames=$(ls /home/)
+    array=(${usernames// / })
+
+    is_found=0
+    for username in ${array[@]}
+    do
+        if [ $username == $desc_username ]; then
+            is_found=1
+            break
+        fi
+    done
+
+    if [ $desc_username == "root" ]; then
+        is_found=1
+    fi
+
+    echo $is_found
+}
+
+# 获得home路径
+function get_home_path()
+{
+    username=$1
+    if [ $username == "root" ]; then
+        echo "/root/"
+    else
+        echo "/home/"$username"/"
+    fi
+}
+
+# 在linux上将vimplus安装到指定用户
+function install_config_to_user()
+{
+    src_username=`get_current_username_on_linux`
+    desc_username=$1
+
+    # 判断是否是有效用户
+    is_found=$(is_valid_user_on_linux $desc_username)
+    if [ $is_found != 1 ]; then
+        echo "Invalid username "$desc_username
+        return
+    fi
+
+    # 判断是否是当前用户
+    if [ $src_username == $desc_username ]; then
+        echo "Can not install vimplus to "$desc_username
+        return
+    fi
+
+    src_home_path=$(get_home_path $src_username)
+    desc_home_path=$(get_home_path $desc_username)
+
+    echo "Current home path:"$src_home_path
+    echo "Installing vimplus to "$desc_home_path
+
+    backup_vimrc_and_vim $desc_username $desc_home_path
+
+	# 拷贝.vimrc
+    rm -rf $desc_home_path".vimrc"
+	cp $src_vimplus_path"vimrc" $desc_home_path".vimrc"
+	chown $desc_username":"$desc_username $desc_home_path".vimrc"
+
+    # 拷贝.vim目录
+    src_vimplus_path=$src_home_path".vimplus/"
+    desc_vim_path=$desc_home_path".vim/"
+    rm -rf $desc_vim_path
+    mkdir $desc_vim_path
+    cp    $src_vimplus_path"help.md" $desc_vim_path
+    cp -R $src_vimplus_path"autoload/" $desc_vim_path
+    cp -R $src_vimplus_path"colors/" $desc_vim_path
+    cp -R $src_vimplus_path"ftplugin/" $desc_vim_path
+    cp -R $src_vimplus_path"plugged/" $desc_vim_path
+    chown -R $desc_username":"$desc_username $desc_vim_path
+
+    # 安装字体
+    mkdir -p $desc_home_path".local/share/fonts/"
+    rm -rf $desc_home_path".local/share/fonts/Droid Sans Mono Nerd Font Complete.otf"
+    cp $src_vimplus_path"fonts/Droid Sans Mono Nerd Font Complete.otf" $desc_home_path".local/share/fonts/"
+    chown -R $desc_username":"$desc_username $desc_home_path".local/"
+    fc-cache -vf $desc_home_path".local/share/fonts/"
+
+    print_logo
+}
+
 # 安装配置文件
 function install_config_files()
 {
@@ -272,7 +416,7 @@ function install_prepare_software_on_ubuntu()
     sudo apt-get install -y  build-essential python python-dev python3 python3-dev python3-pip fontconfig libfile-next-perl
 
     sudo apt-get install -y  universal-ctags ripgrep clang astyle ccls global xclip
-    
+
     read -p "Do you want to re-install VIM ? [Y/N] " ch
     if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
         if [ $version -ge 18 ];then
@@ -653,32 +797,57 @@ function get_now_timestamp()
 # main函数
 function main()
 {
-    begin=`get_now_timestamp`
-
-    type=$(uname)
-    echo "Platform type: "${type}
-
-    if [ ${type} == "Darwin" ]; then
-        install_vimplus_on_mac
-    elif [ ${type} == "FreeBSD" ]; then
-        install_vimplus_on_freebsd
-    elif [ ${type} == "Linux" ]; then
-        tp=$(uname -a)
-        if [[ $tp =~ "Android" ]]; then
-            echo "Android"
-            install_vimplus_on_android
-        else
-            install_vimplus_on_linux
+    case "$1" in
+    -h )
+        echo ""
+        echo " * : install vim configuration"
+        echo "-u : install vim configuration to other users"
+        echo "-h : vimplus help information"
+        echo ""
+        ;;
+    -u )
+        if [ $# -lt 2 ]; then
+            echo "Please input username!"
+            exit 1
         fi
-    else
-        echo "Not support platform type: "${type}
-    fi
 
-    end=`get_now_timestamp`
-    second=`expr ${end} - ${begin}`
-    min=`expr ${second} / 60`
-    echo "It takes "${min}" minutes."
+        if [ ! -d ${PWD}/plugged ]; then
+            echo "Plugin directory does not exist, please call update_plugged.sh first!"
+            exit 1
+        fi
+
+        if [ $(uname) == "Linux" ]; then
+            echo "Install vim configuration to "$2
+            install_config_to_user $2
+        else
+            echo "Not support platform type: "$(uname)
+        fi
+        ;;
+     * )
+        begin=`get_now_timestamp`
+        echo "Install vim configuration "
+        if [ $(uname) == "Darwin" ]; then
+            install_vimplus_on_mac
+        elif [ $(uname) == "FreeBSD" ]; then
+            install_vimplus_on_freebsd
+        elif [ $(uname) == "Linux" ]; then
+            tp=$(uname -a)
+            if [[ $tp =~ "Android" ]]; then
+                echo "Android"
+                install_vimplus_on_android
+            else
+                install_vimplus_on_linux
+            fi
+        else
+            echo "Not support platform type: "$(uname)
+        fi
+        end=`get_now_timestamp`
+        second=`expr ${end} - ${begin}`
+        min=`expr ${second} / 60`
+        echo "It takes "${min}" minutes."
+        ;;
+    esac
 }
 
 # 调用main函数
-main
+main "$@"

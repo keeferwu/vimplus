@@ -5,7 +5,8 @@
     cd ~
     git clone https://gitee.com/keeferwu/vimplus.git .vimplus
     cd ~/.vimplus
-    ./install.sh //不加sudo
+    ./install.sh                   #当前用户安装
+    sudo ./install.sh -u <用户名>   #其他用户安装
 
 #### 更新插件
 
