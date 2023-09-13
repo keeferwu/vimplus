@@ -118,9 +118,9 @@ if has("nvim")
 endif
 
 " 复制当前选中到系统剪切板
-vnoremap  <silent> <c-c> "+y
+vnoremap  <silent> <c-s-c> "+y
 " 将系统剪切板内容粘贴到vim
-noremap  <silent> <c-v> "+p
+noremap  <silent> <c-s-v> "+p
 " 保存
 noremap <silent> <c-s> :w<cr>
 inoremap <silent> <c-s> <Esc>:w<cr>
