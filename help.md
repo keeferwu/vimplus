@@ -5,10 +5,10 @@
 | `,`                   | Leader Key                        |                           |
 | `<leader>h`           | 打开vimplus帮助文档               |                           |
 | `<leader>bd`          | 删除当前的buffer                  |                           |
-| `Ctrl+q`              | 退出vim                           |                           |
+| `<leader>q`           | 退出vim                           |                           |
 | `Ctrl+s`              | 保存内容                          |                           |
-| `Ctrl+C`              | 文本复制                          |                           |
-| `Ctrl+V`              | 文本粘贴                          |                           |
+| `Ctrl+c`              | 文本复制                          |                           |
+| `Ctrl+v`              | 文本粘贴                          |                           |
 | `F2`                  | 代码折叠与展开                    |                           |
 | `zR`                  | 展开所有代码                      |                           |
 | `:SSave`              | 保存当前状态为某个session         |  vimplus-startify         |
