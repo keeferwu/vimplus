@@ -558,17 +558,45 @@ function install_fonts_on_linux()
     fc-cache -vf ~/.local/share/fonts
 }
 
+# 更新vim插件
+function update_vim_plugin()
+{
+    PLUGDIR=${PWD}/plugged
+    #通过 ls root_dir 遍历出子目录，装入子目录 sub_dir 中
+    for sub_dir in `ls $PLUGDIR`
+    do
+        #将根目录 $1 与子目录 sub_dir 拼接成完整的目录
+        curr_dir=$PLUGDIR"/"$sub_dir
+        if [ -d $curr_dir ]
+        then
+            cd $curr_dir
+            echo -e "\033[32m try fetching code in $curr_dir \033[0m"
+            git fetch && git rebase
+            echo #打印空行
+        else
+            echo -e "\033[33m $curr_dir is not a directory \033[0m"
+            echo #打印空行
+        fi
+    done
+}
+
 # 安装vim插件
 function install_vim_plugin()
 {
     PLUGDIR=${PWD}/plugged
-    if [ ! -d $PLUGDIR ]; then
-        wget https://gitee.com/keeferwu/vimplus/releases/download/append/plugged.tar.gz
+
+    wget https://gitee.com/keeferwu/vimplus/releases/download/append/plugged.tar.gz
+    if [ $? -eq 0 ]; then
+        if [ -d $PLUGDIR ]; then
+            echo -e "\033[33m Remove old $PLUGDIR directory \033[0m"
+            rm $PLUGDIR -rf
+            echo #打印空行
+        fi
         tar -xzf ${PWD}/plugged.tar.gz && rm plugged.tar.gz
         sudo chown $USER:$USER $PLUGDIR -R
+    else
+        vim -c "PlugInstall" -c "q" -c "q"
     fi
-
-    vim -c "PlugInstall" -c "q" -c "q"
 }
 
 # 安装ycm插件
@@ -802,7 +830,8 @@ function main()
         echo ""
         echo " * : install vim configuration"
         echo "-u : install vim configuration to other users"
-        echo "-h : vimplus help information"
+        echo "-p : update vim plugins"
+        echo "-h : help information"
         echo ""
         ;;
     -u )
@@ -812,8 +841,7 @@ function main()
         fi
 
         if [ ! -d ${PWD}/plugged ]; then
-            echo "Plugin directory does not exist, please call update_plugged.sh first!"
-            exit 1
+            install_vim_plugin
         fi
 
         if [ $(uname) == "Linux" ]; then
@@ -822,6 +850,13 @@ function main()
         else
             echo "Not support platform type: "$(uname)
         fi
+        ;;
+    -p )
+        read -p "Do you want to re-install plugin ? [Y/N] " ch
+        if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
+            install_vim_plugin
+        fi
+        update_vim_plugin
         ;;
      * )
         begin=`get_now_timestamp`
