@@ -826,31 +826,6 @@ function get_now_timestamp()
 function main()
 {
     case "$1" in
-    -h )
-        echo ""
-        echo " * : install vim configuration"
-        echo "-u : install vim configuration to other users"
-        echo "-p : update vim plugins"
-        echo "-h : help information"
-        echo ""
-        ;;
-    -u )
-        if [ $# -lt 2 ]; then
-            echo "Please input username!"
-            exit 1
-        fi
-
-        if [ ! -d ${PWD}/plugged ]; then
-            install_vim_plugin
-        fi
-
-        if [ $(uname) == "Linux" ]; then
-            echo "Install vim configuration to "$2
-            install_config_to_user $2
-        else
-            echo "Not support platform type: "$(uname)
-        fi
-        ;;
     -p )
         read -p "Do you want to re-install plugin ? [Y/N] " ch
         if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
@@ -858,7 +833,7 @@ function main()
         fi
         update_vim_plugin
         ;;
-     * )
+    -i )
         begin=`get_now_timestamp`
         echo "Install vim configuration "
         if [ $(uname) == "Darwin" ]; then
@@ -880,6 +855,30 @@ function main()
         second=`expr ${end} - ${begin}`
         min=`expr ${second} / 60`
         echo "It takes "${min}" minutes."
+        ;;
+    -u )
+        if [ $# -lt 2 ]; then
+            echo "Please input username!"
+            exit 1
+        fi
+
+        if [ ! -d ${PWD}/plugged ]; then
+            install_vim_plugin
+        fi
+
+        if [ $(uname) == "Linux" ]; then
+            echo "Install vim configuration to "$2
+            install_config_to_user $2
+        else
+            echo "Not support platform type: "$(uname)
+        fi
+        ;;
+     * )
+        echo ""
+        echo "-p : update vim plugins"
+        echo "-i : install vim configuration"
+        echo "-u : install vim configuration to <user>"
+        echo ""
         ;;
     esac
 }
