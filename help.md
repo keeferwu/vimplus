@@ -33,6 +33,7 @@
 | `<leader>lm`          | 搜索MRU下的文件                   |                           |
 | `<leader>lg`          | 当前文件搜索内容输出到quickfix    |                           |
 | `<leader>Q`           | 打开quickfix窗口                  |                           |
+| `<leader>F`           | 打开文件搜索窗口                  |                           |
 | `<leader>rg`          | 搜索输入的字符                    |  LeaderF rg               |
 | `<leader>rw`          | 搜索光标下的字符                  |                           |
 | `<leader>R`           | 查看上次rg 的搜索结果             |                           |

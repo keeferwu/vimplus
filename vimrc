@@ -590,6 +590,7 @@ noremap <silent> <leader>R :LeaderfRgRecall<cr>
 vnoremap <silent> <leader>lg y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
 nnoremap <silent> <leader>lg :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
 noremap <silent> <leader>Q :LeaderfQuickFix<cr>
+noremap <silent> <leader>F :Leaderf file --recall<cr>
 
 
 " OmniCppComplete

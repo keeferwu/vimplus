@@ -6,11 +6,9 @@
     git clone https://gitee.com/keeferwu/vimplus.git .vimplus
     cd ~/.vimplus
     ./install.sh                   #当前用户安装
+    ./install.sh -p                #重装并更新插件
     sudo ./install.sh -u <用户名>   #其他用户安装
 
-#### 更新插件
-
-    ./update_plugged.sh
 
 #### 设置Nerd Font
 
