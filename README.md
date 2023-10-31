@@ -64,7 +64,7 @@ vim .confg/nvim/init.vim
         检查是否安装成功：
         echo g:Lf_fuzzyEngine_C, if the value is 1, it means the C extension is loaded sucessfully.
 
-* Codeium 是一款AI智能插件，需要登录到官方生成token，由于官网国内无法访问，所以需要科学上网来注册账户。
+* Codeium 是一款AI智能插件，需要登录到官方生成token，注意，国内用户需要代理才能访问官网，注册账户
 
         :Codeium Auth
 
