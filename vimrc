@@ -646,6 +646,10 @@ imap <M-[>   <Cmd>call codeium#CycleCompletions(-1)<CR>
 imap <M-]>   <Cmd>call codeium#CycleCompletions(1)<CR>
 
 
+" screensaver
+let g:screensaver_auto_start_time = 900   "set to 15min  default is 10min
+
+
 " vim-terminal-help
 let g:terminal_rootmarkers = ['.root']
 let g:terminal_key = '<m-t>'            " which key will be used to toggle terminal window, default to .<m-=>
