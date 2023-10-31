@@ -211,6 +211,7 @@ Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一
 Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
 Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
+Plug 'itchyny/screensaver.vim'           "屏保
 "Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 

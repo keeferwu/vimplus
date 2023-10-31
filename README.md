@@ -1,12 +1,10 @@
-基于源码 https://github.com/chxuan/vimplus.git 修改，适用于 c/c++ 开发语言
-
 #### 安装vimplus
 
     cd ~
     git clone https://gitee.com/keeferwu/vimplus.git .vimplus
     cd ~/.vimplus
     ./install.sh                   #当前用户安装
-    ./install.sh -p                #重装并更新插件
+    ./install.sh -p                #更新插件
     sudo ./install.sh -u <用户名>   #其他用户安装
 
 
