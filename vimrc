@@ -112,9 +112,10 @@ set selectmode=mouse,key
 set colorcolumn =101
 
 if has("nvim")
-    " unnamedplus:所有的操作都会自动被粘贴进 system clipboard 中
-    " unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
-    set clipboard+=unnamed
+" unnamedplus:所有的操作都会自动被粘贴进 system clipboard 中
+" unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
+set clipboard+=unnamed
+let g:python3_host_prog = '/usr/bin/python3'
 endif
 
 " 复制当前选中到系统剪切板
