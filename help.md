@@ -3,7 +3,6 @@
 | 快捷键                | 说明                              | 插件                      |
 | -------               | ------                            | ------                    |
 | `,`                   | Leader Key                        |                           |
-| `<leader>h`           | 打开vimplus帮助文档               |                           |
 | `<leader>bd`          | 删除当前的buffer                  |                           |
 | `<leader>q`           | 退出vim                           |                           |
 | `Ctrl+s`              | 保存内容                          |                           |

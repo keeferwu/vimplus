@@ -13,7 +13,7 @@
     2.使用vim打开项目根目录下的任意一个文件
     3.命令行下使用:Ssave 把项目保存为一个session，此时项目根目录会自动创建一个.root文件，作为vim-gutentags,LeaderF等插件生成索引数据的锚
     4.进入家目录，使用命令vim （不带参数） 进入start 页，选择对应的项目session 进入，进入session 后自动生成索引数据
-    5.使用快捷键 ,h 打开vimplus的帮助文档，参考常用快捷操作
+    5.命令行输入 :VimplusHelp 打开vimplus的帮助文档，参考常用快捷操作
 
 #### 设置Nerd Font
 

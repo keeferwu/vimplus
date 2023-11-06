@@ -145,7 +145,7 @@ colorscheme onedark
 "hi Normal  ctermfg=252 ctermbg=none
 
 " 查看vimplus的help文件
-nnoremap <leader>h :sview +let\ &l:modifiable=0 ~/.vim/help.md<cr>
+command! VimplusHelp :sview +let\ &l:modifiable=0 ~/.vim/help.md
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " gvim/macvim设置
@@ -190,7 +190,6 @@ endif
 Plug 'preservim/tagbar'
 Plug 'easymotion/vim-easymotion'         "强大的光标快速移动工具，强大到颠覆你的插件观
 Plug 'terryma/vim-smooth-scroll'         "让翻页更顺畅
-Plug 'vim-autoformat/vim-autoformat'     "代码格式化
 Plug 'vim-scripts/indentpython.vim'      "python自动对齐
 Plug 'Yggdroot/indentLine'               "显示对齐标线
 Plug 'liuchengxu/eleline.vim'            "功能同 airline，比较精简
@@ -202,11 +201,12 @@ Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
 Plug 'chrisbra/changesPlugin'            "修改显示
 Plug 'lfv89/vim-interestingwords'        "单词高亮
 Plug 'bronson/vim-trailing-whitespace'   "行尾空格
+Plug 'vim-autoformat/vim-autoformat'     "代码格式化
 Plug 'itchyny/screensaver.vim'           "vim屏保
 Plug 'camspiers/lens.vim'                "自动调整当前窗口
+Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
 Plug 'Yggdroot/LeaderF'                  "比ctrlp更强大的文件的模糊搜索工具
 Plug 'keeferwu/LeaderF-gtags-history'    "显示leaderf gtags 搜索历史
-Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
 Plug 'SirVer/ultisnips'                  "需要和vim-snippets or vim-easycomplete 配合使用
 Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
 Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
