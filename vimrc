@@ -194,7 +194,7 @@ Plug 'vim-autoformat/vim-autoformat'     "代码格式化
 Plug 'vim-scripts/indentpython.vim'      "python自动对齐
 Plug 'Yggdroot/indentLine'               "显示对齐标线
 Plug 'liuchengxu/eleline.vim'            "功能同 airline，比较精简
-Plug 'preservim/nerdcommenter'           " 添加注释
+Plug 'preservim/nerdcommenter'           "添加注释
 Plug 'luochen1990/rainbow'               "彩虹括号
 Plug 'justinmk/vim-syntax-extra'         "增强语法高亮
 Plug 'octol/vim-cpp-enhanced-highlight'  "cpp扩展高亮
@@ -202,16 +202,16 @@ Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
 Plug 'chrisbra/changesPlugin'            "修改显示
 Plug 'lfv89/vim-interestingwords'        "单词高亮
 Plug 'bronson/vim-trailing-whitespace'   "行尾空格
+Plug 'itchyny/screensaver.vim'           "vim屏保
 Plug 'camspiers/lens.vim'                "自动调整当前窗口
 Plug 'Yggdroot/LeaderF'                  "比ctrlp更强大的文件的模糊搜索工具
 Plug 'keeferwu/LeaderF-gtags-history'    "显示leaderf gtags 搜索历史
 Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
 Plug 'SirVer/ultisnips'                  "需要和vim-snippets or vim-easycomplete 配合使用
-"Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
-Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
-Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
-Plug 'itchyny/screensaver.vim'           "屏保
+Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
+Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
+"Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
 "Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
 "Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
