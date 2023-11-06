@@ -15,13 +15,6 @@
 | `:SDelete`            | 删除某个session                   |                           |
 | `F4`                  | 打开/关闭代码资源管理器           |  easytree/defx            |
 | `F5`                  | 打开/关闭函数列表                 |  tagbar                   |
-| `Alt+t`               | 打开/隐藏终端                     |  vim-terminal-help        |
-| `Alt+q`               | 终端切换早normal模式              |                           |
-| `Alt+-`               | 粘贴寄存器0的内容到终端           |                           |
-| `Alt+=`               | 接受智能补全填充（插入模式）      |  codeium                  |
-| `Alt+[`               | 智能补全上一条目（插入模式）      |                           |
-| `Alt+]`               | 智能补全下一条目（插入模式）      |                           |
-| `Alt+-`               | 清除智能补全填充（插入模式）      |                           |
 | `Ctrl+b`              | 上一页                            |  vim-smooth-scroll        |
 | `Ctrl+f`              | 下一页                            |                           |
 | `Ctrl+u`              | 上移半屏                          |                           |
@@ -62,6 +55,13 @@
 | `[h`                  | 跳转到上一处修改的位置            |                           |
 | `:CD`                 | 打开/关闭diff 缓存                |                           |
 | `:CP`                 | 打开/关闭diff preview             |                           |
+| `Alt+t`               | 打开/隐藏终端                     |  vim-terminal-help        |
+| `Alt+q`               | 终端切换早normal模式              |                           |
+| `Alt+-`               | 粘贴寄存器0的内容到终端           |                           |
+| `Alt+=`               | 接受智能补全填充（插入模式）      |  codeium                  |
+| `Alt+[`               | 智能补全上一条目（插入模式）      |                           |
+| `Alt+]`               | 智能补全下一条目（插入模式）      |                           |
+| `Alt+-`               | 清除智能补全填充（插入模式）      |                           |
 | `<leader><leader>i`   | 插件安装                          |  vim-plug                 |
 | `<leader><leader>u`   | 插件跟新                          |                           |
 | `<leader><leader>c`   | 插件删除                          |                           |
