@@ -212,8 +212,8 @@ Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
 Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
 "Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
-"Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
-"Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
+Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
+Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 
 call plug#end()
@@ -639,6 +639,7 @@ let g:easycomplete_diagnostics_enable = 1     " 语法检测
 
 
 " codeium.vim
+let g:codeium_enabled = 0               " enable codeium need token
 let g:codeium_disable_bindings = 1      " disable default keybindings
 let g:codeium_no_map_tab = 1            " disabled Codeium use tab keybindings
 imap <script><silent><nowait><expr> <M-=> codeium#Accept()
