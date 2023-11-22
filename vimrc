@@ -364,7 +364,7 @@ vnoremap <silent><leader><S-Tab> : TabToSpace<cr>
 
 " lens
 let g:lens#animate = 0  "取消动画
-let g:lens#disabled_filetypes = ['easytree', 'defx', 'tagbar']
+let g:lens#disabled_filetypes = ['easytree', 'defx', 'tagbar', 'leaderf']
 let g:lens#height_resize_max = 40
 let g:lens#height_resize_min = 5
 let g:lens#width_resize_max = 120
