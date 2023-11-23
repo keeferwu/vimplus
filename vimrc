@@ -200,7 +200,6 @@ Plug 'octol/vim-cpp-enhanced-highlight'  "cpp扩展高亮
 Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
 Plug 'chrisbra/changesPlugin'            "修改显示
 Plug 'lfv89/vim-interestingwords'        "单词高亮
-Plug 'bronson/vim-trailing-whitespace'   "行尾空格
 Plug 'vim-autoformat/vim-autoformat'     "代码格式化
 Plug 'itchyny/screensaver.vim'           "vim屏保
 Plug 'camspiers/lens.vim'                "自动调整当前窗口
@@ -355,13 +354,6 @@ let g:relative_path_file = 1
 let g:eleline_slim = 0
 
 
-" vim-trailing-whitespace
-let g:extra_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
-vnoremap <silent><leader><space> : FixWhitespace<cr>
-vnoremap <silent><leader><Tab> : SpaceToTab<cr>
-vnoremap <silent><leader><S-Tab> : TabToSpace<cr>
-
-
 " lens
 let g:lens#animate = 0  "取消动画
 let g:lens#disabled_filetypes = ['easytree', 'defx', 'tagbar', 'leaderf']
@@ -387,11 +379,16 @@ nmap <leader>w <Plug>(easymotion-overwin-w)
 
 " vim-autoformat
 "autocmd BufWrite * :Autoformat
+let g:autoformat_remove_trailing_spaces = 1
 let g:autoformat_verbosemode = 1
 let g:formatdef_google = '"clang-format -style=google"'              " google 风格的代码
 let g:formatdef_allman = '"astyle --style=allman --pad-oper"'        " allman风格的代码：{}读占一行
 let g:formatters_cpp = ['allman']
 let g:formatters_c = ['allman']
+let g:autoformat_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
+vnoremap <silent><leader><space> : RemoveWhiteSpace<cr>
+vnoremap <silent><leader><Tab>   : MoveSpaceToTab<cr>
+vnoremap <silent><leader><S-Tab> : MoveTabToSpace<cr>
 
 
 " vim-smooth-scroll
