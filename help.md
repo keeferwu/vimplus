@@ -2,9 +2,9 @@
 
 | 快捷键                | 说明                              | 插件帮助文档                 |
 | -------               | ------                            | ------                       |
-| `,`                   | Leader Key                        |                              |
+| `,`                   | <Leader> Key                      |                              |
 | `<leader>bd`          | 删除当前的buffer                  |                              |
-| `<leader>q`           | 退出vim                           |                              |
+| `<leader>qa`          | 退出vim                           |                              |
 | `Ctrl+s`              | 保存内容                          |                              |
 | `Ctrl+c`              | 文本复制                          |                              |
 | `Ctrl+v`              | 文本粘贴                          |                              |
@@ -41,7 +41,7 @@
 | `<Leader>K`           | 清除所有高亮                      |                              |
 | `<Leader>n`           | 当前单词的下一处高亮              |                              |
 | `<Leader>N`           | 当前单词的上一处高亮              |                              |
-| `<leader>cc`          | 注释当前行                        | h: nerdcommenter             |
+| `<leader>cc`          | 注释当前行                        | :h nerdcommenter             |
 | `<leader>cu`          | 取消注释                          |                              |
 | `<leader>ca`          | 切换注释符                        |                              |
 | `<leader>cs`          | 以”性感”的方式注释                |                              |
