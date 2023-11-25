@@ -442,7 +442,7 @@ hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green
 "let $GTAGSLABEL = 'native-pygments'   "gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
 map <c-]> g<c-]>        " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
-let g:gutentags_project_root = ['.root', '.project']
+let g:gutentags_project_root = ['.root']
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
 let g:gutentags_file_list_command = 'find ./ \( -path "./os*" -o -path "*.git*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" -o -path "*obj*" -o -path "*htmlpages*" \) -a -prune -o \( -type f -not -wholename "*.map" -not -wholename "*.o" -not -wholename "*.tgt" -not -wholename "*.x86" -not -wholename ".gitignore" \) -print'
 let g:gutentags_ctags_exclude = ['*./sdk/*','*./boot/*','*./host/*','*./configs/*', '*.json','*.txt','*.mib','*.db']
@@ -494,9 +494,8 @@ let g:Lf_DefaultExternalTool = 'find'
 let g:Lf_UseVersionControlTool = 1  "Lf_UseVersionControlTool = 0 时使用 Lf_DefaultExternalTool 定义的工具搜索文件
 let g:Lf_RecurseSubmodules = 1      "当项目中存在子项目时配合g:Lf_UseVersionControlTool = 1 使用，通过git ls-files ----recurse-submodules 来搜索子项目中的文件
 let g:Lf_DefaultMode = 'Fuzzy'
-let g:Lf_RootMarkers = ['.root', '.project']
+let g:Lf_RootMarkers = ['.root']
 let g:Lf_WorkingDirectoryMode = 'Aa'
-"let g:Lf_WorkingDirectory = finddir('.root') " 会忽略Lf_RootMarkers，Lf_WorkingDirectoryMode
 let g:Lf_UseCache = 1
 let g:Lf_NeedCacheTime = 1
 let g:Lf_NumberOfCache = 10
