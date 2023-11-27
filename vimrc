@@ -551,14 +551,15 @@ map <silent> <leader>gs <Plug>LeaderfGtagsSymbol
 map <silent> <leader>gg <Plug>LeaderfGtagsGrep
 let g:leader_gtags_nomap = 1
 nmap <silent><leader>gh :Leaderf gtags_history<cr>
-
-let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
-" Note: use vim-gutentags to generate gtags and use leaderf show result should do 
-" g:gutentags_modules += ['gtags_cscope']
-" g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
+nmap <silent><leader>gu :Leaderf gtags --update<cr>
+" Note: use vim-gutentags to generate gtags and use leaderf show result should set
 " g:Lf_GtagsAutoGenerate = 0
 " g:Lf_GtagsAutoUpdate = 0
 " g:Lf_GtagsGutentags = 1
+if g:Lf_GtagsGutentags == 1
+    let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
+    nmap <silent><leader>gu :GutentagsUpdate<cr>
+endif
 
 " 默认rg自动忽略.gitignore指定的文件，链接文件，隐藏文件和二进制文件，可通过g:Lf_RgConfig 进行定制
 " 忽略当前及子目录下的.git目录的内容，排除当前目录下x86_run,target 目录的内容，
