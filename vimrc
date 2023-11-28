@@ -243,6 +243,7 @@ let g:startify_session_root_mark = '.root'
 "打开session时调整vim为实时调度，避免cpu繁忙啊卡顿: 'exe system("sudo chrt -r -a -p 50 ".getpid())'
 let g:startify_session_savecmds = [
            \ 'let &path=&path.getcwd()."/**"',
+           \ 'clearjumps'
            \ ]
 
 
