@@ -445,7 +445,9 @@ map <c-]> g<c-]>        " 默认情况下crl+] 只会跳到tags中的第一个�
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
 let g:gutentags_project_root = ['.root']
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
-let g:gutentags_file_list_command = 'find ./ \( -path "./boot*" -o -path "./os*" -o -path "*.git*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" -o -path "*obj*" -o -path "*htmlpages*" \) -a -prune -o \( -type f -not -wholename "*.map" -not -wholename "*.o" -not -wholename "*.tgt" -not -wholename "*.x86" -not -wholename ".gitignore" \) -print'
+let s:gutentags_exclude_path = '\( -path "./boot*" -o -path "./os*" -o -path "*.git*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" -o -path "*obj*" -o -path "*htmlpages*" \)'
+let s:gutentags_exclude_file = '\( -type f -not -wholename "*.map" -not -wholename "*.o" -not -wholename "*.tgt" -not -wholename "*.x86" -not -wholename ".gitignore" \)'
+let g:gutentags_file_list_command = 'find ./ ' . s:gutentags_exclude_path . ' -a -prune -o ' . s:gutentags_exclude_file . ' -print'
 let g:gutentags_ctags_exclude = ['*./sdk/*','*./host/*','*./configs/*', '*.json','*.txt','*.mib','*.db']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = '.tags'
@@ -510,8 +512,8 @@ let g:Lf_MruWildIgnore = {
             \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
             \}
 let g:Lf_WindowHeight = 0.40
-let g:Lf_PreviewInPopup = 1 "启用预览这个功能 P 弹出窗口
-let g:Lf_PreviewPopupWidth = 0  "设置预览窗口大小
+let g:Lf_PreviewInPopup = 1           "启用预览这个功能 P 弹出窗口
+let g:Lf_PreviewPopupWidth = 0        "设置预览窗口大小
 let g:Lf_PreviewPosition = 'topright' "设置预览窗口位置
 let g:Lf_PreviewResult = {
             \ 'File': 0,
@@ -526,8 +528,8 @@ let g:Lf_PreviewResult = {
             \ 'Gtags': 1
             \}
 
-" 使用leaderf 生成gtags 数据时不正常，考虑在项目跟目录添加gtags.file 文件，内容参考g:gutentags_file_list_command中命令去生成
-let g:Lf_GtagsSource = 0     "0 - gtags search the target files by itself.  1 - the target files come from FileExplorer. 2 - the target files come from |g:Lf_GtagsfilesCmd|.
+" 使用leaderf 生成gtags 数据时不正常，考虑修改 Lf_GtagsSourceLf_GtagsSource = 1，且在项目跟目录生成gtags.file文件，其内容参考g:gutentags_file_list_command 使用的命令去生成
+let g:Lf_GtagsSource = 0     "0 - gtags search the target files by itself. 1 - the target files come from FileExplorer. 2 - the target files come from |g:Lf_GtagsfilesCmd.
 let g:Lf_GtagsfilesCmd = {
             \ '.git': 'git ls-files --recurse-submodules',
             \ '.hg': 'hg files',
@@ -537,13 +539,14 @@ let g:Lf_CtagsFuncOpts = {
             \ 'c': '-I __THROW -I __THROWNL -I __nonnull --fields=+niazS --extras=+q --c-kinds=fp',
             \ 'rust': '--rust-kinds=f',
             \ }
-" gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-let g:Lf_Gtagslabel = 'native-pygments'
-let g:Lf_GtagsAutoGenerate = 0 "auto create gtags
-let g:Lf_GtagsAutoUpdate = 0   "auto update
-let g:Lf_GtagsGutentags = 1
-let g:Lf_GtagsSkipUnreadable = 1
-let g:Lf_GtagsAcceptDotfiles = 0
+
+let g:Lf_GtagsAutoGenerate = 0           " auto create gtags
+let g:Lf_GtagsAutoUpdate = 0             " auto update
+let g:Lf_GtagsGutentags = 1              " use vim-gutentags to generate gtags,should make g:Lf_GtagsAutoGenerate = 0 and g:Lf_GtagsAutoUpdate = 0
+let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
+let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
+let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
+let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
 nmap <silent><leader>G :Leaderf! gtags --recall<cr>
 map <silent> <leader>ga <Plug>LeaderfGtagsInternel
 map <silent> <leader>gd <Plug>LeaderfGtagsDefinition
@@ -553,11 +556,8 @@ map <silent> <leader>gg <Plug>LeaderfGtagsGrep
 let g:leader_gtags_nomap = 1
 nmap <silent><leader>gh :Leaderf gtags_history<cr>
 nmap <silent><leader>gu :Leaderf gtags --update<cr>
-" Note: use vim-gutentags to generate gtags and use leaderf show result should set
-" g:Lf_GtagsAutoGenerate = 0
-" g:Lf_GtagsAutoUpdate = 0
-" g:Lf_GtagsGutentags = 1
 if g:Lf_GtagsGutentags == 1
+    " let vim-gutentags generate gtags data to leaderF
     let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
     nmap <silent><leader>gu :GutentagsUpdate<cr>
 endif

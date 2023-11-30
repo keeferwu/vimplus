@@ -68,30 +68,37 @@ vim .confg/nvim/init.vim
 
         :Codeium Auth
 
-#### gtags 支持更多语言
+* gtags 支持更多语言
 
-gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  pygments 支持 50+ 种语言。因此我们要安装 pygments 
+		gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  pygments 支持 50+ 种语言。因此我们要安装 pygments 
 
-* 保证你的 $PATH 里面有 python
+		1. 保证你的 $PATH 里面有 python
 
-        pip install pygments
+			pip install pygments
 
-* 保证 Vim 里要设置过两个环境变量才能正常工作：
+		2. 在vimrc中配置环境变量：
 
-        vim-gutentags:      let $GTAGSLABEL = 'native-pygments'
-        LeaderF:            let g:Lf_Gtagslabel = 'native-pygments'
+			vim-gutentags:      let $GTAGSLABEL = 'native-pygments'
+			LeaderF:            let g:Lf_Gtagslabel = 'native-pygments'
 
-    GTAGSLABEL 告诉 gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-    实际使用 pygments 时，gtags 会启动 python 运行名为 pygments_parser.py 的脚本，通过管道和它通信，完成源代码分析，故需保证 gtags 能在 $PATH 里调用 python，且这个 python 安装了 pygments 模块。
+			GTAGSLABEL 告诉 gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
+			实际使用 pygments 时，gtags 会启动 python 运行名为 pygments_parser.py 的脚本，通过管道和它通信，完成源代码分析，故需保证 gtags 能在 $PATH 里调用 python，且这个 python 安装了 pygments 模块。
 
-* 搜索 gtags.conf or gtags.conf.gz(gunzip) 拷贝到家目录.globalrc
+* gtags 使用自定义配置
 
-        cp /usr/share/doc/global/examples/gtags.conf ~/.globalrc
+		1. 搜索 gtags.conf or gtags.conf.gz(gunzip) 拷贝到家目录.globalrc
 
-* 如果项目中添加了一些特殊后缀的文件，可通过编辑 .globalrc 来让gtags生成索引
+			cp /usr/share/doc/global/examples/gtags.conf ~/.globalrc
 
-        例如：.hbc和.hbh 生成c索引
-        修改 .globalrc
-        :langmap=c\:.c.h,yacc\:.y,asm\:.s.S,java\:.java,cpp\:.c++.cc.cpp.cxx.hxx.hpp.C.H,php\:.php.php3.phtml:
-        为
-        :langmap=c\:.c.h.hbc.hbh,yacc\:.y,asm\:.s.S,java\:.java,cpp\:.c++.cc.cpp.cxx.hxx.hpp.C.H,php\:.php.php3.phtml:
+		2. 如果项目中添加了一些特殊后缀的文件，可通过编辑 .globalrc 来让gtags生成索引
+
+			例如：.hbc和.hbh 生成c索引
+			修改 .globalrc
+			:langmap=c\:.c.h,yacc\:.y,asm\:.s.S,java\:.java,cpp\:.c++.cc.cpp.cxx.hxx.hpp.C.H,php\:.php.php3.phtml:
+			为
+			:langmap=c\:.c.h.hbc.hbh,yacc\:.y,asm\:.s.S,java\:.java,cpp\:.c++.cc.cpp.cxx.hxx.hpp.C.H,php\:.php.php3.phtml:
+
+		3. 在vimrc中配置环境变量：
+
+			vim-gutentags:      let $GTAGSCONF = "$HOME/.globalrc"
+			LeaderF:            let g:Lf_Gtagsconf = "$HOME/.globalrc"
