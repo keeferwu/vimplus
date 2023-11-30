@@ -445,8 +445,8 @@ map <c-]> g<c-]>        " 默认情况下crl+] 只会跳到tags中的第一个�
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
 let g:gutentags_project_root = ['.root']
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
-let g:gutentags_file_list_command = 'find ./ \( -path "./os*" -o -path "*.git*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" -o -path "*obj*" -o -path "*htmlpages*" \) -a -prune -o \( -type f -not -wholename "*.map" -not -wholename "*.o" -not -wholename "*.tgt" -not -wholename "*.x86" -not -wholename ".gitignore" \) -print'
-let g:gutentags_ctags_exclude = ['*./sdk/*','*./boot/*','*./host/*','*./configs/*', '*.json','*.txt','*.mib','*.db']
+let g:gutentags_file_list_command = 'find ./ \( -path "./boot*" -o -path "./os*" -o -path "*.git*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" -o -path "*obj*" -o -path "*htmlpages*" \) -a -prune -o \( -type f -not -wholename "*.map" -not -wholename "*.o" -not -wholename "*.tgt" -not -wholename "*.x86" -not -wholename ".gitignore" \) -print'
+let g:gutentags_ctags_exclude = ['*./sdk/*','*./host/*','*./configs/*', '*.json','*.txt','*.mib','*.db']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = '.tags'
 " 同时开启 ctags 和 gtags 支持：
