@@ -640,7 +640,8 @@ let g:easycomplete_lsp_checking = 1           " check LSP server 是否安装
 let g:easycomplete_signature_enable = 1       " lsp signature checking
 let g:easycomplete_tabnine_enable = 0         " disable TabNine
 let g:easycomplete_diagnostics_enable = 1     " 语法检测
-
+let g:easycomplete_diagnostics_prev = "<c-p>"
+let g:easycomplete_diagnostics_next = "<c-n>"
 
 " codeium.vim
 let g:codeium_enabled = 0               " enable codeium need token
