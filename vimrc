@@ -356,7 +356,9 @@ let g:eleline_slim = 0
 
 
 " nerdcommenter
-let g:NERDAltDelims_cpp = 1     "let default delims to /**/ for cpp file
+" default delims to /**/ for cpp or c  file
+let g:NERDAltDelims_cpp = 1
+let g:NERDAltDelims_c = 1
 
 
 " lens
