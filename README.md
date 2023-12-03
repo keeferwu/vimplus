@@ -5,7 +5,7 @@
     cd ~/.vimplus
     ./install.sh                    #当前用户安装
     ./install.sh -p                 #更新插件
-    sudo ./install.sh -u <用户名>   #其他用户安装
+    sudo ./install.sh -u <用户名>    #其他用户安装
 
 #### 使用vimplus
 
@@ -37,7 +37,7 @@ clipboard 前边是 - 号，即为不支持，需要安装vim-gnome
     mkdir -p ~/.vim/pack/自定义名称/start          #插件会自动加载
     mkdir -p ~/.vim/pack/自定义名称/opt
     :packadd 插件脚本                              #加载opt目录下的脚本
-    :helptags ~/.vim/pack/自定义名称/opt/插件/doc  #为插件生成帮助文档
+    :helptags ~/.vim/pack/自定义名称/opt/插件/doc   #为插件生成帮助文档
 
 #### 把 vim 的配置 应用到 neovim
 
@@ -112,5 +112,5 @@ vim .confg/nvim/init.vim
 
         3. 在vimrc中配置环境变量：
 
-            vim-gutentags:      let $GTAGSCONF = "$HOME/.globalrc"
-            LeaderF:            let g:Lf_Gtagsconf = "$HOME/.globalrc"
+            vim-gutentags:      let $GTAGSCONF = expand("~/.globalrc")
+            LeaderF:            let g:Lf_Gtagsconf = expand("~/.globalrc")
