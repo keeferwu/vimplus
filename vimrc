@@ -456,7 +456,7 @@ let s:gutentags_file_exclude = '\( -type f -not -iname "*makefile" -not -wholena
 let g:gutentags_file_list_command = 'find ./ ' . s:gutentags_path_exclude . ' -a -prune -o ' . s:gutentags_file_exclude . ' -print'
 let g:gutentags_ctags_exclude = ['*./sdk/*', '*./host/*', '*./configs/*', '*.json', '*.mib', '*.db']
 " 所生成的数据文件的名称
-let g:gutentags_ctags_tagfile = '.tags'
+let g:gutentags_ctags_tagfile = 'tags'
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
 if executable('ctags')
