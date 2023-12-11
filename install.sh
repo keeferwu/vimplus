@@ -265,14 +265,12 @@ function is_macos1014()
 # 在ubuntu上源代码安装vim
 function compile_vim_on_ubuntu()
 {
-    sudo apt-get remove vim
-    sudo apt-get remove vim-runtime
-    sudo apt-get remove vim -tiny
-    sudo apt-get remove vim-common
+    sudo apt-get remove vim vim-runtime  vim-tiny vim-common vim-gui-common
+    sudo apt-get purge vim vim-runtime  vim-tiny vim-common vim-gui-common
 
     sudo apt-get install -y libncurses5-dev libncurses5 libgnome2-dev libgnomeui-dev \
-        libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
-        libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev python3-dev ruby-dev lua5.1 lua5.1-dev
+        libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev \
+        python-dev python3-dev ruby-dev lua5.1 luajit
 
     rm -rf ~/vim_source
     git clone https://github.com/vim/vim.git ~/vim_source
@@ -286,17 +284,19 @@ function compile_vim_on_ubuntu()
             --with-python3-config-dir=/usr/lib/python3.5/config \
             --enable-perlinterp=yes \
             --enable-luainterp=yes \
+            --with-luajit \
             --enable-gui=gtk2 \
             --enable-cscope \
-            --prefix=/usr/local/vim8
+            --enable-fail-if-missing \
+            --prefix=/usr/local/vim
 
     sudo make
     sudo make install
 
-    sudo update-alternatives --install /usr/bin/editor editor /usr/local/vim8/bin/vim 1
-    sudo update-alternatives --set editor /usr/local/vim8/bin/vim
-    sudo update-alternatives --install /usr/bin/vim vim /usr/local/vim8/bin/vim 1
-    sudo update-alternatives --set vim /usr/local/vim8/bin/vim
+    sudo update-alternatives --install /usr/bin/editor editor /usr/local/vim/bin/vim 1
+    sudo update-alternatives --set editor /usr/local/vim/bin/vim
+    sudo update-alternatives --install /usr/bin/vim vim /usr/local/vim/bin/vim 1
+    sudo update-alternatives --set vim /usr/local/vim/bin/vim
 
     cd -
 }
