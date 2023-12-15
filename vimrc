@@ -212,7 +212,6 @@ Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
 "Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
 Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
-Plug 'skywind3000/vim-terminal-help'     "在vim 中打开终端
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 
 call plug#end()
@@ -656,15 +655,6 @@ imap <M-]>   <Cmd>call codeium#CycleCompletions(1)<CR>
 
 " screensaver
 let g:screensaver_auto_start_time = 900   "set to 15min  default is 10min
-
-
-" vim-terminal-help
-let g:terminal_rootmarkers = ['.root']
-let g:terminal_key = '<m-t>'            " which key will be used to toggle terminal window, default to .<m-=>
-let g:terminal_cwd = 2                  " initialize working dir: for unchanged, for file path and for project root.012
-let g:terminal_height = 10              " new terminal height, default to 10.
-let g:terminal_list = 0                 " set to 0 to hide terminal buffer in the buffer list.
-let g:terminal_close = 1                " set to 1 to close window if process finished.
 
 
 " vim-buffer
