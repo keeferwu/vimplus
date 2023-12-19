@@ -83,17 +83,25 @@ set nohlsearch          " 取消高亮搜索结果
 " 仅当光标处于搜索内容时高亮搜索结果
 function! HighlightSearch()
   let search_text = @/
+  " 搜索内容是否能在当前buffer中搜索到结果
   if search(search_text, 'nw')
     let line_text = getline('.')
     if exists('t:match_id')
+      " 清除高亮匹配项
       silent! call matchdelete(t:match_id)
       unlet t:match_id
     endif
+    " 当前行中第一个匹配项
     let [search_text, start_col, end_col] = matchstrpos(line_text, search_text)
-    if search_text != '' && col('.') >= start_col && col('.') <= end_col
-      let t:match_id = matchadd('Search', search_text, 0, 1223)
-      nohlsearch
-    endif
+    while(search_text != "")
+      " 光标如果处于匹配项中，高亮匹配项
+      if col('.') >= start_col && col('.') <= end_col
+        let t:match_id = matchadd('Search', search_text, 0, 1219)
+        nohlsearch
+      endif
+      " 当前行的下一个匹配项
+      let [search_text, start_col, end_col] = matchstrpos(line_text, search_text, end_col)
+    endwhile
   endif
 endfunction
 autocmd CursorMoved,CursorMovedI * call HighlightSearch()
