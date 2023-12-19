@@ -77,9 +77,26 @@ set completeopt-=preview " 补全时不显示窗口，只显示补全列表
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 搜索设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set hlsearch            " 高亮显示搜索结果
 set incsearch           " 开启实时搜索功能
 set ignorecase          " 搜索时大小写不敏感
+set nohlsearch          " 取消高亮搜索结果
+" 仅当光标处于搜索内容时高亮搜索结果
+function! HighlightSearch()
+  let search_text = @/
+  if search(search_text, 'nw')
+    let line_text = getline('.')
+    if exists('t:match_id')
+      silent! call matchdelete(t:match_id)
+      unlet t:match_id
+    endif
+    let [search_text, start_col, end_col] = matchstrpos(line_text, search_text)
+    if search_text != '' && col('.') >= start_col && col('.') <= end_col
+      let t:match_id = matchadd('Search', search_text, 0, 1223)
+      nohlsearch
+    endif
+  endif
+endfunction
+autocmd CursorMoved,CursorMovedI * call HighlightSearch()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 缓存设置
@@ -682,17 +699,17 @@ function! CloseBuffer(action)
     let oldest_time = localtime()
     let buf_info = filter(getbufinfo(), 'buflisted(v:val.bufnr)')
     if len(buf_info) <= b:max_buffer_num
-        return
+      return
     endif
     for buf in buf_info
-        "关闭最早打开的buffer
-        if buf.lastused < oldest_time
-            let oldest_buf = buf.bufnr
-            let oldest_time = buf.lastused
-        endif
+      "关闭最早打开的buffer
+      if buf.lastused < oldest_time
+        let oldest_buf = buf.bufnr
+        let oldest_time = buf.lastused
+      endif
     endfor
     if oldest_buf != curr_buf
-        execute 'bdelete ' . oldest_buf
+      execute 'bdelete ' . oldest_buf
     endif
   endif
 endfunction
