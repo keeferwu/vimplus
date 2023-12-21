@@ -226,7 +226,7 @@ Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
 Plug 'chrisbra/changesPlugin'            "修改显示
 Plug 'lfv89/vim-interestingwords'        "单词高亮
 Plug 'vim-autoformat/vim-autoformat'     "代码格式化
-Plug 'itchyny/screensaver.vim'           "vim屏保
+"Plug 'itchyny/screensaver.vim'           "vim屏保
 Plug 'camspiers/lens.vim'                "自动调整当前窗口
 Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
 Plug 'Yggdroot/LeaderF'                  "比ctrlp更强大的文件的模糊搜索工具
@@ -679,7 +679,7 @@ imap <M-]>   <Cmd>call codeium#CycleCompletions(1)<CR>
 
 
 " screensaver
-let g:screensaver_auto_start_time = 900   "set to 15min  default is 10min
+"let g:screensaver_auto_start_time = 900   "set to 15min  default is 10min
 
 
 " vim-buffer
