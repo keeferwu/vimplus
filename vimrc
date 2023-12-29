@@ -86,17 +86,14 @@ function! HighlightSearch()
   " 搜索内容是否能在当前buffer中搜索到结果
   if search(search_text, 'nw')
     let line_text = getline('.')
-    if exists('t:match_id')
-      " 清除高亮匹配项
-      silent! call matchdelete(t:match_id)
-      unlet t:match_id
-    endif
+    " 清除高亮匹配项
+    silent! call matchdelete(1219)
     " 当前行中第一个匹配项
     let [search_text, start_col, end_col] = matchstrpos(line_text, search_text)
     while(search_text != "")
       " 光标如果处于匹配项中，高亮匹配项
       if col('.') >= start_col && col('.') <= end_col
-        let t:match_id = matchadd('Search', search_text, 0, 1219)
+        silent! call matchadd('Search', search_text, 0, 1219)
         nohlsearch
       endif
       " 当前行的下一个匹配项
@@ -501,7 +498,7 @@ let g:gutentags_ctags_extra_args += ['--extras=+q', '--output-format=e-ctags']
 let g:gutentags_gtags_cscope_executable = 'gtags-cscope'
 " 禁用 gutentags 自动加载 gtags 数据库的行为,否则当多个项目生成数据文件后，会相互影响
 let g:gutentags_auto_add_gtags_cscope = 0
-"let g:gutentags_trace = 1
+let g:gutentags_trace = 0
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
 let g:gutentags_generate_on_write = 1
