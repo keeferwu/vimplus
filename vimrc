@@ -140,10 +140,11 @@ set clipboard+=unnamed
 let g:python3_host_prog = '/usr/bin/python3'
 endif
 
-" 复制当前选中到系统剪切板
-vnoremap  <silent> <c-c> "+y
-" 将系统剪切板内容粘贴到vim
+" 复制粘贴到系统剪切板
+" visual block re-mapping
+noremap  <silent> <m-v> <c-v>
 noremap  <silent> <c-v> "+p
+vnoremap <silent> <c-c> "+y
 " 保存
 noremap <silent> <c-s> :w<cr>
 inoremap <silent> <c-s> <Esc>:w<cr>
