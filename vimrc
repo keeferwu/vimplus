@@ -170,6 +170,11 @@ colorscheme onedark
 " 查看vimplus的help文件
 command! VimplusHelp :sview +let\ &l:modifiable=0 ~/.vim/help.md
 
+" 使用tmux attach已存在的session时,如果vim中系统剪切版无法使用，需要更新$DISPLAY环境变量
+if exists("$TMUX")
+command! ChipBoard :let $DISPLAY=system("tmux show-env | sed -n 's/^DISPLAY=//p'")|echo $DISPLAY
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " gvim/macvim设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -224,7 +229,6 @@ Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
 Plug 'chrisbra/changesPlugin'            "修改显示
 Plug 'lfv89/vim-interestingwords'        "单词高亮
 Plug 'vim-autoformat/vim-autoformat'     "代码格式化
-Plug 'itchyny/screensaver.vim'           "vim屏保
 Plug 'camspiers/lens.vim'                "自动调整当前窗口
 Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
 Plug 'Yggdroot/LeaderF'                  "比ctrlp更强大的文件的模糊搜索工具
@@ -668,6 +672,7 @@ let g:easycomplete_diagnostics_enable = 1     " 语法检测
 let g:easycomplete_diagnostics_prev = "<c-p>"
 let g:easycomplete_diagnostics_next = "<c-n>"
 
+
 " codeium.vim
 let g:codeium_enabled = 0               " enable codeium need token
 let g:codeium_disable_bindings = 1      " disable default keybindings
@@ -676,10 +681,6 @@ imap <script><silent><nowait><expr> <leader>= codeium#Accept()
 imap <leader>- <Cmd>call codeium#Clear()<CR>
 imap <leader>[ <Cmd>call codeium#CycleCompletions(-1)<CR>
 imap <leader>] <Cmd>call codeium#CycleCompletions(1)<CR>
-
-
-" screensaver
-"let g:screensaver_auto_start_time = 900   "set to 900s
 
 
 " vim-buffer
