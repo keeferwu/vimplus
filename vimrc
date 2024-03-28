@@ -672,10 +672,10 @@ let g:easycomplete_diagnostics_next = "<c-n>"
 let g:codeium_enabled = 0               " enable codeium need token
 let g:codeium_disable_bindings = 1      " disable default keybindings
 let g:codeium_no_map_tab = 1            " disabled Codeium use tab keybindings
-imap <script><silent><nowait><expr> <M-=> codeium#Accept()
-imap <M-->   <Cmd>call codeium#Clear()<CR>
-imap <M-[>   <Cmd>call codeium#CycleCompletions(-1)<CR>
-imap <M-]>   <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <script><silent><nowait><expr> <leader>= codeium#Accept()
+imap <leader>- <Cmd>call codeium#Clear()<CR>
+imap <leader>[ <Cmd>call codeium#CycleCompletions(-1)<CR>
+imap <leader>] <Cmd>call codeium#CycleCompletions(1)<CR>
 
 
 " screensaver

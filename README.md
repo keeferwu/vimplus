@@ -28,6 +28,12 @@ clipboard 前边是 - 号，即为不支持，需要安装vim-gnome
 
     sudo apt install vim-gnome
 
+当使用ssh远程连接server，发现DISPLAY环境变量为空，导致系统剪切版无法在vim中使用
+解决办法：
+ssh server 端：修改 /etc/ssh/sshd_config  ---> X11Forwarding yes
+ssh client 端：ssh 连接时使用-Y 或 -X 选项， 并启动Xserver
+参考：https://zhuanlan.zhihu.com/p/579860830
+
 #### update vim-plug
 
     curl -fLo ~/.vimplus/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
