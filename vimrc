@@ -172,7 +172,8 @@ command! VimplusHelp :sview +let\ &l:modifiable=0 ~/.vim/help.md
 
 " 使用tmux attach已存在的session时,如果vim中系统剪切版无法使用，需要更新$DISPLAY环境变量
 if exists("$TMUX")
-command! ClipBoard :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '')
+command! ClipBoard :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '') | echo $DISPLAY
+autocmd VimEnter * ClipBoard
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
