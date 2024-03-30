@@ -215,6 +215,7 @@ if has("nvim")
 Plug 'Shougo/defx.nvim', {'do': ':UpdateRemotePlugins'}
 else
 Plug 'troydm/easytree.vim'
+Plug 'rhysd/vim-healthcheck'
 endif
 Plug 'preservim/tagbar'
 Plug 'easymotion/vim-easymotion'         "强大的光标快速移动工具，强大到颠覆你的插件观
@@ -227,6 +228,7 @@ Plug 'luochen1990/rainbow'               "彩虹括号
 Plug 'justinmk/vim-syntax-extra'         "增强语法高亮
 Plug 'octol/vim-cpp-enhanced-highlight'  "cpp扩展高亮
 Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
+Plug 'rhysd/git-messenger.vim'           "显示当前光标下的git last history
 Plug 'chrisbra/changesPlugin'            "修改显示
 Plug 'lfv89/vim-interestingwords'        "单词高亮
 Plug 'vim-autoformat/vim-autoformat'     "代码格式化
@@ -403,6 +405,10 @@ let g:indentLine_enabled = 1
 
 " vim-interestingwords
 let g:interestingWordsCycleColors = 1
+
+
+" git-messenger.vim
+let g:git_messenger_always_into_popup=v:true
 
 
 " vim-easymotion
