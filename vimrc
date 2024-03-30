@@ -409,7 +409,7 @@ let g:interestingWordsCycleColors = 1
 
 " git-messenger.vim
 let g:git_messenger_always_into_popup=v:true
-
+let g:git_messenger_include_diff="current"
 
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
