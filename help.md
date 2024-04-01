@@ -35,8 +35,9 @@
 | `<leader>gs`          | symbol光标下字符                  |                              |
 | `<leader>gg`          | grep光标下字符                    |                              |
 | `<leader>G`           | 重新打开gtags搜索窗               |                              |
-| `<leader>gh`          | 查看gtags搜索历史                 |                              |
 | `<leader>gu`          | 更新gtags索引数据                 |                              |
+| `<leader>gh`          | 查看gtags搜索历史                 |                              |
+| `<leader>gm`          | 查看当前文件git提交记录           | :h git-messenger             |
 | `<Leader>w`           | 光标快速移动                      | :h vim-easymotion            |
 | `<Leader>k`           | 单词设置/清除高亮                 | :h vim-interestingwords      |
 | `<Leader>K`           | 清除所有高亮                      |                              |
