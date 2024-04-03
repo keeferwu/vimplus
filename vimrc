@@ -581,7 +581,7 @@ let g:Lf_CtagsFuncOpts = {
             \ }
 
 let g:Lf_GtagsAutoGenerate = 0           " auto create gtags
-let g:Lf_GtagsAutoUpdate = 0             " auto update
+let g:Lf_GtagsAutoUpdate = 0             " auto update when buffer write
 let g:Lf_GtagsGutentags = 1              " use vim-gutentags to generate gtags,should make g:Lf_GtagsAutoGenerate = 0 and g:Lf_GtagsAutoUpdate = 0
 let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
 let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
@@ -597,11 +597,17 @@ let g:leader_gtags_nomap = 1
 nmap <silent><leader>gh :Leaderf gtags_history<cr>
 if g:Lf_GtagsAutoGenerate == 1
     nmap <silent><leader>gu :Leaderf gtags --update<cr>
+    " 光标10min内没有发生移动，自动更新gtags文件
+    autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(600*1000, { -> leaderf#Gtags#updateGtags(expand('<afile>:p'), 0)})|endif
+    autocmd CursorMoved,CursorMovedI * if exists('s:update_timer')|call timer_stop(s:update_timer)|unlet s:update_timer|endif
 endif
 " let vim-gutentags generate gtags data to leaderF
 if g:Lf_GtagsGutentags == 1
     let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
     nmap <silent><leader>gu :GutentagsUpdate!<cr>
+    " 光标10min内没有发生移动，自动更新gtags文件
+    autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(600*1000, { -> execute('GutentagsUpdate!')})|endif
+    autocmd CursorMoved,CursorMovedI * if exists('s:update_timer')|call timer_stop(s:update_timer)|unlet s:update_timer|endif
 endif
 
 " 默认rg自动忽略.gitignore指定的文件，链接文件，隐藏文件和二进制文件，可通过g:Lf_RgConfig 进行定制
