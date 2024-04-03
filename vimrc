@@ -598,7 +598,7 @@ nmap <silent><leader>gh :Leaderf gtags_history<cr>
 if g:Lf_GtagsAutoGenerate == 1
     nmap <silent><leader>gu :Leaderf gtags --update<cr>
     " 光标10min内没有发生移动，自动更新gtags文件
-    autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(600*1000, { -> leaderf#Gtags#updateGtags(expand('<afile>:p'), 0)})|endif
+    autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(600*1000, { -> execute('Leaderf gtags --update')})|endif
     autocmd CursorMoved,CursorMovedI * if exists('s:update_timer')|call timer_stop(s:update_timer)|unlet s:update_timer|endif
 endif
 " let vim-gutentags generate gtags data to leaderF
