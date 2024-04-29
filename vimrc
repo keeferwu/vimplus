@@ -480,7 +480,7 @@ hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green
 
 " vim-gutentags
 " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-" let $GTAGSLABEL = 'native-pygments'
+let $GTAGSLABEL = 'native-pygments'
 " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
 map <c-]> g<c-]>
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名

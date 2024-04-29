@@ -91,7 +91,7 @@ vim .confg/nvim/init.vim
 
         1. 保证你的 $PATH 里面有 python
 
-            pip install pygments
+            pip install pygments or sudo apt install python-pygments
 
         2. 在vimrc中配置环境变量：
 
@@ -100,7 +100,8 @@ vim .confg/nvim/init.vim
 
             GTAGSLABEL 告诉 gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
             实际使用 pygments 时，gtags 会启动 python 运行名为 pygments_parser.py 的脚本，通过管道和它通信，完成源代码分析，
-            故需保证 gtags 能在 $PATH 里调用 python，且这个 python 安装了 pygments 模块。
+            故需保证 gtags 能在 $PATH 里调用 python，且这个 python 安装了 pygments 模块,
+            否则会出错：ImportError: No module named pygments.lexers。
 
 * gtags 使用自定义配置
 
