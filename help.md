@@ -23,7 +23,8 @@
 | `<leader>lt`          | 搜索当前buffer下tag               |                              |
 | `<leader>ll`          | 搜索当前buffer下内容              |                              |
 | `<leader>lm`          | 搜索MRU下的文件                   |                              |
-| `<leader>lg`          | 当前文件搜索内容输出到quickfix    |                              |
+| `<leader>lg`          | 查看git log                       |                              |
+| `<leader>lq`          | 当前文件搜索内容输出到quickfix    |                              |
 | `<leader>Q`           | 打开quickfix窗口                  |                              |
 | `<leader>F`           | 打开文件搜索窗口                  |                              |
 | `<leader>rg`          | 搜索输入的字符                    | :Leaderf rg -h               |
