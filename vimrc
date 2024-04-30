@@ -711,7 +711,7 @@ noremap <silent> <leader>qa :call CloseBuffer(0)<cr>
 nnoremap <silent> <leader>bd :call CloseBuffer(1)<cr>
 autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
 function! CloseBuffer(action)
-  if &filetype == "easytree" ||&filetype == "defx" || &filetype == "tagbar" || &filetype == "qf"
+  if &filetype == "easytree" || &filetype == "defx" || &filetype == "tagbar" || &filetype == "qf"
     echo "Window not support close buffer!"
     return
   endif
