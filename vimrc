@@ -83,6 +83,10 @@ set nohlsearch          " 取消高亮搜索结果
 " 仅当光标处于搜索内容时高亮搜索结果
 function! HighlightSearch()
   let search_text = @/
+  if search_text == ','
+    silent! call matchdelete(1219)
+    return
+  endif
   " 搜索内容是否能在当前buffer中搜索到结果
   if search(search_text, 'nw')
     let line_text = getline('.')
