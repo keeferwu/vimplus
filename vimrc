@@ -228,7 +228,6 @@ Plug 'luochen1990/rainbow'               "彩虹括号
 Plug 'justinmk/vim-syntax-extra'         "增强语法高亮
 Plug 'octol/vim-cpp-enhanced-highlight'  "cpp扩展高亮
 Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
-Plug 'rhysd/git-messenger.vim'           "显示当前光标下的git last history
 Plug 'chrisbra/changesPlugin'            "修改显示
 Plug 'lfv89/vim-interestingwords'        "单词高亮
 Plug 'vim-autoformat/vim-autoformat'     "代码格式化
@@ -407,10 +406,6 @@ let g:indentLine_enabled = 1
 let g:interestingWordsCycleColors = 1
 
 
-" git-messenger.vim
-let g:git_messenger_always_into_popup=v:true
-let g:git_messenger_include_diff="current"
-
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
 map <leader>w <Plug>(easymotion-bd-w)
@@ -529,7 +524,6 @@ nnoremap <leader>lb :LeaderfBuffer<cr>
 nnoremap <leader>lt :LeaderfBufTag<cr>
 nnoremap <leader>ll :LeaderfLine<cr>
 nnoremap <leader>lm :LeaderfMru<cr>
-nnoremap <leader>lg :Leaderf git log<cr>
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 let g:Lf_IgnoreCurrentBufferName = 1
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
@@ -640,6 +634,17 @@ vnoremap <silent> <leader>lq y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
 nnoremap <silent> <leader>lq :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
 noremap <silent> <leader>Q :LeaderfQuickFix<cr>
 noremap <silent> <leader>F :Leaderf file --recall<cr>
+
+" Leaderf git
+nnoremap <leader>lg :LeaderfGit<cr>
+let g:Lf_GitCommands = [
+                    \ {"Leaderf git log":                                "fuzzy search and view the log"},
+                    \ {"Leaderf git log --current-file":                 "fuzzy search and view the log of current file"},
+                    \ {"Leaderf git diff":                               "fuzzy search and view the diffs"},
+                    \ {"Leaderf git diff --side-by-side --current-file": "view the side-by-side diffs of the current file"},
+                    \ {"Leaderf git blame":                              "git blame current file"},
+                    \ {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
+                    \ ]
 
 
 " OmniCppComplete
