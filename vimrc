@@ -83,7 +83,7 @@ set nohlsearch          " 取消高亮搜索结果
 " 仅当光标处于搜索内容时高亮搜索结果
 function! HighlightSearch()
   let search_text = @/
-  if search_text == ','
+  if search_text == ' '
     silent! call matchdelete(1219)
     return
   endif
