@@ -12,7 +12,7 @@
 | `zR`                  | 展开所有代码                      |                              |
 | `:SSave`              | 保存当前状态为某个session         | :h vimplus-startify          |
 | `:SDelete`            | 删除某个session                   |                              |
-| `F4`                  | 打开/关闭代码资源管理器           | :h easytree/defx             |
+| `F4`                  | 打开/关闭代码资源管理器           | :h defx                      |
 | `F5`                  | 打开/关闭函数列表                 | :h tagbar                    |
 | `Ctrl+b`              | 上一页                            | :h vim-smooth-scroll         |
 | `Ctrl+f`              | 下一页                            |                              |

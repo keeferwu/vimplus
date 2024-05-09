@@ -218,7 +218,9 @@ Plug 'chxuan/vimplus-startify'           "vimplus开始页面
 if has("nvim")
 Plug 'Shougo/defx.nvim', {'do': ':UpdateRemotePlugins'}
 else
-Plug 'troydm/easytree.vim'
+Plug 'Shougo/defx.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'rhysd/vim-healthcheck'
 endif
 Plug 'preservim/tagbar'
@@ -279,7 +281,6 @@ let g:startify_session_savecmds = [
            \ ]
 
 
-if has("nvim")
 "defx.nvim
 call defx#custom#option('_', {
             \ 'winwidth': 30,
@@ -356,20 +357,6 @@ function! DefxHelp()
     setlocal nomodifiable
 endfunction
 
-else
-" easytree.vim
-function! ToggleEasyTree()
-  let g:lens#disabled = 1
-    "silent EasyTreeToggle       "根目录
-    silent EasyTreeBufferToggle  "当前buffer目录
-  let g:lens#disabled = 0
-endfunction
-nnoremap <silent> <F4> :call ToggleEasyTree()<CR>
-let g:easytree_width_auto_fit = 0
-let g:easytree_ignore_files = ['*.x86','*.tgt','*.obj']
-"let g:easytree_ignore_dirs = []
-endif
-
 
 " tagbar
 nnoremap <silent> <F5> :TagbarToggle<cr>
@@ -395,7 +382,7 @@ let g:NERDAltDelims_c = 1
 
 " lens
 let g:lens#animate = 0  "取消动画
-let g:lens#disabled_filetypes = ['easytree', 'defx', 'tagbar', 'leaderf']
+let g:lens#disabled_filetypes = ['defx', 'tagbar', 'leaderf']
 let g:lens#height_resize_max = 40
 let g:lens#height_resize_min = 5
 let g:lens#width_resize_max = 120
@@ -587,12 +574,7 @@ let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
 let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
 let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
 nmap <silent><leader>G :Leaderf! gtags --recall<cr>
-map <silent> <leader>ga <Plug>LeaderfGtagsInternel
-map <silent> <leader>gd <Plug>LeaderfGtagsDefinition
-map <silent> <leader>gr <Plug>LeaderfGtagsReference
-map <silent> <leader>gs <Plug>LeaderfGtagsSymbol
-map <silent> <leader>gg <Plug>LeaderfGtagsGrep
-let g:leader_gtags_nomap = 1
+let g:leader_gtags_nomap = 0
 nmap <silent><leader>gh :Leaderf gtags_history<cr>
 if g:Lf_GtagsAutoGenerate == 1
     nmap <silent><leader>gu :Leaderf gtags --update<cr>
@@ -711,7 +693,7 @@ noremap <silent> <leader>qa :call CloseBuffer(0)<cr>
 nnoremap <silent> <leader>bd :call CloseBuffer(1)<cr>
 autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
 function! CloseBuffer(action)
-  if &filetype == "easytree" || &filetype == "defx" || &filetype == "tagbar" || &filetype == "qf"
+  if &filetype == "defx" || &filetype == "tagbar" || &filetype == "qf"
     echo "Window not support close buffer!"
     return
   endif
