@@ -24,8 +24,6 @@
 | `<leader>ll`          | 搜索当前buffer下内容              |                              |
 | `<leader>lm`          | 搜索MRU下的文件                   |                              |
 | `<leader>lg`          | 查看git log                       |                              |
-| `<leader>lq`          | 当前文件搜索内容输出到quickfix    |                              |
-| `<leader>Q`           | 打开quickfix窗口                  |                              |
 | `<leader>F`           | 打开文件搜索窗口                  |                              |
 | `<leader>rg`          | 搜索输入的字符                    | :Leaderf rg -h               |
 | `<leader>rw`          | 搜索光标下的字符                  |                              |
@@ -38,7 +36,8 @@
 | `<leader>G`           | 重新打开gtags搜索窗               |                              |
 | `<leader>gu`          | 更新gtags索引数据                 |                              |
 | `<leader>gh`          | 查看gtags搜索历史                 |                              |
-| `<leader>gm`          | 查看当前文件git提交记录           | :h git-messenger             |
+| `<leader>gq`          | 当前文件搜索内容输出到quickfix    |                              |
+| `<leader>Q`           | 打开quickfix窗口                  |                              |
 | `<Leader>w`           | 光标快速移动                      | :h vim-easymotion            |
 | `<Leader>k`           | 单词设置/清除高亮                 | :h vim-interestingwords      |
 | `<Leader>K`           | 清除所有高亮                      |                              |

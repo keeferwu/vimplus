@@ -616,8 +616,8 @@ nmap <silent> <leader>rw :LeaderfRgInteractive<cr>
 noremap <silent> <leader>R :LeaderfRgRecall<cr>
 
 " 搜索当前文件选中内容输出到quickfix
-vnoremap <silent> <leader>lq y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
-nnoremap <silent> <leader>lq :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
+vnoremap <silent> <leader>gq y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
+nnoremap <silent> <leader>gq :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
 noremap <silent> <leader>Q :LeaderfQuickFix<cr>
 noremap <silent> <leader>F :Leaderf file --recall<cr>
 
