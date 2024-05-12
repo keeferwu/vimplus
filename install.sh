@@ -439,9 +439,9 @@ function install_prepare_software_on_ubuntu()
             rm nvim-linux64-0.8.3.deb
         fi
     else
-        wget https://gitee.com/keeferwu/vimplus/releases/download/append/nvim-linux64-0.8.3.deb
-        sudo dpkg -i nvim-linux64-0.8.3.deb
-        rm nvim-linux64-0.8.3.deb
+        sudo add-apt-repository ppa:neovim-ppa/stable
+        sudo apt-get update
+        sudo apt-get install neovim
     fi
 }
 
