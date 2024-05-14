@@ -31,11 +31,36 @@ set showcmd              " select模式下显示选中的行数
 set ruler                " 总是显示光标位置
 set laststatus=2         " 总是显示状态栏
 set number               " 开启行号显示
+"set relativenumber      " 开启相对行号
 set cursorline           " 高亮显示当前行
+"set cursorcolumn        " 高亮光标所在列
+set colorcolumn =101     " 高亮指定列
 set whichwrap+=<,>,h,l   " 设置光标键跨行
 set ttimeoutlen=0        " 设置<ESC>键响应时间
 set virtualedit=block,onemore   " 允许光标出现在最后一个字符的后面
 set bsdir=buffer         " 设定文件浏览器目录为当前目录
+" 开启鼠标
+set mouse=a
+set selection=exclusive
+set selectmode=mouse,key
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 缓存设置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set nobackup            " 设置不备份
+set noswapfile          " 禁止生成临时文件
+set autoread            " 文件在vim之外修改过，自动重新读入
+set autowrite           " 设置自动保存
+set confirm             " 在处理未保存或只读文件的时候，弹出确认
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 编码设置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set langmenu=zh_CN.UTF-8
+set helplang=cn
+set termencoding=utf-8
+set encoding=utf8
+set fileencodings=utf8,ucs-bom,gbk,cp936,gb2312,gb18030
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 代码缩进和排版
@@ -55,6 +80,7 @@ set backspace=2          " 使用回车键正常处理indent,eol,start等
 set sidescroll=10        " 设置向右滚动字符数
 set list  				 " 将tab显示为可见字符
 set listchars=tab:>-,trail:-     " tab将被显示为>—-,行尾多余的空白字符显示成-
+set showmatch            " 高亮显示匹配括号
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 代码折叠
@@ -79,6 +105,7 @@ set completeopt-=preview " 补全时不显示窗口，只显示补全列表
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set incsearch           " 开启实时搜索功能
 set ignorecase          " 搜索时大小写不敏感
+set smartcase           " 搜索大写字母不敏感
 set nohlsearch          " 取消高亮搜索结果
 " 仅当光标处于搜索内容时高亮搜索结果
 function! HighlightSearch()
@@ -108,35 +135,27 @@ endfunction
 autocmd CursorMoved,CursorMovedI * call HighlightSearch()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 缓存设置
+" gvim/macvim设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nobackup            " 设置不备份
-set noswapfile          " 禁止生成临时文件
-set autoread            " 文件在vim之外修改过，自动重新读入
-set autowrite           " 设置自动保存
-set confirm             " 在处理未保存或只读文件的时候，弹出确认
+if has("gui_running")
+    let system = system('uname -s')
+    if system == "Darwin\n"
+        set guifont=Droid\ Sans\ Mono\ Nerd\ Font\ Complete:h18 " 设置字体
+    else
+        set guifont=DroidSansMono\ Nerd\ Font\ Regular\ 18      " 设置字体
+    endif
+    set guioptions-=m           " 隐藏菜单栏
+    set guioptions-=T           " 隐藏工具栏
+    set guioptions-=L           " 隐藏左侧滚动条
+    set guioptions-=r           " 隐藏右侧滚动条
+    set guioptions-=b           " 隐藏底部滚动条
+    set showtabline=0           " 隐藏Tab栏
+    set guicursor=n-v-c:ver5    " 设置光标为竖线
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 编码设置
+" 自定义设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set langmenu=zh_CN.UTF-8
-set helplang=cn
-set termencoding=utf-8
-set encoding=utf8
-set fileencodings=utf8,ucs-bom,gbk,cp936,gb2312,gb18030
-
-" 开启相对行号
-" set relativenumber
-
-" 开启鼠标
-set mouse=a
-set selection=exclusive
-set selectmode=mouse,key
-
-" 设置光标所在列高亮
-" set cursorcolumn
-set colorcolumn =101
-
 if has("nvim")
 " unnamedplus:所有的操作都会自动被粘贴进 system clipboard 中
 " unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
@@ -178,25 +197,6 @@ command! VimplusHelp :sview +let\ &l:modifiable=0 ~/.vim/help.md
 if exists("$TMUX")
 command! ClipBoard :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '') | echo $DISPLAY
 autocmd VimEnter * ClipBoard
-endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" gvim/macvim设置
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has("gui_running")
-    let system = system('uname -s')
-    if system == "Darwin\n"
-        set guifont=Droid\ Sans\ Mono\ Nerd\ Font\ Complete:h18 " 设置字体
-    else
-        set guifont=DroidSansMono\ Nerd\ Font\ Regular\ 18      " 设置字体
-    endif
-    set guioptions-=m           " 隐藏菜单栏
-    set guioptions-=T           " 隐藏工具栏
-    set guioptions-=L           " 隐藏左侧滚动条
-    set guioptions-=r           " 隐藏右侧滚动条
-    set guioptions-=b           " 隐藏底部滚动条
-    set showtabline=0           " 隐藏Tab栏
-    set guicursor=n-v-c:ver5    " 设置光标为竖线
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
