@@ -410,15 +410,15 @@ function install_prepare_software_on_ubuntu_like()
 
     sudo apt-get install -y  universal-ctags ripgrep clang astyle ccls global xclip python-pygments
 
-    read -p "Do you want to re-install VIM ? [Y/N] " ch
+    read -p "Do you want to re-install VIM ? [Y/M/N] " ch
     if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
-        if [ $version -ge 18 ];then
-            sudo add-apt-repository ppa:jonathonf/vim
-            sudo apt-get update
-            sudo apt-get install -y vim
-        else
-            compile_vim_on_ubuntu
-        fi
+        sudo add-apt-repository ppa:jonathonf/vim
+        sudo apt-get update
+        sudo apt-get install -y vim
+    fi
+    if [[ $ch == "M" ]] || [[ $ch == "m" ]]; then
+        echo "Install VIM by source code"
+        compile_vim_on_ubuntu
     fi
 
     if which nvim >/dev/null 2>&1; then
