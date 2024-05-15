@@ -166,8 +166,11 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "
 
 " 主题设置
 set background=dark
-let g:onedark_termcolors=256
-colorscheme onedark
+"let g:onedark_termcolors=256
+"colorscheme onedark
+let g:material_terminal_italics = 1
+let g:material_theme_style = 'palenight'
+colorscheme material
 " 背景透明
 "hi Normal  ctermfg=252 ctermbg=none
 
