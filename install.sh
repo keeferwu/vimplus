@@ -399,19 +399,12 @@ function install_prepare_software_on_android()
     pkg install -y git vim-python cmake python2 python ctags ack-grep ncurses-utils
 }
 
-# 安装ubuntu必备软件
-function install_prepare_software_on_ubuntu()
+# 安装ubuntu系必备软件
+function install_prepare_software_on_ubuntu_like()
 {
     sudo apt-get update
 
-    version=$(get_ubuntu_version)
-    if [ $version -eq 14 ];then
-        sudo apt-get install -y cmake3
-    else
-        sudo apt-get install -y cmake
-    fi
-
-    sudo apt-get install -y  ninja-build gcc-multilib autoconf automake libtool flex bison
+    sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison
 
     sudo apt-get install -y  build-essential python python-dev python3 python3-dev python3-pip fontconfig libfile-next-perl
 
@@ -443,14 +436,6 @@ function install_prepare_software_on_ubuntu()
         sudo apt-get update
         sudo apt-get install neovim
     fi
-}
-
-# 安装ubuntu系必备软件
-function install_prepare_software_on_ubuntu_like()
-{
-    sudo apt-get update
-    sudo apt-get install -y cmake exuberant-ctags build-essential python python-dev python3-dev fontconfig libfile-next-perl ack-grep git
-    compile_vim_on_ubuntu
 }
 
 # 安装debian必备软件
@@ -711,13 +696,6 @@ function begin_install_vimplus()
     print_logo
 }
 
-# 在ubuntu上安装vimplus
-function install_vimplus_on_ubuntu()
-{
-    install_prepare_software_on_ubuntu
-    begin_install_vimplus
-}
-
 # 在ubuntu系上安装vimplus
 function install_vimplus_on_ubuntu_like()
 {
@@ -781,7 +759,7 @@ function install_vimplus_on_linux()
     echo "Linux distro: "${distro}
 
     if [ ${distro} == "Ubuntu" ]; then
-        install_vimplus_on_ubuntu
+        install_vimplus_on_ubuntu_like
     elif [ ${distro} == "Deepin" ]; then
         install_vimplus_on_ubuntu_like
     elif [ ${distro} == "LinuxMint" ]; then
