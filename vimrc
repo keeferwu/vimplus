@@ -668,11 +668,14 @@ let g:easycomplete_diagnostics_prev = "<c-p>"
 let g:easycomplete_diagnostics_next = "<c-n>"
 let g:easycomplete_cursor_word_hl = 1         " Highlight the symbol when holding the cursor
 let g:easycomplete_nerd_font = 1              " Using nerdfont is highly recommended
+let g:easycomplete_navigation_mapping = 0
+if get(g:, 'easycomplete_navigation_mapping')
 " GoTo code navigation
 noremap gr :EasyCompleteReference<CR>
 noremap gd :EasyCompleteGotoDefinition<CR>
 noremap gb :BackToOriginalBuffer<CR>
 noremap rn :EasyCompleteRename<CR>
+endif
 
 
 " codeium.vim
