@@ -581,7 +581,7 @@ let s:gutentags_path_exclude = '\( -path "*.git*" -o -path "*clangd*" -o -path "
 " -name: 匹配文件名，-iname: 匹配文件名时忽略大小写， -wholename: 匹配文件名及其路径
 let s:gutentags_file_exclude = '\( -type f -not -iname "*makefile*" -not -iname "*.txt" -not -name "*.map" -not -name "*.o" -not -name "*.tgt" -not -name "*.x86" -not -wholename ".gitignore" \)'
 let g:gutentags_file_list_command = 'find . ' . s:gutentags_path_exclude . ' -a -prune -o ' . s:gutentags_file_exclude . ' -print'
-let g:gutentags_ctags_exclude = ['*./sdk/*', '*./host/*', '*./configs/*', '*.json', '*.mib', '*.db']
+let g:gutentags_ctags_exclude = ['*/.git/*', '*/.clangd/*', '*/configs/*', '*.json', '*.mib', '*.db', '*.css', '*.js', '*.html']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = 'tags'
 " 同时开启 ctags 和 gtags 支持：
