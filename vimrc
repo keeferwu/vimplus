@@ -227,10 +227,14 @@ Plug 'Yggdroot/LeaderF'                  "比ctrlp更强大的文件的模糊搜
 Plug 'keeferwu/LeaderF-gtags-history'    "显示leaderf gtags 搜索历史
 Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
 Plug 'SirVer/ultisnips'                  "需要和vim-snippets or vim-easycomplete 配合使用
-"Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
 Plug 'honza/vim-snippets'                "代码块补全
+if empty(findfile("compile_commands.json", '.;'))
 Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
+else
+Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
+let g:easycomplete_enable = 1
+endif
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 
 call plug#end()
