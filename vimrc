@@ -563,8 +563,8 @@ if g:Lf_GtagsAutoGenerate == 1
     autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
     nmap <silent><leader>gu :Leaderf gtags --update<cr>
     if g:Lf_GtagsAutoUpdate == 1
-        " 光标10min内没有发生移动，自动更新gtags文件
-        autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(600*1000, { -> execute('Leaderf gtags --update')})|endif
+        " 光标1小时没有发生移动，自动更新gtags文件
+        autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(3600*1000, { -> execute('Leaderf gtags --update')})|endif
         autocmd CursorMoved,CursorMovedI * if exists('s:update_timer')|call timer_stop(s:update_timer)|unlet s:update_timer|endif
     endif
 endif
