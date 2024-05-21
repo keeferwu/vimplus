@@ -536,8 +536,9 @@ let g:Lf_GitCommands = [
                     \ {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
                     \ ]
 
-" 使用leaderf 生成gtags 数据时不正常，考虑修改 Lf_GtagsSourceLf_GtagsSource = 1，且在项目跟目录生成gtags.file文件，其内容参考g:gutentags_file_list_command 使用的命令去生成
-let g:Lf_GtagsSource = 0     "0 - gtags search the target files by itself. 1 - the target files come from FileExplorer. 2 - the target files come from |g:Lf_GtagsfilesCmd.
+" 项目根目录存在gtags.file文件，gtags 会以该文件为基础生成数据，生成gtags.file的方式参考 g:gutentags_file_list_command
+" 0 - gtags search the target files by itself. 1 - the target files come from FileExplorer. 2 - the target files come from |g:Lf_GtagsfilesCmd.
+let g:Lf_GtagsSource = 0
 let g:Lf_GtagsfilesCmd = {
             \ '.git': 'git ls-files --recurse-submodules',
             \ '.hg': 'hg files',
