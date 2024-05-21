@@ -667,7 +667,7 @@ let g:easycomplete_tabnine_enable = 0         " disable TabNine
 let g:easycomplete_diagnostics_enable = 1     " 语法检测
 let g:easycomplete_diagnostics_prev = "<c-p>"
 let g:easycomplete_diagnostics_next = "<c-n>"
-let g:easycomplete_cursor_word_hl = 1         " Highlight the symbol when holding the cursor
+let g:easycomplete_cursor_word_hl = 0         " Highlight the symbol when holding the cursor
 let g:easycomplete_nerd_font = 1              " Using nerdfont is highly recommended
 let g:easycomplete_navigation_mapping = 0
 if get(g:, 'easycomplete_navigation_mapping')
