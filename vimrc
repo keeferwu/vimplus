@@ -226,9 +226,9 @@ Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
 Plug 'Yggdroot/LeaderF'                  "比ctrlp更强大的文件的模糊搜索工具
 Plug 'keeferwu/LeaderF-gtags-history'    "显示leaderf gtags 搜索历史
 Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
-"Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
 Plug 'SirVer/ultisnips'                  "需要和vim-snippets or vim-easycomplete 配合使用
-Plug 'honza/vim-snippets'                "与vim-easycomplete 冲突
+"Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
+Plug 'honza/vim-snippets'                "代码块补全
 Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
@@ -434,6 +434,17 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
     \}
 
 
+" vim-cpp-enhanced-highlight
+let g:cpp_class_scope_highlight = 1                    " 高亮显示类的范围
+let g:cpp_member_variable_highlight = 0                " 高亮显示成员变量
+let g:cpp_class_decl_highlight = 1                     " 高亮显示声明中的类名
+let g:cpp_posix_standard = 1                           " 高亮显示POSIX函数
+let g:cpp_experimental_simple_template_highlight = 1   " 高亮显示模板函数, 在大文件上可能会有点慢
+let g:cpp_experimental_template_highlight = 0          " 高亮显示模板函数, 解决了大文件上慢的问题，但有时会不工作
+let g:cpp_concepts_highlight = 1                       " 高亮显示关键字 "concept "和 "requires" 以及标准库名
+let g:cpp_no_function_highlight = 0                    " 不高亮显示用户定义的函数
+
+
 " changesPlugin  显示修改的代码
 let g:changes_autocmd=1
 let g:changes_use_icons = 1
@@ -571,10 +582,6 @@ endif
 
 
 " vim-gutentags
-" gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-let $GTAGSLABEL = 'native-pygments'
-" 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
-map <c-]> g<c-]>
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
 let g:gutentags_project_root = ['.root']
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
@@ -589,9 +596,13 @@ let g:gutentags_ctags_tagfile = 'tags'
 let g:gutentags_modules = []
 if executable('ctags')
     let g:gutentags_modules += ['ctags']
+    " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
+    map <c-]> g<c-]>
 endif
 if executable('gtags-cscope') && executable('gtags')
    let g:gutentags_modules += ['gtags_cscope']
+   " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
+   let $GTAGSLABEL = 'native-pygments'
 endif
 " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
 let g:gutentags_cache_dir = expand('~/.cache/tags')
@@ -648,17 +659,6 @@ let g:SuperTabContextDefaultCompletionType = "<c-x><c-n>"
 let g:SuperTabCompleteCase = 'match'
 
 
-" vim-cpp-enhanced-highlight
-let g:cpp_class_scope_highlight = 1                    " 高亮显示类的范围
-let g:cpp_member_variable_highlight = 0                " 高亮显示成员变量
-let g:cpp_class_decl_highlight = 1                     " 高亮显示声明中的类名
-let g:cpp_posix_standard = 1                           " 高亮显示POSIX函数
-let g:cpp_experimental_simple_template_highlight = 1   " 高亮显示模板函数, 在大文件上可能会有点慢
-let g:cpp_experimental_template_highlight = 0          " 高亮显示模板函数, 解决了大文件上慢的问题，但有时会不工作
-let g:cpp_concepts_highlight = 1                       " 高亮显示关键字 "concept "和 "requires" 以及标准库名
-let g:cpp_no_function_highlight = 0                    " 不高亮显示用户定义的函数
-
-
 " vim-easycomplete
 let g:easycomplete_scheme="dark"
 let g:easycomplete_lsp_checking = 1           " check LSP server 是否安装
@@ -669,7 +669,7 @@ let g:easycomplete_diagnostics_prev = "<c-p>"
 let g:easycomplete_diagnostics_next = "<c-n>"
 let g:easycomplete_cursor_word_hl = 0         " Highlight the symbol when holding the cursor
 let g:easycomplete_nerd_font = 0              " Using nerdfont is highly recommended
-if get(g:, 'easycomplete_navigation_mapping', 0)
+if get(g:, 'easycomplete_enable', 0)
 " GoTo code navigation
 noremap gr :EasyCompleteReference<CR>
 noremap gd :EasyCompleteGotoDefinition<CR>
