@@ -233,7 +233,6 @@ Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
 else
 Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
-let g:easycomplete_enable = 1
 endif
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 
