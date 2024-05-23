@@ -34,7 +34,7 @@ set number               " 开启行号显示
 "set relativenumber      " 开启相对行号
 set cursorline           " 高亮显示当前行
 "set cursorcolumn        " 高亮光标所在列
-set colorcolumn =101     " 高亮指定列
+set colorcolumn =121     " 高亮指定列
 set whichwrap+=<,>,h,l   " 设置光标键跨行
 set ttimeoutlen=0        " 设置<ESC>键响应时间
 set virtualedit=block,onemore   " 允许光标出现在最后一个字符的后面
