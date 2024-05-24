@@ -603,9 +603,11 @@ if executable('ctags')
     map <c-]> g<c-]>
 endif
 if executable('gtags-cscope') && executable('gtags')
-   let g:gutentags_modules += ['gtags_cscope']
-   " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-   let $GTAGSLABEL = 'native-pygments'
+    let g:gutentags_modules += ['gtags_cscope']
+    " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
+    let $GTAGSLABEL = 'native-pygments'
+    " 禁用 gutentags 自动加载 gtags 数据库到cscope,避免多个项目生成数据文件在cosope相互影响。
+    let g:gutentags_auto_add_gtags_cscope = 0
 endif
 " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
 let g:gutentags_cache_dir = expand('~/.cache/tags')
@@ -615,10 +617,6 @@ let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--language-force=c']
 "let g:gutentags_ctags_extra_args += ['--c++-kinds=+px', '--c-kinds=+px']
 " 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
 let g:gutentags_ctags_extra_args += ['--extras=+q', '--output-format=e-ctags']
-" 使用 gtags-cscope 代替 cscope 等同于 set cscopeprg = 'gtags-cscope'
-let g:gutentags_gtags_cscope_executable = 'gtags-cscope'
-" 禁用 gutentags 自动加载 gtags 数据库的行为,否则当多个项目生成数据文件后，会相互影响
-let g:gutentags_auto_add_gtags_cscope = 0
 let g:gutentags_trace = 0
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
