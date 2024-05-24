@@ -423,14 +423,8 @@ function install_prepare_software_on_ubuntu_like()
 
     if which nvim >/dev/null 2>&1; then
         nvim_version=`nvim --version | head -n 1 | awk '{print $2}'`
-        echo "Current nvim vession is $nvim_version"
-        read -p "Do you want to re-install NEOVIM(0.8.3) ? [Y/N] " ch
-        if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
-            wget https://gitee.com/keeferwu/vimplus/releases/download/append/nvim-linux64-0.8.3.deb
-            sudo apt-get remove neovim --purge
-            sudo dpkg -i nvim-linux64-0.8.3.deb
-            rm nvim-linux64-0.8.3.deb
-        fi
+        echo "Current nvim version is $nvim_version, the other intstall reference:"
+        echo "https://github.com/neovim/neovim/releases"
     else
         sudo add-apt-repository ppa:neovim-ppa/stable
         sudo apt-get update
