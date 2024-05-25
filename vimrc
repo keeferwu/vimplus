@@ -345,6 +345,36 @@ function! DefxHelp()
 endfunction
 
 
+" netrw
+let g:netrw_banner = 1               "Netrw顶端的横幅
+let g:netrw_liststyle = 3            "显示模式为树形
+let g:netrw_altv = 1                 "netrw窗口显示在左边
+let g:netrw_winsize = 20             "netrw窗口的宽度
+let g:netrw_browse_split = 4         "Netrw打开文件的方式前一窗口（右边窗口）
+let g:netrw_sort_options = 'i'       "排序忽略大小写
+"在 netrw 里隐藏 git-ignore 文件 ^\..*:以.开头，^.*\.obj$：.obj
+let g:netrw_list_hide= netrw_gitignore#Hide().'^\..*,^.*\.obj$,^.*\.tgt$,^.*\.x86$'
+"nnoremap <silent> <F4> :call ToggleLexplorer()<CR>
+function! ToggleLexplorer()
+  if exists("t:expl_buf")
+    Lexplore
+    unlet t:expl_buf
+  else
+    let g:lens#disabled = 1
+    Lexplore %:p:h
+    let g:lens#disabled = 0
+    let t:expl_buf = bufnr("%")
+  endif
+endfunction
+autocmd FileType netrw nnoremap <silent><buffer> h :call ChangeToHome()<cr>
+function! ChangeToHome()
+    close
+    let g:lens#disabled = 1
+    Lexplore
+    let g:lens#disabled = 0
+endfunction
+
+
 " tagbar
 nnoremap <silent> <F5> :TagbarToggle<cr>
 let g:tagbar_width = 40    " 设置 tagbar 的宽度为 40 列
@@ -369,7 +399,7 @@ let g:NERDAltDelims_c = 1
 
 " lens
 let g:lens#animate = 0  "取消动画
-let g:lens#disabled_filetypes = ['defx', 'tagbar', 'leaderf']
+let g:lens#disabled_filetypes = ['defx', 'netrw', 'tagbar', 'leaderf']
 let g:lens#height_resize_max = 40
 let g:lens#height_resize_min = 5
 let g:lens#width_resize_max = 120
