@@ -505,7 +505,7 @@ let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 let g:Lf_IgnoreCurrentBufferName = 1
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
 "let g:Lf_ExternalCommand = 'find "%s" -type f'  "Lf_WildIgnore 对此选项不起作用
-let g:Lf_DefaultExternalTool = 'find'
+let g:Lf_DefaultExternalTool = 'rg'
 let g:Lf_UseVersionControlTool = 1  "Lf_UseVersionControlTool = 0 时使用 Lf_DefaultExternalTool 定义的工具搜索文件
 let g:Lf_RecurseSubmodules = 1      "当项目中存在子项目时配合g:Lf_UseVersionControlTool = 1 使用，通过git ls-files ----recurse-submodules 来搜索子项目中的文件
 let g:Lf_DefaultMode = 'Fuzzy'
