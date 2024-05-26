@@ -121,3 +121,13 @@ vim .confg/nvim/init.vim
 
             vim-gutentags:      let $GTAGSCONF = expand("~/.globalrc")
             LeaderF:            let g:Lf_Gtagsconf = expand("~/.globalrc")
+
+#### runtimepath包含的目录简介
+
+        runtimepath默认包含以下目录。并非所有这些都必须出现在文件系统中，但如果存在就会被使用。
+
+            ~/.vim   主目录，保存个人偏好的文件。
+            /usr/local/share/vim/vimfiles  系统范围的Vim目录，保存由系统管理员决定的文件。
+            /usr/local/share/vim/vim81   即$VIMRUNTIME，保存与Vim一起分发的文件。
+            /usr/local/share/vim/vimfiles/after     系统范围Vim目录中的“after”目录。系统管理员可以利用该目录来覆盖默认设置，或添加新的设置。
+            ~/.vim/after     主目录中的“after”目录。可以利用该目录用个人偏好覆盖默认设置或系统设置，或添加新的设置。

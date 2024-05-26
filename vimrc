@@ -542,7 +542,7 @@ let g:Lf_PreviewResult = {
 " 默认rg自动忽略.gitignore指定的文件，链接文件，隐藏文件和二进制文件，可通过g:Lf_RgConfig 进行定制
 " 忽略当前及子目录下的.git目录的内容，排除当前目录下x86_run,target 目录的内容，
 " 排除.map结尾的文件，排除gtags.files，compile_commands.json 文件,可搜索隐藏文件。
-" 另外 -t: 指定文件类型，-i: 忽略大小写	 -g:可指定特定后缀的文件
+" 另外 -t: 指定文件类型，-i: 忽略大小写, -g:可指定特定后缀的文件
 " --unrestricted:主项目中的.ignore 文件忽略掉了子项目目录，该选项可以不受.ignore 文件的限制，
 " 在当前仓库搜索子仓库里的内容, 但搜索过程比较慢
 let g:Lf_RgConfig = [
@@ -642,9 +642,10 @@ endif
 " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
 let g:gutentags_cache_dir = expand('~/.cache/tags')
 let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
+" i 表示如果有继承, 则标识出父类; a 表示类成员调用权限 (public or private); S 表示如果是函数, 则标识函数的signature.
 let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--language-force=c']
-" 为声明生成索引
-"let g:gutentags_ctags_extra_args += ['--c++-kinds=+px', '--c-kinds=+px']
+" 记录函数声明和各种外部和前向声明 (l 表示记录局部变量)
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+pxl', '--c-kinds=+pxl']
 " 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
 let g:gutentags_ctags_extra_args += ['--extras=+q', '--output-format=e-ctags']
 let g:gutentags_trace = 0
