@@ -234,6 +234,7 @@ Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一
 else
 Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
 endif
+"Plug 'puremourning/vimspector'           "代码调试
 "Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 
 call plug#end()
