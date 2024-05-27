@@ -505,9 +505,9 @@ let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 let g:Lf_IgnoreCurrentBufferName = 1
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
 "let g:Lf_ExternalCommand = 'find "%s" -type f'  "Lf_WildIgnore 对此选项不起作用
-let g:Lf_DefaultExternalTool = 'find'            "rg 默认会忽略git子仓库中的文件
-let g:Lf_UseVersionControlTool = 1  "Lf_UseVersionControlTool = 0 时使用 Lf_DefaultExternalTool 定义的工具搜索文件
-let g:Lf_RecurseSubmodules = 1      "当项目中存在子项目时配合g:Lf_UseVersionControlTool = 1 使用，通过git ls-files ----recurse-submodules 来搜索子项目中的文件
+let g:Lf_DefaultExternalTool = 'find'            "rg 默认会自动过滤.ignore .rgignore .gitignore中的文件
+let g:Lf_UseVersionControlTool = 0               "0: 使用 Lf_DefaultExternalTool 定义的工具搜索文件, 1: 使用当前项目所使用的版本控制工具
+let g:Lf_RecurseSubmodules = 1                   "当g:Lf_UseVersionControlTool = 1 时，通过git ls-files --recurse-submodules 来搜索子项目中的文件
 let g:Lf_DefaultMode = 'Fuzzy'
 let g:Lf_RootMarkers = ['.root']
 let g:Lf_WorkingDirectoryMode = 'Aa'
@@ -543,8 +543,10 @@ let g:Lf_PreviewResult = {
 " 默认rg自动忽略.gitignore指定的文件，链接文件，隐藏文件和二进制文件，可通过g:Lf_RgConfig 进行定制
 " 忽略当前及子目录下的.git目录的内容，排除当前目录下x86_run,target 目录的内容，
 " 排除.map结尾的文件，排除gtags.files，compile_commands.json 文件,可搜索隐藏文件。
-" 另外 -t: 指定文件类型，-i: 忽略大小写, -g:可指定特定后缀的文件
-" --unrestricted:主项目中的.ignore 文件忽略掉了子项目目录，该选项可以不受.ignore 文件的限制，
+" -t: 指定文件类型，-i: 忽略大小写, -g:可指定特定后缀的文件
+" -u: 搜索.gitignore 里的文件, -uu: 搜索隐藏文件 , -uuu: 搜索二进制文件
+" --unrestricted:当主项目中的.gitignore 文件忽略掉了子项目目录，该选项可以使搜索不受.gitignore 文件的限制，
+" --no-ignore: 禁用所有与忽略相关的过滤(.igrore .rgignore .gitignore)
 " 在当前仓库搜索子仓库里的内容, 但搜索过程比较慢
 let g:Lf_RgConfig = [
         \ "--max-columns=150",
