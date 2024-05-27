@@ -516,11 +516,11 @@ let g:Lf_NeedCacheTime = 1
 let g:Lf_NumberOfCache = 10
 let g:Lf_ShowHidden = 0
 let g:Lf_WildIgnore = {
-            \ 'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','obj','target'],
+            \ 'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache','obj','target'],
             \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
             \}
 let g:Lf_MruWildIgnore = {
-            \ 'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','obj'],
+            \ 'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache','obj'],
             \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
             \}
 let g:Lf_WindowHeight = 0.40
