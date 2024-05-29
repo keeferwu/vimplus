@@ -347,10 +347,14 @@ endfunction
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
 let g:netrw_liststyle = 3            "显示模式为树形
-let g:netrw_altv = 1                 "netrw窗口显示在左边
 let g:netrw_winsize = 20             "netrw窗口的宽度
-let g:netrw_browse_split = 4         "Netrw打开文件的方式前一窗口（右边窗口）
+if isdirectory(expand("%"))
+let g:netrw_browse_split = 0         "Netrw打开文件的方式为覆盖当前窗口
+else
+let g:netrw_browse_split = 4         "Netrw打开文件的方式为覆盖前一窗口（右边窗口）
+endif
 let g:netrw_sort_options = 'i'       "排序忽略大小写
+let g:netrw_hide = 1                 "忽略隐藏文件
 "在 netrw 里隐藏 git-ignore 文件 ^\..*:以.开头，^.*\.obj$：.obj
 let g:netrw_list_hide= netrw_gitignore#Hide().'^\..*,^.*\.obj$,^.*\.tgt$,^.*\.x86$'
 "nnoremap <silent> <F4> :call ToggleLexplorer()<CR>
