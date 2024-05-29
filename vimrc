@@ -214,8 +214,7 @@ Plug 'Yggdroot/indentLine'               "显示对齐标线
 Plug 'liuchengxu/eleline.vim'            "功能同 airline，比较精简
 Plug 'preservim/nerdcommenter'           "添加注释
 Plug 'luochen1990/rainbow'               "彩虹括号
-Plug 'justinmk/vim-syntax-extra'         "增强语法高亮
-Plug 'octol/vim-cpp-enhanced-highlight'  "cpp扩展高亮
+Plug 'octol/vim-cpp-enhanced-highlight'  "cpp语法扩展高亮
 Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
 Plug 'chrisbra/changesPlugin'            "修改显示
 Plug 'lfv89/vim-interestingwords'        "单词高亮
@@ -469,13 +468,12 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 
 " vim-cpp-enhanced-highlight
 let g:cpp_class_scope_highlight = 1                    " 高亮显示类的范围
-let g:cpp_member_variable_highlight = 0                " 高亮显示成员变量
+let g:cpp_member_variable_highlight = 1                " 高亮显示成员变量
 let g:cpp_class_decl_highlight = 1                     " 高亮显示声明中的类名
 let g:cpp_posix_standard = 1                           " 高亮显示POSIX函数
 let g:cpp_experimental_simple_template_highlight = 1   " 高亮显示模板函数, 在大文件上可能会有点慢
-let g:cpp_experimental_template_highlight = 0          " 高亮显示模板函数, 解决了大文件上慢的问题，但有时会不工作
+let g:cpp_experimental_template_highlight = 1          " 高亮显示模板函数, 解决了大文件上慢的问题，但有时会不工作
 let g:cpp_concepts_highlight = 1                       " 高亮显示关键字 "concept "和 "requires" 以及标准库名
-let g:cpp_no_function_highlight = 0                    " 不高亮显示用户定义的函数
 
 
 " changesPlugin  显示修改的代码
