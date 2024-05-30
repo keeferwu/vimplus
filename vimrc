@@ -355,8 +355,8 @@ let g:netrw_browse_split = 4         "Netrw打开文件的方式为覆盖前一�
 endif
 let g:netrw_sort_options = 'i'       "排序忽略大小写
 let g:netrw_hide = 1                 "忽略隐藏文件
-"在 netrw 里隐藏特定文件: ^\..* ->以.开头，^.*\.obj$ ->.obj
-let g:netrw_list_hide = '^\..*,^.*\.obj$,^.*\.tgt$,^.*\.x86$'
+"在 netrw 里隐藏特定文件: ^\..* ->以.开头，^.*\.o$ ->.o结尾
+"let g:netrw_list_hide = '^\..*,^.*\.o$,^.*\.swp$,^.*\.bin$'
 "nnoremap <silent> <F4> :call ToggleLexplorer()<CR>
 function! ToggleLexplorer()
   if exists("t:expl_buf")
