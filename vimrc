@@ -627,8 +627,24 @@ let s:gutentags_path_exclude = '\( -path "*.git*" -o -path "*clangd*" -o -path "
 let s:gutentags_file_exclude = '\( -type f -not -iname "*makefile*" -not -iname "*.txt" -not -name "*.map" -not -name "*.o" -not -name "*.tgt" -not -name "*.x86" -not -wholename ".gitignore" \)'
 let g:gutentags_file_list_command = 'find . ' . s:gutentags_path_exclude . ' -a -prune -o ' . s:gutentags_file_exclude . ' -print'
 let g:gutentags_ctags_exclude = ['*/.git/*', '*/.clangd/*', '*/configs/*', '*.json', '*.mib', '*.db', '*.css', '*.js', '*.html']
+let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
+" i 表示如果有继承, 则标识出父类; a 表示类成员调用权限 (public or private); S 表示如果是函数, 则标识函数的signature.
+let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--language-force=c']
+" 记录函数声明和各种外部和前向声明
+"let g:gutentags_ctags_extra_args += ['--c++-kinds=+px', '--c-kinds=+px']
+" 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
+let g:gutentags_ctags_extra_args += ['--extras=+q', '--output-format=e-ctags']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = 'tags'
+" 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let g:gutentags_cache_dir = expand('~/.cache/tags')
+let g:gutentags_trace = 0
+"打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
+"let g:gutentags_define_advanced_commands = 1
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_new = 0
+"仅有通过startify session 打开文件，gtags数据才进行更新
+autocmd FileType startify let g:gutentags_generate_on_new = 1
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
 if get(g:, 'gutentags_ctags_module', 1) && executable('ctags')
@@ -642,25 +658,7 @@ if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
     let $GTAGSLABEL = 'native-pygments'
     " 禁用 gutentags 自动加载 gtags 数据库到cscope,避免多个项目生成数据文件在cosope相互影响。
     let g:gutentags_auto_add_gtags_cscope = 0
-endif
-" 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
-let g:gutentags_cache_dir = expand('~/.cache/tags')
-let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
-" i 表示如果有继承, 则标识出父类; a 表示类成员调用权限 (public or private); S 表示如果是函数, 则标识函数的signature.
-let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--language-force=c']
-" 记录函数声明和各种外部和前向声明
-"let g:gutentags_ctags_extra_args += ['--c++-kinds=+px', '--c-kinds=+px']
-" 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
-let g:gutentags_ctags_extra_args += ['--extras=+q', '--output-format=e-ctags']
-let g:gutentags_trace = 0
-"打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
-"let g:gutentags_define_advanced_commands = 1
-let g:gutentags_generate_on_write = 1
-let g:gutentags_generate_on_new = 0
-"仅有通过startify session 打开文件，gtags数据才进行更新
-autocmd FileType startify let g:gutentags_generate_on_new = 1
-" let vim-gutentags generate gtags data to leaderF
-if get(g:, 'Lf_GtagsGutentags', 1)
+    " generate gtags data to leaderF
     let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
     nmap <silent><leader>gu :GutentagsUpdate!<cr>
     if g:gutentags_generate_on_new == 1
