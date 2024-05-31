@@ -606,7 +606,6 @@ let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
 let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
 let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
 nmap <silent><leader>G :Leaderf! gtags --recall<cr>
-let g:leader_gtags_nomap = 0
 nmap <silent><leader>gh :Leaderf gtags_history<cr>
 if g:Lf_GtagsAutoGenerate == 1
     autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
@@ -637,7 +636,7 @@ if get(g:, 'gutentags_ctags_module', 0) && executable('ctags')
     " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
     map <c-]> g<c-]>
 endif
-if executable('gtags-cscope') && executable('gtags')
+if get(g:, 'Lf_GtagsGutentags', 0) && executable('gtags-cscope')
     let g:gutentags_modules += ['gtags_cscope']
     " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
     let $GTAGSLABEL = 'native-pygments'
@@ -661,7 +660,7 @@ let g:gutentags_generate_on_new = 0
 "仅有通过startify session 打开文件，gtags数据才进行更新
 autocmd FileType startify let g:gutentags_generate_on_new = 1
 " let vim-gutentags generate gtags data to leaderF
-if g:Lf_GtagsGutentags == 1
+if get(g:, 'Lf_GtagsGutentags', 0)
     let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
     nmap <silent><leader>gu :GutentagsUpdate!<cr>
     if g:gutentags_generate_on_new == 1
