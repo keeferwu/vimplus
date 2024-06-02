@@ -233,8 +233,8 @@ else
 Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
 let g:gutentags_ctags_module = 0         "不让vim-gutentags支持ctags
 endif
+Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 "Plug 'puremourning/vimspector'           "代码调试
-"Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 
 call plug#end()
 
@@ -720,6 +720,12 @@ imap <script><silent><nowait><expr> <M-=> codeium#Accept()
 imap <M-->   <Cmd>call codeium#Clear()<CR>
 imap <M-,>   <Cmd>call codeium#CycleCompletions(-1)<CR>
 imap <M-.>   <Cmd>call codeium#CycleCompletions(1)<CR>
+
+
+" asyncrun.vim
+noremap <F9> :AsyncRun -mode=term -pos=tab<space>
+noremap <silent> <leader>tn :tabnext<cr>
+noremap <silent> <leader>tc :tabclose<cr>
 
 
 " vim-buffer
