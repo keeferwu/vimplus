@@ -163,6 +163,8 @@ nnoremap <c-l> <c-w>l
 
 " 打开文件自动定位到最后编辑的位置
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
+" 以十六进制显示 vim -b 打开的二进制文件
+autocmd BufReadPost * if &bin | execute "%!xxd" | endif
 
 " 主题设置
 set background=dark
