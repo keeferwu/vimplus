@@ -725,7 +725,8 @@ imap <M-.>   <Cmd>call codeium#CycleCompletions(1)<CR>
 
 
 " asyncrun.vim
-noremap <F9> :AsyncRun -mode=term -pos=tab<space>
+let g:asyncrun_open = 10
+noremap <F9> :AsyncRun -mode=term -pos=tab -close<space>
 noremap <silent> <leader>tn :tabnext<cr>
 noremap <silent> <leader>tc :tabclose<cr>
 
