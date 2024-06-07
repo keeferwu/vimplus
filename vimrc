@@ -247,10 +247,8 @@ runtime macros/matchit.vim
 
 " vim-which-key
 let g:mapleader = "\<Space>"      " 定义<leader>键
-let g:maplocalleader = ','        " 定义<localleader>键
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
 
 " 重新加载vimrc文件
@@ -407,6 +405,7 @@ let g:relative_path_file = 1
 let g:eleline_slim = 0
 let g:eleline_powerline_fonts = 1
 
+
 " nerdcommenter
 " default delims to /**/ for cpp or c  file
 let g:NERDAltDelims_cpp = 1
@@ -432,7 +431,6 @@ let g:interestingWordsCycleColors = 1
 
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
-map <leader>w <Plug>(easymotion-bd-w)
 nmap <leader>w <Plug>(easymotion-overwin-w)
 
 
@@ -445,16 +443,15 @@ let g:formatdef_allman = '"astyle --style=allman --pad-oper"'        " allman风
 let g:formatters_cpp = ['allman']
 let g:formatters_c = ['allman']
 let g:autoformat_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
-vnoremap <silent><leader><space> : RemoveWhiteSpace<cr>
 vnoremap <silent><leader><Tab>   : MoveSpaceToTab<cr>
 vnoremap <silent><leader><S-Tab> : MoveTabToSpace<cr>
 
 
 " vim-smooth-scroll
-noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
-noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
-noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
-noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
+nnoremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
+nnoremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
+nnoremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
+nnoremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 
 
 " rainbow
@@ -576,16 +573,16 @@ let g:Lf_RgConfig = [
     \ ]
 
 "Leaderf rg -e<Space>
-nmap <leader>rg <Plug>LeaderfRgPrompt
-nmap <silent> <leader>rw :LeaderfRgInteractive<cr>
+nnoremap <leader>rg <Plug>LeaderfRgPrompt
+nnoremap <silent> <leader>rw :LeaderfRgInteractive<cr>
 "上次 rg 搜索结果
-noremap <silent> <leader>R :LeaderfRgRecall<cr>
+nnoremap <silent> <leader>R :LeaderfRgRecall<cr>
 
 " 搜索当前文件选中内容输出到quickfix
 vnoremap <silent> <leader>gq y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
 nnoremap <silent> <leader>gq :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
-noremap <silent> <leader>Q :LeaderfQuickFix<cr>
-noremap <silent> <leader>F :Leaderf file --recall<cr>
+nnoremap <silent> <leader>Q :LeaderfQuickFix<cr>
+nnoremap <silent> <leader>F :Leaderf file --recall<cr>
 
 " Leaderf git
 nnoremap <leader>lg :LeaderfGit<cr>
@@ -618,11 +615,11 @@ let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
 let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
 let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
 let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-nmap <silent><leader>G :Leaderf! gtags --recall<cr>
-nmap <silent><leader>gh :Leaderf gtags_history<cr>
+nnoremap <silent><leader>G :Leaderf! gtags --recall<cr>
+nnoremap <silent><leader>gh :Leaderf gtags_history<cr>
 if g:Lf_GtagsAutoGenerate == 1
     autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
-    nmap <silent><leader>gu :Leaderf gtags --update<cr>
+    nnoremap <silent><leader>gu :Leaderf gtags --update<cr>
     if g:Lf_GtagsAutoUpdate == 1
         " 光标1小时没有发生移动，自动更新gtags文件
         autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(3600*1000, { -> execute('Leaderf gtags --update')})|endif
@@ -673,7 +670,7 @@ if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
     let g:gutentags_auto_add_gtags_cscope = 0
     " generate gtags data to leaderF
     let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
-    nmap <silent><leader>gu :GutentagsUpdate!<cr>
+    nnoremap <silent><leader>gu :GutentagsUpdate!<cr>
     if g:gutentags_generate_on_new == 1
         " 光标10min内没有发生移动，自动更新gtags文件
         autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(600*1000, { -> execute('GutentagsUpdate!')})|endif
@@ -718,10 +715,10 @@ let g:easycomplete_cursor_word_hl = 0         " Highlight the symbol when holdin
 let g:easycomplete_nerd_font = 0              " Using nerdfont is highly recommended
 if get(g:, 'easycomplete_enable', 0)
 " GoTo code navigation
-noremap gr :EasyCompleteReference<CR>
-noremap gd :EasyCompleteGotoDefinition<CR>
-noremap gb :BackToOriginalBuffer<CR>
-noremap rn :EasyCompleteRename<CR>
+nnoremap gr :EasyCompleteReference<CR>
+nnoremap gd :EasyCompleteGotoDefinition<CR>
+nnoremap gb :BackToOriginalBuffer<CR>
+nnoremap rn :EasyCompleteRename<CR>
 endif
 
 
@@ -737,13 +734,13 @@ imap <M-.>   <Cmd>call codeium#CycleCompletions(1)<CR>
 
 " asyncrun.vim
 let g:asyncrun_open = 10
-noremap <F9> :AsyncRun -mode=term -pos=tab -close<space>
-noremap <silent> <leader>tn :tabnext<cr>
-noremap <silent> <leader>tc :tabclose<cr>
+nnoremap <F9> :AsyncRun -mode=term -pos=tab -close<space>
+nnoremap <silent> <leader>tn :tabnext<cr>
+nnoremap <silent> <leader>tc :tabclose<cr>
 
 
 " vim-buffer
-noremap <silent> <leader>qa :call CloseBuffer(0)<cr>
+nnoremap <silent> <leader>qa :call CloseBuffer(0)<cr>
 nnoremap <silent> <leader>bd :call CloseBuffer(1)<cr>
 autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
 function! CloseBuffer(action)
