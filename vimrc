@@ -247,6 +247,8 @@ runtime macros/matchit.vim
 
 " vim-which-key
 let g:mapleader = "\<Space>"      " 定义<leader>键
+nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 let g:which_key_map = {}
 let g:which_key_map.w = 'easy motion'
 let g:which_key_map.h = 'changes stage hunk'
@@ -286,8 +288,6 @@ let g:which_key_map_visual.g = {'name' : '+gtags'}
 let g:which_key_map_visual.g.q = 'vimgrep select pattern to qickfix'
 let g:which_key_map_visual.k = 'highlight select pattern'
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
-nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
-vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 
 
 " 重新加载vimrc文件
