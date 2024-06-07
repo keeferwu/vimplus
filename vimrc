@@ -18,7 +18,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 通用设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let mapleader = ","      " 定义<leader>键
 set nocompatible         " 设置不兼容原始vi模式
 filetype on              " 设置开启文件类型侦测
 filetype plugin on       " 设置加载对应文件类型的插件
@@ -37,6 +36,7 @@ set cursorline           " 高亮显示当前行
 set colorcolumn =121     " 高亮指定列
 set whichwrap+=<,>,h,l   " 设置光标键跨行
 set ttimeoutlen=0        " 设置<ESC>键响应时间
+set timeoutlen=500       " 默认timeoutlen is 1000 ms
 set virtualedit=block,onemore   " 允许光标出现在最后一个字符的后面
 set bsdir=buffer         " 设定文件浏览器目录为当前目录
 " 开启鼠标
@@ -199,6 +199,7 @@ command! -nargs=1 -bar UnPlug call s:deregister(<args>)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
+Plug 'liuchengxu/vim-which-key'          "vim快捷键提示
 Plug 'chxuan/vimplus-startify'           "vimplus开始页面
 if has("nvim")
 Plug 'Shougo/defx.nvim', {'do': ':UpdateRemotePlugins'}
@@ -242,6 +243,15 @@ call plug#end()
 
 " load vim default plugin
 runtime macros/matchit.vim
+
+
+" vim-which-key
+let g:mapleader = "\<Space>"      " 定义<leader>键
+let g:maplocalleader = ','        " 定义<localleader>键
+nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+
 
 " 重新加载vimrc文件
 "nnoremap <leader><leader>l :source $MYVIMRC<cr>
@@ -527,6 +537,7 @@ let g:Lf_MruWildIgnore = {
             \ 'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache','obj'],
             \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
             \}
+"let g:Lf_WindowPosition = 'popup'
 let g:Lf_WindowHeight = 0.40
 let g:Lf_PreviewInPopup = 1           "启用预览这个功能 P 弹出窗口
 let g:Lf_PreviewPopupWidth = 0        "设置预览窗口大小
