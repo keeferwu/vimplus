@@ -2,9 +2,7 @@
 
 | 快捷键                | 说明                              | 插件帮助文档                 |
 | -------               | ------                            | ------                       |
-| `<space>`             | <Leader> Key                      |                              |
-| `<leader>qa`          | 退出vim                           |                              |
-| `<leader>qb`          | 删除当前的buffer                  |                              |
+| `<space>`             | 显示所有<Leader>引导的快捷键      | :h vim-which-key             |
 | `Ctrl+s`              | 保存内容                          |                              |
 | `Ctrl+c`              | 文本复制                          |                              |
 | `Ctrl+v`              | 文本粘贴                          |                              |
@@ -18,40 +16,6 @@
 | `Ctrl+f`              | 下一页                            |                              |
 | `Ctrl+u`              | 上移半屏                          |                              |
 | `Ctrl+d`              | 下移半屏                          |                              |
-| `<leader>lf`          | 搜索~目录下的文件                 | :Leaderf -h                  |
-| `<leader>lb`          | 搜索打开过的buffer                |                              |
-| `<leader>lt`          | 搜索当前buffer下tag               |                              |
-| `<leader>ll`          | 搜索当前buffer下内容              |                              |
-| `<leader>lm`          | 搜索MRU下的文件                   |                              |
-| `<leader>lg`          | 查看git log                       |                              |
-| `<leader>F`           | 打开文件搜索窗口                  |                              |
-| `<leader>rg`          | 搜索输入的字符                    | :Leaderf rg -h               |
-| `<leader>rw`          | 搜索光标下的字符                  |                              |
-| `<leader>R`           | 查看上次rg 的搜索结果             |                              |
-| `<leader>ga`          | 输入要查询的字符                  | :Leaderf gtags -h            |
-| `<leader>gd`          | definition光标下字符              |                              |
-| `<leader>gr`          | reference光标下字符               |                              |
-| `<leader>gs`          | symbol光标下字符                  |                              |
-| `<leader>gg`          | grep光标下字符                    |                              |
-| `<leader>G`           | 重新打开gtags搜索窗               |                              |
-| `<leader>gu`          | 更新gtags索引数据                 |                              |
-| `<leader>gh`          | 查看gtags搜索历史                 |                              |
-| `<leader>gq`          | 当前文件搜索内容输出到quickfix    |                              |
-| `<leader>Q`           | 打开quickfix窗口                  |                              |
-| `<Leader>w`           | 光标快速移动                      | :h vim-easymotion            |
-| `<Leader>k`           | 单词设置/清除高亮                 | :h vim-interestingwords      |
-| `<Leader>K`           | 清除所有高亮                      |                              |
-| `<Leader>n`           | 当前单词的下一处高亮              |                              |
-| `<Leader>N`           | 当前单词的上一处高亮              |                              |
-| `<leader>cc`          | 注释当前行                        | :h nerdcommenter             |
-| `<leader>cu`          | 取消注释                          |                              |
-| `<leader>ca`          | 切换注释符                        |                              |
-| `<leader>cs`          | 以”性感”的方式注释                |                              |
-| `<leader>c$`          | 注释光标所在位置，直到行尾        |                              |
-| `<leader>c<space>`    | 加上/解开注释, 智能判断           |                              |
-| `<leader>f<space>`    | 去除选中行尾部空格                | :h vim-autoformat            |
-| `<leader>f<Tab>`      | 修改选中行开头的空格为tab         |                              |
-| `<leader>f<S-Tab>`    | 修改选中行开头的tab为空格         |                              |
 | `]h`                  | 跳转到下一处修改的位置            | :h changesPlugin             |
 | `[h`                  | 跳转到上一处修改的位置            |                              |
 | `:CD`                 | 打开/关闭diff 缓存                |                              |
@@ -60,10 +24,6 @@
 | `Alt+,`               | 智能补全上一条目（插入模式）      |                              |
 | `Alt+.`               | 智能补全下一条目（插入模式）      |                              |
 | `Alt+-`               | 清除智能补全填充（插入模式）      |                              |
-
-| `<leader><leader>i`   | 插件安装                          |  vim-plug                    |
-| `<leader><leader>u`   | 插件跟新                          |                              |
-| `<leader><leader>c`   | 插件删除                          |                              |
 
 
 ## 实用命令
