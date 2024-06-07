@@ -2,9 +2,9 @@
 
 | 快捷键                | 说明                              | 插件帮助文档                 |
 | -------               | ------                            | ------                       |
-| `,`                   | <Leader> Key                      |                              |
-| `<leader>bd`          | 删除当前的buffer                  |                              |
+| `<space>`             | <Leader> Key                      |                              |
 | `<leader>qa`          | 退出vim                           |                              |
+| `<leader>qb`          | 删除当前的buffer                  |                              |
 | `Ctrl+s`              | 保存内容                          |                              |
 | `Ctrl+c`              | 文本复制                          |                              |
 | `Ctrl+v`              | 文本粘贴                          |                              |

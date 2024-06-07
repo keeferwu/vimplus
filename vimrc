@@ -247,6 +247,45 @@ runtime macros/matchit.vim
 
 " vim-which-key
 let g:mapleader = "\<Space>"      " 定义<leader>键
+let g:which_key_map = {}
+let g:which_key_map.w = 'easy motion'
+let g:which_key_map.h = 'changes stage hunk'
+let g:which_key_map.H = 'changes stage hunk revert'
+let g:which_key_map.k = 'color <cword>'
+let g:which_key_map.K = 'uncolor all worlds'
+let g:which_key_map.F = 'leaderf file window'
+let g:which_key_map.G = 'leaderf gtags window'
+let g:which_key_map.R = 'leaderf rigrep window'
+let g:which_key_map.Q = 'leaderf qickfix window'
+let g:which_key_map.t = {'name' : '+table'}
+let g:which_key_map.c = {'name' : '+commenter'}
+let g:which_key_map.l = {'name' : '+leaderf'}
+let g:which_key_map.r = {'name' : '+rigrep',
+                    \    'g' : 'rg with customer prompt',
+                    \    'w' : 'rg with interactive',
+                    \   }
+let g:which_key_map.g = {'name' : '+gtags',
+                    \    'a' : 'choose a querytype for pattern',
+                    \    'd' : 'goto definition',
+                    \    'r' : 'reference symbol with definition',
+                    \    's' : 'reference symbol with no definition',
+                    \    'g' : 'grep <cword> by gtags',
+                    \    'q' : 'vimgrep <cword> to qickfix',
+                    \    'h' : 'gtags search history',
+                    \    'u' : 'gtags upgrade',
+                    \   }
+let g:which_key_map.q = {'name' : '+close',
+                    \    'a' : 'close all windows',
+                    \    'b' : 'close current buffer',
+                    \   }
+call which_key#register('<Space>', "g:which_key_map", 'n')
+let g:which_key_map_visual = {}
+let g:which_key_map_visual.f = {'name' : '+codeformat'}
+let g:which_key_map_visual.c = {'name' : '+commenter'}
+let g:which_key_map_visual.g = {'name' : '+gtags'}
+let g:which_key_map_visual.g.q = 'vimgrep select pattern to qickfix'
+let g:which_key_map_visual.k = 'highlight select pattern'
+call which_key#register('<Space>', "g:which_key_map_visual", 'v')
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 
@@ -742,7 +781,7 @@ nnoremap <silent> <leader>tc :tabclose<cr>
 
 " vim-buffer
 nnoremap <silent> <leader>qa :call CloseBuffer(0)<cr>
-nnoremap <silent> <leader>bd :call CloseBuffer(1)<cr>
+nnoremap <silent> <leader>qb :call CloseBuffer(1)<cr>
 autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
 function! CloseBuffer(action)
   if &filetype == "defx" || &filetype == "tagbar" || &filetype == "qf"
