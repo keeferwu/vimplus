@@ -253,7 +253,7 @@ let g:which_key_map = {}
 let g:which_key_map.w = 'easy motion'
 let g:which_key_map.h = 'changes stage hunk'
 let g:which_key_map.H = 'changes stage hunk revert'
-let g:which_key_map.k = 'color <cword>'
+let g:which_key_map.k = 'color/uncolor cword'
 let g:which_key_map.K = 'uncolor all worlds'
 let g:which_key_map.F = 'leaderf file window'
 let g:which_key_map.G = 'leaderf gtags window'
@@ -271,8 +271,8 @@ let g:which_key_map.g = {'name' : '+gtags',
                     \    'd' : 'goto definition',
                     \    'r' : 'reference symbol with definition',
                     \    's' : 'reference symbol with no definition',
-                    \    'g' : 'grep <cword> by gtags',
-                    \    'q' : 'vimgrep <cword> to qickfix',
+                    \    'g' : 'grep cword by gtags',
+                    \    'q' : 'vimgrep cword to qickfix',
                     \    'h' : 'gtags search history',
                     \    'u' : 'gtags upgrade',
                     \   }
