@@ -49,9 +49,9 @@
 | `<leader>cs`          | 以”性感”的方式注释                |                              |
 | `<leader>c$`          | 注释光标所在位置，直到行尾        |                              |
 | `<leader>c<space>`    | 加上/解开注释, 智能判断           |                              |
-| `<leader><space>`     | 去除选中行尾部空格                | :h vim-autoformat            |
-| `<leader><Tab>`       | 修改选中行开头的空格为tab         |                              |
-| `<leader><S-Tab>`     | 修改选中行开头的tab为空格         |                              |
+| `<leader>f<space>`    | 去除选中行尾部空格                | :h vim-autoformat            |
+| `<leader>f<Tab>`      | 修改选中行开头的空格为tab         |                              |
+| `<leader>f<S-Tab>`    | 修改选中行开头的tab为空格         |                              |
 | `]h`                  | 跳转到下一处修改的位置            | :h changesPlugin             |
 | `[h`                  | 跳转到上一处修改的位置            |                              |
 | `:CD`                 | 打开/关闭diff 缓存                |                              |
