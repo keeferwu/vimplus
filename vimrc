@@ -148,6 +148,9 @@ endif
 noremap  <silent> <m-v> <c-v>
 noremap  <silent> <c-v> "+p
 vnoremap <silent> <c-c> "+y
+"noremap  <silent> <c-v> :call clipboard#paste()<cr>
+"vnoremap <silent> <c-c> :call clipboard#yank()<cr>
+"autocmd VimEnter * call clipboard#set()
 " 保存
 noremap <silent> <c-s> :w<cr>
 inoremap <silent> <c-s> <Esc>:w<cr>

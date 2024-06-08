@@ -8,51 +8,49 @@ if exists('g:loaded_clipboard')
 endif
 let g:loaded_clipboard = 1
 
-let [s:yank_cmd, s:paste_cmd] = s:set_command()
-echom 'yank_cmd is:' . string(s:yank_cmd)
-echom 'paste_cmd is:' . string(s:paste_cmd)
+let s:yank_cmd = ''
+let s:paste_cmd = ''
 
-function! s:set_command() abort
-  let yank = ''
-  let paste = ''
-
+function! clipboard#set() abort
   " the logic is based on nvim's clipboard provider
   " in vim8, system() do not support list argv
-
   if has('mac')
-    let yank = 'pbcopy'
-    let paste = 'pbpaste'
+    let s:yank_cmd  = 'pbcopy'
+    let s:paste_cmd = 'pbpaste'
   elseif !empty($WAYLAND_DISPLAY) && executable('wl-copy') && executable('wl-paste')
-    let yank = 'wl-copy --foreground --type text/plain'
-    let paste = 'wl-paste --no-newline'
+    let s:yank_cmd = 'wl-copy --foreground --type text/plain'
+    let s:paste_cmd = 'wl-paste --no-newline'
   elseif !empty($DISPLAY) && executable('xclip')
-    let yank = 'xclip -i -selection clipboard'
-    let paste = 'xclip -o -selection clipboard'
+    let s:yank_cmd = 'xclip -i -selection clipboard'
+    let s:paste_cmd = 'xclip -o -selection clipboard'
   elseif !empty($DISPLAY) && executable('xsel')
-    let yank = 'xsel -i -b'
-    let paste = 'xsel -o -b'
+    let s:yank_cmd = 'xsel -i -b'
+    let s:paste_cmd = 'xsel -o -b'
   elseif executable('lemonade')
-    let yank = 'lemonade copy'
-    let paste = 'lemonade paste'
+    let s:yank_cmd = 'lemonade copy'
+    let s:paste_cmd = 'lemonade paste'
   elseif executable('doitclient')
-    let yank = 'doitclient wclip'
-    let paste = 'doitclient wclip -r'
+    let s:yank_cmd = 'doitclient wclip'
+    let s:paste_cmd = 'doitclient wclip -r'
   elseif executable('win32yank.exe')
     if has('wsl') && getftype(exepath('win32yank.exe')) == 'link'
       let win32yank = resolve(exepath('win32yank.exe'))
     else
       let win32yank = 'win32yank.exe'
     endif
-    let yank = shellescape(win32yank) . ' -i --crlf'
-    let paste = shellescape(win32yank) .  ' -o --lf'
+    let s:yank_cmd = shellescape(win32yank) . ' -i --crlf'
+    let s:paste_cmd = shellescape(win32yank) .  ' -o --lf'
   elseif executable('termux-clipboard-set')
-    let yank = 'termux-clipboard-set'
-    let paste = 'termux-clipboard-get'
+    let s:yank_cmd = 'termux-clipboard-set'
+    let s:paste_cmd = 'termux-clipboard-get'
   elseif !empty($TMUX) && executable('tmux')
-    let yank = 'tmux load-buffer -'
-    let paste = 'tmux save-buffer -'
+    let s:yank_cmd = 'tmux load-buffer -'
+    let s:paste_cmd = 'tmux save-buffer -'
   endif
-  return [yank, paste]
+  echohl WarningMsg
+  echom '[YANK:'.string(s:yank_cmd).']'
+  echom '[PASTE:'.string(s:paste_cmd).']'
+  echohl None
 endfunction
 
 function! s:get_selection_text()
