@@ -18,40 +18,39 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 通用设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible         " 设置不兼容原始vi模式
-filetype on              " 设置开启文件类型侦测
-filetype plugin on       " 设置加载对应文件类型的插件
-set noeb                 " 关闭错误的提示
-syntax enable            " 开启语法高亮功能
-syntax on                " 自动语法高亮
-set t_Co=256             " 开启256色支持
-set cmdheight=1          " 设置命令行的高度
-set showcmd              " select模式下显示选中的行数
-set ruler                " 总是显示光标位置
-set laststatus=2         " 总是显示状态栏
-set number               " 开启行号显示
-"set relativenumber      " 开启相对行号
-set cursorline           " 高亮显示当前行
-"set cursorcolumn        " 高亮光标所在列
-set colorcolumn =121     " 高亮指定列
-set whichwrap+=<,>,h,l   " 设置光标键跨行
-set ttimeoutlen=0        " 设置<ESC>键响应时间
-set timeoutlen=500       " 默认timeoutlen is 1000 ms
+set nocompatible                " 设置不兼容原始vi模式
+filetype on                     " 设置开启文件类型侦测
+filetype plugin on              " 设置加载对应文件类型的插件
+set noeb                        " 关闭错误的提示
+syntax enable                   " 开启语法高亮功能
+syntax on                       " 自动语法高亮
+set t_Co=256                    " 开启256色支持
+set cmdheight=1                 " 设置命令行的高度
+set showcmd                     " select模式下显示选中的行数
+set ruler                       " 总是显示光标位置
+set laststatus=2                " 总是显示状态栏
+set number                      " 开启行号显示
+"set relativenumber             " 开启相对行号
+set cursorline                  " 高亮显示当前行
+"set cursorcolumn               " 高亮光标所在列
+set colorcolumn =121            " 高亮指定列
+set whichwrap+=<,>,h,l          " 设置光标键跨行
+set ttimeoutlen=0               " 设置<ESC>键响应时间
+set timeoutlen=500              " 默认超时是1000 ms
 set virtualedit=block,onemore   " 允许光标出现在最后一个字符的后面
-set bsdir=buffer         " 设定文件浏览器目录为当前目录
-" 开启鼠标
-set mouse=a
+set bsdir=buffer                " 设定文件浏览器目录为当前目录
+set mouse=a                     " 开启鼠标
 set selection=exclusive
 set selectmode=mouse,key
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 缓存设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nobackup            " 设置不备份
-set noswapfile          " 禁止生成临时文件
-set autoread            " 文件在vim之外修改过，自动重新读入
-set autowrite           " 设置自动保存
-set confirm             " 在处理未保存或只读文件的时候，弹出确认
+set nobackup                    " 设置不备份
+set noswapfile                  " 禁止生成临时文件
+set autoread                    " 文件在vim之外修改过，自动重新读入
+set autowrite                   " 设置自动保存
+set confirm                     " 在处理未保存或只读文件的时候，弹出确认
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 编码设置
@@ -65,31 +64,31 @@ set fileencodings=utf8,ucs-bom,gbk,cp936,gb2312,gb18030
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 代码缩进和排版
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set autoindent           " 设置自动缩进
-set cindent              " 设置使用C/C++语言的自动缩进方式
-set cinoptions=g0,:0,N-s,(0    " 设置C/C++语言的具体缩进方式
-set smartindent          " 智能的选择对其方式
-filetype indent on       " 自适应不同语言的智能缩进
-set expandtab            " 将制表符扩展为空格
-set tabstop=4            " 设置编辑时制表符占用空格数
-set shiftwidth=4         " 设置格式化时制表符占用空格数
-set softtabstop=4        " 设置4个空格为制表符
-set smarttab             " 在行和段开始处使用制表符
-set nowrap               " 禁止折行
-set backspace=2          " 使用回车键正常处理indent,eol,start等
-set sidescroll=10        " 设置向右滚动字符数
-set list  				 " 将tab显示为可见字符
+set autoindent                   " 设置自动缩进
+set cindent                      " 设置使用C/C++语言的自动缩进方式
+set cinoptions=g0,:0,N-s,(0      " 设置C/C++语言的具体缩进方式
+set smartindent                  " 智能的选择对其方式
+filetype indent on               " 自适应不同语言的智能缩进
+set expandtab                    " 将制表符扩展为空格
+set tabstop=4                    " 设置编辑时制表符占用空格数
+set shiftwidth=4                 " 设置格式化时制表符占用空格数
+set softtabstop=4                " 设置4个空格为制表符
+set smarttab                     " 在行和段开始处使用制表符
+set nowrap                       " 禁止折行
+set backspace=2                  " 使用回车键正常处理indent,eol,start等
+set sidescroll=10                " 设置向右滚动字符数
+set list                         " 将tab显示为可见字符
 set listchars=tab:>-,trail:-     " tab将被显示为>—-,行尾多余的空白字符显示成-
-set showmatch            " 高亮显示匹配括号
+set showmatch                    " 高亮显示匹配括号
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 代码折叠
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"set nofoldenable        " 禁用折叠代码
-set foldmethod=syntax    " 折叠方式
-set foldcolumn=0         " 设置折叠区域的宽度
-set foldlevelstart=99    " 打开文件是默认不折叠代码
-setlocal foldlevel=1     " 设置折叠层数
+"set nofoldenable                " 禁用折叠代码
+set foldmethod=syntax            " 折叠方式
+set foldcolumn=0                 " 设置折叠区域的宽度
+set foldlevelstart=99            " 打开文件是默认不折叠代码
+setlocal foldlevel=1             " 设置折叠层数
 "autocmd BufWinEnter * silent! :%foldopen! "打开文件是默认不折叠代码
 nnoremap <silent> <F2> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 "注：<space> 不可以随便映射，因为ctrl+] 会应用<space> 映射的命令
@@ -97,16 +96,16 @@ nnoremap <silent> <F2> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 代码补全
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set wildmenu             " vim自身命名行模式智能补全
-set completeopt-=preview " 补全时不显示窗口，只显示补全列表
+set wildmenu                     " vim自身命名行模式智能补全
+set completeopt-=preview         " 补全时不显示窗口，只显示补全列表
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 搜索设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set incsearch           " 开启实时搜索功能
-set ignorecase          " 搜索时大小写不敏感
-set smartcase           " 搜索大写字母不敏感
-set nohlsearch          " 取消高亮搜索结果
+set incsearch                    " 开启实时搜索功能
+set ignorecase                   " 搜索时大小写不敏感
+set smartcase                    " 搜索大写字母不敏感
+set nohlsearch                   " 取消高亮搜索结果
 " 仅当光标处于搜索内容时高亮搜索结果
 function! HighlightSearch()
   let search_text = @/
@@ -244,7 +243,6 @@ call plug#end()
 " load vim default plugin
 runtime macros/matchit.vim
 
-
 " vim-which-key
 let g:mapleader = "\<Space>"      " 定义<leader>键
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
@@ -289,33 +287,29 @@ let g:which_key_map_visual.g.q = 'vimgrep select pattern to qickfix'
 let g:which_key_map_visual.k = 'highlight select pattern'
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
 
-
 " 重新加载vimrc文件
 "nnoremap <leader><leader>l :source $MYVIMRC<cr>
-
 " 安装、更新、删除插件
 nnoremap <leader><leader>i :PlugInstall<cr>
 nnoremap <leader><leader>u :PlugUpdate<cr>
 nnoremap <leader><leader>c :PlugClean<cr>
 
-
 " vimplus-startify
 let g:startify_session_persistence = 1
 " 相对于默认配置把sessions放在第一个
 let g:startify_list_order = [
-		\ ['   Sessions'],       'sessions',
-        \ ['   MRU '. getcwd()], 'dir',
-        \ ['   Bookmarks'],      'bookmarks',
-        \ ['   Commands'],       'commands',
-        \ ]
+            \ ['   Sessions'],       'sessions',
+            \ ['   MRU '. getcwd()], 'dir',
+            \ ['   Bookmarks'],      'bookmarks',
+            \ ['   Commands'],       'commands',
+            \ ]
 let g:startify_session_root_mark = '.root'
 "配置项目工作目录到path,通过gf实现头文件跳转
 "打开session时调整vim为实时调度，避免cpu繁忙啊卡顿: 'exe system("sudo chrt -r -a -p 50 ".getpid())'
 let g:startify_session_savecmds = [
-           \ 'let &path=&path.getcwd()."/**"',
-           \ 'clearjumps'
-           \ ]
-
+            \ 'let &path=&path.getcwd()."/**"',
+            \ 'clearjumps'
+            \ ]
 
 "defx.nvim
 call defx#custom#option('_', {
@@ -328,10 +322,10 @@ call defx#custom#option('_', {
             \ 'resume': 1,
             \ })
 call defx#custom#column('icon', {
-      \ 'directory_icon': '▸',
-      \ 'opened_icon': '▾',
-      \ 'root_icon': ' ',
-      \ })
+            \ 'directory_icon': '▸',
+            \ 'opened_icon': '▾',
+            \ 'root_icon': ' ',
+            \ })
 nnoremap <silent> <F4> :Defx `escape(expand('%:p:h'), ' :')` -search=`expand('%:p')`<CR>
 autocmd BufWritePost * call defx#redraw()
 autocmd FileType defx call s:defx_mappings()
@@ -364,21 +358,21 @@ function! DefxHelp()
     if s:short_help == 0
         let s:short_help = 1
         let help_cmds = [
-                \ ['h ',              'Jump to home directory'],
-                \ ['u ',              'Jump to up directory'],
-                \ ['v ',              'Open file at vsplit buffer'],
-                \ ['r ',              'Rename cursor file'],
-                \ ['c ',              'Create a new file'],
-                \ ['q ',              'Close defx window'],
-                \ ['< ',              'Increase defx window width'],
-                \ ['> ',              'Decrease defx window width'],
-                \ ['. ',              'Show ignore file'],
-                \ ['s ',              'Select cursor file'],
-                \ ['* ',              'Select all files'],
-                \ ['# ',              'Clear selected files'],
-                \ ['dd',              'Move cursor or selected file'],
-                \ ['yy',              'Copy cursor or selected file'],
-                \ ['pp',              'Paste chip board files'],
+            \ ['h ',              'Jump to home directory'],
+            \ ['u ',              'Jump to up directory'],
+            \ ['v ',              'Open file at vsplit buffer'],
+            \ ['r ',              'Rename cursor file'],
+            \ ['c ',              'Create a new file'],
+            \ ['q ',              'Close defx window'],
+            \ ['< ',              'Increase defx window width'],
+            \ ['> ',              'Decrease defx window width'],
+            \ ['. ',              'Show ignore file'],
+            \ ['s ',              'Select cursor file'],
+            \ ['* ',              'Select all files'],
+            \ ['# ',              'Clear selected files'],
+            \ ['dd',              'Move cursor or selected file'],
+            \ ['yy',              'Copy cursor or selected file'],
+            \ ['pp',              'Paste chip board files'],
             \ ]
         silent 0put ='\" defx keybindings'
         silent  put ='\"'
@@ -392,7 +386,6 @@ function! DefxHelp()
     endif
     setlocal nomodifiable
 endfunction
-
 
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
@@ -427,7 +420,6 @@ function! ChangeToHome()
     let g:lens#disabled = 0
 endfunction
 
-
 " tagbar
 nnoremap <silent> <F5> :TagbarToggle<cr>
 let g:tagbar_width = 40    " 设置 tagbar 的宽度为 40 列
@@ -438,40 +430,31 @@ let g:tagbar_sort = 0        " 标签不排序，默认排序
 " 在某些情况下自动打开tagbar
 "autocmd BufReadPost *.cpp,*.c,*.lua,*.hpp,*.cc,*.cxx call tagbar#autoopen()
 
-
 " eleline
 let g:relative_path_file = 1
 let g:eleline_slim = 0
 let g:eleline_powerline_fonts = 1
-
 
 " nerdcommenter
 " default delims to /**/ for cpp or c  file
 let g:NERDAltDelims_cpp = 1
 let g:NERDAltDelims_c = 1
 
-
-" lens
-let g:lens#animate = 0  "取消动画
-let g:lens#disabled_filetypes = ['defx', 'netrw', 'tagbar', 'leaderf']
-let g:lens#height_resize_max = 40
-let g:lens#height_resize_min = 5
-let g:lens#width_resize_max = 120
-let g:lens#width_resize_min = 20
-
-
 " indentLine 开启代码对齐线
 let g:indentLine_enabled = 1
 
-
 " vim-interestingwords
 let g:interestingWordsCycleColors = 1
-
 
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
 nmap <leader>w <Plug>(easymotion-overwin-w)
 
+" vim-smooth-scroll
+nnoremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
+nnoremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
+nnoremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
+nnoremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 
 " vim-autoformat
 "autocmd BufWrite * :Autoformat
@@ -485,14 +468,6 @@ let g:autoformat_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
 vnoremap <silent><leader>f<space> : RemoveWhiteSpace<cr>
 vnoremap <silent><leader>f<Tab>   : MoveSpaceToTab<cr>
 vnoremap <silent><leader>f<S-Tab> : MoveTabToSpace<cr>
-
-
-" vim-smooth-scroll
-nnoremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
-nnoremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
-nnoremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
-nnoremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
-
 
 " rainbow
  let g:rainbow_active = 1
@@ -519,7 +494,6 @@ nnoremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
     \   }
     \}
 
-
 " vim-cpp-enhanced-highlight
 let g:cpp_class_scope_highlight = 1                    " 高亮显示类的范围
 let g:cpp_member_variable_highlight = 1                " 高亮显示成员变量
@@ -528,7 +502,6 @@ let g:cpp_posix_standard = 1                           " 高亮显示POSIX函数
 let g:cpp_experimental_simple_template_highlight = 1   " 高亮显示模板函数, 在大文件上可能会有点慢
 let g:cpp_experimental_template_highlight = 1          " 高亮显示模板函数, 解决了大文件上慢的问题，但有时会不工作
 let g:cpp_concepts_highlight = 1                       " 高亮显示关键字 "concept "和 "requires" 以及标准库名
-
 
 " changesPlugin  显示修改的代码
 let g:changes_autocmd=1
@@ -542,7 +515,6 @@ hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red
 hi ChangesSignTextCh  ctermbg=blue  ctermfg=black guibg=blue
 hi ChangesSignTextDummyCh  ctermfg=NONE ctermbg=blue guifg=NONE guibg=blue
 hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green
-
 
 " LeaderF
 let g:Lf_ShortcutF = ''
@@ -591,7 +563,6 @@ let g:Lf_PreviewResult = {
             \ 'Rg': 1,
             \ 'Gtags': 1
             \}
-
 " 默认rg自动忽略.gitignore指定的文件，链接文件，隐藏文件和二进制文件，可通过g:Lf_RgConfig 进行定制
 " 忽略当前及子目录下的.git目录的内容，排除当前目录下x86_run,target 目录的内容，
 " 排除.map结尾的文件，排除gtags.files，compile_commands.json 文件,可搜索隐藏文件。
@@ -601,40 +572,36 @@ let g:Lf_PreviewResult = {
 " --no-ignore: 禁用所有与忽略相关的过滤(.igrore .rgignore .gitignore)
 " 在当前仓库搜索子仓库里的内容, 但搜索过程比较慢
 let g:Lf_RgConfig = [
-        \ "--max-columns=150",
-        \ "--glob=!**/.git/**",
-		\ "--glob=!x86_run/*",
-		\ "--glob=!target/*",
-		\ "--glob=!*.{map,map2,o,tgt,x86}",
-		\ "--glob=!gtags.files",
-		\ "--glob=!compile_commands.json",
-        \ "--hidden",
-		\ "--unrestricted"
-    \ ]
-
+            \ "--max-columns=150",
+            \ "--glob=!**/.git/**",
+            \ "--glob=!x86_run/*",
+            \ "--glob=!target/*",
+            \ "--glob=!*.{map,map2,o,tgt,x86}",
+            \ "--glob=!gtags.files",
+            \ "--glob=!compile_commands.json",
+            \ "--hidden",
+            \ "--unrestricted"
+            \ ]
 "Leaderf rg -e<Space>
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <silent> <leader>rw :LeaderfRgInteractive<cr>
 "上次 rg 搜索结果
 nnoremap <silent> <leader>R :LeaderfRgRecall<cr>
-
 " 搜索当前文件选中内容输出到quickfix
 vnoremap <silent> <leader>gq y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
 nnoremap <silent> <leader>gq :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
 nnoremap <silent> <leader>Q :LeaderfQuickFix<cr>
 nnoremap <silent> <leader>F :Leaderf file --recall<cr>
-
 " Leaderf git
 nnoremap <leader>lg :LeaderfGit<cr>
 let g:Lf_GitCommands = [
-                    \ {"Leaderf git log":                                "fuzzy search and view the log"},
-                    \ {"Leaderf git log --current-file":                 "fuzzy search and view the log of current file"},
-                    \ {"Leaderf git diff":                               "fuzzy search and view the diffs"},
-                    \ {"Leaderf git diff --side-by-side --current-file": "view the side-by-side diffs of the current file"},
-                    \ {"Leaderf git blame":                              "git blame current file"},
-                    \ {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
-                    \ ]
-
+            \ {"Leaderf git log":                                "fuzzy search and view the log"},
+            \ {"Leaderf git log --current-file":                 "fuzzy search and view the log of current file"},
+            \ {"Leaderf git diff":                               "fuzzy search and view the diffs"},
+            \ {"Leaderf git diff --side-by-side --current-file": "view the side-by-side diffs of the current file"},
+            \ {"Leaderf git blame":                              "git blame current file"},
+            \ {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
+            \ ]
 " 项目根目录存在gtags.file文件，gtags 会以该文件为基础生成数据，生成gtags.file的方式参考 g:gutentags_file_list_command
 " 0 - gtags search the target files by itself. 1 - the target files come from FileExplorer. 2 - the target files come from |g:Lf_GtagsfilesCmd.
 let g:Lf_GtagsSource = 0
@@ -647,7 +614,6 @@ let g:Lf_CtagsFuncOpts = {
             \ 'c': '-I __THROW -I __THROWNL -I __nonnull --fields=+niazS --extras=+q --c-kinds=fp',
             \ 'rust': '--rust-kinds=f',
             \ }
-
 let g:Lf_GtagsAutoGenerate = 0           " auto create gtags
 let g:Lf_GtagsAutoUpdate = 0             " auto update when buffer write
 let g:Lf_GtagsGutentags = 1              " use vim-gutentags to generate gtags,should make g:Lf_GtagsAutoGenerate = 0 and g:Lf_GtagsAutoUpdate = 0
@@ -666,7 +632,6 @@ if g:Lf_GtagsAutoGenerate == 1
         autocmd CursorMoved,CursorMovedI * if exists('s:update_timer')|call timer_stop(s:update_timer)|unlet s:update_timer|endif
     endif
 endif
-
 
 " vim-gutentags
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
@@ -718,7 +683,6 @@ if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
     endif
 endif
 
-
 " OmniCppComplete
 set tags+=/usr/include/tags        "补全标准C
 let OmniCpp_GlobalScopeSearch = 1  "全局查找控制。0:禁止；1:允许(缺省)
@@ -735,13 +699,19 @@ let OmniCpp_SelectFirstItem = 2      "是否自动选择第一个匹配项。仅
 autocmd CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif  "自动关闭补全窗口
 set completeopt=menuone,menu,longest
 
-
 " supertab
 let g:SuperTabRetainCompletionType = 2 " 0 不记录上次的补全方式 1 记住上次的补全方式,直到用其他的补全命令改变它 2 记住上次的补全方式,直到按ESC退出插入模式为止
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabContextDefaultCompletionType = "<c-x><c-n>"
 let g:SuperTabCompleteCase = 'match'
 
+" lens
+let g:lens#animate = 0  "取消动画
+let g:lens#disabled_filetypes = ['defx', 'netrw', 'tagbar', 'leaderf']
+let g:lens#height_resize_max = 40
+let g:lens#height_resize_min = 5
+let g:lens#width_resize_max = 120
+let g:lens#width_resize_min = 20
 
 " vim-easycomplete
 let g:easycomplete_scheme="dark"
@@ -761,7 +731,6 @@ nnoremap gb :BackToOriginalBuffer<CR>
 nnoremap rn :EasyCompleteRename<CR>
 endif
 
-
 " codeium.vim
 let g:codeium_enabled = 0               " enable codeium need token
 let g:codeium_disable_bindings = 1      " disable default keybindings
@@ -771,13 +740,11 @@ imap <M-->   <Cmd>call codeium#Clear()<CR>
 imap <M-,>   <Cmd>call codeium#CycleCompletions(-1)<CR>
 imap <M-.>   <Cmd>call codeium#CycleCompletions(1)<CR>
 
-
 " asyncrun.vim
 let g:asyncrun_open = 10
 nnoremap <F9> :AsyncRun -mode=term -pos=tab -close<space>
 nnoremap <silent> <leader>tn :tabnext<cr>
 nnoremap <silent> <leader>tc :tabclose<cr>
-
 
 " vim-buffer
 nnoremap <silent> <leader>qa :call CloseBuffer(0)<cr>
