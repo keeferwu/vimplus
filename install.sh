@@ -38,6 +38,25 @@ function get_linux_distro()
     fi
 }
 
+# 打印logo
+function print_logo()
+{
+    color="$(tput setaf 6)"
+    normal="$(tput sgr0)"
+    printf "${color}"
+    echo '        __                __           '
+    echo '__   __/_/___ ___  ____  / /_  _______ '
+    echo '\ \ / / / __ `__ \/ __ \/ / / / / ___/ '
+    echo ' \ V / / / / / / / /_/ / / /_/ (__  )  '
+    echo '  \_/_/_/ /_/ /_/ ,___/_/\____/____/   '
+    echo '               /_/                     ...is now installed!'
+    echo ''
+    echo ''
+    echo 'Just enjoy it!'
+    echo ''
+    printf "${normal}"
+}
+
 # 获取日期
 function get_datetime()
 {
@@ -323,28 +342,6 @@ function compile_vim_on_debian()
     cd -
 }
 
-# 在parrot上源代码安装vim
-function compile_vim_on_parrot()
-{
-    sudo apt-get install -y libncurses5-dev libncurses5 libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev python3-dev ruby-dev lua5.1 vim
-
-    rm -rf ~/vim_source
-    git clone https://github.com/vim/vim.git ~/vim_source
-    cd ~/vim_source
-    ./configure --with-features=huge \
-        --enable-multibyte \
-        --enable-rubyinterp \
-        --enable-pythoninterp \
-        --enable-perlinterp \
-        --enable-luainterp \
-        --enable-gui=gtk2 \
-        --enable-cscope \
-        --prefix=/usr
-    make
-    sudo make install
-    cd -
-}
-
 # 在centos上源代码安装vim
 function compile_vim_on_centos()
 {
@@ -378,7 +375,10 @@ function install_prepare_software_on_mac()
 {
     xcode-select --install
 
-    brew install vim gcc cmake ctags-exuberant ack
+    brew install vim
+    brew install cmake ninja gcc autoconf automake libtool flex bison
+    brew install universal-ctags ripgrep clang astyle ccls global xclip fontconfig
+    brew install python python-dev python3 python3-dev python-pip # 安装pip3
 
     macos1014=$(is_macos1014)
     if [ $macos1014 == 1 ]; then
@@ -386,28 +386,12 @@ function install_prepare_software_on_mac()
     fi
 }
 
-# 安装FreeBSD必备软件
-function install_prepare_software_on_freebsd()
-{
-    sudo pkg install -y vim ctags automake gcc cmake p5-ack python git fontconfig
-}
-
-# 安装android平台必备软件
-function install_prepare_software_on_android()
-{
-    pkg update
-    pkg install -y git vim-python cmake python2 python ctags ack-grep ncurses-utils
-}
-
 # 安装ubuntu系必备软件
 function install_prepare_software_on_ubuntu_like()
 {
     sudo apt-get update
-
     sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison
-
     sudo apt-get install -y  build-essential python python-dev python3 python3-dev python3-pip fontconfig libfile-next-perl
-
     sudo apt-get install -y  universal-ctags ripgrep clang astyle ccls global xclip python-pygments
 
     read -p "Do you want to re-install VIM ? [Y/M/N] " ch
@@ -436,16 +420,14 @@ function install_prepare_software_on_ubuntu_like()
 function install_prepare_software_on_debian()
 {
     sudo apt-get update
-    sudo apt-get install -y cmake exuberant-ctags build-essential python python-dev python3-dev fontconfig libfile-next-perl ack git
-    compile_vim_on_debian
-}
-
-# 安装parrot必备软件
-function install_prepare_software_on_parrot()
-{
-    sudo apt-get update
-    sudo apt-get install -y cmake exuberant-ctags build-essential python python-dev python3-dev fontconfig libfile-next-perl ack git
-    compile_vim_on_parrot
+    sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison
+    sudo apt-get install -y  build-essential python python-dev python3 python3-dev python3-pip fontconfig libfile-next-perl
+    sudo apt-get install -y  universal-ctags ripgrep clang astyle ccls global xclip python-pygments
+    read -p "Do you want to re-install VIM ? [Y/N] " ch
+    if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
+        echo "Install VIM by source code"
+        compile_vim_on_debian
+    fi
 }
 
 # 安装centos必备软件
@@ -454,9 +436,9 @@ function install_prepare_software_on_centos()
     version=$(get_centos_version)
     if [ $version -ge 8 ];then
         sudo dnf install -y epel-release
-        sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel make cmake python2 python2-devel python3-devel fontconfig ack git
+        sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel make cmake python2 python2-devel python3-devel fontconfig
     else
-        sudo yum install -y ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel fontconfig ack git
+        sudo yum install -y ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel fontconfig
         compile_vim_on_centos
     fi
 }
@@ -464,20 +446,26 @@ function install_prepare_software_on_centos()
 # 安装fedora必备软件
 function install_prepare_software_on_fedora()
 {
-    sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel fontconfig ack git
+    sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel fontconfig
 }
 
 # 安装archlinux必备软件
 function install_prepare_software_on_archlinux()
 {
-    sudo pacman -S --noconfirm vim ctags automake gcc cmake python3 python2 ack git fontconfig
+    sudo pacman -S --noconfirm vim ctags automake gcc cmake python3 python2 fontconfig
     sudo ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
+}
+
+# 安装opensuse必备软件
+function install_prepare_software_on_opensuse()
+{
+    sudo zypper install -y vim ctags gcc gcc-c++ cmake python-devel python3-devel fontconfig ncurses5-devel
 }
 
 # 安装gentoo必备软件
 function install_prepare_software_on_gentoo()
 {
-    install_software_on_gentoo app-editors/vim dev-util/ctags sys-devel/automake sys-devel/gcc dev-util/cmake sys-apps/ack dev-vcs/git media-libs/fontconfig
+    install_software_on_gentoo app-editors/vim dev-util/ctags sys-devel/automake sys-devel/gcc dev-util/cmake  media-libs/fontconfig
     su - -c "ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5" -s /bin/bash
 }
 
@@ -502,29 +490,11 @@ function install_software_on_gentoo()
     fi
 }
 
-# 安装opensuse必备软件
-function install_prepare_software_on_opensuse()
-{
-    sudo zypper install -y vim ctags gcc gcc-c++ cmake python-devel python3-devel ack fontconfig git ncurses5-devel
-}
-
 # 安装mac平台字体
 function install_fonts_on_mac()
 {
     rm -rf ~/Library/Fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete.otf
     cp ./fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete.otf ~/Library/Fonts
-}
-
-# 安装android平台字体
-function install_fonts_on_android()
-{
-    rm -rf ~/.termux/font.ttf
-    mkdir ~/.termux
-    cp ./fonts/DejaVu.ttf ~/.termux/font.ttf
-
-    # 刷新style
-    REL="am broadcast --user 0 -a com.termux.app.reload_style com.termux"
-    $REL > /dev/null
 }
 
 # 安装linux平台字体
@@ -612,45 +582,6 @@ function install_ycm()
     fi
 }
 
-# 在android上安装ycm插件
-function install_ycm_on_android()
-{
-    read -p "Do you want to install YCM ? [Y/N] " ch
-    if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
-        rm -rf ~/.ycm_extra_conf.py
-        ln -s ${PWD}/.ycm_extra_conf.py ~
-        git clone https://gitee.com/chxuan/YouCompleteMe-clang.git ~/.vim/plugged/YouCompleteMe
-        cd ~/.vim/plugged/YouCompleteMe
-        read -p "Please choose to compile ycm with python2 or python3, if there is a problem with the current selection, please choose another one. [2/3] " version
-        if [[ $version == "2" ]]; then
-            echo "Compile ycm with python2."
-            python2.7 ./install.py --clang-completer --system-libclang
-        else
-            echo "Compile ycm with python3."
-            python3 ./install.py --clang-completer --system-libclang
-        fi
-    fi
-}
-
-# 打印logo
-function print_logo()
-{
-    color="$(tput setaf 6)"
-    normal="$(tput sgr0)"
-    printf "${color}"
-    echo '        __                __           '
-    echo '__   __/_/___ ___  ____  / /_  _______ '
-    echo '\ \ / / / __ `__ \/ __ \/ / / / / ___/ '
-    echo ' \ V / / / / / / / /_/ / / /_/ (__  )  '
-    echo '  \_/_/_/ /_/ /_/ ,___/_/\____/____/   '
-    echo '               /_/                     ...is now installed!'
-    echo ''
-    echo ''
-    echo 'Just enjoy it!'
-    echo ''
-    printf "${normal}"
-}
-
 # 在mac平台安装vimplus
 function install_vimplus_on_mac()
 {
@@ -662,25 +593,7 @@ function install_vimplus_on_mac()
     print_logo
 }
 
-# 在FreeBSD上安装vimplus
-function install_vimplus_on_freebsd()
-{
-    install_prepare_software_on_freebsd
-    begin_install_vimplus
-}
-
-# 在android平台安装vimplus
-function install_vimplus_on_android()
-{
-    install_prepare_software_on_android
-    install_config_files
-    install_fonts_on_android
-    #install_ycm_on_android
-    install_vim_plugin
-    print_logo
-}
-
-# 开始安装vimplus
+# 在linux平台配置vimplus
 function begin_install_vimplus()
 {
     install_config_files
@@ -690,62 +603,6 @@ function begin_install_vimplus()
     print_logo
 }
 
-# 在ubuntu系上安装vimplus
-function install_vimplus_on_ubuntu_like()
-{
-    install_prepare_software_on_ubuntu_like
-    begin_install_vimplus
-}
-
-# 在debian上安装vimplus
-function install_vimplus_on_debian()
-{
-    install_prepare_software_on_debian
-    begin_install_vimplus
-}
-
-# 在parrot上安装vimplus
-function install_vimplus_on_parrot()
-{
-    install_prepare_software_on_parrot
-    begin_install_vimplus
-}
-
-# 在centos上安装vimplus
-function install_vimplus_on_centos()
-{
-    install_prepare_software_on_centos
-    begin_install_vimplus
-}
-
-# 在fedora上安装vimplus
-function install_vimplus_on_fedora()
-{
-    install_prepare_software_on_fedora
-    begin_install_vimplus
-}
-
-# 在archlinux上安装vimplus
-function install_vimplus_on_archlinux()
-{
-    install_prepare_software_on_archlinux
-    begin_install_vimplus
-}
-
-# 在Gentoo上安装vimplus
-function install_vimplus_on_gentoo()
-{
-    install_prepare_software_on_gentoo
-    begin_install_vimplus
-}
-
-# 在opensuse上安装vimplus
-function install_vimplus_on_opensuse()
-{
-    install_prepare_software_on_opensuse
-    begin_install_vimplus
-}
-
 # 在linux平上台安装vimplus
 function install_vimplus_on_linux()
 {
@@ -753,38 +610,39 @@ function install_vimplus_on_linux()
     echo "Linux distro: "${distro}
 
     if [ ${distro} == "Ubuntu" ]; then
-        install_vimplus_on_ubuntu_like
+        install_prepare_software_on_ubuntu_like
     elif [ ${distro} == "Deepin" ]; then
-        install_vimplus_on_ubuntu_like
+        install_prepare_software_on_ubuntu_like
     elif [ ${distro} == "LinuxMint" ]; then
-        install_vimplus_on_ubuntu_like
+        install_prepare_software_on_ubuntu_like
     elif [ ${distro} == "elementaryOS" ]; then
-        install_vimplus_on_ubuntu_like
+        install_prepare_software_on_ubuntu_like
     elif [ ${distro} == "Debian" ]; then
-        install_vimplus_on_debian
+        install_prepare_software_on_debian
     elif [ ${distro} == "Raspbian" ]; then
-        install_vimplus_on_debian
+        install_prepare_software_on_debian
     elif [ ${distro} == "UOS" ]; then
-        install_vimplus_on_debian
+        install_prepare_software_on_debian
     elif [ ${distro} == "Kali" ]; then
-        install_vimplus_on_debian
+        install_prepare_software_on_debian
     elif [ ${distro} == "Parrot" ]; then
-        install_vimplus_on_parrot
+        install_prepare_software_on_debian
     elif [ ${distro} == "CentOS" ]; then
-        install_vimplus_on_centos
+        install_prepare_software_on_centos
     elif [ ${distro} == "fedora" ]; then
-        install_vimplus_on_fedora
+        install_prepare_software_on_fedora
     elif [ ${distro} == "openSUSE" ]; then
-        install_vimplus_on_opensuse
+        install_prepare_software_on_opensuse
     elif [ ${distro} == "ArchLinux" ]; then
-        install_vimplus_on_archlinux
+        install_prepare_software_on_archlinux
     elif [ ${distro} == "ManjaroLinux" ]; then
-        install_vimplus_on_archlinux
+        install_prepare_software_on_archlinux
     elif [ ${distro} == "Gentoo" ]; then
-        install_vimplus_on_gentoo
+        install_prepare_software_on_gentoo
     else
         echo "Not support linux distro: "${distro}
     fi
+    begin_install_vimplus
 }
 
 # 获取当前时间戳
@@ -810,16 +668,8 @@ function main()
         echo "Install vim configuration "
         if [ $(uname) == "Darwin" ]; then
             install_vimplus_on_mac
-        elif [ $(uname) == "FreeBSD" ]; then
-            install_vimplus_on_freebsd
         elif [ $(uname) == "Linux" ]; then
-            tp=$(uname -a)
-            if [[ $tp =~ "Android" ]]; then
-                echo "Android"
-                install_vimplus_on_android
-            else
-                install_vimplus_on_linux
-            fi
+            install_vimplus_on_linux
         else
             echo "Not support platform type: "$(uname)
         fi
