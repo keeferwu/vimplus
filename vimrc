@@ -465,9 +465,8 @@ let g:formatdef_allman = '"astyle --style=allman --pad-oper"'        " allman风
 let g:formatters_cpp = ['allman']
 let g:formatters_c = ['allman']
 let g:autoformat_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
-vnoremap <silent><leader>f<space> : RemoveWhiteSpace<cr>
-vnoremap <silent><leader>f<Tab>   : MoveSpaceToTab<cr>
-vnoremap <silent><leader>f<S-Tab> : MoveTabToSpace<cr>
+vnoremap <silent><leader>f<space> : MoveTabToSpace<cr>
+vnoremap <silent><leader>f<tab>   : MoveSpaceToTab<cr>
 
 " rainbow
  let g:rainbow_active = 1
