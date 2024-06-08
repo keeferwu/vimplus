@@ -391,8 +391,8 @@ function install_prepare_software_on_ubuntu_like()
 {
     sudo apt-get update
     sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison
-    sudo apt-get install -y  build-essential python python-dev python3 python3-dev python3-pip fontconfig libfile-next-perl
-    sudo apt-get install -y  universal-ctags ripgrep clang astyle ccls global xclip python-pygments
+    sudo apt-get install -y build-essential python python-dev python3 python3-dev python3-pip fontconfig libfile-next-perl
+    sudo apt-get install -y universal-ctags ripgrep clang astyle ccls global xclip python-pygments
 
     read -p "Do you want to re-install VIM ? [Y/M/N] " ch
     if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
@@ -421,8 +421,8 @@ function install_prepare_software_on_debian()
 {
     sudo apt-get update
     sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison
-    sudo apt-get install -y  build-essential python python-dev python3 python3-dev python3-pip fontconfig libfile-next-perl
-    sudo apt-get install -y  universal-ctags ripgrep clang astyle ccls global xclip python-pygments
+    sudo apt-get install -y build-essential python python-dev python3 python3-dev python3-pip fontconfig libfile-next-perl
+    sudo apt-get install -y universal-ctags ripgrep clang astyle ccls global xclip python-pygments
     read -p "Do you want to re-install VIM ? [Y/N] " ch
     if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
         echo "Install VIM by source code"
@@ -436,9 +436,11 @@ function install_prepare_software_on_centos()
     version=$(get_centos_version)
     if [ $version -ge 8 ];then
         sudo dnf install -y epel-release
-        sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel make cmake python2 python2-devel python3-devel fontconfig
+        sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel make cmake python2 python2-devel python3-devel python3-pip fontconfig
+        sudo dnf install -y ripgrep clang astyle ccls global xclip python-pygments
     else
-        sudo yum install -y ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel fontconfig
+        sudo yum install -y ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel python3-pip fontconfig
+        sudo yum install -y ripgrep clang astyle ccls global xclip python-pygments
         compile_vim_on_centos
     fi
 }
@@ -446,26 +448,32 @@ function install_prepare_software_on_centos()
 # 安装fedora必备软件
 function install_prepare_software_on_fedora()
 {
-    sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel fontconfig
+    sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel python3-pip fontconfig
+    sudo dnf install -y ripgrep clang astyle ccls global xclip python-pygments
 }
 
 # 安装archlinux必备软件
 function install_prepare_software_on_archlinux()
 {
-    sudo pacman -S --noconfirm vim ctags automake gcc cmake python3 python2 fontconfig
+    sudo pacman -S --noconfirm vim ctags automake gcc cmake python3 python2 python-pip fontconfig
+    sudo pacman -S --noconfirm ripgrep clang astyle ccls global xclip python-pygments
     sudo ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
 }
 
 # 安装opensuse必备软件
 function install_prepare_software_on_opensuse()
 {
-    sudo zypper install -y vim ctags gcc gcc-c++ cmake python-devel python3-devel fontconfig ncurses5-devel
+    sudo zypper refresh
+    sudo zypper install -y vim ctags gcc gcc-c++ cmake python-devel python3-devel python3-pip fontconfig ncurses5-devel
+    sudo zypper install -y ripgrep clang astyle ccls global xclip python-pygments
 }
 
 # 安装gentoo必备软件
 function install_prepare_software_on_gentoo()
 {
     install_software_on_gentoo app-editors/vim dev-util/ctags sys-devel/automake sys-devel/gcc dev-util/cmake  media-libs/fontconfig
+    install_software_on_gentoo dev-lang/python dev-python/pygments dev-perl/File-Next
+    install_software_on_gentoo dev-util/ripgrep dev-util/clang dev-util/astyle dev-util/ccls dev-util/global dev-util/xclip
     su - -c "ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5" -s /bin/bash
 }
 
