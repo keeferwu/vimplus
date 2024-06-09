@@ -13,31 +13,22 @@ let s:paste_cmd = ''
 
 function! s:clipboard_health_check()
   let result = []
-  call add(result, 'Checking +clipboard:')
-  if has('nvim')
-    if has('clipboard')
-      call add(result, 'SUCCEED!')
-    else
-      call add(result, 'Failed : to support +clipboard, you need has one of following clipboard tools in your $PATH:')
-      call add(result, ' 1. xclip')
-      call add(result, ' 2. xsel')
-      call add(result, ' 3. pbcopy/pbpaste (Mac OS X)')
-      call add(result, ' 4. lemonade (for SSH) https://github.com/pocke/lemonade')
-      call add(result, ' 5. doitclient (for SSH) http://www.chiark.greenend.org.uk/~sgtatham/doit/')
+  if !has('clipboard')
+    call add(result, 'Failed : to support +clipboard.')
+    if !has('nvim')
+      call add(result, 'you need recompile your vim with +clipboard support.')
     endif
-  else
-    if has('clipboard')
-      call add(result, 'SUCCEED!')
-    else
-      call add(result, 'Failed : to support +clipboard, you need recompile your vim with +clipboard support.')
-    endif
+    call add(result, 'you need has one of following clipboard tools in your $PATH:')
+    call add(result, '1.xclip, 2.xsel, 3.pbcopy/pbpaste(Mac OS X), 4.lemonade(for SSH), 5.doitclient(for SSH)')
   endif
   echohl WarningMsg
-  echom result
+  for msg in result
+    echom msg
+  endfor
   echohl None
 endfunction
 
-function! clipboard#set() abort
+function! clipboard#check() abort
   " the logic is based on nvim's clipboard provider
   " in vim8, system() do not support list argv
   call s:clipboard_health_check()
@@ -74,10 +65,6 @@ function! clipboard#set() abort
     let s:yank_cmd = 'tmux load-buffer -'
     let s:paste_cmd = 'tmux save-buffer -'
   endif
-  echohl WarningMsg
-  echom '[YANK:'.string(s:yank_cmd).']'
-  echom '[PASTE:'.string(s:paste_cmd).']'
-  echohl None
 endfunction
 
 function! s:get_selection_text()
