@@ -298,6 +298,46 @@ nnoremap <leader><leader>i :PlugInstall<cr>
 nnoremap <leader><leader>u :PlugUpdate<cr>
 nnoremap <leader><leader>c :PlugClean<cr>
 
+" vim-buffer
+nnoremap <silent> <leader>qa :call CloseBuffer(0)<cr>
+nnoremap <silent> <leader>qb :call CloseBuffer(1)<cr>
+autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
+function! CloseBuffer(action)
+  if &filetype == "defx" || &filetype == "tagbar" || &filetype == "qf"
+    echo "Window not support close buffer!"
+    return
+  endif
+  if a:action == 0
+    execute ":only | q"
+  endif
+  if a:action == 1
+    if winnr('$') > 1
+        execute ":only"
+    endif
+    "关闭当前的buffer
+    execute ":bd"
+  endif
+  if a:action == 2
+    let curr_buf = bufnr("%")
+    let oldest_buf = curr_buf
+    let oldest_time = localtime()
+    let buf_info = filter(getbufinfo(), 'buflisted(v:val.bufnr)')
+    if len(buf_info) <= b:max_buffer_num
+      return
+    endif
+    for buf in buf_info
+      "关闭最早打开的buffer
+      if buf.lastused < oldest_time
+        let oldest_buf = buf.bufnr
+        let oldest_time = buf.lastused
+      endif
+    endfor
+    if oldest_buf != curr_buf
+      execute 'bdelete ' . oldest_buf
+    endif
+  endif
+endfunction
+
 " vimplus-startify
 let g:startify_session_persistence = 1
 " 相对于默认配置把sessions放在第一个
@@ -314,6 +354,39 @@ let g:startify_session_savecmds = [
             \ 'let &path=&path.getcwd()."/**"',
             \ 'clearjumps'
             \ ]
+
+" netrw
+let g:netrw_banner = 1               "Netrw顶端的横幅
+let g:netrw_liststyle = 3            "显示模式为树形
+let g:netrw_winsize = 20             "netrw窗口的宽度
+if isdirectory(expand("%"))
+let g:netrw_browse_split = 0         "Netrw打开文件的方式为覆盖当前窗口
+else
+let g:netrw_browse_split = 4         "Netrw打开文件的方式为覆盖前一窗口（右边窗口）
+endif
+let g:netrw_sort_options = 'i'       "排序忽略大小写
+let g:netrw_hide = 1                 "忽略隐藏文件
+"在 netrw 里隐藏特定文件: ^\..* ->以.开头，^.*\.o$ ->.o结尾
+"let g:netrw_list_hide = '^\..*,^.*\.o$,^.*\.swp$,^.*\.bin$'
+"nnoremap <silent> <F4> :call ToggleLexplorer()<CR>
+function! ToggleLexplorer()
+  if exists("t:expl_buf")
+    Lexplore
+    unlet t:expl_buf
+  else
+    let g:lens#disabled = 1
+    Lexplore %:p:h
+    let g:lens#disabled = 0
+    let t:expl_buf = bufnr("%")
+  endif
+endfunction
+autocmd FileType netrw nnoremap <silent><buffer> h :call ChangeToHome()<cr>
+function! ChangeToHome()
+    close
+    let g:lens#disabled = 1
+    Lexplore
+    let g:lens#disabled = 0
+endfunction
 
 "defx.nvim
 call defx#custom#option('_', {
@@ -389,39 +462,6 @@ function! DefxHelp()
         call defx#redraw()
     endif
     setlocal nomodifiable
-endfunction
-
-" netrw
-let g:netrw_banner = 1               "Netrw顶端的横幅
-let g:netrw_liststyle = 3            "显示模式为树形
-let g:netrw_winsize = 20             "netrw窗口的宽度
-if isdirectory(expand("%"))
-let g:netrw_browse_split = 0         "Netrw打开文件的方式为覆盖当前窗口
-else
-let g:netrw_browse_split = 4         "Netrw打开文件的方式为覆盖前一窗口（右边窗口）
-endif
-let g:netrw_sort_options = 'i'       "排序忽略大小写
-let g:netrw_hide = 1                 "忽略隐藏文件
-"在 netrw 里隐藏特定文件: ^\..* ->以.开头，^.*\.o$ ->.o结尾
-"let g:netrw_list_hide = '^\..*,^.*\.o$,^.*\.swp$,^.*\.bin$'
-"nnoremap <silent> <F4> :call ToggleLexplorer()<CR>
-function! ToggleLexplorer()
-  if exists("t:expl_buf")
-    Lexplore
-    unlet t:expl_buf
-  else
-    let g:lens#disabled = 1
-    Lexplore %:p:h
-    let g:lens#disabled = 0
-    let t:expl_buf = bufnr("%")
-  endif
-endfunction
-autocmd FileType netrw nnoremap <silent><buffer> h :call ChangeToHome()<cr>
-function! ChangeToHome()
-    close
-    let g:lens#disabled = 1
-    Lexplore
-    let g:lens#disabled = 0
 endfunction
 
 " tagbar
@@ -748,46 +788,6 @@ let g:asyncrun_open = 10
 nnoremap <F9> :AsyncRun -mode=term -pos=tab -close<space>
 nnoremap <silent> <leader>tn :tabnext<cr>
 nnoremap <silent> <leader>tc :tabclose<cr>
-
-" vim-buffer
-nnoremap <silent> <leader>qa :call CloseBuffer(0)<cr>
-nnoremap <silent> <leader>qb :call CloseBuffer(1)<cr>
-autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
-function! CloseBuffer(action)
-  if &filetype == "defx" || &filetype == "tagbar" || &filetype == "qf"
-    echo "Window not support close buffer!"
-    return
-  endif
-  if a:action == 0
-    execute ":only | q"
-  endif
-  if a:action == 1
-    if winnr('$') > 1
-        execute ":only"
-    endif
-    "关闭当前的buffer
-    execute ":bd"
-  endif
-  if a:action == 2
-    let curr_buf = bufnr("%")
-    let oldest_buf = curr_buf
-    let oldest_time = localtime()
-    let buf_info = filter(getbufinfo(), 'buflisted(v:val.bufnr)')
-    if len(buf_info) <= b:max_buffer_num
-      return
-    endif
-    for buf in buf_info
-      "关闭最早打开的buffer
-      if buf.lastused < oldest_time
-        let oldest_buf = buf.bufnr
-        let oldest_time = buf.lastused
-      endif
-    endfor
-    if oldest_buf != curr_buf
-      execute 'bdelete ' . oldest_buf
-    endif
-  endif
-endfunction
 
 if has('nvim')
 lua << EOF
