@@ -252,18 +252,21 @@ let g:mapleader = "\<Space>"      " 定义<leader>键
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 let g:which_key_map = {}
-let g:which_key_map.w = 'easy motion'
+let g:which_key_map.e = 'easy motion by key'
 let g:which_key_map.h = 'changes stage hunk'
 let g:which_key_map.H = 'changes stage hunk revert'
 let g:which_key_map.k = 'color/uncolor cword'
 let g:which_key_map.K = 'uncolor all worlds'
-let g:which_key_map.F = 'leaderf file window'
-let g:which_key_map.G = 'leaderf gtags window'
-let g:which_key_map.R = 'leaderf rigrep window'
-let g:which_key_map.Q = 'leaderf qickfix window'
+let g:which_key_map.R = 'run command asynchronous'
 let g:which_key_map.t = {'name' : '+table'}
 let g:which_key_map.c = {'name' : '+commenter'}
 let g:which_key_map.l = {'name' : '+leaderf'}
+let g:which_key_map.w = {'name' : '+windows',
+                    \    'f' : 'leaderf file window',
+                    \    'g' : 'leaderf gtags window',
+                    \    'r' : 'leaderf rigrep window',
+                    \    'q' : 'leaderf qickfix window',
+                    \   }
 let g:which_key_map.r = {'name' : '+rigrep',
                     \    'g' : 'rg with customer prompt',
                     \    'w' : 'rg with interactive',
@@ -492,7 +495,7 @@ let g:interestingWordsCycleColors = 1
 
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
-nmap <leader>w <Plug>(easymotion-overwin-w)
+nmap <leader>e <Plug>(easymotion-overwin-w)
 
 " vim-smooth-scroll
 nnoremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
@@ -624,12 +627,12 @@ let g:Lf_RgExGlob = ["**/.git/**", "x86_run/*", "target/*", "*.{map,map2,o,tgt,x
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <silent> <leader>rw :LeaderfRgInteractive<cr>
 "上次 rg 搜索结果
-nnoremap <silent> <leader>R :LeaderfRgRecall<cr>
+nnoremap <silent> <leader>wr :LeaderfRgRecall<cr>
 " 搜索当前文件选中内容输出到quickfix
 vnoremap <silent> <leader>gq y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
 nnoremap <silent> <leader>gq :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
-nnoremap <silent> <leader>Q :LeaderfQuickFix<cr>
-nnoremap <silent> <leader>F :Leaderf file --recall<cr>
+nnoremap <silent> <leader>wq :LeaderfQuickFix<cr>
+nnoremap <silent> <leader>wf :Leaderf file --recall<cr>
 " Leaderf git
 nnoremap <leader>lg :LeaderfGit<cr>
 let g:Lf_GitCommands = [
@@ -659,7 +662,7 @@ let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
 let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
 let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
 let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-nnoremap <silent><leader>G :Leaderf! gtags --recall<cr>
+nnoremap <silent><leader>wg :Leaderf! gtags --recall<cr>
 nnoremap <silent><leader>gh :Leaderf gtags_history<cr>
 if g:Lf_GtagsAutoGenerate == 1
     autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
@@ -780,7 +783,7 @@ imap <M-.>   <Cmd>call codeium#CycleCompletions(1)<CR>
 
 " asyncrun.vim
 let g:asyncrun_open = 10
-nnoremap <F9> :AsyncRun -mode=term -pos=tab -close<space>
+nnoremap <silent> <leader>R :AsyncRun -mode=term -pos=tab -close<space>
 nnoremap <silent> <leader>tn :tabnext<cr>
 nnoremap <silent> <leader>tc :tabclose<cr>
 
