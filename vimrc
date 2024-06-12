@@ -281,9 +281,9 @@ let g:which_key_map.g = {'name' : '+gtags',
                     \    'h' : 'gtags search history',
                     \    'u' : 'gtags upgrade',
                     \   }
-let g:which_key_map.q = {'name' : '+close',
-                    \    'a' : 'close all windows',
-                    \    'b' : 'close current buffer',
+let g:which_key_map.q = {'name' : '+quit',
+                    \    'a' : 'quit vim/nvim',
+                    \    'b' : 'quit current buffer',
                     \   }
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
