@@ -616,15 +616,10 @@ let g:Lf_PreviewResult = {
 " 在当前仓库搜索子仓库里的内容, 但搜索过程比较慢
 let g:Lf_RgConfig = [
             \ "--max-columns=150",
-            \ "--glob=!**/.git/**",
-            \ "--glob=!x86_run/*",
-            \ "--glob=!target/*",
-            \ "--glob=!*.{map,map2,o,tgt,x86}",
-            \ "--glob=!gtags.files",
-            \ "--glob=!compile_commands.json",
             \ "--hidden",
             \ "--unrestricted"
             \ ]
+let g:Lf_RgExGlob = ["**/.git/**", "x86_run/*", "target/*", "*.{map,map2,o,tgt,x86}", "gtags.files", "compile_commands.json"]
 "Leaderf rg -e<Space>
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <silent> <leader>rw :LeaderfRgInteractive<cr>
