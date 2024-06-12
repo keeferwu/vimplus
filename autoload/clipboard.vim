@@ -85,10 +85,7 @@ function! clipboard#yank() abort
   if !empty(s:yank_cmd)
     call system(s:yank_cmd, s:get_selection_text())
   else
-    if has('clipboard')
-      let @+ = s:get_selection_text()
-    else
-    endif
+    let @+ = s:get_selection_text()
   endif
 endfunction
 
@@ -97,9 +94,6 @@ function! clipboard#paste() abort
   if !empty(s:paste_cmd)
     let @" = system(s:paste_cmd)
   else
-    if has('clipboard')
-      let @" = @+
-    else
-    endif
+    let @" = @+
   endif
 endfunction
