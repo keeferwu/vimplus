@@ -146,11 +146,11 @@ endif
 " 复制粘贴到系统剪切板
 " visual block re-mapping
 noremap  <silent> <m-v> <c-v>
-"noremap  <silent> <c-v> "+p
-"vnoremap <silent> <c-c> "+y
+noremap  <silent> <c-v> "+p
+vnoremap <silent> <c-c> "+y
 autocmd VimEnter * call clipboard#check()
-noremap  <silent> <c-v> :call clipboard#paste()<cr>
-vnoremap <silent> <c-c> :call clipboard#yank()<cr>
+"noremap  <silent> <c-v> :call clipboard#paste()<cr>
+"vnoremap <silent> <c-c> :call clipboard#yank()<cr>
 " 保存
 noremap <silent> <c-s> :w<cr>
 inoremap <silent> <c-s> <Esc>:w<cr>
