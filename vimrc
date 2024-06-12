@@ -211,7 +211,6 @@ Plug 'Shougo/defx.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'rhysd/vim-healthcheck'
-Plug 'octol/vim-cpp-enhanced-highlight'  "cpp语法扩展高亮
 endif
 Plug 'preservim/tagbar'
 Plug 'easymotion/vim-easymotion'         "强大的光标快速移动工具，强大到颠覆你的插件观
@@ -221,6 +220,7 @@ Plug 'Yggdroot/indentLine'               "显示对齐标线
 Plug 'liuchengxu/eleline.vim'            "功能同 airline，比较精简
 Plug 'preservim/nerdcommenter'           "添加注释
 Plug 'luochen1990/rainbow'               "彩虹括号
+Plug 'octol/vim-cpp-enhanced-highlight'  "cpp语法扩展高亮
 Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
 Plug 'chrisbra/changesPlugin'            "修改显示
 Plug 'lfv89/vim-interestingwords'        "单词高亮
