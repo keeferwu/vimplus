@@ -214,7 +214,6 @@ Plug 'rhysd/vim-healthcheck'
 endif
 Plug 'preservim/tagbar'
 Plug 'easymotion/vim-easymotion'         "强大的光标快速移动工具，强大到颠覆你的插件观
-Plug 'terryma/vim-smooth-scroll'         "让翻页更顺畅
 Plug 'vim-scripts/indentpython.vim'      "python自动对齐
 Plug 'Yggdroot/indentLine'               "显示对齐标线
 Plug 'liuchengxu/eleline.vim'            "功能同 airline，比较精简
@@ -498,12 +497,6 @@ let g:interestingWordsCycleColors = 1
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
 nmap <leader>e <Plug>(easymotion-overwin-w)
-
-" vim-smooth-scroll
-nnoremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
-nnoremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
-nnoremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
-nnoremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 
 " vim-autoformat
 "autocmd BufWrite * :Autoformat
