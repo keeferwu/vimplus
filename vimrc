@@ -251,6 +251,7 @@ runtime macros/matchit.vim
 let g:mapleader = "\<Space>"      " 定义<leader>键
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+" key map中的key必须为半角字符，否则会报错，有些输入法会将shift+space作为半全角切换快捷键
 let g:which_key_map = {}
 let g:which_key_map.e = 'easy motion by key'
 let g:which_key_map.h = 'changes stage hunk'
