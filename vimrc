@@ -294,16 +294,14 @@ let g:which_key_map_visual.g.q = 'vimgrep select pattern to qickfix'
 let g:which_key_map_visual.k = 'highlight select pattern'
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
 
-" 重新加载vimrc文件
-"nnoremap <leader><leader>l :source $MYVIMRC<cr>
 " 安装、更新、删除插件
-nnoremap <leader><leader>i :PlugInstall<cr>
-nnoremap <leader><leader>u :PlugUpdate<cr>
-nnoremap <leader><leader>c :PlugClean<cr>
+nnoremap <silent><leader><leader>i :PlugInstall<cr>
+nnoremap <silent><leader><leader>u :PlugUpdate<cr>
+nnoremap <silent><leader><leader>c :PlugClean<cr>
 
 " vim-buffer
-nnoremap <silent> <leader>qa :call CloseBuffer(0)<cr>
-nnoremap <silent> <leader>qb :call CloseBuffer(1)<cr>
+nnoremap <silent><leader>qa :call CloseBuffer(0)<cr>
+nnoremap <silent><leader>qb :call CloseBuffer(1)<cr>
 autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
 function! CloseBuffer(action)
   if &filetype == "defx" || &filetype == "tagbar" || &filetype == "qf"
@@ -496,7 +494,7 @@ let g:interestingWordsCycleColors = 1
 
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
-nmap <leader>e <Plug>(easymotion-overwin-w)
+nmap <silent><leader>e <Plug>(easymotion-overwin-w)
 
 " vim-autoformat
 "autocmd BufWrite * :Autoformat
@@ -561,10 +559,10 @@ hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green
 let g:Lf_ShortcutF = ''
 let g:Lf_ShortcutB = ''
 nnoremap <leader>lf :LeaderfFile<space>
-nnoremap <leader>lb :LeaderfBuffer<cr>
-nnoremap <leader>lt :LeaderfBufTag<cr>
-nnoremap <leader>ll :LeaderfLine<cr>
-nnoremap <leader>lm :LeaderfMru<cr>
+nnoremap <silent><leader>lb :LeaderfBuffer<cr>
+nnoremap <silent><leader>lt :LeaderfBufTag<cr>
+nnoremap <silent><leader>ll :LeaderfLine<cr>
+nnoremap <silent><leader>lm :LeaderfMru<cr>
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 let g:Lf_IgnoreCurrentBufferName = 1
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
@@ -620,16 +618,16 @@ let g:Lf_RgConfig = [
 let g:Lf_RgExGlob = ["**/.git/**", "x86_run/*", "target/*", "*.{map,map2,o,tgt,x86}", "gtags.files", "compile_commands.json"]
 "Leaderf rg -e<Space>
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
-nnoremap <silent> <leader>rw :LeaderfRgInteractive<cr>
+nnoremap <leader>rw :LeaderfRgInteractive<cr>
 "上次 rg 搜索结果
-nnoremap <silent> <leader>wr :LeaderfRgRecall<cr>
+nnoremap <silent><leader>wr :LeaderfRgRecall<cr>
 " 搜索当前文件选中内容输出到quickfix
-vnoremap <silent> <leader>gq y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
-nnoremap <silent> <leader>gq :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
-nnoremap <silent> <leader>wq :LeaderfQuickFix<cr>
-nnoremap <silent> <leader>wf :Leaderf file --recall<cr>
+vnoremap <silent><leader>gq y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
+nnoremap <silent><leader>gq :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
+nnoremap <silent><leader>wq :LeaderfQuickFix<cr>
+nnoremap <silent><leader>wf :Leaderf file --recall<cr>
 " Leaderf git
-nnoremap <leader>lg :LeaderfGit<cr>
+nnoremap <silent><leader>lg :LeaderfGit<cr>
 let g:Lf_GitCommands = [
             \ {"Leaderf git log":                                "fuzzy search and view the log"},
             \ {"Leaderf git log --current-file":                 "fuzzy search and view the log of current file"},
@@ -772,15 +770,15 @@ let g:codeium_enabled = 0               " enable codeium need token
 let g:codeium_disable_bindings = 1      " disable default keybindings
 let g:codeium_no_map_tab = 1            " disabled Codeium use tab keybindings
 imap <script><silent><nowait><expr> <M-=> codeium#Accept()
-imap <M-->   <Cmd>call codeium#Clear()<CR>
-imap <M-,>   <Cmd>call codeium#CycleCompletions(-1)<CR>
-imap <M-.>   <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <M--> <Cmd>call codeium#Clear()<CR>
+imap <M-,> <Cmd>call codeium#CycleCompletions(-1)<CR>
+imap <M-.> <Cmd>call codeium#CycleCompletions(1)<CR>
 
 " asyncrun.vim
 let g:asyncrun_open = 10
-nnoremap <silent> <leader>R :AsyncRun -mode=term -pos=tab -close<space>
-nnoremap <silent> <leader>tn :tabnext<cr>
-nnoremap <silent> <leader>tc :tabclose<cr>
+nnoremap <silent><leader>R :AsyncRun -mode=term -pos=tab -close<space>
+nnoremap <silent><leader>tn :tabnext<cr>
+nnoremap <silent><leader>tc :tabclose<cr>
 
 if has('nvim')
 lua << EOF
