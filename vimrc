@@ -481,6 +481,7 @@ let g:tagbar_sort = 0        " 标签不排序，默认排序
 let g:relative_path_file = 1
 let g:eleline_slim = 0
 let g:eleline_powerline_fonts = 1
+let g:eleline_function_icon = " ￡"
 
 " nerdcommenter
 " default delims to /**/ for cpp or c  file
