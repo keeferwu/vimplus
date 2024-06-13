@@ -168,23 +168,25 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "
 " 以十六进制显示 vim -b 打开的二进制文件
 autocmd BufReadPost * if &bin | execute "%!xxd" | endif
 
-" 主题设置
-set background=dark
-let g:material_terminal_italics = 1
-let g:material_theme_style = 'palenight'
-colorscheme material
-" 背景透明
-"hi Normal  ctermfg=252 ctermbg=none
-
 " 查看vimplus的help文件
 command! VimplusHelp :sview +let\ &l:modifiable=0 ~/.vim/help.md
 
 " 使用tmux attach已存在的session时,如果vim中系统剪切版无法使用，需要更新$DISPLAY环境变量
 if exists("$TMUX")
-colorscheme onedark
+let g:terminal_italics = 0
 command! ClipBoard :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '') | echo $DISPLAY
 autocmd VimEnter * ClipBoard
 endif
+
+" 主题设置
+set background=dark
+let g:onedark_terminal_italics = get(g:, 'terminal_italics', 1)
+"colorscheme onedark
+let g:material_terminal_italics = get(g:, 'terminal_italics', 1)
+let g:material_theme_style = 'palenight'
+colorscheme material
+" 背景透明
+"hi Normal  ctermfg=252 ctermbg=none
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 卸载默认插件UnPlug
@@ -343,17 +345,17 @@ endfunction
 let g:startify_session_persistence = 1
 " 相对于默认配置把sessions放在第一个
 let g:startify_list_order = [
-            \ ['   Sessions'],       'sessions',
-            \ ['   MRU '. getcwd()], 'dir',
-            \ ['   Bookmarks'],      'bookmarks',
-            \ ['   Commands'],       'commands',
+            \   ['   Sessions'],       'sessions',
+            \   ['   MRU '. getcwd()], 'dir',
+            \   ['   Bookmarks'],      'bookmarks',
+            \   ['   Commands'],       'commands',
             \ ]
 let g:startify_session_root_mark = '.root'
 "配置项目工作目录到path,通过gf实现头文件跳转
 "打开session时调整vim为实时调度，避免cpu繁忙啊卡顿: 'exe system("sudo chrt -r -a -p 50 ".getpid())'
 let g:startify_session_savecmds = [
-            \ 'let &path=&path.getcwd()."/**"',
-            \ 'clearjumps'
+            \   'let &path=&path.getcwd()."/**"',
+            \   'clearjumps'
             \ ]
 
 " netrw
@@ -391,18 +393,18 @@ endfunction
 
 "defx.nvim
 call defx#custom#option('_', {
-            \ 'winwidth': 30,
-            \ 'split': 'vertical',
-            \ 'direction': 'topleft',
-            \ 'show_ignored_files': 0,
-            \ 'buffer_name': '',
-            \ 'toggle': 1,
-            \ 'resume': 1,
+            \   'winwidth': 30,
+            \   'split': 'vertical',
+            \   'direction': 'topleft',
+            \   'show_ignored_files': 0,
+            \   'buffer_name': '',
+            \   'toggle': 1,
+            \   'resume': 1,
             \ })
 call defx#custom#column('icon', {
-            \ 'directory_icon': '▸',
-            \ 'opened_icon': '▾',
-            \ 'root_icon': ' ',
+            \   'directory_icon': '▸',
+            \   'opened_icon': '▾',
+            \   'root_icon': ' ',
             \ })
 nnoremap <silent> <F4> :Defx `escape(expand('%:p:h'), ' :')` -search=`expand('%:p')`<CR>
 autocmd BufWritePost * call defx#redraw()
@@ -436,21 +438,21 @@ function! DefxHelp()
     if s:short_help == 0
         let s:short_help = 1
         let help_cmds = [
-            \ ['h ',              'Jump to home directory'],
-            \ ['u ',              'Jump to up directory'],
-            \ ['v ',              'Open file at vsplit buffer'],
-            \ ['r ',              'Rename cursor file'],
-            \ ['c ',              'Create a new file'],
-            \ ['q ',              'Close defx window'],
-            \ ['< ',              'Increase defx window width'],
-            \ ['> ',              'Decrease defx window width'],
-            \ ['. ',              'Show ignore file'],
-            \ ['s ',              'Select cursor file'],
-            \ ['* ',              'Select all files'],
-            \ ['# ',              'Clear selected files'],
-            \ ['dd',              'Move cursor or selected file'],
-            \ ['yy',              'Copy cursor or selected file'],
-            \ ['pp',              'Paste chip board files'],
+            \   ['h ',              'Jump to home directory'],
+            \   ['u ',              'Jump to up directory'],
+            \   ['v ',              'Open file at vsplit buffer'],
+            \   ['r ',              'Rename cursor file'],
+            \   ['c ',              'Create a new file'],
+            \   ['q ',              'Close defx window'],
+            \   ['< ',              'Increase defx window width'],
+            \   ['> ',              'Decrease defx window width'],
+            \   ['. ',              'Show ignore file'],
+            \   ['s ',              'Select cursor file'],
+            \   ['* ',              'Select all files'],
+            \   ['# ',              'Clear selected files'],
+            \   ['dd',              'Move cursor or selected file'],
+            \   ['yy',              'Copy cursor or selected file'],
+            \   ['pp',              'Paste chip board files'],
             \ ]
         silent 0put ='\" defx keybindings'
         silent  put ='\"'
@@ -578,12 +580,12 @@ let g:Lf_NeedCacheTime = 1
 let g:Lf_NumberOfCache = 10
 let g:Lf_ShowHidden = 0
 let g:Lf_WildIgnore = {
-            \ 'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache','obj','target'],
-            \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
+            \   'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache','obj','target'],
+            \   'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
             \}
 let g:Lf_MruWildIgnore = {
-            \ 'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache','obj'],
-            \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
+            \   'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache','obj'],
+            \   'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
             \}
 "let g:Lf_WindowPosition = 'popup'
 let g:Lf_WindowHeight = 0.40
@@ -591,16 +593,16 @@ let g:Lf_PreviewInPopup = 1           "启用预览这个功能 P 弹出窗口
 let g:Lf_PreviewPopupWidth = 0        "设置预览窗口大小
 let g:Lf_PreviewPosition = 'topright' "设置预览窗口位置
 let g:Lf_PreviewResult = {
-            \ 'File': 0,
-            \ 'Buffer': 0,
-            \ 'Mru': 0,
-            \ 'Tag': 0,
-            \ 'BufTag': 1,
-            \ 'Function': 1,
-            \ 'Line': 0,
-            \ 'Colorscheme': 0,
-            \ 'Rg': 1,
-            \ 'Gtags': 1
+            \   'File': 0,
+            \   'Buffer': 0,
+            \   'Mru': 0,
+            \   'Tag': 0,
+            \   'BufTag': 1,
+            \   'Function': 1,
+            \   'Line': 0,
+            \   'Colorscheme': 0,
+            \   'Rg': 1,
+            \   'Gtags': 1
             \}
 " 默认rg自动忽略.gitignore指定的文件，链接文件，隐藏文件和二进制文件，可通过g:Lf_RgConfig 进行定制
 " 忽略当前及子目录下的.git目录的内容，排除当前目录下x86_run,target 目录的内容，
@@ -611,11 +613,18 @@ let g:Lf_PreviewResult = {
 " --no-ignore: 禁用所有与忽略相关的过滤(.igrore .rgignore .gitignore)
 " 在当前仓库搜索子仓库里的内容, 但搜索过程比较慢
 let g:Lf_RgConfig = [
-            \ "--max-columns=150",
-            \ "--hidden",
-            \ "--unrestricted"
+            \   "--max-columns=150",
+            \   "--hidden",
+            \   "--unrestricted"
             \ ]
-let g:Lf_RgExGlob = ["**/.git/**", "x86_run/*", "target/*", "*.{map,map2,o,tgt,x86}", "gtags.files", "compile_commands.json"]
+let g:Lf_RgExGlob = [
+            \   "**/.git/**",
+            \   "x86_run/*",
+            \   "target/*",
+            \   "*.{map,map2,o,tgt,x86}",
+            \   "gtags.files",
+            \   "compile_commands.json"
+            \]
 "Leaderf rg -e<Space>
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <leader>rw :LeaderfRgInteractive<cr>
@@ -629,24 +638,24 @@ nnoremap <silent><leader>wf :Leaderf file --recall<cr>
 " Leaderf git
 nnoremap <silent><leader>lg :LeaderfGit<cr>
 let g:Lf_GitCommands = [
-            \ {"Leaderf git log":                                "fuzzy search and view the log"},
-            \ {"Leaderf git log --current-file":                 "fuzzy search and view the log of current file"},
-            \ {"Leaderf git diff":                               "fuzzy search and view the diffs"},
-            \ {"Leaderf git diff --side-by-side --current-file": "view the side-by-side diffs of the current file"},
-            \ {"Leaderf git blame":                              "git blame current file"},
-            \ {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
+            \   {"Leaderf git log":                                "fuzzy search and view the log"},
+            \   {"Leaderf git log --current-file":                 "fuzzy search and view the log of current file"},
+            \   {"Leaderf git diff":                               "fuzzy search and view the diffs"},
+            \   {"Leaderf git diff --side-by-side --current-file": "view the side-by-side diffs of the current file"},
+            \   {"Leaderf git blame":                              "git blame current file"},
+            \   {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
             \ ]
 " 项目根目录存在gtags.file文件，gtags 会以该文件为基础生成数据，生成gtags.file的方式参考 g:gutentags_file_list_command
 " 0 - gtags search the target files by itself. 1 - the target files come from FileExplorer. 2 - the target files come from |g:Lf_GtagsfilesCmd.
 let g:Lf_GtagsSource = 0
 let g:Lf_GtagsfilesCmd = {
-            \ '.git': 'git ls-files --recurse-submodules',
-            \ '.hg': 'hg files',
-            \ 'default': 'rg --no-messages --files'
+            \   '.git': 'git ls-files --recurse-submodules',
+            \   '.hg': 'hg files',
+            \   'default': 'rg --no-messages --files'
             \}
 let g:Lf_CtagsFuncOpts = {
-            \ 'c': '-I __THROW -I __THROWNL -I __nonnull --fields=+niazS --extras=+q --c-kinds=fp',
-            \ 'rust': '--rust-kinds=f',
+            \   'c': '-I __THROW -I __THROWNL -I __nonnull --fields=+niazS --extras=+q --c-kinds=fp',
+            \   'rust': '--rust-kinds=f',
             \ }
 let g:Lf_GtagsAutoGenerate = 0           " auto create gtags
 let g:Lf_GtagsAutoUpdate = 0             " auto update when buffer write
