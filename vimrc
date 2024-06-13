@@ -612,19 +612,8 @@ let g:Lf_PreviewResult = {
 " --unrestricted:当主项目中的.gitignore 文件忽略掉了子项目目录，该选项可以使搜索不受.gitignore 文件的限制，
 " --no-ignore: 禁用所有与忽略相关的过滤(.igrore .rgignore .gitignore)
 " 在当前仓库搜索子仓库里的内容, 但搜索过程比较慢
-let g:Lf_RgConfig = [
-            \   "--max-columns=150",
-            \   "--hidden",
-            \   "--unrestricted"
-            \ ]
-let g:Lf_RgExGlob = [
-            \   "**/.git/**",
-            \   "x86_run/*",
-            \   "target/*",
-            \   "*.{map,map2,o,tgt,x86}",
-            \   "gtags.files",
-            \   "compile_commands.json"
-            \]
+let g:Lf_RgConfig = ["--max-columns=150", "--hidden", "--unrestricted"]
+let g:Lf_RgExGlob = ["**/.git/**", "x86_run/*", "target/*", "*.{map,map2,o,tgt,x86}", "gtags.files", "compile_commands.json"]
 "Leaderf rg -e<Space>
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <leader>rw :LeaderfRgInteractive<cr>
