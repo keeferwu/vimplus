@@ -254,7 +254,7 @@ nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 " key map中的key必须为半角字符，否则会报错，有些输入法会将shift+space作为半全角切换快捷键
 let g:which_key_map = {}
-let g:which_key_map.e = 'easy motion by key'
+let g:which_key_map.j = 'jump cursor by key'
 let g:which_key_map.h = 'changes stage hunk'
 let g:which_key_map.H = 'changes stage hunk revert'
 let g:which_key_map.k = 'color/uncolor cword'
@@ -496,7 +496,7 @@ let g:interestingWordsCycleColors = 1
 
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
-nmap <silent><leader>e <Plug>(easymotion-overwin-w)
+nmap <silent><leader>j <Plug>(easymotion-overwin-w)
 
 " vim-autoformat
 "autocmd BufWrite * :Autoformat
