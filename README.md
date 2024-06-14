@@ -18,15 +18,13 @@
 
 #### 设置Nerd Font
 
-为防止Airline等插件显示乱码，需设置linux终端字体为`Droid Sans Mono Nerd Font`。
+为防止statusline显示乱码，需设置linux终端字体为`Droid Sans Mono Nerd Font`。
 
 #### 配置vim 支持系统剪切板
 
 当使用 "+y","+p" 无法将vim的内容复制到终端时
 通过命令 vim --version | grep "clipboard" 查看vim 是否支持系统剪切板
-clipboard 前边是 - 号，即为不支持，需要安装vim-gnome
-
-    sudo apt install vim-gnome
+clipboard 前边是 - 号，即为不支持，ubuntu下可以安装vim-gnome 或其他类型的系统剪切板
 
 当使用ssh远程连接server，发现DISPLAY环境变量为空，导致系统剪切版无法在vim中使用
 解决办法：
@@ -38,12 +36,6 @@ ssh client 端：ssh 连接时使用-Y 或 -X 选项， 并启动Xserver
 
     curl -fLo ~/.vimplus/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-#### VIM 添加自定义插件
-
-    mkdir -p ~/.vim/pack/自定义名称/start          #插件会自动加载
-    mkdir -p ~/.vim/pack/自定义名称/opt
-    :packadd 插件脚本                              #加载opt目录下的脚本
-    :helptags ~/.vim/pack/自定义名称/opt/插件/doc   #为插件生成帮助文档
 
 #### 把 vim 的配置 应用到 neovim
 
@@ -55,10 +47,10 @@ vim .confg/nvim/init.vim
 
 
 #### 插件特殊需求
-* vim-easycomplete 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt，可借助 bear工具，
+* vim-easycomplete 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt
 
-        bear make
-        cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        Makefile：bear make
+        Cmake：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 * OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件：
 
@@ -71,7 +63,7 @@ vim .confg/nvim/init.vim
         检查是否安装成功：
         echo g:Lf_fuzzyEngine_C, if the value is 1, it means the C extension is loaded sucessfully.
 
-* Codeium 是一款AI智能插件，需要登录到官方生成token，注意，国内用户需要代理才能访问官网，注册账户
+* Codeium 是一款AI智能插件，需要登录到官网生成token，注意，访问官网需要代理
 
         :Codeium Auth
 
@@ -91,7 +83,7 @@ vim .confg/nvim/init.vim
 
         1. 保证你的 $PATH 里面有 python
 
-            pip install pygments or sudo apt install python-pygments
+            pip install pygments 或 sudo apt install python-pygments
 
         2. 在vimrc中配置环境变量：
 
