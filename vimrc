@@ -1,9 +1,9 @@
 "   .  . .  .  . .  . S@t.. .  .  . .  .  . .  .  . .  .  . .  .  . .  .  . .  .  . .  .  . .  .  . .  .  . .  .  . .  ..
 "    .     ..t%SXSS%:;t.X8S% .   .      .       .       .       .       .       .       .       .       .       .       .
 "      . %St8;8:X;8:8:8%8;%%:@S:    . .    . .    ....    .  .    .  .    .  .    .  .    .  .    .  .    .  .    .  ....
-"  .    8: %.;t;S;%@88:X.8X8%;8S t@@%   .  %@@t  .X88X .      .       .   %@@@@@@@@@X:  .     .       .       .       .  
+"  .    8: %.;t;S;%@88:X.8X8%;8S t@@%   .  %@@t  .X88X .      .       .   %@@@@@@@@@X:  .     .       .       .       .
 "    ..X.;X%8t8%8ttX.88;8.8%:;% ;8:SX%.   SX.8S.  St88:  .  .   .  .    ..XS.@%SSS88S@:. X@@%  . . .    .  .    .  ......
-"   . X;:;8SS888;8tt;8:8:8; t:t8S 8:Xt.  :8888: .%888:.  .SSSSSSSSSSS%:  .S888t   @@8X: .%.88  .SSt  .:SS;  .%SSSSSSSS%. 
+"   . X;:;8SS888;8tt;8:8:8; t:t8S 8:Xt.  :8888: .%888:.  .SSSSSSSSSSS%:  .S888t   @@8X: .%.88  .SSt  .:SS;  .%SSSSSSSS%.
 "    :t8 :;X8S;8.8S;8S.8.t8:%8XS.. S8.8:.S8;8;  :@;@88 . S:88 X.88@88:@t..%S.  .. X;8@: :%:;8. X%:X;. 8;.;  %S8@XXSXSS8..
 "  .t88; X;8S8888;8S8t 8S88SSStt:. @.%8St;@8X  . t .8S   S:88:%888%;8t8:..S.S@%SSS8S88t .% @;  X:.X.  88t :.t@t8@ .......
 "  8; :888XSStS;88;88X%;;tt::;;8@ ..%X88:88Xt    .S@.::. S@8% X8.@;S888X .%;88SSSS.SX.:. 8S88: @;88t. 8.S8  t;@8@88@88S..
@@ -11,7 +11,7 @@
 "    :8:;888888 .; .     8%8@       .8X.@8X  .    X%8@  .t@8S X88X:%888X .@8@8t  ..  .   SX%X .X;;S@%tS8; ;..SttSXS8888S.
 "    t.8XX;;8X% XX.  .    %8X8;   . :tX8@t     .  t8X8:  %@@S X8@@:t8tXt...:%t..       . X:8X  X8@@88@888t. %88t888 888t.
 "  .    :8;S: . S@.       t8;8:: .   .;:;. . .   .%@%:   t%%; .%%;..: t. .;  :  . . .    %;8.  ;X;X%.:.: t  ;t  ;:: :t;..
-"     :%@t%8   88.  .  .  :: . ..   .   .          .   . ..  .      ..   .    .       . . ... .   . .   .        ..      
+"     :%@t%8   88.  .  .  :: . ..   .   .          .   . ..  .      ..   .    .       . . ... .   . .   .        ..
 "      .. 8888   ..      ...   . .    .   .  . .     .   ..    .  .    .        .   .   . ..    .  .  .   .  . .     ....
 "
 
@@ -203,8 +203,9 @@ command! -nargs=1 -bar UnPlug call s:deregister(<args>)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-Plug 'liuchengxu/vim-which-key'          "vim快捷键提示
 Plug 'chxuan/vimplus-startify'           "vimplus开始页面
+Plug 'liuchengxu/vim-which-key'          "vim快捷键提示
+Plug 'liuchengxu/eleline.vim'            "精简的statusline
 if has("nvim")
 Plug 'Shougo/defx.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -214,11 +215,9 @@ Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'rhysd/vim-healthcheck'
 endif
-Plug 'preservim/tagbar'
-Plug 'easymotion/vim-easymotion'         "强大的光标快速移动工具，强大到颠覆你的插件观
-Plug 'vim-scripts/indentpython.vim'      "python自动对齐
+Plug 'preservim/tagbar'                  "函数显示列表
+Plug 'easymotion/vim-easymotion'         "光标快速移动
 Plug 'Yggdroot/indentLine'               "显示对齐标线
-Plug 'liuchengxu/eleline.vim'            "功能同 airline，比较精简
 Plug 'preservim/nerdcommenter'           "添加注释
 Plug 'luochen1990/rainbow'               "彩虹括号
 Plug 'octol/vim-cpp-enhanced-highlight'  "cpp语法扩展高亮
@@ -490,9 +489,11 @@ let g:NERDAltDelims_c = 1
 
 " indentLine 开启代码对齐线
 let g:indentLine_enabled = 1
+let g:indentLine_leadingSpaceEnabled = 0
 
 " vim-interestingwords
 let g:interestingWordsCycleColors = 1
+let g:interestingWordsCaseSensitive = 1
 
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
@@ -778,6 +779,7 @@ nnoremap <silent><leader>R :AsyncRun -mode=term -pos=tab -close<space>
 nnoremap <silent><leader>tn :tabnext<cr>
 nnoremap <silent><leader>tc :tabclose<cr>
 
+" nvim-treesitter
 if has('nvim')
 lua << EOF
 require'nvim-treesitter.configs'.setup {
