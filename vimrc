@@ -106,32 +106,7 @@ set incsearch                    " 开启实时搜索功能
 set ignorecase                   " 搜索时大小写不敏感
 set smartcase                    " 搜索大写字母不敏感
 set nohlsearch                   " 取消高亮搜索结果
-" 仅当光标处于搜索内容时高亮搜索结果
-function! HighlightSearch()
-  let search_text = @/
-  if search_text == ' '
-    silent! call matchdelete(1219)
-    return
-  endif
-  " 搜索内容是否能在当前buffer中搜索到结果
-  if search(search_text, 'nw')
-    let line_text = getline('.')
-    " 清除高亮匹配项
-    silent! call matchdelete(1219)
-    " 当前行中第一个匹配项
-    let [search_text, start_col, end_col] = matchstrpos(line_text, search_text)
-    while(search_text != "")
-      " 光标如果处于匹配项中，高亮匹配项
-      if col('.') >= start_col && col('.') <= end_col
-        silent! call matchadd('Search', search_text, 0, 1219)
-        nohlsearch
-      endif
-      " 当前行的下一个匹配项
-      let [search_text, start_col, end_col] = matchstrpos(line_text, search_text, end_col)
-    endwhile
-  endif
-endfunction
-autocmd CursorMoved,CursorMovedI * call HighlightSearch()
+autocmd CursorMoved,CursorMovedI * call vimplus#hlsearch()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 自定义设置
@@ -297,45 +272,11 @@ nnoremap <silent><leader><leader>i :PlugInstall<cr>
 nnoremap <silent><leader><leader>u :PlugUpdate<cr>
 nnoremap <silent><leader><leader>c :PlugClean<cr>
 
-" vim-buffer
-nnoremap <silent><leader>qa :call CloseBuffer(0)<cr>
-nnoremap <silent><leader>qb :call CloseBuffer(1)<cr>
-autocmd BufAdd * let b:max_buffer_num = 100 | call CloseBuffer(2)
-function! CloseBuffer(action)
-  if &filetype == "defx" || &filetype == "tagbar" || &filetype == "qf"
-    echo "Window not support close buffer!"
-    return
-  endif
-  if a:action == 0
-    execute ":only | q"
-  endif
-  if a:action == 1
-    if winnr('$') > 1
-        execute ":only"
-    endif
-    "关闭当前的buffer
-    execute ":bd"
-  endif
-  if a:action == 2
-    let curr_buf = bufnr("%")
-    let oldest_buf = curr_buf
-    let oldest_time = localtime()
-    let buf_info = filter(getbufinfo(), 'buflisted(v:val.bufnr)')
-    if len(buf_info) <= b:max_buffer_num
-      return
-    endif
-    for buf in buf_info
-      "关闭最早打开的buffer
-      if buf.lastused < oldest_time
-        let oldest_buf = buf.bufnr
-        let oldest_time = buf.lastused
-      endif
-    endfor
-    if oldest_buf != curr_buf
-      execute 'bdelete ' . oldest_buf
-    endif
-  endif
-endfunction
+" buffer and whitespace
+let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
+autocmd BufAdd * call vimplus#buflimit(100)
+nnoremap <silent><leader>qb :call vimplus#bufclose()<cr>
+nnoremap <silent><leader>qa :call vimplus#close()<cr>
 
 " vimplus-startify
 let g:startify_session_persistence = 1
@@ -504,9 +445,8 @@ let g:formatdef_google = '"clang-format -style=google"'              " google �
 let g:formatdef_allman = '"astyle --style=allman --pad-oper"'        " allman风格的代码：{}读占一行
 let g:formatters_cpp = ['allman']
 let g:formatters_c = ['allman']
-let g:autoformat_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
-vnoremap <silent><leader>f<space> : MoveTabToSpace<cr>
-vnoremap <silent><leader>f<tab>   : MoveSpaceToTab<cr>
+vnoremap <silent><leader>f<space> :'<,'>MoveTabToSpace<cr>
+vnoremap <silent><leader>f<tab>   :'<,'>MoveSpaceToTab<cr>
 
 " rainbow
  let g:rainbow_active = 1
