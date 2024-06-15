@@ -13,8 +13,8 @@
     2.使用vim打开项目根目录下的任意一个文件
     3.命令行下使用:Ssave 把项目保存为一个session，此时项目根目录会自动创建一个.root文件，作为vim-gutentags,LeaderF等插件生成索引数据的锚
     4.退出VIM，之后每次只需要在家目录下，使用命令vim （不带参数） 进入start 页，通过选择session 进入对应的项目，进入项目后会自动更新索引数据。
-    5.索引数据的更新状态会显示在状态栏，等待索引数据生成完毕后，才可进行索引搜索，注：数据更新过程中不可退出VIM，否则可能会破坏索引数据
-    6.更多常用快捷操作可参考vimplus的帮助文档，打开方式：命令行输入 VimplusHelp
+    5.索引数据的更新状态会显示在状态栏，等待索引数据生成完毕后，才可进行索引搜索，注：数据在首次更新过程中不可退出VIM，否则可能会破坏索引数据
+    6.更多常用快捷操作可参考帮助文档，:h vimplus
 
 #### 设置Nerd Font
 
@@ -79,7 +79,7 @@ vim .confg/nvim/init.vim
 
 * gtags 支持更多语言
 
-        gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  pygments 支持 50+ 种语言。因此我们要安装 pygments 
+        gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  pygments 支持 50+ 种语言。因此我们要安装 pygments
 
         1. 保证你的 $PATH 里面有 python
 
