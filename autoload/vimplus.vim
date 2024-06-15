@@ -45,11 +45,8 @@ endfunction
 
 " 控制打开的buffer数量
 function! vimplus#buflimit(num) abort
-  if s:BufferReadonly()
+  if a:num == 0 || s:BufferReadonly()
     return
-  endif
-  if empty(a:num) || a:num == 0
-    a:num = 100
   endif
   let curr_buf = bufnr("%")
   let oldest_buf = curr_buf
