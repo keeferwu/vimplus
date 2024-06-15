@@ -168,9 +168,6 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "
 " 以十六进制显示 vim -b 打开的二进制文件
 autocmd BufReadPost * if &bin | execute "%!xxd" | endif
 
-" 查看vimplus的help文件
-command! VimplusHelp :sview +let\ &l:modifiable=0 ~/.vim/help.md
-
 " 使用tmux attach已存在的session时,如果vim中系统剪切版无法使用，需要更新$DISPLAY环境变量
 if exists("$TMUX")
 let g:terminal_italics = 0
