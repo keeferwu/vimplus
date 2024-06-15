@@ -99,14 +99,10 @@ function! s:MatchWhitespace()
     return 1
 endfunction
 
-highlight default ExtraWhitespace ctermbg=darkred guibg=darkred
-let term_open_event = (has('nvim') ? 'TermOpen' : 'TerminalOpen')
-
 augroup whitespace
     autocmd!
     autocmd ColorScheme * highlight default ExtraWhitespace ctermbg=darkred guibg=darkred
-    exe 'autocmd BufRead,BufNew,FileType,' term_open_event '* if s:MatchWhitespace() | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+$/ | else | match ExtraWhitespace /^^/ | endif'
     " The above flashes annoyingly while typing, be calmer in insert mode
-    autocmd InsertLeave * if s:MatchWhitespace() | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+$/ | endif
+    autocmd InsertLeave * if s:MatchWhitespace() | match none /\\\@<![\u3000[:space:]]\+$/ | endif
     autocmd InsertEnter * if s:MatchWhitespace() | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+\%#\@<!$/ | endif
 augroup END
