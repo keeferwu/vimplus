@@ -347,10 +347,12 @@ function! ToggleLexplorer()
 endfunction
 autocmd FileType netrw nnoremap <silent><buffer> h :call ChangeToHome()<cr>
 function! ChangeToHome()
+  if exists("t:expl_buf")
     close
     let g:lens#disabled = 1
     Lexplore
     let g:lens#disabled = 0
+  endif
 endfunction
 
 "defx.nvim
@@ -474,8 +476,8 @@ vnoremap <silent><leader>f<space> :'<,'>MoveTabToSpace<cr>
 vnoremap <silent><leader>f<tab>   :'<,'>MoveSpaceToTab<cr>
 
 " rainbow
- let g:rainbow_active = 1
- let g:rainbow_conf = {
+let g:rainbow_active = 1
+let g:rainbow_conf = {
     \   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
     \   'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
     \   'operators': '_,_',
