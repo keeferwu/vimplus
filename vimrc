@@ -204,12 +204,12 @@ Plug 'keeferwu/LeaderF-gtags-history'    "显示leaderf gtags 搜索历史
 Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
 Plug 'SirVer/ultisnips'                  "需要和vim-snippets or vim-easycomplete 配合使用
 Plug 'honza/vim-snippets'                "代码块补全
-if !exists("$VIMPLUS_LSP_COMPLETE")
-Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
-Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
-else
+if exists("$VIMPLUSLSP")
 Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
 let g:gutentags_ctags_module = 0         "不让vim-gutentags支持ctags
+else
+Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
+Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
 endif
 Plug 'skywind3000/asyncrun.vim'          "异步运行命令
 "Plug 'puremourning/vimspector'           "代码调试
@@ -226,7 +226,7 @@ vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 " key map中的key必须为半角字符，否则会报错，有些输入法会将shift+space作为半全角切换快捷键
 let g:which_key_map = {}
 let g:which_key_map[' '] = {'name' : '+plugin',
-                    \   'l': "switch complete plugin",
+                    \   'l': "load LSP complete plugin",
                     \   'i': "install plugin",
                     \   'u': "update plugin",
                     \   'c': "clean unused plugin",
@@ -279,13 +279,19 @@ function! ChangeCompleteMethod(error, res)
     echom a:error
     return
   endif
+  if exists("$VIMPLUSLSP")
+    echohl WarningMsg
+    echom "LSP complete plugin has already been loaded!"
+    echohl None
+    return
+  endif
   if a:res == 1   "yes
-    "call system('source $HOME/.vim/env')   "修改环境变量不生效，需要手动在bash下执行
+    call system('export $VIMPLUSLSP="yes"')   "修改环境变量不生效，需要手动在bash下执行
     call vimplus#close()
   endif
 endfunction
-let vimplus_restart = "NOTE: vim/nvim will be closed, and you should do 'source $HOME/.vim/env' in bash"
-nnoremap <silent><leader><leader>l :call vimplus#confirm(vimplus_restart,function("ChangeCompleteMethod"))<cr>
+let vimplus_confirm = "NOTE: vim/nvim will be closed, and you should export VIMPLUSLSP to env."
+nnoremap <silent><leader><leader>l :call vimplus#confirm(vimplus_confirm,function("ChangeCompleteMethod"))<cr>
 " 安装、更新、删除插件
 nnoremap <silent><leader><leader>i :PlugInstall<cr>
 nnoremap <silent><leader><leader>u :PlugUpdate<cr>
