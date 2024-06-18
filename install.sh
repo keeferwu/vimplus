@@ -213,6 +213,7 @@ function install_config_to_user()
     desc_vim_path=$desc_home_path".vim/"
     rm -rf $desc_vim_path
     mkdir $desc_vim_path
+    cp    $src_vimplus_path"env"       $desc_vim_path
     cp -R $src_vimplus_path"doc/"      $desc_vim_path
     cp -R $src_vimplus_path"colors/"   $desc_vim_path
     cp -R $src_vimplus_path"autoload/" $desc_vim_path
@@ -246,6 +247,7 @@ function install_config_files()
         rm -rf $vim_dir
     fi
     mkdir $vim_dir
+    ln -s ${PWD}/env      $vim_dir
     ln -s ${PWD}/doc      $vim_dir
     ln -s ${PWD}/colors   $vim_dir
     ln -s ${PWD}/autoload $vim_dir

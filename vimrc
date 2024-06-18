@@ -204,7 +204,7 @@ Plug 'keeferwu/LeaderF-gtags-history'    "显示leaderf gtags 搜索历史
 Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
 Plug 'SirVer/ultisnips'                  "需要和vim-snippets or vim-easycomplete 配合使用
 Plug 'honza/vim-snippets'                "代码块补全
-if empty(findfile("compile_commands.json", '.;'))
+if !exists("$VIMPLUS_LSP_COMPLETE")
 Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
 Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
 else
@@ -225,6 +225,12 @@ nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 " key map中的key必须为半角字符，否则会报错，有些输入法会将shift+space作为半全角切换快捷键
 let g:which_key_map = {}
+let g:which_key_map[' '] = {'name' : '+plugin',
+                    \   'l': "switch complete plugin",
+                    \   'i': "install plugin",
+                    \   'u': "update plugin",
+                    \   'c': "clean unused plugin",
+                    \   }
 let g:which_key_map.j = 'jump cursor by key'
 let g:which_key_map.h = 'changes stage hunk'
 let g:which_key_map.H = 'changes stage hunk revert'
@@ -262,11 +268,24 @@ call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
 let g:which_key_map_visual.f = {'name' : '+codeformat'}
 let g:which_key_map_visual.c = {'name' : '+commenter'}
-let g:which_key_map_visual.g = {'name' : '+gtags'}
-let g:which_key_map_visual.g.q = 'vimgrep select pattern to qickfix'
+let g:which_key_map_visual.g = {'name' : '+gtags',
+                    \    'q' : 'vimgrep select pattern to qickfix',
+                    \   }
 let g:which_key_map_visual.k = 'highlight select pattern'
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
 
+function! ChangeCompleteMethod(error, res)
+  if !empty(a:error)
+    echom a:error
+    return
+  endif
+  if a:res == 1   "yes
+    "call system('source $HOME/.vim/env')   "修改环境变量不生效，需要手动在bash下执行
+    call vimplus#close()
+  endif
+endfunction
+let vimplus_restart = "NOTE: vim/nvim will be closed, and you should do 'source $HOME/.vim/env' in bash"
+nnoremap <silent><leader><leader>l :call vimplus#confirm(vimplus_restart,function("ChangeCompleteMethod"))<cr>
 " 安装、更新、删除插件
 nnoremap <silent><leader><leader>i :PlugInstall<cr>
 nnoremap <silent><leader><leader>u :PlugUpdate<cr>
@@ -292,7 +311,7 @@ let g:startify_session_root_mark = '.root'
 "打开session时调整vim为实时调度，避免cpu繁忙啊卡顿: 'exe system("sudo chrt -r -a -p 50 ".getpid())'
 let g:startify_session_savecmds = [
             \   'let &path=&path.getcwd()."/**"',
-            \   'clearjumps'
+            \   'clearjumps',
             \ ]
 
 " netrw
