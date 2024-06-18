@@ -274,7 +274,7 @@ let g:which_key_map_visual.g = {'name' : '+gtags',
 let g:which_key_map_visual.k = 'highlight select pattern'
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
 
-function! ChangeCompleteMethod(error, res)
+function! UseLSPComplete(error, res)
   if !empty(a:error)
     echom a:error
     return
@@ -291,7 +291,7 @@ function! ChangeCompleteMethod(error, res)
   endif
 endfunction
 let vimplus_confirm = "NOTE: vim/nvim will be closed, and you should export VIMPLUSLSP to env."
-nnoremap <silent><leader><leader>l :call vimplus#confirm(vimplus_confirm,function("ChangeCompleteMethod"))<cr>
+nnoremap <silent><leader><leader>l :call vimplus#confirm(vimplus_confirm,function("UseLSPComplete"))<cr>
 " 安装、更新、删除插件
 nnoremap <silent><leader><leader>i :PlugInstall<cr>
 nnoremap <silent><leader><leader>u :PlugUpdate<cr>
@@ -749,7 +749,7 @@ require'nvim-treesitter.configs'.setup {
   -- :TSInstallInfo 命令查看支持的语言
   ensure_installed = {"c", "html", "css", "vim", "lua"},
   -- Install parsers synchronously (only applied to `ensure_installed`)
-  sync_install = false,
+  sync_install = true,
   -- 启用代码高亮功能
   highlight = {
     enable = true,
