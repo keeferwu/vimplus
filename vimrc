@@ -240,11 +240,12 @@ let g:which_key_map.R = 'run command asynchronous'
 let g:which_key_map.t = {'name' : '+table'}
 let g:which_key_map.c = {'name' : '+commenter'}
 let g:which_key_map.l = {'name' : '+leaderf'}
-let g:which_key_map.w = {'name' : '+windows',
-                    \    'f' : 'leaderf file window',
-                    \    'g' : 'leaderf gtags window',
-                    \    'r' : 'leaderf rigrep window',
-                    \    'q' : 'leaderf qickfix window',
+let g:which_key_map.w = {'name' : '+window',
+                    \    'f' : 'leaderf file list',
+                    \    'g' : 'leaderf gtags list',
+                    \    'r' : 'leaderf rigrep list',
+                    \    'q' : 'leaderf qickfix list',
+                    \    'l' : 'leaderf location list',
                     \   }
 let g:which_key_map.r = {'name' : '+rigrep',
                     \    'g' : 'rg with customer prompt',
@@ -530,6 +531,8 @@ nnoremap <silent><leader>lb :LeaderfBuffer<cr>
 nnoremap <silent><leader>lt :LeaderfBufTag<cr>
 nnoremap <silent><leader>ll :LeaderfLine<cr>
 nnoremap <silent><leader>lm :LeaderfMru<cr>
+nnoremap <silent><leader>lc :LeaderfCommand<cr>
+nnoremap <silent><leader>ls :LeaderfColorscheme<cr>
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 let g:Lf_IgnoreCurrentBufferName = 1
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
@@ -588,6 +591,7 @@ nnoremap <silent><leader>wr :LeaderfRgRecall<cr>
 vnoremap <silent><leader>gq y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
 nnoremap <silent><leader>gq :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
 nnoremap <silent><leader>wq :LeaderfQuickFix<cr>
+nnoremap <silent><leader>wl :LeaderfLocList<cr>
 nnoremap <silent><leader>wf :Leaderf file --recall<cr>
 " Leaderf git
 nnoremap <silent><leader>lg :LeaderfGit<cr>
