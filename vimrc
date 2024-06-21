@@ -229,7 +229,6 @@ let g:which_key_map[' '] = {'name' : '+plugin',
                     \   'l': "load LSP complete plugin",
                     \   'i': "install plugin",
                     \   'u': "update plugin",
-                    \   'c': "clean unused plugin",
                     \   }
 let g:which_key_map.j = 'jump cursor by key'
 let g:which_key_map.h = 'changes stage hunk'
@@ -297,7 +296,7 @@ nnoremap <silent><leader><leader>l :call vimplus#confirm(vimplus_confirm,functio
 " 安装、更新、删除插件
 nnoremap <silent><leader><leader>i :PlugInstall<cr>
 nnoremap <silent><leader><leader>u :PlugUpdate<cr>
-nnoremap <silent><leader><leader>c :PlugClean<cr>
+"nnoremap <silent><leader><leader>c :PlugClean<cr>
 
 " buffer and whitespace
 let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
