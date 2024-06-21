@@ -259,6 +259,7 @@ let g:which_key_map.g = {'name' : '+gtags',
                     \    'g' : 'grep cword by gtags',
                     \    'q' : 'vimgrep cword to qickfix',
                     \    'h' : 'gtags search history',
+                    \    'c' : 'gtags database cache',
                     \    'u' : 'gtags upgrade',
                     \   }
 let g:which_key_map.q = {'name' : '+quit',
@@ -624,6 +625,7 @@ let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip director
 let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
 nnoremap <silent><leader>wg :Leaderf! gtags --recall<cr>
 nnoremap <silent><leader>gh :Leaderf gtags_history<cr>
+nnoremap <silent><leader>gc :Leaderf gtags_history --cache<cr>
 if g:Lf_GtagsAutoGenerate == 1
     autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
     nnoremap <silent><leader>gu :Leaderf gtags --update<cr>
