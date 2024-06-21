@@ -305,6 +305,7 @@ nnoremap <silent><leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent><leader>qa :call vimplus#close()<cr>
 
 " vimplus-startify
+let g:startify_session_sort = 1          " sort by create time
 let g:startify_session_persistence = 1
 " 相对于默认配置把sessions放在第一个
 let g:startify_list_order = [
@@ -760,6 +761,8 @@ require'nvim-treesitter.configs'.setup {
   -- 启用代码高亮功能
   highlight = {
     enable = true,
+    -- list of language that will be disabled
+    disable = { "txt" },
     -- use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     disable = function(lang, buf)
         local max_filesize = 100 * 1024 -- 100 KB
