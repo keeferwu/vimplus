@@ -100,6 +100,34 @@ function! vimplus#confirm(title, cb)
   endif
 endfunction
 
+function! s:VisualPattern()
+  try
+    let x_save = getreg("x", 1)
+    let type = getregtype("x")
+    norm! gv"xy
+    return escape(@x, '\"')
+  finally
+    call setreg("x", x_save, type)
+  endtry
+endfunction
+
+function! vimplus#vimgrep(mode) abort
+  if a:mode == 'n'
+      let pattern = expand('<cword>')
+  endif
+  if a:mode == 'v'
+      let pattern = s:VisualPattern()
+  endif
+  if a:mode == 'q'
+    silent! call matchdelete(1223)
+    silent! cclose
+    return
+  endif
+  silent! execute 'silent! vimgrep ' . pattern . ' %'
+  silent! copen
+  silent! call matchadd('Vimgrep', pattern, 0, 1223)
+endfunction
+
 " 仅当光标处于搜索内容时高亮搜索结果
 function! vimplus#hlsearch() abort
   let search_text = @/
@@ -200,3 +228,5 @@ augroup whitespace
     autocmd InsertLeave * if s:MatchWhitespace() | match none /\\\@<![\u3000[:space:]]\+$/ | endif
     autocmd InsertEnter * if s:MatchWhitespace() | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+\%#\@<!$/ | endif
 augroup END
+
+highlight def Vimgrep guifg=#000000 guibg=#cccc66 gui=NONE ctermfg=16 ctermbg=185 cterm=NONE

@@ -262,6 +262,7 @@ let g:which_key_map.g = {'name' : '+gtags',
                     \   }
 let g:which_key_map.v = {'name' : '+vimgrep',
                     \    'g' : 'vimgrep cword in current file',
+                    \    'q' : 'quit vimgrep search list',
                     \   }
 let g:which_key_map.q = {'name' : '+quit',
                     \    'a' : 'quit vim/nvim',
@@ -299,6 +300,11 @@ nnoremap <silent><leader><leader>l :call vimplus#confirm(vimplus_confirm,functio
 nnoremap <silent><leader><leader>i :PlugInstall<cr>
 nnoremap <silent><leader><leader>u :PlugUpdate<cr>
 "nnoremap <silent><leader><leader>c :PlugClean<cr>
+
+" 搜索当前文件选中内容输出到quickfix
+vnoremap <silent><leader>vg :call vimplus#vimgrep('v')<cr>
+nnoremap <silent><leader>vg :call vimplus#vimgrep('n')<cr>
+nnoremap <silent><leader>vq :call vimplus#vimgrep('q')<cr>
 
 " buffer and whitespace
 let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
@@ -590,9 +596,6 @@ nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <leader>rw :LeaderfRgInteractive<cr>
 "上次 rg 搜索结果
 nnoremap <silent><leader>wr :LeaderfRgRecall<cr>
-" 搜索当前文件选中内容输出到quickfix
-vnoremap <silent><leader>vg y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
-nnoremap <silent><leader>vg :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
 nnoremap <silent><leader>wq :LeaderfQuickFix<cr>
 nnoremap <silent><leader>wl :LeaderfLocList<cr>
 nnoremap <silent><leader>wf :Leaderf file --recall<cr>
