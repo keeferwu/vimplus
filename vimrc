@@ -256,10 +256,12 @@ let g:which_key_map.g = {'name' : '+gtags',
                     \    'r' : 'reference symbol with definition',
                     \    's' : 'reference symbol with no definition',
                     \    'g' : 'grep cword by gtags',
-                    \    'q' : 'vimgrep cword to qickfix',
                     \    'h' : 'gtags search history',
                     \    'c' : 'gtags database cache',
                     \    'u' : 'gtags upgrade',
+                    \   }
+let g:which_key_map.v = {'name' : '+vimgrep',
+                    \    'g' : 'vimgrep cword in current file',
                     \   }
 let g:which_key_map.q = {'name' : '+quit',
                     \    'a' : 'quit vim/nvim',
@@ -269,8 +271,8 @@ call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
 let g:which_key_map_visual.f = {'name' : '+codeformat'}
 let g:which_key_map_visual.c = {'name' : '+commenter'}
-let g:which_key_map_visual.g = {'name' : '+gtags',
-                    \    'q' : 'vimgrep select pattern to qickfix',
+let g:which_key_map_visual.v = {'name' : '+vimgrep',
+                    \    'g' : 'vimgrep select in current file',
                     \   }
 let g:which_key_map_visual.k = 'highlight select pattern'
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
@@ -305,7 +307,7 @@ nnoremap <silent><leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent><leader>qa :call vimplus#close()<cr>
 
 " vimplus-startify
-let g:startify_session_sort = 1          " sort by create time
+let g:startify_session_sort = 1          " sort by last open time
 let g:startify_session_persistence = 1
 " 相对于默认配置把sessions放在第一个
 let g:startify_list_order = [
@@ -589,8 +591,8 @@ nnoremap <leader>rw :LeaderfRgInteractive<cr>
 "上次 rg 搜索结果
 nnoremap <silent><leader>wr :LeaderfRgRecall<cr>
 " 搜索当前文件选中内容输出到quickfix
-vnoremap <silent><leader>gq y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
-nnoremap <silent><leader>gq :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
+vnoremap <silent><leader>vg y :vimgrep <c-r>" % \| LeaderfQuickFix<cr>
+nnoremap <silent><leader>vg :execute 'vimgrep '.expand("<cword>").' % \| LeaderfQuickFix'<cr>
 nnoremap <silent><leader>wq :LeaderfQuickFix<cr>
 nnoremap <silent><leader>wl :LeaderfLocList<cr>
 nnoremap <silent><leader>wf :Leaderf file --recall<cr>
