@@ -124,8 +124,8 @@ noremap  <silent> <m-v> <c-v>
 noremap  <silent> <c-v> "+p
 vnoremap <silent> <c-c> "+y
 autocmd VimEnter * call clipboard#check()
-"noremap  <silent> <c-v> :call clipboard#paste()<cr>
-"vnoremap <silent> <c-c> :call clipboard#yank()<cr>
+"noremap  <silent> <c-v> :<c-u>call clipboard#paste()<cr>
+"vnoremap <silent> <c-c> :<c-u>call clipboard#yank()<cr>
 " 保存
 noremap <silent> <c-s> :w<cr>
 inoremap <silent> <c-s> <Esc>:w<cr>
@@ -270,7 +270,6 @@ let g:which_key_map.q = {'name' : '+quit',
                     \   }
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
-let g:which_key_map_visual.f = {'name' : '+codeformat'}
 let g:which_key_map_visual.c = {'name' : '+commenter'}
 let g:which_key_map_visual.v = {'name' : '+vimgrep',
                     \    'g' : 'vimgrep select in current file',
@@ -302,9 +301,9 @@ nnoremap <silent><leader><leader>u :PlugUpdate<cr>
 "nnoremap <silent><leader><leader>c :PlugClean<cr>
 
 " 搜索当前文件选中内容输出到quickfix
-vnoremap <silent><leader>vg :call vimplus#vimgrep('v')<cr>
-nnoremap <silent><leader>vg :call vimplus#vimgrep('n')<cr>
-nnoremap <silent><leader>vq :call vimplus#vimgrep('q')<cr>
+vnoremap <silent><leader>vg :<c-u>call vimplus#vimgrep('v')<cr>
+nnoremap <silent><leader>vg :<c-u>call vimplus#vimgrep('n')<cr>
+nnoremap <silent><leader>vq :<c-u>call vimplus#vimgrep('q')<cr>
 
 " buffer and whitespace
 let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
@@ -482,8 +481,6 @@ let g:formatdef_google = '"clang-format -style=google"'              " google �
 let g:formatdef_allman = '"astyle --style=allman --pad-oper"'        " allman风格的代码：{}读占一行
 let g:formatters_cpp = ['allman']
 let g:formatters_c = ['allman']
-vnoremap <silent><leader>f<space> :'<,'>MoveTabToSpace<cr>
-vnoremap <silent><leader>f<tab>   :'<,'>MoveSpaceToTab<cr>
 
 " rainbow
 let g:rainbow_active = 1

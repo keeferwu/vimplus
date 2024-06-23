@@ -214,19 +214,34 @@ if !exists('g:vimplus_whitespace_ignored_filetypes')
 endif
 
 function! s:MatchWhitespace()
-    for ft in g:vimplus_whitespace_ignored_filetypes
-        if ft ==# &filetype | return 0 | endif
-    endfor
-    if &buftype ==# 'terminal' | return 0 | endif
-    return 1
+  for ft in g:vimplus_whitespace_ignored_filetypes
+    if ft ==# &filetype | return 0 | endif
+  endfor
+  if &buftype ==# 'terminal' | return 0 | endif
+  return 1
 endfunction
 
 augroup whitespace
-    autocmd!
-    autocmd ColorScheme * highlight default ExtraWhitespace ctermbg=darkred guibg=darkred
-    " The above flashes annoyingly while typing, be calmer in insert mode
-    autocmd InsertLeave * if s:MatchWhitespace() | match none /\\\@<![\u3000[:space:]]\+$/ | endif
-    autocmd InsertEnter * if s:MatchWhitespace() | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+\%#\@<!$/ | endif
+  autocmd!
+  autocmd ColorScheme * highlight default ExtraWhitespace ctermbg=darkred guibg=darkred
+  " The above flashes annoyingly while typing, be calmer in insert mode
+  autocmd InsertLeave * if s:MatchWhitespace() | match none /\\\@<![\u3000[:space:]]\+$/ | endif
+  autocmd InsertEnter * if s:MatchWhitespace() | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+\%#\@<!$/ | endif
 augroup END
+
+function! s:IndentChange(line1,line2,type)
+  let indenttype = &expandtab
+  " 0:tab, 1:space,
+  if indenttype && a:type == "Tab"
+    execute "set noexpandtab"
+  endif
+  if !indenttype && a:type == "Space"
+    execute "set expandtab"
+  endif
+  execute a:line1.",".a:line2."%retab!"
+  execute indenttype ? "set expandtab" : "set noexpandtab"
+endfunction
+command! -range=% TabIndent call <SID>IndentChange(<line1>,<line2>,"Tab")
+command! -range=% SpaceIndent call <SID>IndentChange(<line1>,<line2>,"Space")
 
 highlight def Vimgrep guifg=#000000 guibg=#cccc66 gui=NONE ctermfg=16 ctermbg=185 cterm=NONE
