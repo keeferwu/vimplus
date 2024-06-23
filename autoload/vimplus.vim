@@ -112,19 +112,19 @@ function! s:VisualPattern()
 endfunction
 
 function! vimplus#vimgrep(mode) abort
+  if a:mode == 'q'
+    silent! cclose
+    return
+  endif
   if a:mode == 'n'
       let pattern = expand('<cword>')
   endif
   if a:mode == 'v'
       let pattern = s:VisualPattern()
   endif
-  if a:mode == 'q'
-    silent! call matchdelete(1223)
-    silent! cclose
-    return
-  endif
   silent! execute 'silent! vimgrep ' . pattern . ' %'
   silent! copen
+  silent! call matchdelete(1223)
   silent! call matchadd('Vimgrep', pattern, 0, 1223)
 endfunction
 
