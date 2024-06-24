@@ -758,14 +758,14 @@ lua << EOF
 require'nvim-treesitter.configs'.setup {
   -- 安装 language parser
   -- :TSInstallInfo 命令查看支持的语言
-  ensure_installed = {"c", "html", "css", "vim", "lua"},
+  ensure_installed = { "vim", "lua", "c", "cpp", "make", "kconfig" },
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = true,
   -- 启用代码高亮功能
   highlight = {
     enable = true,
     -- list of language that will be disabled
-    disable = { "txt" },
+    disable = { "vimdoc", "luadoc", "rust", "python" },
     -- use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     disable = function(lang, buf)
         local max_filesize = 100 * 1024 -- 100 KB
