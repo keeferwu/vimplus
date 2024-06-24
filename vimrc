@@ -464,6 +464,7 @@ let g:NERDAltDelims_c = 1
 " indentLine 开启代码对齐线
 let g:indentLine_enabled = 1
 let g:indentLine_leadingSpaceEnabled = 0
+let g:indentLine_concealcursor = 'ic'
 
 " vim-interestingwords
 let g:interestingWordsCycleColors = 1
