@@ -175,7 +175,7 @@ command! -nargs=1 -bar UnPlug call s:deregister(<args>)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-Plug 'chxuan/vimplus-startify'           "vimplus开始页面
+Plug 'mhinz/vim-startify'                "启动页面
 Plug 'liuchengxu/vim-which-key'          "vim快捷键提示
 Plug 'liuchengxu/eleline.vim'            "精简的statusline
 if has("nvim")
@@ -218,6 +218,30 @@ call plug#end()
 
 " load vim default plugin
 runtime macros/matchit.vim
+
+" vim-startify
+let g:startify_session_sort = 1          " sort by last open time
+let g:startify_session_persistence = 1
+let g:startify_bookmarks = []
+let g:startify_commands = [
+            \ {'h': ['vim help', 'h ref']},
+            \ {'g': ['list gtags cache', 'call Magic()']},
+            \ ]
+" 相对于默认配置把sessions放在第一个
+let g:startify_lists = [
+            \ { 'header': ['   Sessions'],       'type': 'sessions' },
+            \ { 'header': ['   MRU '. getcwd()], 'type': 'dir' },
+            \ { 'header': ['   Bookmarks'],      'type': 'bookmarks' },
+            \ { 'header': ['   Commands'],       'type': 'commands' },
+            \ ]
+let g:startify_session_root_mark = '.root'
+"let g:startify_session_before_save = [ 'cd ' ]
+"配置项目工作目录到path,通过gf实现头文件跳转
+"打开session时调整vim为实时调度，避免cpu繁忙啊卡顿: 'exe system("sudo chrt -r -a -p 50 ".getpid())'
+let g:startify_session_savecmds = [
+            \   'let &path=&path.getcwd()."/**"',
+            \   'clearjumps',
+            \ ]
 
 " vim-which-key
 let g:mapleader = "\<Space>"      " 定义<leader>键
@@ -310,24 +334,6 @@ let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
 autocmd BufAdd * call vimplus#buflimit(100)
 nnoremap <silent><leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent><leader>qa :call vimplus#close()<cr>
-
-" vimplus-startify
-let g:startify_session_sort = 1          " sort by last open time
-let g:startify_session_persistence = 1
-" 相对于默认配置把sessions放在第一个
-let g:startify_list_order = [
-            \   ['   Sessions'],       'sessions',
-            \   ['   MRU '. getcwd()], 'dir',
-            \   ['   Bookmarks'],      'bookmarks',
-            \   ['   Commands'],       'commands',
-            \ ]
-let g:startify_session_root_mark = '.root'
-"配置项目工作目录到path,通过gf实现头文件跳转
-"打开session时调整vim为实时调度，避免cpu繁忙啊卡顿: 'exe system("sudo chrt -r -a -p 50 ".getpid())'
-let g:startify_session_savecmds = [
-            \   'let &path=&path.getcwd()."/**"',
-            \   'clearjumps',
-            \ ]
 
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
