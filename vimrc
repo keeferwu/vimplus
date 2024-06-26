@@ -220,6 +220,7 @@ call plug#end()
 runtime macros/matchit.vim
 
 " vim-startify
+let g:startify_session_dir = '~/.vim/session'
 let g:startify_session_sort = 1          " sort by last open time
 let g:startify_session_persistence = 1
 let g:startify_bookmarks = []
