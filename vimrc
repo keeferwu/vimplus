@@ -225,7 +225,7 @@ let g:startify_session_persistence = 1
 let g:startify_bookmarks = []
 let g:startify_commands = [
             \ {'h': ['vim help', 'h ref']},
-            \ {'g': ['list gtags cache', 'call Magic()']},
+            \ {'c': ['gtags cache', 'Leaderf gtags_history --cache']},
             \ ]
 " 相对于默认配置把sessions放在第一个
 let g:startify_lists = [
@@ -235,7 +235,8 @@ let g:startify_lists = [
             \ { 'header': ['   Commands'],       'type': 'commands' },
             \ ]
 let g:startify_session_root_mark = '.root'
-"let g:startify_session_before_save = [ 'cd ' ]
+" session 退出时自动切换工作目录到主目录
+let g:startify_session_before_save = [ "exec 'cd' fnamemodify(findfile(g:startify_session_root_mark, ';'), ':h')" ]
 "配置项目工作目录到path,通过gf实现头文件跳转
 "打开session时调整vim为实时调度，避免cpu繁忙啊卡顿: 'exe system("sudo chrt -r -a -p 50 ".getpid())'
 let g:startify_session_savecmds = [
@@ -729,7 +730,11 @@ let g:lens#width_resize_min = 20
 let g:easycomplete_scheme="dark"
 let g:easycomplete_lsp_checking = 1           " check LSP server 是否安装
 let g:easycomplete_signature_enable = 1       " lsp signature checking
-let g:easycomplete_tabnine_enable = 0         " disable TabNine
+let g:easycomplete_tabnine_enable = 0         " disaable TabNine
+let g:easycomplete_tabnine_config = {
+            \ 'line_limit': 1000,
+            \ 'max_num_result' : 3,
+            \ }
 let g:easycomplete_diagnostics_enable = 1     " 语法检测
 let g:easycomplete_diagnostics_prev = "<c-p>"
 let g:easycomplete_diagnostics_next = "<c-n>"
