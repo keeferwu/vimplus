@@ -321,22 +321,22 @@ function! UseLSPComplete(error, res)
   endif
 endfunction
 let vimplus_confirm = "NOTE: vim/nvim will be closed, and you should export VIMPLUSLSP to env."
-nnoremap <silent><leader><leader>l :call vimplus#confirm(vimplus_confirm,function("UseLSPComplete"))<cr>
+nnoremap <silent> <leader><leader>l :call vimplus#confirm(vimplus_confirm,function("UseLSPComplete"))<cr>
 " 安装、更新、删除插件
-nnoremap <silent><leader><leader>i :PlugInstall<cr>
-nnoremap <silent><leader><leader>u :PlugUpdate<cr>
-"nnoremap <silent><leader><leader>c :PlugClean<cr>
+nnoremap <silent> <leader><leader>i :PlugInstall<cr>
+nnoremap <silent> <leader><leader>u :PlugUpdate<cr>
+"nnoremap <silent> <leader><leader>c :PlugClean<cr>
 
 " 搜索当前文件选中内容输出到quickfix
-vnoremap <silent><leader>vg :<c-u>call vimplus#vimgrep('v')<cr>
-nnoremap <silent><leader>vg :<c-u>call vimplus#vimgrep('n')<cr>
-nnoremap <silent><leader>vq :<c-u>call vimplus#vimgrep('q')<cr>
+vnoremap <silent> <leader>vg :<c-u>call vimplus#vimgrep('v')<cr>
+nnoremap <silent> <leader>vg :<c-u>call vimplus#vimgrep('n')<cr>
+nnoremap <silent> <leader>vq :<c-u>call vimplus#vimgrep('q')<cr>
 
 " buffer and whitespace
 let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
 autocmd BufAdd * call vimplus#buflimit(100)
-nnoremap <silent><leader>qb :call vimplus#bufclose()<cr>
-nnoremap <silent><leader>qa :call vimplus#close()<cr>
+nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
+nnoremap <silent> <leader>qa :call vimplus#close()<cr>
 
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
@@ -481,7 +481,7 @@ let g:interestingWordsCaseSensitive = 1
 
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
-nmap <silent><leader>j <Plug>(easymotion-overwin-w)
+nmap <silent> <leader>j <Plug>(easymotion-overwin-w)
 
 " vim-autoformat
 "autocmd BufWrite * :Autoformat
@@ -543,12 +543,12 @@ hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green
 let g:Lf_ShortcutF = ''
 let g:Lf_ShortcutB = ''
 nnoremap <leader>lf :LeaderfFile<space>
-nnoremap <silent><leader>lb :LeaderfBuffer<cr>
-nnoremap <silent><leader>lt :LeaderfBufTag<cr>
-nnoremap <silent><leader>ll :LeaderfLine<cr>
-nnoremap <silent><leader>lm :LeaderfMru<cr>
-nnoremap <silent><leader>lc :LeaderfCommand<cr>
-nnoremap <silent><leader>ls :LeaderfColorscheme<cr>
+nnoremap <silent> <leader>lb :LeaderfBuffer<cr>
+nnoremap <silent> <leader>lt :LeaderfBufTag<cr>
+nnoremap <silent> <leader>ll :LeaderfLine<cr>
+nnoremap <silent> <leader>lm :LeaderfMru<cr>
+nnoremap <silent> <leader>lc :LeaderfCommand<cr>
+nnoremap <silent> <leader>ls :LeaderfColorscheme<cr>
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 let g:Lf_IgnoreCurrentBufferName = 1
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
@@ -602,12 +602,12 @@ let g:Lf_RgExGlob = ["**/.git/**", "x86_run/*", "target/*", "*.{map,map2,o,tgt,x
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <leader>rw :LeaderfRgInteractive<cr>
 "上次 rg 搜索结果
-nnoremap <silent><leader>wr :LeaderfRgRecall<cr>
-nnoremap <silent><leader>wq :LeaderfQuickFix<cr>
-nnoremap <silent><leader>wl :LeaderfLocList<cr>
-nnoremap <silent><leader>wf :Leaderf file --recall<cr>
+nnoremap <silent> <leader>wr :LeaderfRgRecall<cr>
+nnoremap <silent> <leader>wq :LeaderfQuickFix<cr>
+nnoremap <silent> <leader>wl :LeaderfLocList<cr>
+nnoremap <silent> <leader>wf :Leaderf file --recall<cr>
 " Leaderf git
-nnoremap <silent><leader>lg :LeaderfGit<cr>
+nnoremap <silent> <leader>lg :LeaderfGit<cr>
 let g:Lf_GitCommands = [
             \   {"Leaderf git log":                                "fuzzy search and view the log"},
             \   {"Leaderf git log --current-file":                 "fuzzy search and view the log of current file"},
@@ -635,12 +635,12 @@ let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
 let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
 let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
 let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-nnoremap <silent><leader>wg :Leaderf! gtags --recall<cr>
-nnoremap <silent><leader>gh :Leaderf gtags_history<cr>
-nnoremap <silent><leader>gc :Leaderf gtags_history --cache<cr>
+nnoremap <silent> <leader>wg :Leaderf! gtags --recall<cr>
+nnoremap <silent> <leader>gh :Leaderf gtags_history<cr>
+nnoremap <silent> <leader>gc :Leaderf gtags_history --cache<cr>
 if g:Lf_GtagsAutoGenerate == 1
     autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
-    nnoremap <silent><leader>gu :Leaderf gtags --update<cr>
+    nnoremap <silent> <leader>gu :Leaderf gtags --update<cr>
     if g:Lf_GtagsAutoUpdate == 1
         " 光标1小时没有发生移动，自动更新gtags文件
         autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(3600*1000, { -> execute('Leaderf gtags --update')})|endif
@@ -690,7 +690,7 @@ if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
     let g:gutentags_auto_add_gtags_cscope = 0
     " generate gtags data to leaderF
     let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
-    nnoremap <silent><leader>gu :GutentagsUpdate!<cr>
+    nnoremap <silent> <leader>gu :GutentagsUpdate!<cr>
     if g:gutentags_generate_on_new == 1
         " 光标10min内没有发生移动，自动更新gtags文件
         autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(600*1000, { -> execute('GutentagsUpdate!')})|endif
@@ -761,9 +761,9 @@ imap <M-.> <Cmd>call codeium#CycleCompletions(1)<CR>
 
 " asyncrun.vim
 let g:asyncrun_open = 10
-nnoremap <silent><leader>R :AsyncRun -mode=term -pos=tab -close<space>
-nnoremap <silent><leader>tn :tabnext<cr>
-nnoremap <silent><leader>tc :tabclose<cr>
+nnoremap <silent> <leader>R :AsyncRun -mode=term -pos=tab -close<space>
+nnoremap <silent> <leader>tn :tabnext<cr>
+nnoremap <silent> <leader>tc :tabclose<cr>
 
 " nvim-treesitter
 if has('nvim')
