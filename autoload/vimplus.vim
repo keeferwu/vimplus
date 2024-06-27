@@ -112,20 +112,16 @@ function! s:VisualPattern()
 endfunction
 
 function! vimplus#vimgrep(mode) abort
-  if a:mode == 'q'
-    silent! cclose
-    return
-  endif
   if a:mode == 'n'
       let pattern = expand('<cword>')
   endif
   if a:mode == 'v'
       let pattern = s:VisualPattern()
   endif
-  silent! execute 'silent! vimgrep ' . pattern . ' %'
-  silent! copen
+  execute 'silent! vimgrep ' . pattern . ' % | copen'
+  hi QuickFixLine ctermbg=NONE guibg=NONE
   silent! call matchdelete(1223)
-  silent! call matchadd('Vimgrep', pattern, 0, 1223)
+  call matchadd('Vimgrep', pattern, 0, 1223)
 endfunction
 
 " 仅当光标处于搜索内容时高亮搜索结果
@@ -187,6 +183,13 @@ function! vimplus#buflimit(num) abort
   if oldest_buf != curr_buf
     execute 'bdelete ' . oldest_buf
   endif
+endfunction
+
+" 关闭quickfix
+function! vimplus#qfclose() abort
+  cclose
+  call setqflist([], 'f')
+  return
 endfunction
 
 " 关闭当前的buffer

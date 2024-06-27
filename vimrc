@@ -289,11 +289,11 @@ let g:which_key_map.g = {'name' : '+gtags',
                     \   }
 let g:which_key_map.v = {'name' : '+vimgrep',
                     \    'g' : 'vimgrep cword in current file',
-                    \    'q' : 'quit vimgrep search list',
                     \   }
 let g:which_key_map.q = {'name' : '+quit',
                     \    'a' : 'quit vim/nvim',
                     \    'b' : 'quit current buffer',
+                    \    'q' : 'quit quickfix list',
                     \   }
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
@@ -330,13 +330,13 @@ nnoremap <silent> <leader><leader>u :PlugUpdate<cr>
 " 搜索当前文件选中内容输出到quickfix
 vnoremap <silent> <leader>vg :<c-u>call vimplus#vimgrep('v')<cr>
 nnoremap <silent> <leader>vg :<c-u>call vimplus#vimgrep('n')<cr>
-nnoremap <silent> <leader>vq :<c-u>call vimplus#vimgrep('q')<cr>
 
 " buffer and whitespace
 let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
 autocmd BufAdd * call vimplus#buflimit(100)
 nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent> <leader>qa :call vimplus#close()<cr>
+nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
 
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
