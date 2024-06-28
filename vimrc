@@ -536,7 +536,6 @@ let g:changes_utf8_modified_sign = '✱'
 let g:changes_linehi_diff = 0
 let g:changes_fast=0
 let g:changes_vcs_check=1
-let g:changes_vcs_system='git'
 "hi ChangesSignTextAdd ctermbg=green ctermfg=black guibg=green
 "hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red
 "hi ChangesSignTextCh  ctermbg=blue  ctermfg=black guibg=blue
