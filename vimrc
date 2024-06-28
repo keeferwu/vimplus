@@ -609,11 +609,11 @@ nnoremap <silent> <leader>wf :Leaderf file --recall<cr>
 " Leaderf git
 nnoremap <silent> <leader>lg :LeaderfGit<cr>
 let g:Lf_GitCommands = [
-            \   {"Leaderf git log":                                "fuzzy search and view the log"},
+            \   {"Leaderf git log --explorer":                     "fuzzy search and view the log in an explorer tabpage"},
             \   {"Leaderf git log --current-file":                 "fuzzy search and view the log of current file"},
-            \   {"Leaderf git diff":                               "fuzzy search and view the diffs"},
+            \   {"Leaderf git diff --explorer":                    "view the diffs in an explorer tabpage"},
             \   {"Leaderf git diff --side-by-side --current-file": "view the side-by-side diffs of the current file"},
-            \   {"Leaderf git blame":                              "git blame current file"},
+            \   {"Leaderf git blame -w":                           "ignore whitespace when git blame current file"},
             \   {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
             \ ]
 " 项目根目录存在gtags.file文件，gtags 会以该文件为基础生成数据，生成gtags.file的方式参考 g:gutentags_file_list_command
