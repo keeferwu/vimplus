@@ -529,15 +529,19 @@ let g:cpp_concepts_highlight = 1                       " 高亮显示关键字 "
 " changesPlugin  显示修改的代码
 let g:changes_autocmd=1
 let g:changes_use_icons = 1
+let g:changes_sign_text_utf8 = 1
+let g:changes_utf8_add_sign = '✚'
+let g:changes_utf8_delete_sign = '✖'
+let g:changes_utf8_modified_sign = '✱'
 let g:changes_linehi_diff = 0
 let g:changes_fast=0
 let g:changes_vcs_check=1
 let g:changes_vcs_system='git'
-hi ChangesSignTextAdd ctermbg=green ctermfg=black guibg=green
-hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red
-hi ChangesSignTextCh  ctermbg=blue  ctermfg=black guibg=blue
-hi ChangesSignTextDummyCh  ctermfg=NONE ctermbg=blue guifg=NONE guibg=blue
-hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green
+"hi ChangesSignTextAdd ctermbg=green ctermfg=black guibg=green
+"hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red
+"hi ChangesSignTextCh  ctermbg=blue  ctermfg=black guibg=blue
+"hi ChangesSignTextDummyCh  ctermfg=NONE ctermbg=blue guifg=NONE guibg=blue
+"hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green
 
 " LeaderF
 let g:Lf_ShortcutF = ''
