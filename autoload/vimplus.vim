@@ -118,7 +118,7 @@ function! vimplus#vimgrep(mode) abort
   if a:mode == 'v'
       let pattern = s:VisualPattern()
   endif
-  execute 'silent! vimgrep ' . pattern . ' % | copen'
+  execute 'silent! vimgrep ' . pattern . ' % | bot copen'
   hi QuickFixLine ctermbg=NONE guibg=NONE
   silent! call matchdelete(1223)
   call matchadd('Vimgrep', pattern, 0, 1223)
