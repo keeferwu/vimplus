@@ -85,7 +85,7 @@ set showmatch                    " 高亮显示匹配括号
 " 代码折叠
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "set nofoldenable                " 禁用折叠代码
-set foldmethod=syntax            " 折叠方式
+set foldmethod=manual            " 折叠方式,syntax会导致大文件卡顿
 set foldcolumn=0                 " 设置折叠区域的宽度
 set foldlevelstart=99            " 打开文件是默认不折叠代码
 setlocal foldlevel=1             " 设置折叠层数
@@ -175,45 +175,78 @@ command! -nargs=1 -bar UnPlug call s:deregister(<args>)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-Plug 'mhinz/vim-startify'                "启动页面
-Plug 'liuchengxu/vim-which-key'          "vim快捷键提示
-Plug 'liuchengxu/eleline.vim'            "精简的statusline
+" vim启动页面
+Plug 'mhinz/vim-startify'
+" vim快捷键提示
+Plug 'liuchengxu/vim-which-key'
+" 精简的statusline
+Plug 'liuchengxu/eleline.vim'
 if has("nvim")
+" 文件目录树
 Plug 'Shougo/defx.nvim', {'do': ':UpdateRemotePlugins'}
+" 代码语法高亮
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 else
+" 文件目录树
 Plug 'Shougo/defx.nvim'
+" vim加载nvim插件的依赖
 Plug 'roxma/nvim-yarp'
+" vim加载nvim插件的依赖
 Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'rhysd/vim-healthcheck'
-Plug 'yianwillis/vimcdoc'                "vim 中文帮助文档
+" vim 插件环境检测
+Plug 'rhysd/vim-healthcheck', {'on': 'CheckHealth'}
+" vim 中文帮助文档
+Plug 'yianwillis/vimcdoc', {'for': 'help'}
 endif
-Plug 'preservim/tagbar'                  "函数显示列表
-Plug 'easymotion/vim-easymotion'         "光标快速移动
-Plug 'Yggdroot/indentLine'               "显示对齐标线
-Plug 'preservim/nerdcommenter'           "添加注释
-Plug 'luochen1990/rainbow'               "彩虹括号
-Plug 'octol/vim-cpp-enhanced-highlight'  "cpp语法扩展高亮
-Plug 'rust-lang/rust.vim'                "rust代码格式化，语法高亮
-Plug 'chrisbra/changesPlugin'            "修改显示
-Plug 'lfv89/vim-interestingwords'        "单词高亮
-Plug 'vim-autoformat/vim-autoformat'     "代码格式化
-Plug 'camspiers/lens.vim'                "自动调整当前窗口
-Plug 'ludovicchabant/vim-gutentags'      "自动更新tags文件
-Plug 'Yggdroot/LeaderF'                  "比ctrlp更强大的文件的模糊搜索工具
-Plug 'keeferwu/LeaderF-gtags-history'    "显示leaderf gtags 搜索历史
-Plug 'Exafunction/codeium.vim'           "AI智能插件，需要登录获取token才能使用
-Plug 'SirVer/ultisnips'                  "需要和vim-snippets or vim-easycomplete 配合使用
-Plug 'honza/vim-snippets'                "代码块补全
+" 函数显示列表
+Plug 'preservim/tagbar'
+" 光标快速移动
+Plug 'easymotion/vim-easymotion'
+" 显示缩进标线
+Plug 'Yggdroot/indentLine'
+" 代码快速注释
+Plug 'preservim/nerdcommenter'
+" 彩虹括号
+Plug 'luochen1990/rainbow'
+" cpp扩展高亮
+Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['c','cpp']}
+" rust代码格式化，语法高亮
+Plug 'rust-lang/rust.vim', {'for': 'rust'}
+" 修改显示
+Plug 'chrisbra/changesPlugin'
+" 单词高亮
+Plug 'lfv89/vim-interestingwords'
+" 代码格式化
+Plug 'vim-autoformat/vim-autoformat', {'on': ['Autoformat','AutoformatLine','RemoveTrailingSpaces']}
+" 自动调整当前窗口大小
+Plug 'camspiers/lens.vim'
+" 使用global工具自动更新tags文件
+Plug 'ludovicchabant/vim-gutentags'
+" 文件模糊搜索工具
+Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
+" 显示leaderf gtags 搜索历史
+Plug 'keeferwu/LeaderF-gtags-history'
+" AI智能插件，需要登录获取token
+Plug 'Exafunction/codeium.vim', {'branch': 'main'}
+" 代码块模板，需要和vim-snippets or vim-easycomplete 配合使用
+Plug 'SirVer/ultisnips'
+" 代码块补全，配合ultisnips使用
+Plug 'honza/vim-snippets'
 if exists("$VIMPLUSLSP")
-Plug 'jayli/vim-easycomplete'            "代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
-let g:gutentags_ctags_module = 0         "不让vim-gutentags支持ctags
+" lsp代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
+Plug 'jayli/vim-easycomplete'
+" 不让vim-gutentags支持ctags
+let g:gutentags_ctags_module = 0
 else
-Plug 'ervandew/supertab'                 "与vim-easycomplete 冲突
-Plug 'vim-scripts/OmniCppComplete'       "c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
+" 与vim-easycomplete 冲突
+Plug 'ervandew/supertab'
+" c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
+Plug 'vim-scripts/OmniCppComplete', {'for': ['c','cpp']}
 endif
-Plug 'skywind3000/asyncrun.vim'          "异步运行命令
-"Plug 'puremourning/vimspector'           "代码调试
+" 异步运行命令
+Plug 'skywind3000/asyncrun.vim'
+" 代码调试
+"Plug 'puremourning/vimspector'
 
 call plug#end()
 
