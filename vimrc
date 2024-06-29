@@ -335,7 +335,7 @@ nnoremap <silent> <leader>vg :<c-u>call vimplus#vimgrep('n')<cr>
 let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
 autocmd BufAdd * call vimplus#buflimit(100)
 nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
-nnoremap <silent> <leader>qa :call vimplus#close()<cr>
+nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
 nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
 
 " netrw
@@ -437,7 +437,7 @@ function! DefxHelp()
             \   ['pp',              'Paste chip board files'],
             \ ]
         silent 0put ='\" defx keybindings'
-        silent  put ='\"'
+        silent  put ='\" ---------------------------------'
         for [cmd, desc] in help_cmds
             silent put ='\" ' . cmd . ': ' . desc
         endfor

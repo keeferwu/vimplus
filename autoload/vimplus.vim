@@ -198,17 +198,18 @@ function! vimplus#bufclose() abort
     return
   endif
   if winnr('$') > 1
-    execute ":only"
+    execute "only"
   endif
-  execute ":bd"
+  execute "bdelete"
 endfunction
 
 "关闭vim所有窗口并退出
-function! vimplus#close() abort
+function! vimplus#vimclose() abort
   if s:BufferReadonly()
-    return
+    execute "wincmd w"
+    call vimplus#vimclose()
   endif
-  execute ":only | q"
+  execute "only | q"
 endfunction
 
 " Highlight EOL whitespace, https://github.com/bronson/vim-trailing-whitespace.git
