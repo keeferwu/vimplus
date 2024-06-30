@@ -175,29 +175,22 @@ command! -nargs=1 -bar UnPlug call s:deregister(<args>)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-" vim启动页面
+" 启动页面
 Plug 'mhinz/vim-startify'
-" vim快捷键提示
+" 快捷键提示
 Plug 'liuchengxu/vim-which-key'
 " 精简的statusline
 Plug 'liuchengxu/eleline.vim'
-if has("nvim")
 " 文件目录树
 Plug 'Shougo/defx.nvim', {'do': ':UpdateRemotePlugins'}
-" 代码语法高亮
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-else
-" 文件目录树
-Plug 'Shougo/defx.nvim'
 " vim加载nvim插件的依赖
-Plug 'roxma/nvim-yarp'
+Plug 'roxma/nvim-yarp', has('nvim') ? {'on': []} : {}
 " vim加载nvim插件的依赖
-Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'roxma/vim-hug-neovim-rpc', has('nvim') ? {'on': []} : {}
 " vim 插件环境检测
-Plug 'rhysd/vim-healthcheck', {'on': 'CheckHealth'}
+Plug 'rhysd/vim-healthcheck', has('nvim') ? {'on': []} : {'on': 'CheckHealth'}
 " vim 中文帮助文档
-Plug 'yianwillis/vimcdoc', {'for': 'help'}
-endif
+Plug 'yianwillis/vimcdoc', has('nvim') ? {'on': []} : {'for': 'help'}
 " 函数显示列表
 Plug 'preservim/tagbar'
 " 光标快速移动
@@ -232,19 +225,16 @@ Plug 'Exafunction/codeium.vim', {'branch': 'main'}
 Plug 'SirVer/ultisnips'
 " 代码块补全，配合ultisnips使用
 Plug 'honza/vim-snippets'
-if exists("$VIMPLUSLSP")
 " lsp代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
-Plug 'jayli/vim-easycomplete'
-" 不让vim-gutentags支持ctags
-let g:gutentags_ctags_module = 0
-else
+Plug 'jayli/vim-easycomplete', exists('$VIMLSP') ? {} : {'on': []}
 " 与vim-easycomplete 冲突
-Plug 'ervandew/supertab'
+Plug 'ervandew/supertab', exists('$VIMLSP') ? {'on': []} : {}
 " c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
-Plug 'vim-scripts/OmniCppComplete', {'for': ['c','cpp']}
-endif
+Plug 'vim-scripts/OmniCppComplete', exists('$VIMLSP') ? {'on': []} : {'for': ['c','cpp']}
 " 异步运行命令
 Plug 'skywind3000/asyncrun.vim'
+" nvim代码语法高亮
+Plug 'nvim-treesitter/nvim-treesitter', has('nvim') ? {'do': ':TSUpdate'} : {'on': []}
 " 代码调试
 "Plug 'puremourning/vimspector'
 
@@ -342,18 +332,18 @@ function! UseLSPComplete(error, res)
     echom a:error
     return
   endif
-  if exists("$VIMPLUSLSP")
+  if exists("$VIMLSP")
     echohl WarningMsg
     echom "LSP complete plugin has already been loaded!"
     echohl None
     return
   endif
   if a:res == 1   "yes
-    call system('export $VIMPLUSLSP="yes"')   "修改环境变量不生效，需要手动在bash下执行
+    call system('export $VIMLSP="yes"')   "修改环境变量不生效，需要手动在bash下执行
     call vimplus#close()
   endif
 endfunction
-let vimplus_confirm = "NOTE: vim/nvim will be closed, and you should export VIMPLUSLSP to env."
+let vimplus_confirm = "NOTE: vim/nvim will be closed, and you should export VIMLSP to env."
 nnoremap <silent> <leader><leader>l :call vimplus#confirm(vimplus_confirm,function("UseLSPComplete"))<cr>
 " 安装、更新、删除插件
 nnoremap <silent> <leader><leader>i :PlugInstall<cr>
@@ -713,7 +703,7 @@ let g:gutentags_generate_on_new = 0
 autocmd FileType startify let g:gutentags_generate_on_new = 1
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
-if get(g:, 'gutentags_ctags_module', 1) && executable('ctags')
+if !exists("$VIMLSP") && executable('ctags')
     let g:gutentags_modules += ['ctags']
     " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
     map <c-]> g<c-]>
