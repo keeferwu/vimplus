@@ -340,7 +340,7 @@ function! UseLSPComplete(error, res)
   endif
   if a:res == 1   "yes
     call system('export $VIMLSP="yes"')   "修改环境变量不生效，需要手动在bash下执行
-    call vimplus#close()
+    call vimplus#vimclose()
   endif
 endfunction
 let vimplus_confirm = "NOTE: vim/nvim will be closed, and you should export VIMLSP to env."
