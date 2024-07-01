@@ -550,15 +550,15 @@ let g:cpp_experimental_template_highlight = 1          " 高亮显示模板函�
 let g:cpp_concepts_highlight = 1                       " 高亮显示关键字 "concept "和 "requires" 以及标准库名
 
 " changesPlugin  显示修改的代码
-let g:changes_autocmd=1
+let g:changes_autocmd = 1
 let g:changes_use_icons = 1
 let g:changes_sign_text_utf8 = 1
 let g:changes_utf8_add_sign = '✚'
 let g:changes_utf8_delete_sign = '✖'
 let g:changes_utf8_modified_sign = '✱'
 let g:changes_linehi_diff = 0
-let g:changes_fast=0
-let g:changes_vcs_check=1
+let g:changes_fast = 0
+let g:changes_vcs_check = 1
 "hi ChangesSignTextAdd ctermbg=green ctermfg=black guibg=green
 "hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red
 "hi ChangesSignTextCh  ctermbg=blue  ctermfg=black guibg=blue
@@ -637,7 +637,7 @@ nnoremap <silent> <leader>lg :LeaderfGit<cr>
 let g:Lf_GitCommands = [
             \   {"Leaderf git log --explorer":                     "fuzzy search and view the log in an explorer tabpage"},
             \   {"Leaderf git log --current-file":                 "fuzzy search and view the log of current file"},
-            \   {"Leaderf git diff --explorer":                    "view the diffs in an explorer tabpage"},
+            \   {"Leaderf git diff --side-by-side":                "fuzzy search and view the side-by-side diffs"},
             \   {"Leaderf git diff --side-by-side --current-file": "view the side-by-side diffs of the current file"},
             \   {"Leaderf git blame -w":                           "ignore whitespace when git blame current file"},
             \   {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
@@ -755,7 +755,7 @@ let g:lens#width_resize_max = 120
 let g:lens#width_resize_min = 20
 
 " vim-easycomplete
-let g:easycomplete_scheme="dark"
+let g:easycomplete_scheme = "dark"
 let g:easycomplete_lsp_checking = 1           " check LSP server 是否安装
 let g:easycomplete_signature_enable = 1       " lsp signature checking
 let g:easycomplete_tabnine_enable = 0         " disaable TabNine
