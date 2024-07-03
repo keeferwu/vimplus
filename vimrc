@@ -697,7 +697,8 @@ let g:gutentags_cache_dir = expand('~/.cache/tags')
 let g:gutentags_trace = 0
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
-let g:gutentags_generate_on_write = 1
+"写更新有时会导致gtags数据丢失部分内容
+"let g:gutentags_generate_on_write = 1
 let g:gutentags_generate_on_new = 0
 "仅有通过startify session 打开文件，gtags数据才进行更新
 autocmd FileType startify let g:gutentags_generate_on_new = 1
