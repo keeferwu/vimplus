@@ -354,12 +354,14 @@ nnoremap <silent> <leader><leader>u :PlugUpdate<cr>
 vnoremap <silent> <leader>vg :<c-u>call vimplus#vimgrep('v')<cr>
 nnoremap <silent> <leader>vg :<c-u>call vimplus#vimgrep('n')<cr>
 
-" buffer and whitespace
+" buffer,table and whitespace
 let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
 autocmd BufAdd * call vimplus#buflimit(100)
 nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
 nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
+nnoremap <silent> <leader>tn :tabnext<cr>
+nnoremap <silent> <leader>tc :tabclose<cr>
 
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
@@ -789,8 +791,6 @@ imap <M-.> <Cmd>call codeium#CycleCompletions(1)<CR>
 " asyncrun.vim
 let g:asyncrun_open = 10
 nnoremap <silent> <leader>R :AsyncRun -mode=term -pos=tab -close<space>
-nnoremap <silent> <leader>tn :tabnext<cr>
-nnoremap <silent> <leader>tc :tabclose<cr>
 
 " nvim-treesitter
 if has('nvim')
