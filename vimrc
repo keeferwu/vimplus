@@ -112,10 +112,10 @@ autocmd CursorMoved,CursorMovedI * call vimplus#hlsearch()
 " 自定义设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("nvim")
-" unnamedplus:所有的操作都会自动被粘贴进 system clipboard 中
-" unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
-set clipboard+=unnamed
-let g:python3_host_prog = '/usr/bin/python3'
+  " unnamedplus:所有的操作都会自动被粘贴进 system clipboard 中
+  " unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
+  set clipboard+=unnamed
+  let g:python3_host_prog = '/usr/bin/python3'
 endif
 
 " 复制粘贴到系统剪切板
@@ -124,8 +124,15 @@ noremap  <silent> <m-v> <c-v>
 noremap  <silent> <c-v> "+p
 vnoremap <silent> <c-c> "+y
 autocmd VimEnter * call clipboard#check()
-"noremap  <silent> <c-v> :<c-u>call clipboard#paste()<cr>
-"vnoremap <silent> <c-c> :<c-u>call clipboard#yank()<cr>
+if exists("$TMUX")
+  let g:terminal_italics = 0    " tmux 默认不支持斜体
+  noremap  <silent> <c-v> :<c-u>call clipboard#paste()<cr>
+  vnoremap <silent> <c-c> :<c-u>call clipboard#yank()<cr>
+  " 使用tmux attach已存在的session时,如果vim中系统剪切版无法使用，需要更新$DISPLAY环境变量
+  command! ClipBoard :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '') | echo $DISPLAY
+  autocmd VimEnter * ClipBoard
+endif
+
 " 保存
 noremap <silent> <c-s> :w<cr>
 inoremap <silent> <c-s> <Esc>:w<cr>
@@ -142,13 +149,6 @@ nnoremap <c-l> <c-w>l
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
 " 以十六进制显示 vim -b 打开的二进制文件
 autocmd BufReadPost * if &bin | execute "%!xxd" | endif
-
-" 使用tmux attach已存在的session时,如果vim中系统剪切版无法使用，需要更新$DISPLAY环境变量
-if exists("$TMUX")
-let g:terminal_italics = 0
-command! ClipBoard :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '') | echo $DISPLAY
-autocmd VimEnter * ClipBoard
-endif
 
 " 主题设置
 set background=dark
@@ -365,9 +365,9 @@ let g:netrw_banner = 1               "Netrw顶端的横幅
 let g:netrw_liststyle = 3            "显示模式为树形
 let g:netrw_winsize = 20             "netrw窗口的宽度
 if isdirectory(expand("%"))
-let g:netrw_browse_split = 0         "Netrw打开文件的方式为覆盖当前窗口
+  let g:netrw_browse_split = 0         "Netrw打开文件的方式为覆盖当前窗口
 else
-let g:netrw_browse_split = 4         "Netrw打开文件的方式为覆盖前一窗口（右边窗口）
+  let g:netrw_browse_split = 4         "Netrw打开文件的方式为覆盖前一窗口（右边窗口）
 endif
 let g:netrw_sort_options = 'i'       "排序忽略大小写
 let g:netrw_hide = 1                 "忽略隐藏文件
@@ -414,34 +414,34 @@ nnoremap <silent> <F4> :Defx `escape(expand('%:p:h'), ' :')` -search=`expand('%:
 autocmd BufWritePost * call defx#redraw()
 autocmd FileType defx call s:defx_mappings()
 function! s:defx_mappings() abort
-    setl nonu                            " 勿在 defx 栏显示行号
-    nnoremap <silent><buffer><expr> <CR>
-                \ defx#is_directory() ?
-                \ defx#do_action('open_or_close_tree') :
-                \ defx#do_action('drop',) " 点击 enter 键打开
-    nnoremap <silent><buffer><expr> yy        defx#do_action('copy')
-    nnoremap <silent><buffer><expr> dd        defx#do_action('move')
-    nnoremap <silent><buffer><expr> pp        defx#do_action('paste')
-    nnoremap <silent><buffer><expr> c         defx#do_action('new_file')
-    nnoremap <silent><buffer><expr> r         defx#do_action('rename')
-    nnoremap <silent><buffer><expr> v         defx#do_action('open', 'vsplit')
-    nnoremap <silent><buffer><expr> .         defx#do_action('toggle_ignored_files')
-    nnoremap <silent><buffer><expr> h         defx#do_action('cd', getcwd())
-    nnoremap <silent><buffer><expr> u         defx#do_action('cd', ['..'])
-    nnoremap <silent><buffer><expr> q         defx#do_action('quit')
-    nnoremap <silent><buffer><expr> s         defx#do_action('toggle_select') . 'j'
-    nnoremap <silent><buffer><expr> *         defx#do_action('toggle_select_all')
-    nnoremap <silent><buffer><expr> #         defx#do_action('clear_select_all')
-    nnoremap <silent><buffer><expr> <         defx#do_action('resize',  defx#get_context().winwidth - 10)
-    nnoremap <silent><buffer><expr> >         defx#do_action('resize',  defx#get_context().winwidth + 10)
+  setl nonu                            " 勿在 defx 栏显示行号
+  nnoremap <silent><buffer><expr> <CR>
+            \ defx#is_directory() ?
+            \ defx#do_action('open_or_close_tree') :
+            \ defx#do_action('drop',) " 点击 enter 键打开
+  nnoremap <silent><buffer><expr> yy        defx#do_action('copy')
+  nnoremap <silent><buffer><expr> dd        defx#do_action('move')
+  nnoremap <silent><buffer><expr> pp        defx#do_action('paste')
+  nnoremap <silent><buffer><expr> c         defx#do_action('new_file')
+  nnoremap <silent><buffer><expr> r         defx#do_action('rename')
+  nnoremap <silent><buffer><expr> v         defx#do_action('open', 'vsplit')
+  nnoremap <silent><buffer><expr> .         defx#do_action('toggle_ignored_files')
+  nnoremap <silent><buffer><expr> h         defx#do_action('cd', getcwd())
+  nnoremap <silent><buffer><expr> u         defx#do_action('cd', ['..'])
+  nnoremap <silent><buffer><expr> q         defx#do_action('quit')
+  nnoremap <silent><buffer><expr> s         defx#do_action('toggle_select') . 'j'
+  nnoremap <silent><buffer><expr> *         defx#do_action('toggle_select_all')
+  nnoremap <silent><buffer><expr> #         defx#do_action('clear_select_all')
+  nnoremap <silent><buffer><expr> <         defx#do_action('resize',  defx#get_context().winwidth - 10)
+  nnoremap <silent><buffer><expr> >         defx#do_action('resize',  defx#get_context().winwidth + 10)
 endfunction
 autocmd FileType defx let s:short_help = 0 | nnoremap <silent><buffer> ? :call DefxHelp()<cr>
 function! DefxHelp()
-    setlocal modifiable
-    silent %delete _
-    if s:short_help == 0
-        let s:short_help = 1
-        let help_cmds = [
+  setlocal modifiable
+  silent %delete _
+  if s:short_help == 0
+    let s:short_help = 1
+    let help_cmds = [
             \   ['h ',              'Jump to home directory'],
             \   ['u ',              'Jump to up directory'],
             \   ['v ',              'Open file at vsplit buffer'],
@@ -458,17 +458,17 @@ function! DefxHelp()
             \   ['yy',              'Copy cursor or selected file'],
             \   ['pp',              'Paste chip board files'],
             \ ]
-        silent 0put ='\" defx keybindings'
-        silent  put ='\" ---------------------------------'
-        for [cmd, desc] in help_cmds
-            silent put ='\" ' . cmd . ': ' . desc
-        endfor
-        silent  put _
-    else
-        let s:short_help = 0
-        call defx#redraw()
-    endif
-    setlocal nomodifiable
+    silent 0put ='\" defx keybindings'
+    silent  put ='\" ---------------------------------'
+    for [cmd, desc] in help_cmds
+      silent put ='\" ' . cmd . ': ' . desc
+    endfor
+    silent  put _
+  else
+    let s:short_help = 0
+    call defx#redraw()
+  endif
+  setlocal nomodifiable
 endfunction
 
 " tagbar
@@ -664,13 +664,13 @@ nnoremap <silent> <leader>wg :Leaderf! gtags --recall<cr>
 nnoremap <silent> <leader>gh :Leaderf gtags_history<cr>
 nnoremap <silent> <leader>gc :Leaderf gtags_history --cache<cr>
 if g:Lf_GtagsAutoGenerate == 1
-    autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
-    nnoremap <silent> <leader>gu :Leaderf gtags --update<cr>
-    if g:Lf_GtagsAutoUpdate == 1
-        " 光标1小时没有发生移动，自动更新gtags文件
-        autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(3600*1000, { -> execute('Leaderf gtags --update')})|endif
-        autocmd CursorMoved,CursorMovedI * if exists('s:update_timer')|call timer_stop(s:update_timer)|unlet s:update_timer|endif
-    endif
+  autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
+  nnoremap <silent> <leader>gu :Leaderf gtags --update<cr>
+  if g:Lf_GtagsAutoUpdate == 1
+    " 光标1小时没有发生移动，自动更新gtags文件
+    autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(3600*1000, { -> execute('Leaderf gtags --update')})|endif
+    autocmd CursorMoved,CursorMovedI * if exists('s:update_timer')|call timer_stop(s:update_timer)|unlet s:update_timer|endif
+  endif
 endif
 
 " vim-gutentags
@@ -704,24 +704,24 @@ autocmd FileType startify let g:gutentags_generate_on_new = 1
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
 if !exists("$VIMLSP") && executable('ctags')
-    let g:gutentags_modules += ['ctags']
-    " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
-    map <c-]> g<c-]>
+  let g:gutentags_modules += ['ctags']
+  " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
+  map <c-]> g<c-]>
 endif
 if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
-    let g:gutentags_modules += ['gtags_cscope']
-    " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-    let $GTAGSLABEL = 'native-pygments'
-    " 禁用 gutentags 自动加载 gtags 数据库到cscope,避免多个项目生成数据文件在cosope相互影响。
-    let g:gutentags_auto_add_gtags_cscope = 0
-    " generate gtags data to leaderF
-    let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
-    nnoremap <silent> <leader>gu :GutentagsUpdate!<cr>
-    if g:gutentags_generate_on_new == 1
-        " 光标10min内没有发生移动，自动更新gtags文件
-        autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(600*1000, { -> execute('GutentagsUpdate!')})|endif
-        autocmd CursorMoved,CursorMovedI * if exists('s:update_timer')|call timer_stop(s:update_timer)|unlet s:update_timer|endif
-    endif
+  let g:gutentags_modules += ['gtags_cscope']
+  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
+  let $GTAGSLABEL = 'native-pygments'
+  " 禁用 gutentags 自动加载 gtags 数据库到cscope,避免多个项目生成数据文件在cosope相互影响。
+  let g:gutentags_auto_add_gtags_cscope = 0
+  " generate gtags data to leaderF
+  let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
+  nnoremap <silent> <leader>gu :GutentagsUpdate!<cr>
+  if g:gutentags_generate_on_new == 1
+    " 光标10min内没有发生移动，自动更新gtags文件
+    autocmd CursorHold * if !exists('s:update_timer')|let s:update_timer = timer_start(600*1000, { -> execute('GutentagsUpdate!')})|endif
+    autocmd CursorMoved,CursorMovedI * if exists('s:update_timer')|call timer_stop(s:update_timer)|unlet s:update_timer|endif
+  endif
 endif
 
 " OmniCppComplete
@@ -769,11 +769,11 @@ let g:easycomplete_diagnostics_next = "<c-n>"
 let g:easycomplete_cursor_word_hl = 0         " Highlight the symbol when holding the cursor
 let g:easycomplete_nerd_font = 0              " Using nerdfont is highly recommended
 if get(g:, 'easycomplete_enable', 0)
-" GoTo code navigation
-nnoremap gr :EasyCompleteReference<CR>
-nnoremap gd :EasyCompleteGotoDefinition<CR>
-nnoremap gb :BackToOriginalBuffer<CR>
-nnoremap rn :EasyCompleteRename<CR>
+  " GoTo code navigation
+  nnoremap gr :EasyCompleteReference<CR>
+  nnoremap gd :EasyCompleteGotoDefinition<CR>
+  nnoremap gb :BackToOriginalBuffer<CR>
+  nnoremap rn :EasyCompleteRename<CR>
 endif
 
 " codeium.vim
