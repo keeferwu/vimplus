@@ -281,11 +281,10 @@ let g:which_key_map[' '] = {'name' : '+plugin',
                     \   'u': "update plugin",
                     \   }
 let g:which_key_map.j = 'jump cursor by key'
-let g:which_key_map.h = 'changes stage hunk'
-let g:which_key_map.H = 'changes stage hunk revert'
 let g:which_key_map.k = 'color/uncolor cword'
 let g:which_key_map.K = 'uncolor all worlds'
 let g:which_key_map.R = 'run command asynchronous'
+let g:which_key_map.d = {'name' : '+changes'}
 let g:which_key_map.t = {'name' : '+table'}
 let g:which_key_map.c = {'name' : '+commenter'}
 let g:which_key_map.l = {'name' : '+leaderf'}
@@ -700,7 +699,7 @@ let g:gutentags_trace = 0
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
 "写更新有时会导致gtags数据丢失部分内容
-"let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_write = 0
 let g:gutentags_generate_on_new = 0
 "仅有通过startify session 打开文件，gtags数据才进行更新
 autocmd FileType startify let g:gutentags_generate_on_new = 1
