@@ -628,8 +628,8 @@ nnoremap <leader>sg <Plug>LeaderfRgPrompt
 nnoremap <leader>sw :LeaderfRgInteractive<cr>
 "上次 rg 搜索结果
 nnoremap <silent> <leader>wr :LeaderfRgRecall<cr>
-nnoremap <silent> <leader>wq :LeaderfQuickFix<cr>
-nnoremap <silent> <leader>wl :LeaderfLocList<cr>
+nnoremap <silent> <leader>wq :cclose \| LeaderfQuickFix<cr>
+nnoremap <silent> <leader>wl :lclose \| LeaderfLocList<cr>
 nnoremap <silent> <leader>wf :Leaderf file --recall<cr>
 " Leaderf git
 nnoremap <silent> <leader>lg :LeaderfGit<cr>
