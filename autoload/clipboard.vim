@@ -96,4 +96,5 @@ function! clipboard#paste() abort
   else
     let @" = @+
   endif
+  normal ""p
 endfunction
