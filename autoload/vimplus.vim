@@ -249,5 +249,6 @@ function! s:IndentChange(line1,line2,type)
   execute a:line1.",".a:line2."%retab!"
   execute indenttype ? "set expandtab" : "set noexpandtab"
 endfunction
+" 在选中模式下使用快捷键映射TabIndent和SpaceIndent，会导致选中的每一行都会调用命令，影响性能
 command! -range=% TabIndent call <SID>IndentChange(<line1>,<line2>,"Tab")
 command! -range=% SpaceIndent call <SID>IndentChange(<line1>,<line2>,"Space")
