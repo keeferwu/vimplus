@@ -296,8 +296,8 @@ let g:which_key_map.w = {'name' : '+window',
                     \    'l' : 'leaderf location list',
                     \   }
 let g:which_key_map.s = {'name' : '+search',
-                    \    'g' : 'ripgrep content with prompt',
-                    \    'w' : 'ripgrep word with interactive',
+                    \    'r' : 'ripgrep content with prompt',
+                    \    'g' : 'ripgrep word with interactive',
                     \    'c' : 'vimgrep cword in current buffer',
                     \   }
 let g:which_key_map.g = {'name' : '+gtags',
@@ -624,8 +624,8 @@ let g:Lf_PreviewResult = {
 let g:Lf_RgConfig = ["--max-columns=150", "--hidden", "--unrestricted"]
 let g:Lf_RgExGlob = ["**/.git/**", "x86_run/*", "target/*", "*.{map,map2,o,tgt,x86}", "gtags.files", "compile_commands.json"]
 "Leaderf rg -e<Space>
-nnoremap <leader>sg <Plug>LeaderfRgPrompt
-nnoremap <leader>sw :LeaderfRgInteractive<cr>
+nnoremap <leader>sr <Plug>LeaderfRgPrompt
+nnoremap <leader>sg :LeaderfRgInteractive<cr>
 "上次 rg 搜索结果
 nnoremap <silent> <leader>wr :LeaderfRgRecall<cr>
 nnoremap <silent> <leader>wq :cclose \| LeaderfQuickFix<cr>
