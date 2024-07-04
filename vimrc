@@ -291,13 +291,14 @@ let g:which_key_map.l = {'name' : '+leaderf'}
 let g:which_key_map.w = {'name' : '+window',
                     \    'f' : 'leaderf file list',
                     \    'g' : 'leaderf gtags list',
-                    \    'r' : 'leaderf rigrep list',
+                    \    'r' : 'leaderf ripgrep list',
                     \    'q' : 'leaderf qickfix list',
                     \    'l' : 'leaderf location list',
                     \   }
-let g:which_key_map.r = {'name' : '+rigrep',
-                    \    'g' : 'rg with customer prompt',
-                    \    'w' : 'rg with interactive',
+let g:which_key_map.s = {'name' : '+search',
+                    \    'g' : 'ripgrep content with prompt',
+                    \    'w' : 'ripgrep word with interactive',
+                    \    'c' : 'vimgrep cword in current buffer',
                     \   }
 let g:which_key_map.g = {'name' : '+gtags',
                     \    'a' : 'choose a querytype for pattern',
@@ -309,9 +310,6 @@ let g:which_key_map.g = {'name' : '+gtags',
                     \    'c' : 'gtags database cache',
                     \    'u' : 'gtags upgrade',
                     \   }
-let g:which_key_map.v = {'name' : '+vimgrep',
-                    \    'g' : 'vimgrep cword in current file',
-                    \   }
 let g:which_key_map.q = {'name' : '+quit',
                     \    'a' : 'quit vim/nvim',
                     \    'b' : 'quit current buffer',
@@ -320,8 +318,8 @@ let g:which_key_map.q = {'name' : '+quit',
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
 let g:which_key_map_visual.c = {'name' : '+commenter'}
-let g:which_key_map_visual.v = {'name' : '+vimgrep',
-                    \    'g' : 'vimgrep select in current file',
+let g:which_key_map_visual.s = {'name' : '+search',
+                    \    'c' : 'vimgrep select in current buffer',
                     \   }
 let g:which_key_map_visual.k = 'highlight select pattern'
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
@@ -350,8 +348,8 @@ nnoremap <silent> <leader><leader>u :PlugUpdate<cr>
 "nnoremap <silent> <leader><leader>c :PlugClean<cr>
 
 " 搜索当前文件选中内容输出到quickfix
-vnoremap <silent> <leader>vg :<c-u>call vimplus#vimgrep('v')<cr>
-nnoremap <silent> <leader>vg :<c-u>call vimplus#vimgrep('n')<cr>
+vnoremap <silent> <leader>sc :<c-u>call vimplus#vimgrep('v')<cr>
+nnoremap <silent> <leader>sc :<c-u>call vimplus#vimgrep('n')<cr>
 
 " buffer,table and whitespace
 let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
@@ -626,8 +624,8 @@ let g:Lf_PreviewResult = {
 let g:Lf_RgConfig = ["--max-columns=150", "--hidden", "--unrestricted"]
 let g:Lf_RgExGlob = ["**/.git/**", "x86_run/*", "target/*", "*.{map,map2,o,tgt,x86}", "gtags.files", "compile_commands.json"]
 "Leaderf rg -e<Space>
-nnoremap <leader>rg <Plug>LeaderfRgPrompt
-nnoremap <leader>rw :LeaderfRgInteractive<cr>
+nnoremap <leader>sg <Plug>LeaderfRgPrompt
+nnoremap <leader>sw :LeaderfRgInteractive<cr>
 "上次 rg 搜索结果
 nnoremap <silent> <leader>wr :LeaderfRgRecall<cr>
 nnoremap <silent> <leader>wq :LeaderfQuickFix<cr>
