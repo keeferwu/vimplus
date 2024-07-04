@@ -121,7 +121,7 @@ function! vimplus#vimgrep(mode) abort
   execute 'silent! vimgrep ' . pattern . ' % | bot copen'
   hi QuickFixLine ctermbg=NONE guibg=NONE
   silent! call matchdelete(1223)
-  call matchadd('Vimgrep', pattern, 0, 1223)
+  call matchadd('MatchParen', pattern, 0, 1223)
 endfunction
 
 " 仅当光标处于搜索内容时高亮搜索结果
@@ -145,7 +145,7 @@ function! vimplus#hlsearch() abort
     while(search_text != "")
       " 光标如果处于匹配项中，高亮匹配项
       if col('.') >= start_col && col('.') <= end_col
-        silent! call matchadd('Search', search_text, 0, 1219)
+        silent! call matchadd('CurSearch', search_text, 0, 1219)
         nohlsearch
       endif
       " 当前行的下一个匹配项
@@ -251,5 +251,3 @@ function! s:IndentChange(line1,line2,type)
 endfunction
 command! -range=% TabIndent call <SID>IndentChange(<line1>,<line2>,"Tab")
 command! -range=% SpaceIndent call <SID>IndentChange(<line1>,<line2>,"Space")
-
-highlight def Vimgrep guifg=#000000 guibg=#cccc66 gui=NONE ctermfg=16 ctermbg=185 cterm=NONE
