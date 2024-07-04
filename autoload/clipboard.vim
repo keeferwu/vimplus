@@ -69,7 +69,7 @@ endfunction
 
 function! s:get_selection_text()
   let [begin, end] = [getpos("'<"), getpos("'>")]
-  let lastchar = matchstr(getline(end[1])[end[2]-1 :], '.')
+  let lastchar = begin[2] ==# end[2] ? matchstr(getline(end[1])[end[2]-1 :], '.') : ''
   if begin[1] ==# end[1]
     let lines = [getline(begin[1])[begin[2]-1 : end[2]-2]]
   else
