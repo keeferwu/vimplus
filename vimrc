@@ -287,7 +287,6 @@ let g:which_key_map.k = 'color/uncolor cword'
 let g:which_key_map.K = 'uncolor all worlds'
 let g:which_key_map.R = 'run command asynchronous'
 let g:which_key_map.d = {'name' : '+changes'}
-let g:which_key_map.t = {'name' : '+table'}
 let g:which_key_map.c = {'name' : '+commenter'}
 let g:which_key_map.l = {'name' : '+leaderf'}
 let g:which_key_map.w = {'name' : '+window',
@@ -316,6 +315,7 @@ let g:which_key_map.q = {'name' : '+quit',
                     \    'a' : 'quit vim/nvim',
                     \    'b' : 'quit current buffer',
                     \    'q' : 'quit quickfix list',
+                    \    't' : 'quit table',
                     \   }
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
@@ -359,8 +359,7 @@ autocmd BufAdd * call vimplus#buflimit(100)
 nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
 nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
-nnoremap <silent> <leader>tn :tabnext<cr>
-nnoremap <silent> <leader>tc :tabclose<cr>
+nnoremap <silent> <leader>qt :tabclose<cr>
 
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
