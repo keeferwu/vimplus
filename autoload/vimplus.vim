@@ -126,12 +126,13 @@ endfunction
 
 " 仅当光标处于搜索内容时高亮搜索结果
 function! vimplus#hlsearch() abort
+  let search_text = @/
  "文件超过10000行不生效
-  if line("$") > 10000
+  if empty(search_text) || line("$") > 10000
     return
   endif
-  let search_text = @/
   if search_text == ' '
+    let @/ = ''
     silent! call matchdelete(1219)
     return
   endif
