@@ -288,8 +288,8 @@ let g:which_key_map.K = 'uncolor all worlds'
 let g:which_key_map.R = 'run command asynchronous'
 let g:which_key_map.d = {'name' : '+changes'}
 let g:which_key_map.c = {'name' : '+commenter'}
-let g:which_key_map.l = {'name' : '+leaderf'}
-let g:which_key_map.w = {'name' : '+window',
+let g:which_key_map.f = {'name' : '+leaderf'}
+let g:which_key_map.l = {'name' : '+list',
                     \    'f' : 'leaderf file list',
                     \    'g' : 'leaderf gtags list',
                     \    'r' : 'leaderf ripgrep list',
@@ -568,13 +568,19 @@ let g:changes_vcs_check = 1
 " LeaderF
 let g:Lf_ShortcutF = ''
 let g:Lf_ShortcutB = ''
-nnoremap <leader>lf :LeaderfFile<space>
-nnoremap <silent> <leader>lb :LeaderfBuffer<cr>
-nnoremap <silent> <leader>lt :LeaderfBufTag<cr>
-nnoremap <silent> <leader>ll :LeaderfLine<cr>
-nnoremap <silent> <leader>lm :LeaderfMru<cr>
-nnoremap <silent> <leader>lc :LeaderfCommand<cr>
-nnoremap <silent> <leader>ls :LeaderfColorscheme<cr>
+nnoremap <leader>ff :LeaderfFile<space>
+nnoremap <silent> <leader>fb :LeaderfBuffer<cr>
+nnoremap <silent> <leader>ft :LeaderfBufTag<cr>
+nnoremap <silent> <leader>fl :LeaderfLine<cr>
+nnoremap <silent> <leader>fm :LeaderfMru<cr>
+nnoremap <silent> <leader>fc :LeaderfCommand<cr>
+nnoremap <silent> <leader>fs :LeaderfColorscheme<cr>
+nnoremap <silent> <leader>fg :LeaderfGit<cr>
+nnoremap <silent> <leader>lr :LeaderfRgRecall<cr>
+nnoremap <silent> <leader>lq :cclose \| LeaderfQuickFix<cr>
+nnoremap <silent> <leader>ll :lclose \| LeaderfLocList<cr>
+nnoremap <silent> <leader>lf :Leaderf file --recall<cr>
+nnoremap <silent> <leader>lg :Leaderf! gtags --recall<cr>
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 let g:Lf_IgnoreCurrentBufferName = 1
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
@@ -627,13 +633,7 @@ let g:Lf_RgExGlob = ["**/.git/**", "x86_run/*", "target/*", "*.{map,map2,o,tgt,x
 "Leaderf rg -e<Space>
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <leader>rs :LeaderfRgInteractive<cr>
-"上次 rg 搜索结果
-nnoremap <silent> <leader>wr :LeaderfRgRecall<cr>
-nnoremap <silent> <leader>wq :cclose \| LeaderfQuickFix<cr>
-nnoremap <silent> <leader>wl :lclose \| LeaderfLocList<cr>
-nnoremap <silent> <leader>wf :Leaderf file --recall<cr>
 " Leaderf git
-nnoremap <silent> <leader>lg :LeaderfGit<cr>
 let g:Lf_GitCommands = [
             \   {"Leaderf git log --explorer":                     "fuzzy search and view the log in an explorer tabpage"},
             \   {"Leaderf git log --current-file":                 "fuzzy search and view the log of current file"},
@@ -661,7 +661,6 @@ let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
 let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
 let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
 let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-nnoremap <silent> <leader>wg :Leaderf! gtags --recall<cr>
 nnoremap <silent> <leader>gh :Leaderf gtags_history<cr>
 nnoremap <silent> <leader>gc :Leaderf gtags_history --cache<cr>
 if g:Lf_GtagsAutoGenerate == 1
