@@ -282,7 +282,7 @@ let g:which_key_map[' '] = {'name' : '+plugin',
                     \   'i': "install plugin",
                     \   'u': "update plugin",
                     \   }
-let g:which_key_map.j = 'jump cursor by key'
+let g:which_key_map.w = 'easy motion to word'
 let g:which_key_map.k = 'color/uncolor cword'
 let g:which_key_map.K = 'uncolor all worlds'
 let g:which_key_map.R = 'run command asynchronous'
@@ -323,7 +323,7 @@ let g:which_key_map_visual.c = {'name' : '+commenter'}
 let g:which_key_map_visual.r = {'name' : '+grep',
                     \    'c' : 'vimgrep select in current buffer',
                     \   }
-let g:which_key_map_visual.k = 'highlight select pattern'
+let g:which_key_map_visual.k = 'color select pattern'
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
 
 function! UseLSPComplete(error, res)
@@ -504,7 +504,7 @@ let g:interestingWordsCaseSensitive = 1
 
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
-nmap <silent> <leader>j <Plug>(easymotion-overwin-w)
+nmap <silent> <leader>w <Plug>(easymotion-overwin-w)
 
 " vim-autoformat
 "autocmd BufWrite * :Autoformat
