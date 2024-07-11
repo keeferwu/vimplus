@@ -365,6 +365,8 @@ nnoremap <silent> <leader>qt :tabclose<cr>
 let g:netrw_banner = 1               "Netrw顶端的横幅
 let g:netrw_liststyle = 3            "显示模式为树形
 let g:netrw_winsize = 20             "netrw窗口的宽度
+let g:netrw_preview = 1              "在纵向分割的窗口中显示预览窗口
+let g:netrw_dirhistmax = 0           "不记录目录跳转历史
 if isdirectory(expand("%"))
   let g:netrw_browse_split = 0         "Netrw打开文件的方式为覆盖当前窗口
 else
@@ -374,14 +376,14 @@ let g:netrw_sort_options = 'i'       "排序忽略大小写
 let g:netrw_hide = 1                 "忽略隐藏文件
 "在 netrw 里隐藏特定文件: ^\..* ->以.开头，^.*\.o$ ->.o结尾
 "let g:netrw_list_hide = '^\..*,^.*\.o$,^.*\.swp$,^.*\.bin$'
-"nnoremap <silent> <F4> :call ToggleLexplorer()<CR>
+nnoremap <silent> <F4> :call ToggleLexplorer()<CR>
 function! ToggleLexplorer()
   if exists("t:expl_buf")
-    Lexplore
+    Lexplore      " close
     unlet t:expl_buf
   else
     let g:lens#disabled = 1
-    Lexplore %:p:h
+    Lexplore %:p:h   " open current file's dir
     let g:lens#disabled = 0
     let t:expl_buf = bufnr("%")
   endif
@@ -391,7 +393,7 @@ function! ChangeToHome()
   if exists("t:expl_buf")
     close
     let g:lens#disabled = 1
-    Lexplore
+    Lexplore      " open current dir
     let g:lens#disabled = 0
   endif
 endfunction
