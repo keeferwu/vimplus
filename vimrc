@@ -184,7 +184,7 @@ Plug 'liuchengxu/eleline.vim'
 " 文件目录树
 Plug 'Shougo/defx.nvim', {'do': ':UpdateRemotePlugins'}
 " vim加载nvim插件的依赖
-Plug 'roxma/nvim-yarp', has('nvim') ? {'on': []} : {}
+Plug 'roxma/nvim-yarp', has('nvim') ? {'on': []} : { 'do': 'pip3 install -r requirements.txt' }
 " vim加载nvim插件的依赖
 Plug 'roxma/vim-hug-neovim-rpc', has('nvim') ? {'on': []} : {}
 " vim 插件环境检测
