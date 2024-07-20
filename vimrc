@@ -256,10 +256,10 @@ let g:startify_commands = [
             \ ]
 " 相对于默认配置把sessions放在第一个
 let g:startify_lists = [
-            \ { 'header': ['   Sessions'],       'type': 'sessions' },
-            \ { 'header': ['   MRU '. getcwd()], 'type': 'dir' },
-            \ { 'header': ['   Bookmarks'],      'type': 'bookmarks' },
-            \ { 'header': ['   Commands'],       'type': 'commands' },
+            \ { 'header': ['   Sessions [d]->SDelete'], 'type': 'sessions' },
+            \ { 'header': ['   MRU ' . getcwd()],       'type': 'dir' },
+            \ { 'header': ['   Bookmarks'],             'type': 'bookmarks' },
+            \ { 'header': ['   Commands'],              'type': 'commands' },
             \ ]
 let g:startify_session_root_mark = '.root'
 " session 退出时自动切换工作目录到主目录
@@ -270,6 +270,13 @@ let g:startify_session_savecmds = [
             \   'let &path=&path.getcwd()."/**"',
             \   'clearjumps',
             \ ]
+"delete session in starify
+function! SessionDelete()
+  let session = split(getline('.'))[-1]
+  exec 'SDelete ' . session
+  exec 'Startify'
+endfunction
+autocmd FileType startify nnoremap <silent><buffer> d :call SessionDelete()<cr>
 
 " vim-which-key
 let g:mapleader = "\<Space>"      " 定义<leader>键
