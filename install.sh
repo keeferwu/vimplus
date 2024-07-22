@@ -692,6 +692,11 @@ function main()
             exit 1
         fi
 
+        if [ "$EUID" -ne 0 ]; then
+            echo "Should running with sudo."
+            exit 1
+        fi
+
         if [ ! -d ${PWD}/plugged ]; then
             install_vim_plugin
         fi
