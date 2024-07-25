@@ -582,6 +582,7 @@ nnoremap <silent> <leader>fb :LeaderfBuffer<cr>
 nnoremap <silent> <leader>ft :LeaderfBufTag<cr>
 nnoremap <silent> <leader>fl :LeaderfLine<cr>
 nnoremap <silent> <leader>fm :LeaderfMru<cr>
+nnoremap <silent> <leader>fh :LeaderfHelp<cr>
 nnoremap <silent> <leader>fc :LeaderfCommand<cr>
 nnoremap <silent> <leader>fs :LeaderfColorscheme<cr>
 nnoremap <silent> <leader>fg :LeaderfGit<cr>
