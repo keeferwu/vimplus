@@ -155,6 +155,16 @@ function! vimplus#hlsearch() abort
   endif
 endfunction
 
+function! vimplus#write()
+    try
+        " 尝试正常写入文件
+        execute 'write'
+    catch /^Vim\%((\a\+)\)\=:E212/
+        " 如果捕获到 E212 错误，使用 sudo 写入文件
+        execute 'write !sudo tee -i %'
+    endtry
+endfunction
+
 function! s:BufferReadonly()
   if &modifiable == 0 && &filetype !=# 'startify'
     let bufname = len(bufname('%')) ? bufname('%') : &filetype 
