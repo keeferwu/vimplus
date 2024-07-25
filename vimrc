@@ -182,9 +182,9 @@ Plug 'liuchengxu/vim-which-key'
 " 精简的statusline
 Plug 'liuchengxu/eleline.vim'
 " 文件目录树
-Plug 'Shougo/defx.nvim', {'do': ':UpdateRemotePlugins'}
+Plug 'Shougo/defx.nvim', has('nvim') ? {'do': ':UpdateRemotePlugins'} : {}
 " vim加载nvim插件的依赖
-Plug 'roxma/nvim-yarp', has('nvim') ? {'on': []} : { 'do': 'pip3 install -r requirements.txt' }
+Plug 'roxma/nvim-yarp', has('nvim') ? {'on': []} : {}
 " vim加载nvim插件的依赖
 Plug 'roxma/vim-hug-neovim-rpc', has('nvim') ? {'on': []} : {}
 " vim 插件环境检测
@@ -202,7 +202,7 @@ Plug 'preservim/nerdcommenter'
 " 彩虹括号
 Plug 'luochen1990/rainbow'
 " cpp扩展高亮
-Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['c','cpp']}
+Plug 'octol/vim-cpp-enhanced-highlight', has('nvim') ? {'on': []} : {'for': ['c','cpp']}
 " rust代码格式化，语法高亮
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 " 修改显示
