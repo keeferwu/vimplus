@@ -124,4 +124,4 @@ runtimepath默认包含以下目录。并非所有这些都必须出现在文件
 
 #### 如何优雅的使用vimplus?
 
-参考: https://gitee.com/keeferwu/vimplus/wikis
+参考: https://gitee.com/keeferwu/vimplus/wikis/pages
