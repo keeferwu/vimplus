@@ -85,7 +85,7 @@ set showmatch                    " 高亮显示匹配括号
 " 代码折叠
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "set nofoldenable                " 禁用折叠代码
-set foldmethod=manual            " 折叠方式,syntax会导致大文件卡顿
+set foldmethod=indent            " 折叠方式,syntax会导致大文件卡顿
 set foldcolumn=0                 " 设置折叠区域的宽度
 set foldlevelstart=99            " 打开文件是默认不折叠代码
 setlocal foldlevel=1             " 设置折叠层数
