@@ -181,22 +181,22 @@ function! vimplus#buflimit(num) abort
   if a:num == 0 || s:BufferReadonly()
     return
   endif
-  let curr_buf = bufnr("%")
-  let oldest_buf = curr_buf
-  let oldest_time = localtime()
+  let last_buf = bufnr("%")
+  let first_buf = last_buf
+  let first_used = localtime()
   let buf_info = filter(getbufinfo(), 'buflisted(v:val.bufnr)')
   if len(buf_info) <= a:num
     return
   endif
   for buf in buf_info
     "查询最早打开的buffer
-    if buf.lastused < oldest_time
-      let oldest_buf = buf.bufnr
-      let oldest_time = buf.lastused
+    if buf.lastused < first_used
+      let first_buf = buf.bufnr
+      let first_used = buf.lastused
     endif
   endfor
-  if oldest_buf != curr_buf
-    execute 'bdelete ' . oldest_buf
+  if first_buf != last_buf
+    execute 'bdelete ' . first_buf
   endif
 endfunction
 
