@@ -274,6 +274,7 @@ let g:startify_session_savecmds = [
 function! SessionDelete()
   let session = split(getline('.'))[-1]
   exec 'SDelete ' . session
+  exec 'Leaderf gtags_history --cache'
   exec 'Startify'
 endfunction
 autocmd FileType startify nnoremap <silent><buffer> d :call SessionDelete()<cr>
