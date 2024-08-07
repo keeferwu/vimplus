@@ -594,8 +594,9 @@ nnoremap <silent> <leader>lq :cclose \| LeaderfQuickFix<cr>
 nnoremap <silent> <leader>ll :lclose \| LeaderfLocList<cr>
 nnoremap <silent> <leader>lf :Leaderf file --recall<cr>
 nnoremap <silent> <leader>lg :Leaderf! gtags --recall<cr>
-let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
+let g:Lf_ShowDevIcons = 0
 let g:Lf_IgnoreCurrentBufferName = 1
+let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
 "let g:Lf_ExternalCommand = 'find "%s" -type f'  "Lf_WildIgnore 对此选项不起作用
 let g:Lf_DefaultExternalTool = 'find'            "rg 默认会自动过滤.ignore .rgignore .gitignore中的文件
