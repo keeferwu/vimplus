@@ -321,9 +321,10 @@ let g:which_key_map.g = {'name' : '+gtags',
                     \   }
 let g:which_key_map.q = {'name' : '+quit',
                     \    'a' : 'quit vim/nvim',
-                    \    'b' : 'quit current buffer',
-                    \    'q' : 'quit quickfix list',
+                    \    'b' : 'quit buffer',
                     \    't' : 'quit table',
+                    \    'w' : 'quit window',
+                    \    'q' : 'quit quickfix',
                     \   }
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
@@ -368,6 +369,7 @@ nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
 nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
 nnoremap <silent> <leader>qt :tabclose<cr>
+nnoremap <silent> <leader>qw :close<cr>
 
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
