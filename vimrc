@@ -718,7 +718,7 @@ autocmd FileType startify let g:gutentags_generate_on_new = 1
 let g:gutentags_modules = []
 if !exists("$VIMLSP") && executable('ctags')
   let g:gutentags_modules += ['ctags']
-  " 通过定时器异步调用tjump，防止vim卡住
+  " 定时器回调执行tjump是同步的，时间过长仍然会卡住vim
   function! TjumpList(...) abort
     execute('tjump '.expand('<cword>'))
   endfunction
