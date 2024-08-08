@@ -717,8 +717,12 @@ autocmd FileType startify let g:gutentags_generate_on_new = 1
 let g:gutentags_modules = []
 if !exists("$VIMLSP") && executable('ctags')
   let g:gutentags_modules += ['ctags']
-  " 默认情况下crl+] 只会跳到tags中的第一个匹配项，添加该功能，显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
-  map <c-]> g<c-]>
+  " 通过定时器异步调用tjump，防止vim卡住
+  function! TjumpList(...) abort
+    execute('tjump '.expand('<cword>'))
+  endfunction
+  " 默认情况下crl+] 只会跳到tags中的第一个匹配项，通过tjump显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
+  noremap <silent> <c-]> :call timer_start(1, function('TjumpList'))<cr>
 endif
 if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
   let g:gutentags_modules += ['gtags_cscope']
