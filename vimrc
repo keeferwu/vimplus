@@ -696,7 +696,8 @@ let g:gutentags_file_list_command = 'find . ' . s:gutentags_path_exclude . ' -a 
 let g:gutentags_ctags_exclude = ['*/.git/*', '*/.clangd/*', '*/configs/*', '*.json', '*.mib', '*.db', '*.css', '*.js', '*.html']
 let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
 " i 表示如果有继承, 则标识出父类; a 表示类成员调用权限 (public or private); S 表示如果是函数, 则标识函数的signature.
-let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--language-force=c']
+" --languages:只检索指定类型的语言
+let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--languages=c,c++,asm,lua']
 " 记录函数声明和各种外部和前向声明
 "let g:gutentags_ctags_extra_args += ['--c++-kinds=+px', '--c-kinds=+px']
 " 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
