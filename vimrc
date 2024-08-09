@@ -740,7 +740,7 @@ if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
 endif
 
 " OmniCppComplete
-set tags+=/usr/include/tags        "补全标准C
+set tags=/usr/include/tags         "指定tags搜索路径，补全标准C库
 let OmniCpp_GlobalScopeSearch = 1  "全局查找控制。0:禁止；1:允许(缺省)
 let OmniCpp_NamespaceSearch = 1    "命名空间查找控制0 : 禁止查找命名空间1 : 查找当前文件缓冲区内的命名空间(缺省) 2 : 查找当前文件缓冲区和包含文件中的命名空间
 let OmniCpp_DisplayMode = 1        "类成员显示控制(是否显示全部公有(public)私有(private)保护(protected)成员)  0 : 自动 1 : 显示所有成员
