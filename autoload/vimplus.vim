@@ -6,7 +6,7 @@ if exists('g:loaded_vimplus')
 endif
 let g:loaded_vimplus = 1
 
-function! vimplus#confirm(title, cb)
+function! vimplus#confirm(title, cb) abort
   if has('nvim')
     let text = ' '. a:title . ' (y/n)? '
     let width = min([&columns - 4, strdisplaywidth(text) + 2])
@@ -100,6 +100,14 @@ function! vimplus#confirm(title, cb)
   endif
 endfunction
 
+function! vimplus#holdtimer(time,cmd) abort
+  if exists("s:vimplus_timer") && s:vimplus_timer > 0
+    call timer_stop(s:vimplus_timer)
+    let s:vimplus_timer = 0
+  endif
+  let s:vimplus_timer = timer_start(a:time, { -> execute(a:cmd)})
+endfunction
+
 function! s:VisualPattern()
   try
     let x_save = getreg("x", 1)
@@ -155,7 +163,7 @@ function! vimplus#hlsearch() abort
   endif
 endfunction
 
-function! vimplus#write()
+function! vimplus#write() abort
     try
         " 尝试正常写入文件
         execute 'write'

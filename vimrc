@@ -681,8 +681,7 @@ if g:Lf_GtagsAutoGenerate == 1
   autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
   nnoremap <silent> <leader>gu :Leaderf gtags --update<cr>
   " 光标15min内没有发生移动，自动更新gtags文件
-  autocmd CursorHold * if get(g:, 'Lf_GtagsAutoUpdate', 0) && !exists('s:update_timer')|let s:update_timer = timer_start(900*1000, { -> execute('Leaderf gtags --update')})|endif
-  autocmd CursorMoved,CursorMovedI * if exists('s:update_timer')|call timer_stop(s:update_timer)|unlet s:update_timer|endif
+  autocmd CursorHold,CursorHoldI * if get(g:, 'Lf_GtagsAutoUpdate', 0)|call vimplus#holdtimer(900*1000, 'Leaderf gtags --update')|endif
 endif
 
 " vim-gutentags
@@ -735,8 +734,7 @@ if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
   let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
   nnoremap <silent> <leader>gu :GutentagsUpdate!<cr>
   " 光标10min内没有发生移动，自动更新gtags文件
-  autocmd CursorHold * if get(g:, 'gutentags_generate_on_new', 0) && !exists('s:update_timer')|let s:update_timer = timer_start(600*1000, { -> execute('GutentagsUpdate!')})|endif
-  autocmd CursorMoved,CursorMovedI * if exists('s:update_timer')|call timer_stop(s:update_timer)|unlet s:update_timer|endif
+  autocmd CursorHold,CursorHoldI * if get(g:, 'gutentags_generate_on_new', 0)|call vimplus#holdtimer(600*1000, 'GutentagsUpdate!')|endif
 endif
 
 " OmniCppComplete
