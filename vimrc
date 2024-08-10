@@ -681,7 +681,7 @@ if g:Lf_GtagsAutoGenerate == 1
   autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
   nnoremap <silent> <leader>gu :Leaderf gtags --update<cr>
   " 光标15min内没有发生移动，自动更新gtags文件
-  autocmd CursorHold,CursorHoldI * if get(g:, 'Lf_GtagsAutoUpdate', 0)|call vimplus#holdtimer(900*1000, 'Leaderf gtags --update')|endif
+  autocmd CursorHold,CursorHoldI * if get(g:, 'Lf_GtagsAutoUpdate', 0)|call vimplus#holdtimer(600*1000, 'Leaderf gtags --update')|endif
 endif
 
 " vim-gutentags
@@ -801,6 +801,8 @@ imap <M-.> <Cmd>call codeium#CycleCompletions(1)<CR>
 " asyncrun.vim
 let g:asyncrun_open = 10
 nnoremap <silent> <leader>R :AsyncRun -mode=term -pos=tab -close<space>
+"光标15min无响应启动screensaver
+"autocmd CursorHold * call vimplus#holdtimer(900*1000, 'AsyncRun -mode=term -pos=curwin -close asciiquarium')
 
 " nvim-treesitter
 if has('nvim')

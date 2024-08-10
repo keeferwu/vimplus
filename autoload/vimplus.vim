@@ -100,12 +100,20 @@ function! vimplus#confirm(title, cb) abort
   endif
 endfunction
 
-function! vimplus#holdtimer(time,cmd) abort
-  if exists("s:vimplus_timer") && s:vimplus_timer > 0
-    call timer_stop(s:vimplus_timer)
-    let s:vimplus_timer = 0
+function! vimplus#holdtimer(time, cmd) abort
+  " 定义一个字典来存储定时器ID，键为定时器的触发时间
+  if !exists("s:vimplus_timer")
+    let s:vimplus_timer = {}
   endif
-  let s:vimplus_timer = timer_start(a:time, { -> execute(a:cmd)})
+  " 检查是否已经有一个定时器与这个时间关联
+  if has_key(s:vimplus_timer, a:time)
+    " 如果存在，停止该定时器
+    call timer_stop(s:vimplus_timer[a:time])
+    " 从字典中删除该定时器的键
+    unlet s:vimplus_timer[a:time]
+  endif
+  " 启动一个新的定时器，并将其ID存储在字典中
+  let s:vimplus_timer[a:time] = timer_start(a:time, { -> execute(a:cmd)})
 endfunction
 
 function! s:VisualPattern()
