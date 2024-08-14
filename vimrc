@@ -264,11 +264,15 @@ let g:startify_lists = [
 let g:startify_session_root_mark = '.root'
 " session 退出时自动切换工作目录到主目录
 let g:startify_session_before_save = [ "exec 'cd' fnamemodify(findfile(g:startify_session_root_mark, ';'), ':h')" ]
+let g:startify_session_savevars = [
+            \ 'g:colors_name',
+            \ ]
 "配置项目工作目录到path,通过gf实现头文件跳转
 "打开session时调整vim为实时调度，避免cpu繁忙啊卡顿: 'exe system("sudo chrt -r -a -p 50 ".getpid())'
 let g:startify_session_savecmds = [
             \   'let &path=&path.getcwd()."/**"',
             \   'clearjumps',
+            \   'exe "colorscheme " . g:colors_name',
             \ ]
 "delete session in starify
 function! SessionDelete()
@@ -801,8 +805,6 @@ imap <M-.> <Cmd>call codeium#CycleCompletions(1)<CR>
 " asyncrun.vim
 let g:asyncrun_open = 10
 nnoremap <silent> <leader>R :AsyncRun -mode=term -pos=tab -close<space>
-"光标15min无响应启动screensaver
-"autocmd CursorHold * call vimplus#holdtimer(900*1000, 'AsyncRun -mode=term -pos=curwin -close asciiquarium')
 
 " nvim-treesitter
 if has('nvim')
