@@ -355,8 +355,8 @@ function! UseLSPComplete(error, res)
     call vimplus#vimclose()
   endif
 endfunction
-let vimplus_confirm = "NOTE: vim/nvim will be closed, and you should export VIMLSP to env."
-nnoremap <silent> <leader><leader>l :call vimplus#confirm(vimplus_confirm,function("UseLSPComplete"))<cr>
+let lsp_confirm = "NOTE: vim/nvim will be closed, and you should export VIMLSP to env."
+nnoremap <silent> <leader><leader>l :call vimplus#confirm(lsp_confirm,function("UseLSPComplete"))<cr>
 " 安装、更新、删除插件
 nnoremap <silent> <leader><leader>i :PlugInstall<cr>
 nnoremap <silent> <leader><leader>u :PlugUpdate<cr>
