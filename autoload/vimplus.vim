@@ -236,6 +236,9 @@ endfunction
 
 "关闭vim所有窗口并退出
 function! vimplus#vimclose() abort
+  if tabpagenr() > 1
+    execute "tabfirst | tabonly"
+  endif
   if s:BufferReadonly()
     execute "wincmd w"
     call vimplus#vimclose()
