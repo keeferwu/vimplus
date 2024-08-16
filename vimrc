@@ -297,7 +297,6 @@ let g:which_key_map[' '] = {'name' : '+plugin',
 let g:which_key_map.w = 'easy motion to word'
 let g:which_key_map.k = 'color/uncolor cword'
 let g:which_key_map.K = 'uncolor all worlds'
-let g:which_key_map.R = 'run command asynchronous'
 let g:which_key_map.d = {'name' : '+changes'}
 let g:which_key_map.c = {'name' : '+commenter'}
 let g:which_key_map.f = {'name' : '+leaderf'}
@@ -334,6 +333,7 @@ let g:which_key_map.n = {'name' : '+new',
                     \    'f' : 'new file',
                     \    't' : 'new tab',
                     \    'T' : 'new terminal',
+                    \    'R' : 'run command asynchronous',
                     \   }
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
@@ -812,7 +812,7 @@ imap <M-.> <Cmd>call codeium#CycleCompletions(1)<CR>
 
 " asyncrun.vim
 let g:asyncrun_open = 10
-nnoremap <silent> <leader>R :AsyncRun -mode=term -pos=tab -close<space>
+nnoremap <silent> <leader>nR :AsyncRun -mode=term -pos=tab -close<space>
 
 " nvim-treesitter
 if has('nvim')
