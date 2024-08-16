@@ -171,6 +171,36 @@ function! vimplus#hlsearch() abort
   endif
 endfunction
 
+function! vimplus#createfile() abort
+  try
+    let path = fnameescape(fnamemodify(expand("%"), ':h'))
+    echohl Question
+    call inputsave()
+    let filename = input("File name: ", path."/", "file")
+    call inputrestore()
+    redraw!
+  catch /^Vim:Interrupt$/
+    echo "Command interrupted"
+  finally
+    echohl None
+    " interrupt will cause filename unlet
+    if !exists("filename")
+      return
+    endif
+    " remove spaces
+    let filename = substitute(filename, ' ', '', 'g')
+    if empty(fnamemodify(filename, ':t'))
+      echo "Empty file name!"
+      return
+    endif
+    if filereadable(filename)
+      echo filename . " already exists!"
+      return
+    endif
+    execute 'edit' filename
+  endtry
+endfunction
+
 function! vimplus#write() abort
     try
         " 尝试正常写入文件

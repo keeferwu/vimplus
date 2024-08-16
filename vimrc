@@ -330,6 +330,10 @@ let g:which_key_map.q = {'name' : '+quit',
                     \    'w' : 'quit window',
                     \    'q' : 'quit quickfix',
                     \   }
+let g:which_key_map.n = {'name' : '+new',
+                    \    'f' : 'new file',
+                    \    't' : 'new tab',
+                    \   }
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
 let g:which_key_map_visual.c = {'name' : '+commenter'}
@@ -372,8 +376,10 @@ autocmd BufAdd * call vimplus#buflimit(100)
 nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
 nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
-nnoremap <silent> <leader>qt :tabclose<cr>
 nnoremap <silent> <leader>qw :close<cr>
+nnoremap <silent> <leader>qt :tabclose<cr>
+nnoremap <silent> <leader>nt :tabnew<cr>
+nnoremap <silent> <leader>nf :call vimplus#createfile()<cr>
 
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
