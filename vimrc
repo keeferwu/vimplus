@@ -333,6 +333,7 @@ let g:which_key_map.q = {'name' : '+quit',
 let g:which_key_map.n = {'name' : '+new',
                     \    'f' : 'new file',
                     \    't' : 'new tab',
+                    \    'T' : 'new terminal',
                     \   }
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
@@ -379,6 +380,7 @@ nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
 nnoremap <silent> <leader>qw :close<cr>
 nnoremap <silent> <leader>qt :tabclose<cr>
 nnoremap <silent> <leader>nt :tabnew<cr>
+nnoremap <silent> <leader>nT :tabnew \| term ++curwin<cr>
 nnoremap <silent> <leader>nf :call vimplus#createfile()<cr>
 
 " netrw
