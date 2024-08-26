@@ -719,7 +719,7 @@ let g:gutentags_ctags_extra_args += ['--extras=+q', '--output-format=e-ctags']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = 'tags'
 " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
-let g:gutentags_cache_dir = expand('~/.cache/tags')
+let g:gutentags_cache_dir = expand('~/.vim/tags')
 let g:gutentags_trace = 0
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
@@ -746,7 +746,8 @@ if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
   " 禁用 gutentags 自动加载 gtags 数据库到cscope,避免多个项目生成数据文件在cosope相互影响。
   let g:gutentags_auto_add_gtags_cscope = 0
   " generate gtags data to leaderF
-  let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
+  let g:Lf_CacheDirectory = expand('~/.vim')
+  let g:gutentags_cache_dir = expand(g:Lf_CacheDirectory.'/LeaderF/gtags')
   nnoremap <silent> <leader>gu :GutentagsUpdate!<cr>
   " 光标10min内没有发生移动，自动更新gtags文件
   autocmd CursorHold,CursorHoldI * if get(g:, 'gutentags_generate_on_new', 0)|call vimplus#holdtimer(600*1000, 'GutentagsUpdate!')|endif
