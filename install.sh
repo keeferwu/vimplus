@@ -663,59 +663,71 @@ function get_now_timestamp()
 # main函数
 function main()
 {
-    case "$1" in
-    -p )
-        read -p "Do you want to re-install plugin ? [Y/N] " ch
-        if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
-            install_vim_plugin
-        fi
-        update_vim_plugin
-        ;;
-    -i )
-        begin=`get_now_timestamp`
-        echo "Install vim configuration "
-        if [ $(uname) == "Darwin" ]; then
-            install_vimplus_on_mac
-        elif [ $(uname) == "Linux" ]; then
-            install_vimplus_on_linux
-        else
-            echo "Not support platform type: "$(uname)
-        fi
-        end=`get_now_timestamp`
-        second=`expr ${end} - ${begin}`
-        min=`expr ${second} / 60`
-        echo "It takes "${min}" minutes."
-        ;;
-    -u )
-        if [ $# -lt 2 ]; then
-            echo "Please input username!"
+    if [ $# -lt 1 ]; then
+        echo "$0 {-p|-i|-u|-h}"
+        exit 1
+    fi
+    while getopts ":hiu:p" opt
+    do
+        case "$opt" in
+        p)
+            #通过shift $(($OPTIND - 1))的处理，$*中就只保留了除去选项内容的参数，
+            shift $(($OPTIND - 1))
+            #如果输入参数为release，重新安装plugin
+            if [ "$1" == "release" ]; then
+                install_vim_plugin
+            fi
+            update_vim_plugin
+            exit 0
+            ;;
+        i)
+            begin=`get_now_timestamp`
+            echo "Install vim configuration "
+            if [ $(uname) == "Darwin" ]; then
+                install_vimplus_on_mac
+            elif [ $(uname) == "Linux" ]; then
+                install_vimplus_on_linux
+            else
+                echo "Not support platform type: "$(uname)
+            fi
+            end=`get_now_timestamp`
+            second=`expr ${end} - ${begin}`
+            min=`expr ${second} / 60`
+            echo "It takes "${min}" minutes."
+            exit 0
+            ;;
+        u)
+            if [ "$EUID" -ne 0 ]; then
+                echo "Should running with sudo."
+                exit 1
+            fi
+
+            if [ ! -d ${PWD}/plugged ]; then
+                install_vim_plugin
+            fi
+
+            if [ $(uname) == "Linux" ]; then
+                echo "Install vim configuration to "$OPTARG
+                install_config_to_user $OPTARG
+            else
+                echo "Not support platform type: "$(uname)
+            fi
+            exit 0
+            ;;
+        :)
+            echo "-$OPTARG need parameter"
             exit 1
-        fi
-
-        if [ "$EUID" -ne 0 ]; then
-            echo "Should running with sudo."
+            ;; 
+        h|?)
+            echo ""
+            echo "-p : update vim plugins"
+            echo "-i : install vim configuration"
+            echo "-u : install vim configuration to <user>"
+            echo ""
             exit 1
-        fi
-
-        if [ ! -d ${PWD}/plugged ]; then
-            install_vim_plugin
-        fi
-
-        if [ $(uname) == "Linux" ]; then
-            echo "Install vim configuration to "$2
-            install_config_to_user $2
-        else
-            echo "Not support platform type: "$(uname)
-        fi
-        ;;
-     * )
-        echo ""
-        echo "-p : update vim plugins"
-        echo "-i : install vim configuration"
-        echo "-u : install vim configuration to <user>"
-        echo ""
-        ;;
-    esac
+            ;;
+        esac
+    done
 }
 
 # 调用main函数
