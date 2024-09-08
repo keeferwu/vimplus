@@ -122,6 +122,6 @@ runtimepath默认包含以下目录。并非所有这些都必须出现在文件
     /usr/local/share/vim/vimfiles/after     系统范围Vim目录中的“after”目录。系统管理员可以利用该目录来覆盖默认设置，或添加新的设置。
     ~/.vim/after     主目录中的“after”目录。可以利用该目录用个人偏好覆盖默认设置或系统设置，或添加新的设置。
 
-#### 如何优雅的使用vimplus?
+#### 如何高效的使用vimplus?
 
 参考: https://gitee.com/keeferwu/vimplus/wikis/pages
