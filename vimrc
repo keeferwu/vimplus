@@ -357,7 +357,8 @@ function! UseLSPComplete(error, res)
     return
   endif
   if a:res == 1   "yes
-    call system('export $VIMLSP="yes"')   "修改环境变量不生效，需要手动在bash下执行
+    "修改的环境变量只在vim下生效，需要在bash下手动export VIMLSP才会在终端中生效
+    "call setenv('VIMLSP', 'yes')
     call vimplus#vimclose()
   endif
 endfunction
