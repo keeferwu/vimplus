@@ -821,10 +821,10 @@ imap <M-.> <Cmd>call codeium#CycleCompletions(1)<CR>
 " asyncrun.vim
 let g:asyncrun_open = 10
 nnoremap <silent> <leader>nR :AsyncRun -mode=term -pos=tab -close<space>
-" screensavar
-if executable('asciiquarium')
-  autocmd CursorHold,CursorHoldI * call vimplus#holdtimer(900*1000, 'AsyncRun -mode=term -pos=curwin -close asciiquarium')
-endif
+" screensavar 会浪费cpu资源
+"if executable('asciiquarium')
+  "autocmd CursorHold,CursorHoldI * call vimplus#holdtimer(999*1000, 'AsyncRun -mode=term -pos=curwin -close asciiquarium')
+"endif
 
 " nvim-treesitter
 if has('nvim')
