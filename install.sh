@@ -529,6 +529,10 @@ function update_vim_plugin()
             cd $curr_dir
             echo -e "\033[32m try fetching code in $curr_dir \033[0m"
             git fetch && git rebase
+            if [ $sub_dir == "LeaderF" ]; then
+                #更新LeaderF插件，重新执行其目录下的install.sh脚本
+                ./install.sh
+            fi
             echo #打印空行
         else
             echo -e "\033[33m $curr_dir is not a directory \033[0m"
