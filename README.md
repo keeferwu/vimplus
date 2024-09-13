@@ -44,11 +44,6 @@ defx.nvim 插件需要pynvim的支持,可以选择安装到系统目录或用户
     pip3 install pynvim            #普通用户会默认会安装到用户目录，如果要安装到系统目录请使用sudo
     pip3 install --upgrade pynvim  #更新pynvim
 
-vim-easycomplete 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt
-
-    Makefile：bear make
-    Cmake：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-
 OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件
 
     cd /usr/include/
@@ -74,6 +69,18 @@ vim-gutentags 由于leaderF不支持ctags数据生成，因此使用vim-gutentag
     2. 在项目的子目录下通过新建.root 文件让vim-gutentags 给项目创建多个索引数据
         例：如上在s:gutentags_path_exclude 中已过滤掉了项目的子目录os，因此不会在根目录的索引数据中生成os相关的索引，
         可通过在os目录下新建一个.root文件, 当在vim中访问到 os 下的文件时，会自动生成os下独立的数据索引。
+
+vim-easycomplete 是一个使用LSP补全的插件，需要安装对应语言的LSP server，安装命令：InstallLspServer，安装路径：.config/vim-easycomplete/servers
+
+    1. 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt
+        Makefile：bear make
+        Cmake：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+    2. 如果lua文件中诊断信息过多，会导致lua文件第一次打开时出现短暂卡顿，可在server端关闭一些不重要的诊断类型
+        vim .config/vim-easycomplete/servers/lua/extension/server/script/proto/define.lua
+        ['unused-local']            = 'Opened',     ---->   'None'
+        ['undefined-global']        = 'Any',        ---->   'None'
+        ['trailing-space']          = 'Opened',     ---->   'None'
 
 #### 如何让gtags支持更多语言?
 
