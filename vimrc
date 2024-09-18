@@ -782,6 +782,7 @@ let g:SuperTabCompleteCase = 'match'
 " lens
 let g:lens#animate = 0  "取消动画
 let g:lens#disabled_filetypes = ['defx', 'netrw', 'tagbar', 'leaderf']
+let g:lens#disabled_buftypes = ['nofile']
 let g:lens#height_resize_max = 40
 let g:lens#height_resize_min = 5
 let g:lens#width_resize_max = 120
