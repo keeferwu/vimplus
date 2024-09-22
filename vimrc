@@ -235,6 +235,8 @@ Plug 'vim-scripts/OmniCppComplete', exists('$VIMLSP') ? {'on': []} : {'for': ['c
 Plug 'skywind3000/asyncrun.vim'
 " nvim代码语法高亮
 Plug 'nvim-treesitter/nvim-treesitter', has('nvim') ? {'do': ':TSUpdate'} : {'on': []}
+" dot文件格式流程图
+Plug 'liuchengxu/graphviz.vim'
 "多种语言代码语法高亮
 "Plug 'sheerun/vim-polyglot', has('nvim') ? {'on': []} : {}
 " 代码调试

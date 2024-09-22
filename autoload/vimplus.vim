@@ -171,6 +171,12 @@ function! vimplus#hlsearch() abort
   endif
 endfunction
 
+"expand("%")     ---- 相对路径文件
+"expand("%:h")   ---- 相对路径
+"expand("%:p")   ---- 绝对路径文件
+"expand("%:p:h") ---- 绝对路径
+"expand("%:r")   ---- 相对路径文件（不含后缀）
+"expand("%:e")   ---- 文件后缀
 function! vimplus#createfile() abort
   try
     let path = fnameescape(fnamemodify(expand("%"), ':h'))
