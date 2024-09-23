@@ -207,8 +207,6 @@ Plug 'octol/vim-cpp-enhanced-highlight', has('nvim') ? {'on': []} : {'for': ['c'
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 " 修改显示
 Plug 'chrisbra/changesPlugin'
-" 单词高亮
-Plug 'lfv89/vim-interestingwords'
 " 代码格式化
 Plug 'vim-autoformat/vim-autoformat', {'on': ['Autoformat','AutoformatLine','RemoveTrailingSpaces']}
 " 自动调整当前窗口大小
@@ -391,6 +389,14 @@ else
   nnoremap <silent> <leader>nT :tabnew \| term ++curwin<cr>
 endif
 
+" highlight word
+autocmd VimEnter * call interestingwords#plug()
+nnoremap <silent> <leader>k <Plug>InterestingWords
+vnoremap <silent> <leader>k <Plug>InterestingWords
+nnoremap <silent> <leader>K <Plug>InterestingWordsClear
+nnoremap <silent> n <Plug>InterestingWordsForeward
+nnoremap <silent> N <Plug>InterestingWordsBackward
+
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
 let g:netrw_liststyle = 3            "显示模式为树形
@@ -529,10 +535,6 @@ let g:NERDAltDelims_c = 1
 let g:indentLine_enabled = 1
 let g:indentLine_leadingSpaceEnabled = 0
 let g:indentLine_concealcursor = 'ic'
-
-" vim-interestingwords
-let g:interestingWordsCycleColors = 1
-let g:interestingWordsCaseSensitive = 1
 
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
