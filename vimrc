@@ -390,12 +390,11 @@ else
 endif
 
 " highlight word
-autocmd VimEnter * call interestingwords#plug()
-nnoremap <silent> <leader>k <Plug>InterestingWords
-vnoremap <silent> <leader>k <Plug>InterestingWords
-nnoremap <silent> <leader>K <Plug>InterestingWordsClear
-nnoremap <silent> n <Plug>InterestingWordsForeward
-nnoremap <silent> N <Plug>InterestingWordsBackward
+nnoremap <silent> <leader>k :call interestingwords#color('n')<cr>
+vnoremap <silent> <leader>k :call interestingwords#color('v')<cr>
+nnoremap <silent> <leader>K :call interestingwords#clear()<cr>
+nnoremap <silent> n :call interestingwords#navigation(1)<cr>
+nnoremap <silent> N :call interestingwords#navigation(0)<cr>
 
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅

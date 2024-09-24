@@ -20,9 +20,9 @@ let s:interestingModes = []
 let s:mids = {}
 let s:recentlyUsed = []
 
-function! ColorWord(word, mode)
+function! s:ColorWord(word, mode)
   if !(s:hasBuiltColors)
-    call s:buildColors()
+    call s:BuildColors()
   endif
 
   " gets the lowest unused index
@@ -33,7 +33,7 @@ function! ColorWord(word, mode)
       return
     else
       let n = s:recentlyUsed[0]
-      call UncolorWord(s:interestingWords[n])
+      call s:UncolorWord(s:interestingWords[n])
     endif
   endif
 
@@ -42,14 +42,14 @@ function! ColorWord(word, mode)
   let s:interestingModes[n] = a:mode
   let s:mids[a:word] = mid
 
-  call s:apply_color_to_word(n, a:word, a:mode, mid)
+  call s:ApplyColorToWord(n, a:word, a:mode, mid)
 
-  call s:markRecentlyUsed(n)
+  call s:MarkRecentlyUsed(n)
 
 endfunction
 
-function! s:apply_color_to_word(n, word, mode, mid)
-  let case = s:checkIgnoreCase(a:word) ? '\c' : '\C'
+function! s:ApplyColorToWord(n, word, mode, mid)
+  let case = s:CheckIgnoreCase(a:word) ? '\c' : '\C'
   if a:mode == 'v'
     let pat = case . '\V\zs' . escape(a:word, '\') . '\ze'
   else
@@ -62,7 +62,7 @@ function! s:apply_color_to_word(n, word, mode, mid)
   endtry
 endfunction
 
-function! s:nearest_group_at_cursor() abort
+function! s:NearestGroupAtCursor()
   let l:matches = {}
   for l:match_item in getmatches()
     let l:mids = filter(items(s:mids), 'v:val[1] == l:match_item.id')
@@ -80,7 +80,7 @@ function! s:nearest_group_at_cursor() abort
   return ''
 endfunction
 
-function! UncolorWord(word)
+function! s:UncolorWord(word)
   let index = index(s:interestingWords, a:word)
 
   if (index > -1)
@@ -92,21 +92,21 @@ function! UncolorWord(word)
   endif
 endfunction
 
-function! s:getmatch(mid) abort
+function! s:getmatch(mid)
   return filter(getmatches(), 'v:val.id==a:mid')[0]
 endfunction
 
-function! WordNavigation(direction)
-  let currentWord = s:nearest_group_at_cursor()
+function! interestingwords#navigation(direction) abort
+  let currentWord = s:NearestGroupAtCursor()
 
-  if (s:checkIgnoreCase(currentWord))
+  if (s:CheckIgnoreCase(currentWord))
     let currentWord = tolower(currentWord)
   endif
 
   if (index(s:interestingWords, currentWord) > -1)
     let l:index = index(s:interestingWords, currentWord)
     let l:mode = s:interestingModes[index]
-    let case = s:checkIgnoreCase(currentWord) ? '\c' : '\C'
+    let case = s:CheckIgnoreCase(currentWord) ? '\c' : '\C'
     if l:mode == 'v'
       let pat = case . '\V\zs' . escape(currentWord, '\') . '\ze'
     else
@@ -130,26 +130,26 @@ function! WordNavigation(direction)
   endif
 endfunction
 
-function! InterestingWords(mode) range
+function! interestingwords#color(mode) range
   if a:mode == 'v'
-    let currentWord = s:get_visual_selection()
+    let currentWord = s:GetVisualSelection()
   else
     let currentWord = expand('<cword>') . ''
   endif
   if !(len(currentWord))
     return
   endif
-  if (s:checkIgnoreCase(currentWord))
+  if (s:CheckIgnoreCase(currentWord))
     let currentWord = tolower(currentWord)
   endif
   if (index(s:interestingWords, currentWord) == -1)
-    call ColorWord(currentWord, a:mode)
+    call s:ColorWord(currentWord, a:mode)
   else
-    call UncolorWord(currentWord)
+    call s:UncolorWord(currentWord)
   endif
 endfunction
 
-function! s:get_visual_selection()
+function! s:GetVisualSelection()
   " Why is this not a built-in Vim script function?!
   let [lnum1, col1] = getpos("'<")[1:2]
   let [lnum2, col2] = getpos("'>")[1:2]
@@ -159,29 +159,17 @@ function! s:get_visual_selection()
   return join(lines, "\n")
 endfunction
 
-function! UncolorAllWords()
+function! interestingwords#clear() abort
   for word in s:interestingWords
     " check that word is actually a String since '0' is falsy
     if (type(word) == 1)
-      call UncolorWord(word)
+      call s:UncolorWord(word)
     endif
-  endfor
-endfunction
-
-function! RecolorAllWords()
-  let i = 0
-  for word in s:interestingWords
-    if (type(word) == 1)
-      let mode = s:interestingModes[i]
-      let mid = s:mids[word]
-      call s:apply_color_to_word(i, word, mode, mid)
-    endif
-    let i += 1
   endfor
 endfunction
 
 " returns true if the ignorecase flag needs to be used
-function! s:checkIgnoreCase(word)
+function! s:CheckIgnoreCase(word)
   " return false if case sensitive is used
   if g:interestingWordsCaseSensitive
     return v:false
@@ -192,7 +180,7 @@ function! s:checkIgnoreCase(word)
 endfunction
 
 " moves the index to the back of the s:recentlyUsed list
-function! s:markRecentlyUsed(n)
+function! s:MarkRecentlyUsed(n)
   let index = index(s:recentlyUsed, a:n)
   call remove(s:recentlyUsed, index)
   call add(s:recentlyUsed, a:n)
@@ -208,7 +196,7 @@ endfunction
 " initialise highlight colors from list of GUIColors
 " initialise length of s:interestingWord list
 " initialise s:recentlyUsed list
-function! s:buildColors()
+function! s:BuildColors()
   if (s:hasBuiltColors)
     return
   endif
@@ -244,15 +232,3 @@ function! s:Random(n)
   return float2nr(floor(a:n * timestamp/100))
 endfunction
 
-function! interestingwords#plug() abort
-    nnoremap <silent> <unique> <script> <Plug>InterestingWords
-           \ :call InterestingWords('n')<cr>
-    vnoremap <silent> <unique> <script> <Plug>InterestingWords
-           \ :call InterestingWords('v')<cr>
-    nnoremap <silent> <unique> <script> <Plug>InterestingWordsClear
-           \ :call UncolorAllWords()<cr>
-    nnoremap <silent> <unique> <script> <Plug>InterestingWordsForeward
-           \ :call WordNavigation(1)<cr>
-    nnoremap <silent> <unique> <script> <Plug>InterestingWordsBackward
-           \ :call WordNavigation(0)<cr>
-endfunction
