@@ -6,7 +6,7 @@
 " --------------------------------------------------------------------
 
 let s:interestingWordsGUIColors = ['#aeee00', '#ff0000', '#0000ff', '#b88823', '#ffa724', '#ff2c4b']
-let s:interestingWordsTermColors = ['154', '121', '211', '137', '214', '222']
+let s:interestingWordsTermColors = ['121', '154', '139', '203', '212', '222']
 
 let g:interestingWordsGUIColors = exists('g:interestingWordsGUIColors') ? g:interestingWordsGUIColors : s:interestingWordsGUIColors
 let g:interestingWordsTermColors = exists('g:interestingWordsTermColors') ? g:interestingWordsTermColors : s:interestingWordsTermColors
