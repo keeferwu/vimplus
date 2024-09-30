@@ -382,7 +382,7 @@ nnoremap <silent> <leader>qt :tabclose<cr>
 nnoremap <silent> <leader>nt :tabnew<cr>
 nnoremap <silent> <leader>nf :call vimplus#createfile()<cr>
 if has('nvim')
-  nnoremap <silent> <leader>nT :tabnew \| term<cr>
+  nnoremap <silent> <leader>nT :tabnew \| startinsert \| terminal<cr>
 else
   nnoremap <silent> <leader>nT :tabnew \| term ++curwin<cr>
 endif
