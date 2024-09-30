@@ -189,8 +189,6 @@ Plug 'roxma/nvim-yarp', has('nvim') ? {'on': []} : {}
 Plug 'roxma/vim-hug-neovim-rpc', has('nvim') ? {'on': []} : {}
 " vim 插件环境检测
 Plug 'rhysd/vim-healthcheck', has('nvim') ? {'on': []} : {'on': 'CheckHealth'}
-" vim 中文帮助文档
-Plug 'yianwillis/vimcdoc', has('nvim') ? {'on': []} : {'for': 'help'}
 " 函数显示列表
 Plug 'preservim/tagbar'
 " 光标快速移动
@@ -692,7 +690,7 @@ let g:Lf_CtagsFuncOpts = {
             \   'rust': '--rust-kinds=f',
             \ }
 let g:Lf_GtagsAutoGenerate = 0           " auto create gtags
-let g:Lf_GtagsAutoUpdate = 0             " auto update when buffer write
+let g:Lf_GtagsAutoUpdate = 1             " auto update when buffer write
 let g:Lf_GtagsGutentags = 1              " use vim-gutentags to generate gtags,should make g:Lf_GtagsAutoGenerate = 0 and g:Lf_GtagsAutoUpdate = 0
 let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
 let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
