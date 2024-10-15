@@ -256,9 +256,7 @@ endfunction
 function! s:BufferReadonly()
   if &modifiable == 0 && &filetype !=# 'startify'
     let bufname = len(bufname('%')) ? bufname('%') : &filetype 
-    echohl WarningMsg
-    echom bufname . " is readonly!"
-    echohl None
+    echo bufname . " is readonly!"
     return 1
   endif
   return 0
@@ -298,24 +296,43 @@ endfunction
 " 关闭当前的buffer
 function! vimplus#bufclose() abort
   if s:BufferReadonly()
-    return
+    if &buftype ==# 'terminal'
+      execute "bdelete!"
+      return v:true
+    endif
+    return v:false
   endif
   if winnr('$') > 1
     execute "only"
   endif
   execute "bdelete"
+  return v:true
+endfunction
+
+" 关闭当前的tab
+function! vimplus#tabclose() abort
+  if tabpagenr() > 1
+    if vimplus#bufclose() == v:false
+      execute "tabclose"
+    endif
+  endif
 endfunction
 
 "关闭vim所有窗口并退出
 function! vimplus#vimclose() abort
-  if tabpagenr() > 1
-    execute "tabfirst | tabonly"
-  endif
+  execute "tabfirst"
   if s:BufferReadonly()
-    execute "wincmd w"
+    execute "quit"
     call vimplus#vimclose()
   endif
-  execute "only | q"
+  " last tab id
+  if tabpagenr('$') > 1
+    execute "tabonly"
+  endif
+  if winnr('$') > 1
+    execute "only"
+  endif
+  execute "quit"
 endfunction
 
 " Highlight EOL whitespace, https://github.com/bronson/vim-trailing-whitespace.git

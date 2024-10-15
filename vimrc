@@ -324,7 +324,7 @@ let g:which_key_map.g = {'name' : '+gtags',
 let g:which_key_map.q = {'name' : '+quit',
                     \    'a' : 'quit vim/nvim',
                     \    'b' : 'quit buffer',
-                    \    't' : 'quit table',
+                    \    't' : 'quit tab',
                     \    'w' : 'quit window',
                     \    'q' : 'quit quickfix',
                     \   }
@@ -378,7 +378,7 @@ nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
 nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
 nnoremap <silent> <leader>qw :close<cr>
-nnoremap <silent> <leader>qt :tabclose<cr>
+nnoremap <silent> <leader>qt :call vimplus#tabclose()<cr>
 nnoremap <silent> <leader>nt :tabnew<cr>
 nnoremap <silent> <leader>nf :call vimplus#createfile()<cr>
 if has('nvim')
