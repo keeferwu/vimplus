@@ -298,21 +298,24 @@ function! vimplus#bufclose() abort
   if s:BufferReadonly()
     if &buftype ==# 'terminal'
       execute "bdelete!"
-      return v:true
     endif
-    return v:false
+    return
   endif
   if winnr('$') > 1
     execute "only"
   endif
   execute "bdelete"
-  return v:true
 endfunction
 
 " 关闭当前的tab
 function! vimplus#tabclose() abort
   if tabpagenr() > 1
-    if vimplus#bufclose() == v:false
+    if &buftype ==# 'terminal' || empty(&filetype)
+      if winnr('$') > 1
+        execute "only"
+      endif
+      execute "bdelete!"
+    else
       execute "tabclose"
     endif
   endif
