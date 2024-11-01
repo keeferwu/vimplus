@@ -1,8 +1,8 @@
 #### 如何安装vimplus?
 
+    git clone https://gitee.com/keeferwu/vimplus.git ~/.vimplus
+    cd ~/.vimplus
     ./install.sh -i                 # 当前用户安装
-    ./install.sh -p                 # 更新所有插件
-    sudo ./install.sh -u <用户名>   # 为同一系统中的其他用户安装
 
 #### 如何设置Nerd Font?
 
