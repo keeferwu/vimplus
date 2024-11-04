@@ -588,6 +588,7 @@ let g:changes_utf8_add_sign = '✚'
 let g:changes_utf8_delete_sign = '✖'
 let g:changes_utf8_modified_sign = '✱'
 let g:changes_linehi_diff = 0
+let g:changes_sign_hi_style = 0
 let g:changes_fast = 0
 let g:changes_vcs_check = 1
 if get(g:, 'changes_sign_text_utf8', 0) == 0

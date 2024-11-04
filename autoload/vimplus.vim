@@ -288,6 +288,7 @@ endfunction
 
 " 关闭quickfix
 function! vimplus#qfclose() abort
+  lclose
   cclose
   call setqflist([], 'f')
   return
