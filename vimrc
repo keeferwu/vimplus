@@ -318,7 +318,6 @@ let g:which_key_map.g = {'name' : '+gtags',
                     \    's' : 'reference symbol with no definition',
                     \    'g' : 'grep cword by gtags',
                     \    'h' : 'gtags search history',
-                    \    'c' : 'gtags database cache',
                     \    'u' : 'gtags update',
                     \   }
 let g:which_key_map.q = {'name' : '+quit',
@@ -606,7 +605,7 @@ nnoremap <leader>ff :LeaderfFile<space>
 nnoremap <silent> <leader>fb :LeaderfBuffer<cr>
 nnoremap <silent> <leader>ft :LeaderfBufTag<cr>
 nnoremap <silent> <leader>fl :LeaderfLine<cr>
-nnoremap <silent> <leader>fm :LeaderfMru<cr>
+nnoremap <silent> <leader>fm :LeaderfMruCwd<cr>
 nnoremap <silent> <leader>fh :LeaderfHelp<cr>
 nnoremap <silent> <leader>fc :LeaderfCommand<cr>
 nnoremap <silent> <leader>fs :LeaderfColorscheme<cr>
@@ -698,7 +697,7 @@ let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
 let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
 let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
 nnoremap <silent> <leader>gh :Leaderf gtags_history<cr>
-nnoremap <silent> <leader>gc :Leaderf gtags_history --cache<cr>
+"nnoremap <silent> <leader>gc :Leaderf gtags_history --cache<cr>
 if g:Lf_GtagsAutoGenerate == 1
   autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
   nnoremap <silent> <leader>gu :Leaderf gtags --update<cr>
