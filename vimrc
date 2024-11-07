@@ -271,6 +271,13 @@ let g:startify_session_savecmds = [
             \   'let &path=&path.getcwd()."/**"',
             \   'clearjumps',
             \   'exe "colorscheme " . g:colors_name',
+            \   'if !get(g:, "changes_sign_text_utf8", 0)',
+            \   'hi ChangesSignTextAdd ctermbg=green ctermfg=black guibg=green',
+            \   'hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red',
+            \   'hi ChangesSignTextCh  ctermbg=blue  ctermfg=black guibg=blue',
+            \   'hi ChangesSignTextDummyCh  ctermfg=NONE ctermbg=blue guifg=NONE guibg=blue',
+            \   'hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green',
+            \   'endif',
             \ ]
 "delete session in starify
 function! SessionDelete()
@@ -590,7 +597,7 @@ let g:changes_linehi_diff = 0
 let g:changes_sign_hi_style = 0
 let g:changes_fast = 0
 let g:changes_vcs_check = 1
-if get(g:, 'changes_sign_text_utf8', 0) == 0
+if !get(g:, 'changes_sign_text_utf8', 0)
   hi ChangesSignTextAdd ctermbg=green ctermfg=black guibg=green
   hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red
   hi ChangesSignTextCh  ctermbg=blue  ctermfg=black guibg=blue
