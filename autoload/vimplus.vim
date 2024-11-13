@@ -244,13 +244,17 @@ function! vimplus#createfile() abort
 endfunction
 
 function! vimplus#write() abort
-    try
-        " 尝试正常写入文件
-        execute 'write'
-    catch /^Vim\%((\a\+)\)\=:E212/
-        " 如果捕获到 E212 错误，使用 sudo 写入文件
-        execute 'write !sudo tee -i %'
-    endtry
+  try
+    " 如果不是普通模式，则切换到普通模式
+    if mode() != 'n'
+       call feedkeys("\<Esc>")
+    endif
+    " 尝试正常写入文件
+    execute 'write'
+  catch /^Vim\%((\a\+)\)\=:E212/
+    " 如果捕获到 E212 错误，使用 sudo 写入文件
+    execute 'write !sudo tee -i %'
+  endtry
 endfunction
 
 function! s:BufferReadonly()
