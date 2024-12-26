@@ -358,7 +358,7 @@ endfunction
 
 augroup whitespace
   autocmd!
-  autocmd ColorScheme * highlight default ExtraWhitespace ctermbg=darkred guibg=darkred
+  highlight default ExtraWhitespace ctermbg=darkred guibg=darkred
   " The above flashes annoyingly while typing, be calmer in insert mode
   autocmd InsertLeave * if s:MatchWhitespace() | match none /\\\@<![\u3000[:space:]]\+$/ | endif
   autocmd InsertEnter * if s:MatchWhitespace() | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+\%#\@<!$/ | endif
