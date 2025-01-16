@@ -135,7 +135,6 @@ endif
 
 " 保存
 noremap <silent> <c-s> :<c-u>call vimplus#write()<cr>
-inoremap <silent> <c-s> <Esc>:<c-u>call vimplus#write()<cr>
 " 重新映射d 为仅删除不剪切
 nnoremap <silent> d   "_d
 vnoremap <silent> d   "_d
