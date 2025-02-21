@@ -381,6 +381,8 @@ nnoremap <silent> <leader>rc :<c-u>call vimplus#vimgrep('n')<cr>
 " buffer,table and whitespace
 let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
 autocmd BufAdd * call vimplus#buflimit(100)
+autocmd TabNew,TabEnter * if tabpagenr() != 1 | let g:lens#disabled = 1 | endif
+autocmd TabClosed,TabLeave * if tabpagenr() != 1 | let g:lens#disabled = 0 | endif
 nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
 nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
