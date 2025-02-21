@@ -51,6 +51,7 @@ set noswapfile                  " 禁止生成临时文件
 set autoread                    " 文件在vim之外修改过，自动重新读入
 set autowrite                   " 设置自动保存
 set confirm                     " 在处理未保存或只读文件的时候，弹出确认
+autocmd InsertLeave * write     " 退出插入模式后自动保存
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 编码设置
@@ -235,7 +236,8 @@ Plug 'liuchengxu/graphviz.vim'
 "多种语言代码语法高亮
 "Plug 'sheerun/vim-polyglot', has('nvim') ? {'on': []} : {}
 " 代码调试
-"Plug 'puremourning/vimspector'
+Plug 'puremourning/vimspector', has('nvim') ? {'on': []} : {}
+Plug 'jclsn/vimspector-templates', has('nvim') ? {'on': []} : {}
 
 call plug#end()
 
@@ -414,7 +416,7 @@ let g:netrw_sort_options = 'i'       "排序忽略大小写
 let g:netrw_hide = 1                 "忽略隐藏文件
 "在 netrw 里隐藏特定文件: ^\..* ->以.开头，^.*\.o$ ->.o结尾
 "let g:netrw_list_hide = '^\..*,^.*\.o$,^.*\.swp$,^.*\.bin$'
-nnoremap <silent> <F4> :call ToggleLexplorer()<CR>
+nnoremap <silent> <F3> :call ToggleLexplorer()<CR>
 function! ToggleLexplorer()
   if exists("t:expl_buf")
     Lexplore      " close
@@ -451,7 +453,7 @@ call defx#custom#column('icon', {
             \   'opened_icon': '▾',
             \   'root_icon': ' ',
             \ })
-nnoremap <silent> <F4> :Defx `escape(expand('%:p:h'), ' :')` -search=`expand('%:p')`<CR>
+nnoremap <silent> <F3> :Defx `escape(expand('%:p:h'), ' :')` -search=`expand('%:p')`<CR>
 autocmd BufWritePost * call defx#redraw()
 autocmd FileType defx call s:defx_mappings()
 function! s:defx_mappings() abort
@@ -513,7 +515,7 @@ function! DefxHelp()
 endfunction
 
 " tagbar
-nnoremap <silent> <F5> :TagbarToggle<cr>
+nnoremap <silent> <F4> :TagbarToggle<cr>
 let g:tagbar_width = 40    " 设置 tagbar 的宽度为 40 列
 let g:tagbar_ctags_bin = 'ctags' " tagbar 依赖 ctags 插件
 let g:tagbar_autofocus = 1   " 打开 tagbar 时光标在 tagbar 页面内，默认在 vim 打开的文件内
@@ -833,6 +835,29 @@ nnoremap <leader>nR :AsyncRun -mode=term -pos=tab -close<space>
 "if executable('asciiquarium')
   "autocmd CursorHold,CursorHoldI * call vimplus#holdtimer(999*1000, 'AsyncRun -mode=term -pos=curwin -close asciiquarium')
 "endif
+
+" vimspector
+if !has('nvim')
+"let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+nmap <F5>         <Plug>VimspectorContinue
+nmap <S-F5>       <Plug>VimspectorStop
+nmap <C-F5>       <Plug>VimspectorPause
+nmap <F6>         <Plug>VimspectorRestart
+nmap <S-F6>       <Plug>VimspectorDisassemble
+nmap <F7>         <Plug>VimspectorUpFrame
+nmap <S-F7>       <Plug>VimspectorDownFrame
+nmap <F8>         <Plug>VimspectorBreakpoints
+nmap <S-F8>       <Plug>VimspectorJumpToNextBreakpoint
+nmap <C-F8>       <Plug>VimspectorJumpToPreviousBreakpoint
+nmap <F9>         <Plug>VimspectorToggleBreakpoint
+nmap <S-F9>       <Plug>VimspectorToggleConditionalBreakpoint
+nmap <C-F9>       <Plug>VimspectorAddFunctionBreakpoint
+nmap <F10>        <Plug>VimspectorStepOver
+nmap <S-F10>      <Plug>VimspectorRunToCursor
+nmap <C-F10>      <Plug>VimspectorGoToCurrentLine
+nmap <F11>        <Plug>VimspectorStepInto
+nmap <S-F11>      <Plug>VimspectorStepOut
+endif
 
 " nvim-treesitter
 if has('nvim')
