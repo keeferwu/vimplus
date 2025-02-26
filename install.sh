@@ -289,7 +289,7 @@ function compile_vim_on_ubuntu()
 
     sudo apt-get install -y libncurses5-dev libncurses5 libgnome2-dev libgnomeui-dev \
         libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev \
-        python-dev python3-dev ruby-dev lua5.1 luajit
+        python-dev python3-dev ruby-dev lua5.1 luajit libperl-dev
 
     rm -rf ~/vim_source
     git clone https://github.com/vim/vim.git ~/vim_source
@@ -306,6 +306,7 @@ function compile_vim_on_ubuntu()
             --with-luajit \
             --enable-gui=gtk2 \
             --enable-cscope \
+            --enable-clipboard \
             --enable-fail-if-missing \
             --prefix=/usr/local/vim
 
