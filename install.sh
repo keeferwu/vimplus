@@ -287,38 +287,42 @@ function compile_vim_on_ubuntu()
     sudo apt-get remove vim vim-runtime  vim-tiny vim-common vim-gui-common
     sudo apt-get purge vim vim-runtime  vim-tiny vim-common vim-gui-common
 
-    sudo apt-get install -y libncurses5-dev libncurses5 libgnome2-dev libgnomeui-dev \
-        libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev \
-        python-dev python3-dev ruby-dev lua5.1 luajit libperl-dev
+    sudo apt-get install -y libncurses5-dev libncurses5 libgnomevfs2-dev libgnome2-dev libgnomeui-dev libperl-dev \
+        libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev libpython-dev \
+        python-dev python3-dev ruby-dev lua5.1 luajit
 
     rm -rf ~/vim_source
     git clone https://github.com/vim/vim.git ~/vim_source
     cd ~/vim_source
-    ./configure --with-features=huge \
-            --enable-multibyte \
-            --enable-rubyinterp=yes \
-            --enable-pythoninterp=yes \
-            --with-python-config-dir=/usr/lib/python2.7/config \
-            --enable-python3interp=yes \
-            --with-python3-config-dir=/usr/lib/python3.5/config \
-            --enable-perlinterp=yes \
-            --enable-luainterp=yes \
-            --with-luajit \
-            --enable-gui=gtk2 \
-            --enable-cscope \
-            --enable-clipboard \
-            --enable-fail-if-missing \
-            --prefix=/usr/local/vim
+    if [ $? -eq 0 ]; then
+        ./configure --with-features=huge \
+                --enable-multibyte \
+                --enable-rubyinterp=yes \
+                --enable-pythoninterp=yes \
+                --with-python-config-dir=/usr/lib/python2.7/config \
+                --enable-python3interp=yes \
+                --with-python3-config-dir=/usr/lib/python3.5/config \
+                --enable-perlinterp=yes \
+                --enable-luainterp=yes \
+                --with-luajit \
+                --enable-gui=gtk2 \
+                --enable-cscope \
+                --enable-clipboard \
+                --enable-fail-if-missing \
+                --prefix=/usr/local/vim
 
-    sudo make
-    sudo make install
+        sudo make
+        sudo make install
 
-    sudo update-alternatives --install /usr/bin/editor editor /usr/local/vim/bin/vim 1
-    sudo update-alternatives --set editor /usr/local/vim/bin/vim
-    sudo update-alternatives --install /usr/bin/vim vim /usr/local/vim/bin/vim 1
-    sudo update-alternatives --set vim /usr/local/vim/bin/vim
+        sudo update-alternatives --install /usr/bin/editor editor /usr/local/vim/bin/vim 1
+        sudo update-alternatives --set editor /usr/local/vim/bin/vim
+        sudo update-alternatives --install /usr/bin/vim vim /usr/local/vim/bin/vim 1
+        sudo update-alternatives --set vim /usr/local/vim/bin/vim
 
-    cd -
+        cd -
+    else
+        echo -e "\033[33m Download vim source failure! \033[0m"
+    fi
 }
 
 # 在debian上源代码安装vim
