@@ -395,9 +395,9 @@ function install_prepare_software_on_mac()
 function install_prepare_software_on_ubuntu_like()
 {
     sudo apt-get update
-    sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison cflow graphviz
-    sudo apt-get install -y build-essential python python-dev python3 python3-dev python3-pip fontconfig libfile-next-perl
-    sudo apt-get install -y universal-ctags fd-find ripgrep clang astyle ccls global xclip python-pygments
+    sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison cflow graphviz build-essential
+    sudo apt-get install -y python3 python3-dev python3-pip python3-pygments python3-pynvim fontconfig libfile-next-perl
+    sudo apt-get install -y universal-ctags fd-find ripgrep clang astyle ccls global xclip
 
     read -p "Do you want to re-install VIM ? [Y/N] " ch
     if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
