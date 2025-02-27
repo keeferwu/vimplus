@@ -13,7 +13,7 @@
 
     当使用 "+y","+p" 无法将vim的内容复制到终端时
     通过命令 vim --version | grep "clipboard" 查看vim 是否支持系统剪切板
-    clipboard 前边是 - 号，即为不支持，ubuntu下可以安装vim-gnome 或其他类型的系统剪切板
+    clipboard 前边是 - 号，即为不支持，ubuntu下可以安装vim-gnome 或vim-gtk
 
     当使用ssh远程连接server，系统剪切版无法使用，查看DISPLAY环境变量为空
     解决办法：
