@@ -125,6 +125,10 @@ noremap  <silent> <m-v> <c-v>
 noremap  <silent> <c-v> "+p
 vnoremap <silent> <c-c> "+y
 autocmd VimEnter * call clipboard#check()
+if !has('clipboard')
+  noremap  <silent> <c-v> :<c-u>call clipboard#paste()<cr>
+  vnoremap <silent> <c-c> :<c-u>call clipboard#yank()<cr>
+endif
 if exists("$TMUX")
   let g:terminal_italics = 0    " tmux 默认不支持斜体
   noremap  <silent> <c-v> :<c-u>call clipboard#paste()<cr>
@@ -440,6 +444,7 @@ function! ChangeToHome()
   endif
 endfunction
 
+if executable('nvim')
 "defx.nvim
 call defx#custom#option('_', {
             \   'winwidth': 30,
@@ -515,6 +520,7 @@ function! DefxHelp()
   endif
   setlocal nomodifiable
 endfunction
+endif
 
 " tagbar
 nnoremap <silent> <F4> :TagbarToggle<cr>

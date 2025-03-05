@@ -29,9 +29,6 @@ function! s:clipboard_health_check()
 endfunction
 
 function! clipboard#check() abort
-  " the logic is based on nvim's clipboard provider
-  " in vim8, system() do not support list argv
-  call s:clipboard_health_check()
   if has('mac')
     let s:yank_cmd  = 'pbcopy'
     let s:paste_cmd = 'pbpaste'
@@ -64,6 +61,10 @@ function! clipboard#check() abort
   elseif !empty($TMUX) && executable('tmux')
     let s:yank_cmd = 'tmux load-buffer -'
     let s:paste_cmd = 'tmux save-buffer -'
+  else
+    " the logic is based on nvim's clipboard provider
+    " in vim8, system() do not support list argv
+    call s:clipboard_health_check()
   endif
 endfunction
 
