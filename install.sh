@@ -29,7 +29,7 @@ function get_linux_distro()
         echo "openSUSE"
     elif grep -Eq "Arch Linux" /etc/*-release; then
         echo "ArchLinux"
-    elif grep -Eq "ManjaroLinux" /etc/*-release; then
+    elif grep -Eq "Manjaro Linux" /etc/*-release; then
         echo "ManjaroLinux"
     elif grep -Eq "Gentoo" /etc/*-release; then
         echo "Gentoo"
@@ -457,8 +457,9 @@ function install_prepare_software_on_fedora()
 # 安装archlinux必备软件
 function install_prepare_software_on_archlinux()
 {
-    sudo pacman -S --noconfirm vim ctags automake gcc cmake python3 python2 python-pip fontconfig
-    sudo pacman -S --noconfirm ripgrep clang astyle ccls global xclip python-pygments
+    sudo pacman -S --noconfirm vim cmake ninja-build gcc gcc-libs autoconf automake libtool flex bison graphviz
+    sudo pacman -S --noconfirm python3 python3-dev python3-pip python3-pygments python3-pynvim fontconfig
+    sudo pacman -S --noconfirm ctags ripgrep clang astyle ccls global xclip
     sudo ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
 }
 
