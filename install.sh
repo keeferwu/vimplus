@@ -307,7 +307,6 @@ function compile_vim_on_ubuntu()
                 --with-luajit \
                 --enable-gui=gtk2 \
                 --enable-cscope \
-                --enable-clipboard \
                 --enable-fail-if-missing \
                 --prefix=/usr/local/vim
 
