@@ -287,9 +287,8 @@ function compile_vim_on_ubuntu()
     sudo apt-get remove vim vim-runtime  vim-tiny vim-common vim-gui-common
     sudo apt-get purge vim vim-runtime  vim-tiny vim-common vim-gui-common
 
-    sudo apt-get install -y libncurses5-dev libncurses5 libgnutls-dev libgnomevfs2-dev libgnome2-dev libgnomeui-dev \
-        libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev libperl-dev libpython-dev \
-        python-dev python3-dev ruby-dev lua5.1 luajit
+    sudo apt-get install -y libncurses5-dev libncurses5 python3-dev ruby-dev lua5.1 luajit \
+        libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev libperl-dev
 
     rm -rf ~/vim_source
     git clone https://github.com/vim/vim.git ~/vim_source
@@ -298,15 +297,15 @@ function compile_vim_on_ubuntu()
         ./configure --with-features=huge \
                 --enable-multibyte \
                 --enable-rubyinterp=yes \
-                --enable-pythoninterp=yes \
                 --enable-python3interp=yes \
+                --with-python3-config-dir=$(python3-config --configdir) \
                 --enable-perlinterp=yes \
                 --enable-luainterp=yes \
                 --with-luajit \
                 --enable-gui=gtk2 \
                 --enable-cscope \
                 --enable-fail-if-missing \
-                --prefix=/usr/local/vim
+                --prefix=/usr/local
 
         sudo make
         sudo make install
