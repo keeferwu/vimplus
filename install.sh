@@ -311,16 +311,15 @@ function compile_vim_on_ubuntu()
         sudo make
         sudo make install
 
-        sudo update-alternatives --install /usr/bin/editor editor /usr/local/vim/bin/vim 1
-        sudo update-alternatives --set editor /usr/local/vim/bin/vim
-        sudo update-alternatives --install /usr/bin/vim vim /usr/local/vim/bin/vim 1
-        sudo update-alternatives --set vim /usr/local/vim/bin/vim
+        sudo update-alternatives --install /usr/bin/vim vim /usr/local/bin/vim 1
+        sudo update-alternatives --set vim /usr/local/bin/vim
 
         cd -
     else
         echo -e "\033[33m Download vim source failure! \033[0m"
     fi
     #remove vim which is installed by source
+    #sudo rm -rf /usr/bin/vim
     #sudo rm -rf /usr/local/bin/vim
     #sudo rm -rf /usr/local/share/vim
     #sudo rm -rf /usr/local/man/man1/vim.1
