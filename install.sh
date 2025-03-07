@@ -299,9 +299,7 @@ function compile_vim_on_ubuntu()
                 --enable-multibyte \
                 --enable-rubyinterp=yes \
                 --enable-pythoninterp=yes \
-                --with-python-config-dir=/usr/lib/python2.7/config \
                 --enable-python3interp=yes \
-                --with-python3-config-dir=/usr/lib/python3.5/config \
                 --enable-perlinterp=yes \
                 --enable-luainterp=yes \
                 --with-luajit \
@@ -322,6 +320,10 @@ function compile_vim_on_ubuntu()
     else
         echo -e "\033[33m Download vim source failure! \033[0m"
     fi
+    #remove vim which is installed by source
+    #sudo rm -rf /usr/local/bin/vim
+    #sudo rm -rf /usr/local/share/vim
+    #sudo rm -rf /usr/local/man/man1/vim.1
 }
 
 # 在debian上源代码安装vim
