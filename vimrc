@@ -42,7 +42,9 @@ set bsdir=buffer                " 设定文件浏览器目录为当前目录
 set mouse=a                     " 开启鼠标
 set selection=exclusive
 set selectmode=mouse,key
-
+" 解决vim9.1光标处[esc][?4m]问题
+set keyprotocol=
+let &term=&term
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 缓存设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
