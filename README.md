@@ -4,6 +4,9 @@
     cd ~/.vimplus
     ./install.sh -i                 # 当前用户安装
 
+    已经验证过的系统有 Ubuntu/LinuxMint/ArchLinux/ManjaroLinux
+    其他系统未经验证，可能会存在软件依赖或过时的问题
+
 #### 如何设置Nerd Font?
 
     为防止statusline显示乱码，需设置linux终端字体为`Droid Sans Mono Nerd Font`，
