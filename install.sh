@@ -287,8 +287,7 @@ function compile_vim_on_ubuntu()
     sudo apt-get remove vim vim-runtime  vim-tiny vim-common vim-gui-common
     sudo apt-get purge vim vim-runtime  vim-tiny vim-common vim-gui-common
 
-    sudo apt-get install -y libncurses5-dev libncurses5 python3-dev ruby-dev lua5.1 luajit \
-        libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev libperl-dev
+    sudo apt-get install -y libncurses5-dev libncurses5 python3-dev ruby-dev lua5.1 liblua5.1-dev luajit libluajit-5.1-dev libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev libperl-dev
 
     rm -rf ~/vim_source
     git clone https://github.com/vim/vim.git ~/vim_source
@@ -303,6 +302,7 @@ function compile_vim_on_ubuntu()
                 --enable-luainterp=yes \
                 --with-luajit \
                 --enable-gui=gtk2 \
+                --with-x \
                 --enable-cscope \
                 --enable-fail-if-missing \
                 --prefix=/usr/local
@@ -317,6 +317,7 @@ function compile_vim_on_ubuntu()
     else
         echo -e "\033[33m Download vim source failure! \033[0m"
     fi
+    #如果缺少软件依赖可能会导致configure配置失败，导致安装的vim不支持python
     #remove vim which is installed by source
     #sudo rm -rf /usr/bin/vim
     #sudo rm -rf /usr/local/bin/vim
