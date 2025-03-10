@@ -457,9 +457,9 @@ function install_prepare_software_on_fedora()
 # 安装archlinux必备软件
 function install_prepare_software_on_archlinux()
 {
-    sudo pacman -S --noconfirm vim cmake gcc gcc-libs autoconf automake libtool flex bison
-    sudo pacman -S --noconfirm python python-pip python-pygments python-pynvim fontconfig
-    sudo pacman -S --noconfirm ctags ripgrep clang astyle ccls global xclip
+    sudo pacman -S --noconfirm vim cmake gcc gcc-libs autoconf automake libtool flex bison fontconfig
+    sudo pacman -S --noconfirm python python-pip python-pygments python-pynvim python-setuptools
+    sudo pacman -S --noconfirm ctags ripgrep clang astyle ccls global xclip fd
     sudo ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
 }
 

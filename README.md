@@ -52,7 +52,6 @@ OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件
 leaderF 插件对c进行更快速的搜索可以Install the C extension
 
     :LeaderfInstallCExtension
-    :echo g:Lf_fuzzyEngine_C   --> if the value is 1, it means the C extension is loaded sucessfully.
 
 Codeium 是一款智能补全插件，需要登录到官网生成token，注意，访问官网需要代理
 
