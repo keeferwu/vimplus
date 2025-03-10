@@ -98,6 +98,8 @@ gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  p
         实际使用 pygments 时，gtags 会启动 python 运行名为 pygments_parser.py 的脚本，通过管道和它通信，完成源代码分析，
         故需保证 gtags 能在 $PATH 里调用 python，且这个 python 安装了 pygments 模块,
         否则会出错：ImportError: No module named pygments.lexers。
+        如果生成gtags的过程中卡住，通过gtags --gtagslabel native-pygments --debug 开启debug手动去生成gtags数据，可观察到
+        在哪个文件处被卡住，多数情况是某种类型的文件无法被pygments解析，可通过将pygments降级或升级后再尝试
 
 gtags 添加自定义配置
 
