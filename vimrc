@@ -51,7 +51,6 @@ set noswapfile                  " 禁止生成临时文件
 set autoread                    " 文件在vim之外修改过，自动重新读入
 set autowrite                   " 设置自动保存
 set confirm                     " 在处理未保存或只读文件的时候，弹出确认
-autocmd InsertLeave * write     " 退出插入模式后自动保存
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 编码设置
