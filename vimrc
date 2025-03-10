@@ -137,6 +137,7 @@ if exists("$TMUX")
   autocmd VimEnter * ClipBoard
 endif
 
+tnoremap <silent> <ESC> <C-\><C-n>
 " 保存
 noremap <silent> <c-s> :<c-u>call vimplus#write()<cr>
 " 重新映射d 为仅删除不剪切
