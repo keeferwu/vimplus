@@ -310,7 +310,7 @@ let g:which_key_map.k = 'color/uncolor cword'
 let g:which_key_map.K = 'uncolor all worlds'
 let g:which_key_map.d = {'name' : '+different',
                     \    'f' : 'differ input file',
-                    \    'm' : 'toggle file diff mode',
+                    \    't' : 'toggle file change',
                     \    'r' : 'revert current change',
                     \    'h' : 'add stage hunk for current change',
                     \    'H' : 'revert stage hunk for current change',
@@ -613,7 +613,7 @@ let g:changes_linehi_diff = 0
 let g:changes_sign_hi_style = 0
 let g:changes_fast = 0
 let g:changes_vcs_check = 1
-nnoremap <silent> <leader>dm : ChangesDiffMode<cr>
+nnoremap <silent> <leader>dt : ChangesDiffMode<cr>
 if !get(g:, 'changes_sign_text_utf8', 0)
   hi ChangesSignTextAdd ctermbg=green ctermfg=black guibg=green
   hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red
