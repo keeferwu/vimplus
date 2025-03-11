@@ -69,6 +69,10 @@ vim-gutentags 由于leaderF不支持ctags数据生成，因此使用vim-gutentag
         例：如上在s:gutentags_path_exclude 中已过滤掉了项目的子目录os，因此不会在根目录的索引数据中生成os相关的索引，
         可通过在os目录下新建一个.root文件, 当在vim中访问到 os 下的文件时，会自动生成os下独立的数据索引。
 
+    3. gtags 数据生成失败调试方法：
+        开启调试信息：let g:gutentags_trace = 1
+        手动调试：gtags --gtagslabel native-pygments --skip-unreadable --skip-symlink=a --debug
+
 vim-easycomplete 是一个使用LSP补全的插件，需要安装对应语言的LSP server，安装命令：InstallLspServer，安装路径：.config/vim-easycomplete/servers
 
     1. 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt
