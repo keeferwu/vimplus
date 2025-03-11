@@ -308,7 +308,13 @@ let g:which_key_map[' '] = {'name' : '+plugin',
 let g:which_key_map.w = 'easy motion to word'
 let g:which_key_map.k = 'color/uncolor cword'
 let g:which_key_map.K = 'uncolor all worlds'
-let g:which_key_map.d = {'name' : '+changes'}
+let g:which_key_map.d = {'name' : '+different',
+                    \    'f' : 'differ input file',
+                    \    'm' : 'toggle file diff mode',
+                    \    'r' : 'revert current change',
+                    \    'h' : 'add stage hunk for current change',
+                    \    'H' : 'revert stage hunk for current change',
+                    \   }
 let g:which_key_map.c = {'name' : '+commenter'}
 let g:which_key_map.f = {'name' : '+leaderf'}
 let g:which_key_map.l = {'name' : '+list',
@@ -394,6 +400,7 @@ nnoremap <silent> <leader>qw :close<cr>
 nnoremap <silent> <leader>qt :call vimplus#tabclose()<cr>
 nnoremap <silent> <leader>nt :tabnew<cr>
 nnoremap <silent> <leader>nf :call vimplus#createfile()<cr>
+nnoremap <silent> <leader>df :call vimplus#differ()<cr>
 if has('nvim')
   nnoremap <silent> <leader>nT :tabnew \| startinsert \| terminal<cr>
 else
@@ -606,6 +613,7 @@ let g:changes_linehi_diff = 0
 let g:changes_sign_hi_style = 0
 let g:changes_fast = 0
 let g:changes_vcs_check = 1
+nnoremap <silent> <leader>dm : ChangesDiffMode<cr>
 if !get(g:, 'changes_sign_text_utf8', 0)
   hi ChangesSignTextAdd ctermbg=green ctermfg=black guibg=green
   hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red

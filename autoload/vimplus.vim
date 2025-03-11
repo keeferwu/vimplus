@@ -213,12 +213,12 @@ endfunction
 "expand("%:p:h") ---- 绝对路径
 "expand("%:r")   ---- 相对路径文件（不含后缀）
 "expand("%:e")   ---- 文件后缀
-function! vimplus#createfile() abort
+function! s:GetInputFile()
   try
     let path = fnameescape(fnamemodify(expand("%"), ':h'))
     echohl Question
     call inputsave()
-    let filename = input("File name: ", path."/", "file")
+    let filename = input("File name: ", "", "file")
     call inputrestore()
     redraw!
   catch /^Vim:Interrupt$/
@@ -230,17 +230,34 @@ function! vimplus#createfile() abort
       return
     endif
     " remove spaces
-    let filename = substitute(filename, ' ', '', 'g')
-    if empty(fnamemodify(filename, ':t'))
-      echo "Empty file name!"
-      return
-    endif
-    if filereadable(filename)
-      echo filename . " already exists!"
-      return
-    endif
-    execute 'edit' filename
+    return substitute(filename, ' ', '', 'g')
   endtry
+endfunction
+
+function! vimplus#createfile() abort
+  let filename = s:GetInputFile()
+  if empty(fnamemodify(filename, ':t'))
+    echo "Empty file name!"
+    return
+  endif
+  if filereadable(filename)
+    echo filename . " already exists!"
+    return
+  endif
+  execute 'edit' filename
+endfunction
+
+function! vimplus#differ() abort
+  let filename = s:GetInputFile()
+  if empty(fnamemodify(filename, ':t'))
+    echo "Empty file name!"
+    return
+  endif
+  if !filereadable(filename)
+    echo filename . " not exists!"
+    return
+  endif
+  execute 'vertical diffsplit' filename
 endfunction
 
 function! vimplus#write() abort
