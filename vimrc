@@ -240,8 +240,8 @@ Plug 'liuchengxu/graphviz.vim'
 "多种语言代码语法高亮
 "Plug 'sheerun/vim-polyglot', has('nvim') ? {'on': []} : {}
 " 代码调试
-Plug 'puremourning/vimspector', has('nvim') ? {'on': []} : {}
-Plug 'jclsn/vimspector-templates', has('nvim') ? {'on': []} : {}
+Plug 'puremourning/vimspector'
+Plug 'jclsn/vimspector-templates', v:version >= 900 ? {} : {'on': []}
 
 call plug#end()
 
