@@ -694,6 +694,7 @@ let g:Lf_GitCommands = [
             \   {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
             \ ]
 " 项目根目录存在gtags.file文件，gtags 会以该文件为基础生成数据，生成gtags.file的方式参考 g:gutentags_file_list_command
+" 或者将要过滤的类型添加到 ~/.globalrc 中的:skip
 " 0 - gtags search the target files by itself. 1 - the target files come from FileExplorer. 2 - the target files come from |g:Lf_GtagsfilesCmd.
 let g:Lf_GtagsSource = 0
 let g:Lf_GtagsfilesCmd = {
@@ -741,7 +742,11 @@ let g:gutentags_ctags_extra_args += ['--extras=+q', '--output-format=e-ctags']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = 'tags'
 " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
-let g:gutentags_cache_dir = expand('~/.cache/tags')
+if get(g:, 'Lf_GtagsAutoGenerate', 0)
+  let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
+else
+  let g:gutentags_cache_dir = expand('~/.cache/tags')
+endif
 let g:gutentags_trace = 0
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
