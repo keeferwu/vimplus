@@ -270,6 +270,8 @@ let g:startify_session_before_save = [ "exec 'cd' fnamemodify(findfile(g:startif
 let g:startify_session_savevars = [
             \ 'g:colors_name',
             \ ]
+"清除terminal的buffer
+let g:startify_session_remove_lines = ['term:\/']
 "配置项目工作目录到path,通过gf实现头文件跳转
 "打开session时调整vim为实时调度，避免cpu繁忙啊卡顿: 'exe system("sudo chrt -r -a -p 50 ".getpid())'
 let g:startify_session_savecmds = [
