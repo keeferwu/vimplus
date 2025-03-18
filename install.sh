@@ -397,7 +397,7 @@ function install_prepare_software_on_ubuntu_like()
     sudo apt-get update
     sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison build-essential
     sudo apt-get install -y python3 python3-dev python3-pip python3-pygments python3-pynvim fontconfig libfile-next-perl
-    sudo apt-get install -y universal-ctags fd-find ripgrep clang astyle ccls global xclip
+    sudo apt-get install -y universal-ctags fd-find ripgrep clang astyle ccls global xclip nodejs
 
     read -p "Do you want to re-install VIM ? [Y/N] " ch
     if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
@@ -459,7 +459,7 @@ function install_prepare_software_on_archlinux()
 {
     sudo pacman -S --noconfirm vim cmake gcc gcc-libs autoconf automake libtool flex bison fontconfig
     sudo pacman -S --noconfirm python python-pip python-pygments python-pynvim python-setuptools
-    sudo pacman -S --noconfirm ctags ripgrep clang astyle ccls global xclip fd
+    sudo pacman -S --noconfirm ctags ripgrep clang astyle ccls global xclip fd nodejs
     sudo ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
 }
 
