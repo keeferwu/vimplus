@@ -756,7 +756,6 @@ nnoremap <leader>nR :AsyncRun -mode=term -pos=tab -close<space>
 "endif
 
 " vimspector
-if !has('nvim')
 "let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 nmap <F5>         <Plug>VimspectorContinue
 nmap <S-F5>       <Plug>VimspectorStop
@@ -776,7 +775,6 @@ nmap <S-F10>      <Plug>VimspectorRunToCursor
 nmap <C-F10>      <Plug>VimspectorGoToCurrentLine
 nmap <F11>        <Plug>VimspectorStepInto
 nmap <S-F11>      <Plug>VimspectorStepOut
-endif
 
 " coc.nvim
 if exists('$VIMLSP')
