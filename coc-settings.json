@@ -1,0 +1,8 @@
+{
+    "suggest.enablePreselect": true,
+    "suggest.noselect": false,
+    "suggest.autoTrigger": "always",
+    "suggest.minTriggerInputLength": 3,
+    "suggest.labelMaxLength": 100,
+    "inlayHint.enableParameter": false,
+}
