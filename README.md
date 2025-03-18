@@ -39,11 +39,6 @@ vim .confg/nvim/init.vim
 
 #### 哪些插件有特殊要求?
 
-defx.nvim 插件需要pynvim的支持,可以选择安装到系统目录或用户目录
-
-    pip3 install pynvim            #普通用户会默认会安装到用户目录，如果要安装到系统目录请使用sudo
-    pip3 install --upgrade pynvim  #更新pynvim
-
 OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件
 
     cd /usr/include/

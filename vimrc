@@ -185,12 +185,6 @@ Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vim-which-key'
 " 精简的statusline
 Plug 'liuchengxu/eleline.vim'
-" 文件目录树
-Plug 'Shougo/defx.nvim', has('nvim') ? {'do': ':UpdateRemotePlugins'} : {}
-" vim加载nvim插件的依赖
-Plug 'roxma/nvim-yarp', has('nvim') ? {'on': []} : {}
-" vim加载nvim插件的依赖
-Plug 'roxma/vim-hug-neovim-rpc', has('nvim') ? {'on': []} : {}
 " vim 插件环境检测
 Plug 'rhysd/vim-healthcheck', has('nvim') ? {'on': []} : {'on': 'CheckHealth'}
 " 函数显示列表
@@ -235,8 +229,6 @@ Plug 'vim-scripts/OmniCppComplete', exists('$VIMLSP') ? {'on': []} : {'for': ['c
 Plug 'skywind3000/asyncrun.vim'
 " nvim代码语法高亮
 Plug 'nvim-treesitter/nvim-treesitter', has('nvim') ? {'do': ':TSUpdate'} : {'on': []}
-" dot文件格式流程图
-Plug 'liuchengxu/graphviz.vim'
 "多种语言代码语法高亮
 "Plug 'sheerun/vim-polyglot', has('nvim') ? {'on': []} : {}
 " 代码调试
@@ -453,84 +445,6 @@ function! ChangeToHome()
     let g:lens#disabled = 0
   endif
 endfunction
-
-if executable('nvim')
-"defx.nvim
-call defx#custom#option('_', {
-            \   'winwidth': 30,
-            \   'split': 'vertical',
-            \   'direction': 'topleft',
-            \   'show_ignored_files': 0,
-            \   'buffer_name': '',
-            \   'toggle': 1,
-            \   'resume': 1,
-            \ })
-call defx#custom#column('icon', {
-            \   'directory_icon': '▸',
-            \   'opened_icon': '▾',
-            \   'root_icon': ' ',
-            \ })
-nnoremap <silent> <F3> :Defx `escape(expand('%:p:h'), ' :')` -search=`expand('%:p')`<CR>
-autocmd BufWritePost * call defx#redraw()
-autocmd FileType defx call s:defx_mappings()
-function! s:defx_mappings() abort
-  setl nonu                            " 勿在 defx 栏显示行号
-  nnoremap <silent><buffer><expr> <CR>
-            \ defx#is_directory() ?
-            \ defx#do_action('open_or_close_tree') :
-            \ defx#do_action('drop',) " 点击 enter 键打开
-  nnoremap <silent><buffer><expr> yy        defx#do_action('copy')
-  nnoremap <silent><buffer><expr> dd        defx#do_action('move')
-  nnoremap <silent><buffer><expr> pp        defx#do_action('paste')
-  nnoremap <silent><buffer><expr> c         defx#do_action('new_file')
-  nnoremap <silent><buffer><expr> r         defx#do_action('rename')
-  nnoremap <silent><buffer><expr> v         defx#do_action('open', 'vsplit')
-  nnoremap <silent><buffer><expr> .         defx#do_action('toggle_ignored_files')
-  nnoremap <silent><buffer><expr> h         defx#do_action('cd', getcwd())
-  nnoremap <silent><buffer><expr> u         defx#do_action('cd', ['..'])
-  nnoremap <silent><buffer><expr> q         defx#do_action('quit')
-  nnoremap <silent><buffer><expr> s         defx#do_action('toggle_select') . 'j'
-  nnoremap <silent><buffer><expr> *         defx#do_action('toggle_select_all')
-  nnoremap <silent><buffer><expr> #         defx#do_action('clear_select_all')
-  nnoremap <silent><buffer><expr> <         defx#do_action('resize',  defx#get_context().winwidth - 10)
-  nnoremap <silent><buffer><expr> >         defx#do_action('resize',  defx#get_context().winwidth + 10)
-endfunction
-autocmd FileType defx let s:short_help = 0 | nnoremap <silent><buffer> ? :call DefxHelp()<cr>
-function! DefxHelp()
-  setlocal modifiable
-  silent %delete _
-  if s:short_help == 0
-    let s:short_help = 1
-    let help_cmds = [
-            \   ['h ',              'Jump to home directory'],
-            \   ['u ',              'Jump to up directory'],
-            \   ['v ',              'Open file at vsplit buffer'],
-            \   ['r ',              'Rename cursor file'],
-            \   ['c ',              'Create a new file'],
-            \   ['q ',              'Close defx window'],
-            \   ['< ',              'Increase defx window width'],
-            \   ['> ',              'Decrease defx window width'],
-            \   ['. ',              'Show ignore file'],
-            \   ['s ',              'Select cursor file'],
-            \   ['* ',              'Select all files'],
-            \   ['# ',              'Clear selected files'],
-            \   ['dd',              'Move cursor or selected file'],
-            \   ['yy',              'Copy cursor or selected file'],
-            \   ['pp',              'Paste chip board files'],
-            \ ]
-    silent 0put ='\" defx keybindings'
-    silent  put ='\" ---------------------------------'
-    for [cmd, desc] in help_cmds
-      silent put ='\" ' . cmd . ': ' . desc
-    endfor
-    silent  put _
-  else
-    let s:short_help = 0
-    call defx#redraw()
-  endif
-  setlocal nomodifiable
-endfunction
-endif
 
 " tagbar
 nnoremap <silent> <F4> :TagbarToggle<cr>
@@ -815,7 +729,7 @@ let g:SuperTabCompleteCase = 'match'
 
 " lens
 let g:lens#animate = 0  "取消动画
-let g:lens#disabled_filetypes = ['defx', 'netrw', 'tagbar', 'leaderf']
+let g:lens#disabled_filetypes = ['netrw', 'tagbar', 'leaderf']
 let g:lens#disabled_buftypes = ['nofile']
 let g:lens#height_resize_max = 40
 let g:lens#height_resize_min = 5

@@ -6,42 +6,6 @@ if exists('g:loaded_vimplus')
 endif
 let g:loaded_vimplus = 1
 
-function! vimplus#cflow(...) abort
-  if &filetype != 'c'
-    echo "Current file is not c type."
-    return
-  endif
-  let cur_file = expand('%')
-  let dot_file = expand('%:r').'.dot'
-  let cfunc = expand("<cword>")
-  if exists(':Tagbar')
-    let cfunc = tagbar#currenttag('%s', '')
-    let cfunc = strpart(cfunc,0,match(cfunc,'('))
-  endif
-  let cmd = 'cflow -b -T --omit-arguments --depth=2'
-  let cmd = join([cmd, '-m', shellescape(cfunc), shellescape(cur_file)])
-  if len(a:000) > 0
-    if a:1 != "dot"
-      echo "Only support dot format."
-      return
-    endif
-    let cmd = join([cmd, '--format=dot', '-o', shellescape(dot_file)])
-  endif
-  let output = system(cmd)
-  if filereadable(dot_file)
-    echo "Flow: " . cfunc
-    call graphviz#show(1)
-    call delete(dot_file)
-  else
-    echohl MoreMsg
-    let lines = split(output, '\n')
-    for line in lines
-      echom line
-    endfor
-    echohl None
-  endif
-endfunction
-
 function! vimplus#confirm(title, cb) abort
   if has('nvim')
     let text = ' '. a:title . ' (y/n)? '
