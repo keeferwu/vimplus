@@ -68,17 +68,11 @@ vim-gutentags 由于leaderF不支持ctags数据生成，因此使用vim-gutentag
         开启调试信息：let g:gutentags_trace = 1
         手动调试：gtags --gtagslabel native-pygments --skip-unreadable --skip-symlink=a --debug
 
-vim-easycomplete 是一个使用LSP补全的插件，需要安装对应语言的LSP server，安装命令：InstallLspServer，安装路径：.config/vim-easycomplete/servers
+coc.nvim 是一个使用LSP补全的插件，需要安装对应语言的LSP server
 
     1. 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt
         Makefile：bear make
         Cmake：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-
-    2. 如果lua文件中诊断信息过多，会导致lua文件第一次打开时出现短暂卡顿，可在server端关闭一些不重要的诊断类型
-        vim .config/vim-easycomplete/servers/lua/extension/server/script/proto/define.lua
-        ['unused-local']            = 'Opened',     ---->   'None'
-        ['undefined-global']        = 'Any',        ---->   'None'
-        ['trailing-space']          = 'Opened',     ---->   'None'
 
 #### 如何让gtags支持更多语言?
 
