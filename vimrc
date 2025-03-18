@@ -37,6 +37,8 @@ set colorcolumn =121            " 高亮指定列
 set whichwrap+=<,>,h,l          " 设置光标键跨行
 set ttimeoutlen=0               " 设置<ESC>键响应时间
 set timeoutlen=500              " 默认超时是1000 ms
+set updatetime=300              " 更新时间默认是4s
+set signcolumn=yes              " 总是显示侧边栏标识
 set virtualedit=block,onemore   " 允许光标出现在最后一个字符的后面
 set bsdir=buffer                " 设定文件浏览器目录为当前目录
 set mouse=a                     " 开启鼠标
@@ -200,7 +202,7 @@ Plug 'luochen1990/rainbow'
 " cpp扩展高亮
 Plug 'octol/vim-cpp-enhanced-highlight', has('nvim') ? {'on': []} : {'for': ['c','cpp']}
 " rust代码格式化，语法高亮
-Plug 'rust-lang/rust.vim', {'for': 'rust'}
+Plug 'rust-lang/rust.vim', has('nvim') ? {'on': []} : {'for': 'rust'}
 " 修改显示
 Plug 'chrisbra/changesPlugin'
 " 代码格式化
@@ -215,16 +217,16 @@ Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 Plug 'keeferwu/LeaderF-gtags-history'
 " AI智能插件，需要登录获取token
 Plug 'Exafunction/codeium.vim', {'branch': 'main'}
-" 代码块模板，需要和vim-snippets or vim-easycomplete 配合使用
-Plug 'SirVer/ultisnips'
 " 代码块补全，配合ultisnips使用
 Plug 'honza/vim-snippets'
-" lsp代码补全 缺点：依赖一些语言端，例如 c/c++ 需要安装 clangd, 注: 由于<c+]>会被重新映射，插件加载需要靠后
-Plug 'jayli/vim-easycomplete', exists('$VIMLSP') ? {} : {'on': []}
-" 与vim-easycomplete 冲突
+" 代码块模板
+Plug 'SirVer/ultisnips', exists('$VIMLSP') ? {'on': []} : {}
+" tab触发补全
 Plug 'ervandew/supertab', exists('$VIMLSP') ? {'on': []} : {}
 " c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
 Plug 'vim-scripts/OmniCppComplete', exists('$VIMLSP') ? {'on': []} : {'for': ['c','cpp']}
+" lsp代码补全,需要安装语言服务器
+Plug 'neoclide/coc.nvim', exists('$VIMLSP') ? {'branch': 'release'} : {'on': []}
 " 异步运行命令
 Plug 'skywind3000/asyncrun.vim'
 " nvim代码语法高亮
@@ -552,6 +554,7 @@ nnoremap <silent> <leader>fh :LeaderfHelp<cr>
 nnoremap <silent> <leader>fc :LeaderfCommand<cr>
 nnoremap <silent> <leader>fs :LeaderfColorscheme<cr>
 nnoremap <silent> <leader>fg :LeaderfGit<cr>
+nnoremap <silent> <leader>fc :Leaderf coc<cr>
 nnoremap <silent> <leader>lr :LeaderfRgRecall<cr>
 nnoremap <silent> <leader>lq :cclose \| LeaderfQuickFix<cr>
 nnoremap <silent> <leader>ll :lclose \| LeaderfLocList<cr>
@@ -667,11 +670,12 @@ let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--languages=c,c++,asm,l
 let g:gutentags_ctags_extra_args += ['--extras=+q', '--output-format=e-ctags']
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = 'tags'
-" 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
-if get(g:, 'Lf_GtagsAutoGenerate', 0)
-  let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
-else
+if !exists('g:Lf_GtagsGutentags')
+  " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
   let g:gutentags_cache_dir = expand('~/.cache/tags')
+else
+  " generate gtags data to leaderF
+  let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
 endif
 let g:gutentags_trace = 0
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
@@ -683,13 +687,13 @@ let g:gutentags_generate_on_new = 0
 autocmd FileType startify let g:gutentags_generate_on_new = 1
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
-if !exists("$VIMLSP") && executable('ctags')
+if get(g:, 'Lf_GtagsGutentags', 1) && executable('ctags')
   let g:gutentags_modules += ['ctags']
   " 定时器回调执行tjump是同步的，时间过长仍然会卡住vim
   function! TjumpList(...) abort
     execute('tjump '.expand('<cword>'))
   endfunction
-  " 默认情况下crl+] 只会跳到tags中的第一个匹配项，通过tjump显示tags中多个匹配项, 此项与插件 vim-easycomplete 冲突
+  " 默认情况下crl+] 只会跳到tags中的第一个匹配项，通过tjump显示tags中多个匹配项
   noremap <silent> <c-]> :call timer_start(1, function('TjumpList'))<cr>
 endif
 if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
@@ -698,8 +702,6 @@ if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
   let $GTAGSLABEL = 'native-pygments'
   " 禁用 gutentags 自动加载 gtags 数据库到cscope,避免多个项目生成数据文件在cosope相互影响。
   let g:gutentags_auto_add_gtags_cscope = 0
-  " generate gtags data to leaderF
-  let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
   nnoremap <silent> <leader>gu :GutentagsUpdate!<cr>
   " 光标10min内没有发生移动，自动更新gtags文件
   autocmd CursorHold,CursorHoldI * if get(g:, 'gutentags_generate_on_new', 0)|call vimplus#holdtimer(600*1000, 'GutentagsUpdate!')|endif
@@ -735,28 +737,6 @@ let g:lens#height_resize_max = 40
 let g:lens#height_resize_min = 5
 let g:lens#width_resize_max = 120
 let g:lens#width_resize_min = 20
-
-" vim-easycomplete
-let g:easycomplete_scheme = "dark"
-let g:easycomplete_lsp_checking = 1           " check LSP server 是否安装
-let g:easycomplete_signature_enable = 1       " lsp signature checking
-let g:easycomplete_tabnine_enable = 0         " disaable TabNine
-let g:easycomplete_tabnine_config = {
-            \ 'line_limit': 1000,
-            \ 'max_num_result' : 3,
-            \ }
-let g:easycomplete_diagnostics_enable = 1     " 语法检测
-let g:easycomplete_diagnostics_prev = "<c-p>"
-let g:easycomplete_diagnostics_next = "<c-n>"
-let g:easycomplete_cursor_word_hl = 0         " Highlight the symbol when holding the cursor
-let g:easycomplete_nerd_font = 0              " Using nerdfont is highly recommended
-if get(g:, 'easycomplete_enable', 0)
-  " GoTo code navigation
-  nnoremap gr :EasyCompleteReference<CR>
-  nnoremap gd :EasyCompleteGotoDefinition<CR>
-  nnoremap gb :BackToOriginalBuffer<CR>
-  nnoremap rn :EasyCompleteRename<CR>
-endif
 
 " codeium.vim
 let g:codeium_enabled = 0               " enable codeium need token
@@ -796,6 +776,39 @@ nmap <S-F10>      <Plug>VimspectorRunToCursor
 nmap <C-F10>      <Plug>VimspectorGoToCurrentLine
 nmap <F11>        <Plug>VimspectorStepInto
 nmap <S-F11>      <Plug>VimspectorStepOut
+endif
+
+" coc.nvim
+if exists('$VIMLSP')
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" Use tab for trigger completion with characters ahead and navigate
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
+nmap <silent><nowait> [g <Plug>(coc-diagnostic-prev)
+nmap <silent><nowait> ]g <Plug>(coc-diagnostic-next)
+" Remap <C-f> and <C-b> to scroll float windows/popups
+nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
 " nvim-treesitter
