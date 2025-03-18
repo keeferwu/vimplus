@@ -440,11 +440,12 @@ function! ToggleLexplorer()
 endfunction
 autocmd FileType netrw nnoremap <silent><buffer> h :call ChangeToHome()<cr>
 function! ChangeToHome()
-  if exists("t:expl_buf")
+  if t:expl_buf != 0
     close
     let g:lens#disabled = 1
     Lexplore      " open current dir
     let g:lens#disabled = 0
+    let t:expl_buf = 0
   endif
 endfunction
 
