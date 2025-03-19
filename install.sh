@@ -401,6 +401,9 @@ function install_prepare_software_on_ubuntu_like()
     sudo apt-get install -y python3 python3-dev python3-pip python3-pygments python3-pynvim fontconfig libfile-next-perl
     sudo apt-get install -y universal-ctags fd-find ripgrep clang astyle ccls global xclip
     if which nodejs >/dev/null 2>&1; then
+        nodejs_version=`nodejs --version`
+        echo "Current nvim version is $nodejs_version, make sure it over v16.18.0"
+    else
         curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
         # this will install nodejs and npm
         sudo apt-get install -y nodejs

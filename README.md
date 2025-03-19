@@ -70,7 +70,9 @@ vim-gutentags 由于leaderF不支持ctags数据生成，因此使用vim-gutentag
 
 coc.nvim 是一个使用LSP补全的插件，需要安装对应语言的LSP server
 
-    1. 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt
+    1. 版本要求 vim >= 9.0.0438, nvim >= 0.8.0, nodejs >= 16.18.0
+
+    2. 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt
         Makefile：bear make
         Cmake：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
