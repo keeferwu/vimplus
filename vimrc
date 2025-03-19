@@ -779,6 +779,19 @@ nmap <S-F11>      <Plug>VimspectorStepOut
 
 " coc.nvim
 if exists('$VIMLSP')
+" 设置 coc.nvim 的配置文件路径
+let g:coc_config_home = '~/.vim'
+" 自动安装 coc.nvim 扩展
+let g:coc_global_extensions = [
+  \ 'coc-snippets',
+  \ 'coc-json',
+  \ 'coc-sh',
+  \ 'coc-clangd',
+  \ 'coc-rust-analyzer',
+  \ 'coc-pyright',
+  \ 'coc-lua',
+  \ 'coc-marketplace'
+  \ ]
 function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'

@@ -213,11 +213,12 @@ function install_config_to_user()
     desc_vim_path=$desc_home_path".vim/"
     rm -rf $desc_vim_path
     mkdir $desc_vim_path
-    cp -R $src_vimplus_path"doc/"      $desc_vim_path
-    cp -R $src_vimplus_path"colors/"   $desc_vim_path
-    cp -R $src_vimplus_path"autoload/" $desc_vim_path
-    cp -R $src_vimplus_path"ftplugin/" $desc_vim_path
-    cp -R $src_vimplus_path"plugged/"  $desc_vim_path
+    cp    $src_vimplus_path"coc-settings.json"  $desc_vim_path
+    cp -R $src_vimplus_path"doc/"               $desc_vim_path
+    cp -R $src_vimplus_path"colors/"            $desc_vim_path
+    cp -R $src_vimplus_path"autoload/"          $desc_vim_path
+    cp -R $src_vimplus_path"ftplugin/"          $desc_vim_path
+    cp -R $src_vimplus_path"plugged/"           $desc_vim_path
     chown -R $desc_username":"$desc_username $desc_vim_path
 
     # 安装字体
@@ -239,6 +240,7 @@ function install_config_files()
         rm -rf $vimrc_file
     fi
     ln -s ${PWD}/vimrc    $vimrc_file
+    cp ${PWD}/coc-settings.json $vim_dir
 
     vim_dir=$HOME"/.vim"
     vim_exist=$(is_exist_dir $vim_dir)
@@ -397,7 +399,13 @@ function install_prepare_software_on_ubuntu_like()
     sudo apt-get update
     sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison build-essential
     sudo apt-get install -y python3 python3-dev python3-pip python3-pygments python3-pynvim fontconfig libfile-next-perl
-    sudo apt-get install -y universal-ctags fd-find ripgrep clang astyle ccls global xclip nodejs
+    sudo apt-get install -y universal-ctags fd-find ripgrep clang astyle ccls global xclip
+    if which nodejs >/dev/null 2>&1; then
+        curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+        # this will install nodejs and npm
+        sudo apt-get install -y nodejs
+        sudo npm install -g yarn
+    fi
 
     read -p "Do you want to re-install VIM ? [Y/N] " ch
     if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
@@ -459,7 +467,7 @@ function install_prepare_software_on_archlinux()
 {
     sudo pacman -S --noconfirm vim cmake gcc gcc-libs autoconf automake libtool flex bison fontconfig
     sudo pacman -S --noconfirm python python-pip python-pygments python-pynvim python-setuptools
-    sudo pacman -S --noconfirm ctags ripgrep clang astyle ccls global xclip fd nodejs
+    sudo pacman -S --noconfirm ctags ripgrep clang astyle ccls global xclip fd nodejs npm yarn
     sudo ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
 }
 
