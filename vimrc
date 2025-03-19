@@ -118,8 +118,13 @@ if has("nvim")
   " unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
   set clipboard+=unnamed
   let g:python3_host_prog = '/usr/bin/python3'
+else
+  "fix some plugin use BufWitePost cause vim crash when use command wq
+  cabbrev wq w<bar>sleep 200m<bar>q
+  cabbrev wqa w<bar>sleep 200m<bar>qall
+  cabbrev wqal w<bar>sleep 200m<bar>qall
+  cabbrev wqall w<bar>sleep 200m<bar>qall
 endif
-
 " 复制粘贴到系统剪切板
 " visual block re-mapping
 noremap  <silent> <m-v> <c-v>
