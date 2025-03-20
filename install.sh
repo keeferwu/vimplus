@@ -340,10 +340,10 @@ function install_prepare_software_on_mac()
 {
     xcode-select --install
 
-    brew install vim
-    brew install cmake ninja gcc autoconf automake libtool flex bison
-    brew install universal-ctags ripgrep clang astyle ccls global xclip fontconfig
-    brew install python python-dev python3 python3-dev python-pip # 安装pip3
+    brew install cmake ninja gcc autoconf automake libtool flex bison fontconfig libfile-next-perl
+    brew install python3 python3-dev python3-pip python3-pygments python3-pynvim
+    brew install universal-ctags global fd ripgrep astyle ccls llvm
+    brew install vim node
 
     macos1014=$(is_macos1014)
     if [ $macos1014 == 1 ]; then
@@ -355,9 +355,10 @@ function install_prepare_software_on_mac()
 function install_prepare_software_by_apt()
 {
     sudo apt-get update
-    sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison build-essential
-    sudo apt-get install -y python3 python3-dev python3-pip python3-pygments python3-pynvim fontconfig libfile-next-perl
-    sudo apt-get install -y universal-ctags fd-find ripgrep clang astyle ccls global xclip
+    sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool
+    sudo apt-get install -y flex bison build-essential fontconfig libfile-next-perl
+    sudo apt-get install -y python3 python3-dev python3-pip python3-pygments python3-pynvim
+    sudo apt-get install -y universal-ctags global fd-find ripgrep astyle xclip ccls llvm
 
     install_nodejs_by_apt
 
@@ -449,47 +450,12 @@ function install_vim_plugin()
     fi
 }
 
-# 安装ycm插件
-function install_ycm()
-{
-    read -p "Do you want to install YCM ? [Y/N] " ch
-    if [[ $ch =~ ^[Yy]$ ]]; then
-        rm -rf ~/.ycm_extra_conf.py
-        ln -s ${PWD}/.ycm_extra_conf.py ~
-        git clone https://gitee.com/chxuan/YouCompleteMe-clang.git ~/.vim/plugged/YouCompleteMe
-        cd ~/.vim/plugged/YouCompleteMe
-        read -p "Please choose to compile ycm with python2 or python3, if there is a problem with the current selection, please choose another one. [2/3] " version
-        if [[ $version == "2" ]]; then
-            echo "Compile ycm with python2."
-            {
-                python2.7 ./install.py --clang-completer
-            } || {
-                echo "##########################################"
-                echo "Build error, trying rebuild without Clang."
-                echo "##########################################"
-                python2.7 ./install.py
-            }
-        else
-            echo "Compile ycm with python3."
-            {
-                python3 ./install.py --clang-completer
-            } || {
-                echo "##########################################"
-                echo "Build error, trying rebuild without Clang."
-                echo "##########################################"
-                python3 ./install.py
-            }
-        fi
-    fi
-}
-
 # 在mac平台安装vimplus
 function install_vimplus_on_mac()
 {
     install_prepare_software_on_mac
     install_config_files
     install_fonts_on_mac
-    #install_ycm
     install_vim_plugin
     print_logo
 }
@@ -499,7 +465,6 @@ function begin_install_vimplus()
 {
     install_config_files
     install_fonts_on_linux
-    #install_ycm
     install_vim_plugin
     print_logo
 }
