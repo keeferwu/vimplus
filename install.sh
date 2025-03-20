@@ -379,6 +379,27 @@ function compile_vim_on_centos()
     cd -
 }
 
+# 在ubuntu上安装nodejs
+function install_nodejs_on_ubuntu()
+{
+    if which nodejs >/dev/null 2>&1; then
+        nodejs_version=`nodejs --version`
+        echo -e "\033[31m Current nodejs version is $nodejs_version, make sure it >= v16.18.0 \033[0m"
+    else
+        curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+        # install nodejs and npm
+        sudo apt-get install -y nodejs
+    fi
+    if which npm >/dev/null 2>&1; then
+        npm_version=`npm --version`
+        echo -e "\033[31m Current npm version is $npm_version \033[0m"
+        sudo npm install -g yarn
+    else
+        sudo apt-get install -y npm
+        sudo npm install -g yarn
+    fi
+}
+
 # 安装mac平台必备软件
 function install_prepare_software_on_mac()
 {
@@ -402,15 +423,8 @@ function install_prepare_software_on_ubuntu_like()
     sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison build-essential
     sudo apt-get install -y python3 python3-dev python3-pip python3-pygments python3-pynvim fontconfig libfile-next-perl
     sudo apt-get install -y universal-ctags fd-find ripgrep clang astyle ccls global xclip
-    if which nodejs >/dev/null 2>&1; then
-        nodejs_version=`nodejs --version`
-        echo -e "\033[31m Current nvim version is $nodejs_version, make sure it >= v16.18.0 \033[0m"
-    else
-        curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-        # install nodejs and npm
-        sudo apt-get install -y nodejs npm
-        sudo npm install -g yarn
-    fi
+
+    install_nodejs_on_ubuntu
 
     read -p "Do you want to install the lasted VIM ? [y/N] " ch
     ch=${ch:-N} # 如果用户直接按回车，则使用默认值 'N'
