@@ -328,10 +328,8 @@ function install_nodejs_by_apt()
     if which npm >/dev/null 2>&1; then
         npm_version=`npm --version`
         echo -e "\033[31m Current npm version is $npm_version \033[0m"
-        sudo npm install -g yarn
     else
         sudo apt-get install -y npm
-        sudo npm install -g yarn
     fi
 }
 
@@ -340,7 +338,7 @@ function install_prepare_software_on_mac()
 {
     xcode-select --install
 
-    brew install cmake ninja gcc autoconf automake libtool flex bison fontconfig libfile-next-perl
+    brew install cmake ninja gcc autoconf automake libtool flex bison wget fontconfig libfile-next-perl
     brew install python3 python3-dev python3-pip python3-pygments python3-pynvim
     brew install universal-ctags global fd ripgrep astyle ccls llvm
     brew install vim node
@@ -356,7 +354,7 @@ function install_prepare_software_by_apt()
 {
     sudo apt-get update
     sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool
-    sudo apt-get install -y flex bison build-essential fontconfig libfile-next-perl
+    sudo apt-get install -y flex bison build-essential wget curl fontconfig libfile-next-perl
     sudo apt-get install -y python3 python3-dev python3-pip python3-pygments python3-pynvim
     sudo apt-get install -y universal-ctags global fd-find ripgrep astyle xclip ccls llvm
 
@@ -379,9 +377,9 @@ function install_prepare_software_by_apt()
 # 安装archlinux必备软件
 function install_prepare_software_by_pacman()
 {
-    sudo pacman -S --noconfirm vim cmake gcc gcc-libs autoconf automake libtool flex bison fontconfig
+    sudo pacman -S --noconfirm vim cmake gcc gcc-libs autoconf automake libtool flex bison fontconfig wget
     sudo pacman -S --noconfirm python python-pip python-pygments python-pynvim python-setuptools
-    sudo pacman -S --noconfirm ctags ripgrep clang astyle ccls global xclip fd nodejs npm yarn
+    sudo pacman -S --noconfirm ctags ripgrep clang astyle ccls global xclip fd nodejs npm
     sudo ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
 }
 
