@@ -242,7 +242,6 @@ function install_config_files()
         rm -rf $vimrc_file
     fi
     ln -s ${PWD}/vimrc    $vimrc_file
-    cp ${PWD}/coc-settings.json $vim_dir
 
     vim_dir=$HOME"/.vim"
     vim_exist=$(is_exist_dir $vim_dir)
@@ -250,11 +249,12 @@ function install_config_files()
         rm -rf $vim_dir
     fi
     mkdir $vim_dir
-    ln -s ${PWD}/doc      $vim_dir
-    ln -s ${PWD}/colors   $vim_dir
-    ln -s ${PWD}/autoload $vim_dir
-    ln -s ${PWD}/ftplugin $vim_dir
-    ln -s ${PWD}/plugged  $vim_dir
+    cp ${PWD}/coc-settings.json $vim_dir
+    ln -s ${PWD}/doc            $vim_dir
+    ln -s ${PWD}/colors         $vim_dir
+    ln -s ${PWD}/autoload       $vim_dir
+    ln -s ${PWD}/ftplugin       $vim_dir
+    ln -s ${PWD}/plugged        $vim_dir
 }
 
 # 获取ubuntu版本
@@ -404,11 +404,11 @@ function install_prepare_software_on_ubuntu_like()
     sudo apt-get install -y universal-ctags fd-find ripgrep clang astyle ccls global xclip
     if which nodejs >/dev/null 2>&1; then
         nodejs_version=`nodejs --version`
-        echo "Current nvim version is $nodejs_version, make sure it >= v16.18.0"
+        echo -e "\033[31m Current nvim version is $nodejs_version, make sure it >= v16.18.0 \033[0m"
     else
         curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-        # this will install nodejs and npm
-        sudo apt-get install -y nodejs
+        # install nodejs and npm
+        sudo apt-get install -y nodejs npm
         sudo npm install -g yarn
     fi
 
@@ -419,18 +419,10 @@ function install_prepare_software_on_ubuntu_like()
     else
         if which nvim >/dev/null 2>&1; then
             vim_version=`vim --version | head -n 1 | awk '{print $5}'`
-            echo "Current vim version is $vim_version, make sure it >= 9.0"
+            echo -e "\033[31m Current vim version is $vim_version, make sure it >= 9.0 \033[0m"
         else
             sudo apt-get install vim
         fi
-    fi
-
-    if which nvim >/dev/null 2>&1; then
-        nvim_version=`nvim --version | head -n 1 | awk '{print $2}'`
-        echo "Current nvim version is $nvim_version, make sure it >= v0.8.0, the other intstall reference:"
-        echo "https://github.com/neovim/neovim/releases"
-    else
-        sudo apt-get install neovim
     fi
 }
 
