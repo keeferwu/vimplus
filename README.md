@@ -14,7 +14,7 @@
     容器中做如下操作：
         apt update
         apt install -y sudo bash-completion net-tools inetutils-ping
-        apt install -y git wget curl tar vim neovim
+        apt install -y git wget curl tar vim
         useradd -m <user_name>  # 新建用户
         passwd <user_name>      # 设置密码
         usermod -aG sudo <user_name>   #将用户加入到sudo组
