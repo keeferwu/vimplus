@@ -21,18 +21,10 @@ function get_linux_distro()
         echo "Kali"
     elif grep -Eq "Parrot" /etc/*-release; then
         echo "Parrot"
-    elif grep -Eq "CentOS" /etc/*-release; then
-        echo "CentOS"
-    elif grep -Eq "fedora" /etc/*-release; then
-        echo "fedora"
-    elif grep -Eq "openSUSE" /etc/*-release; then
-        echo "openSUSE"
     elif grep -Eq "Arch Linux" /etc/*-release; then
         echo "ArchLinux"
     elif grep -Eq "Manjaro Linux" /etc/*-release; then
         echo "ManjaroLinux"
-    elif grep -Eq "Gentoo" /etc/*-release; then
-        echo "Gentoo"
     else
         echo "Unknow"
     fi
@@ -267,13 +259,6 @@ function get_ubuntu_version()
     echo ${version[0]}
 }
 
-# 获取centos版本
-function get_centos_version()
-{
-    version=`cat /etc/redhat-release | awk '{print $4}' | awk -F . '{printf "%s",$1}'`
-    echo $version
-}
-
 # 判断是否是macos10.14版本
 function is_macos1014()
 {
@@ -286,7 +271,7 @@ function is_macos1014()
 }
 
 # 在ubuntu上源代码安装vim
-function compile_vim_on_ubuntu()
+function compile_vim_by_source()
 {
     sudo apt-get remove vim vim-runtime  vim-tiny vim-common vim-gui-common
     sudo apt-get purge vim vim-runtime  vim-tiny vim-common vim-gui-common
@@ -329,58 +314,8 @@ function compile_vim_on_ubuntu()
     #sudo rm -rf /usr/local/man/man1/vim.1
 }
 
-# 在debian上源代码安装vim
-function compile_vim_on_debian()
-{
-    sudo apt-get install -y libncurses5-dev libncurses5 libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev python3-dev ruby-dev lua5.1 lua5.1-dev
-
-    rm -rf ~/vim_source
-    git clone https://github.com/vim/vim.git ~/vim_source
-    cd ~/vim_source
-    ./configure --with-features=huge \
-        --enable-multibyte \
-        --enable-rubyinterp \
-        --enable-pythoninterp \
-        --enable-perlinterp \
-        --enable-luainterp \
-        --enable-gui=gtk2 \
-        --enable-cscope \
-        --prefix=/usr
-    make
-    sudo make install
-    cd -
-}
-
-# 在centos上源代码安装vim
-function compile_vim_on_centos()
-{
-    sudo yum install -y ruby ruby-devel lua lua-devel luajit \
-        luajit-devel ctags git python python-devel \
-        python34 python34-devel tcl-devel \
-        perl perl-devel perl-ExtUtils-ParseXS \
-        perl-ExtUtils-XSpp perl-ExtUtils-CBuilder \
-        perl-ExtUtils-Embed libX11-devel ncurses-devel
-
-    rm -rf ~/vim_source
-    git clone https://github.com/vim/vim.git ~/vim_source
-    cd ~/vim_source
-    ./configure --with-features=huge \
-        --enable-multibyte \
-        --with-tlib=tinfo \
-        --enable-rubyinterp=yes \
-        --enable-pythoninterp=yes \
-        --enable-perlinterp=yes \
-        --enable-luainterp=yes \
-        --enable-gui=gtk2 \
-        --enable-cscope \
-        --prefix=/usr
-    make
-    sudo make install
-    cd -
-}
-
 # 在ubuntu上安装nodejs
-function install_nodejs_on_ubuntu()
+function install_nodejs_by_apt()
 {
     if which nodejs >/dev/null 2>&1; then
         nodejs_version=`nodejs --version`
@@ -417,19 +352,19 @@ function install_prepare_software_on_mac()
 }
 
 # 安装ubuntu系必备软件
-function install_prepare_software_on_ubuntu_like()
+function install_prepare_software_by_apt()
 {
     sudo apt-get update
     sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison build-essential
     sudo apt-get install -y python3 python3-dev python3-pip python3-pygments python3-pynvim fontconfig libfile-next-perl
     sudo apt-get install -y universal-ctags fd-find ripgrep clang astyle ccls global xclip
 
-    install_nodejs_on_ubuntu
+    install_nodejs_by_apt
 
     read -p "Do you want to install the lasted VIM ? [y/N] " ch
     ch=${ch:-N} # 如果用户直接按回车，则使用默认值 'N'
     if [[ $ch =~ ^[Yy]$ ]]; then
-        compile_vim_on_ubuntu
+        compile_vim_by_source
     else
         if which nvim >/dev/null 2>&1; then
             vim_version=`vim --version | head -n 1 | awk '{print $5}'`
@@ -440,87 +375,13 @@ function install_prepare_software_on_ubuntu_like()
     fi
 }
 
-# 安装debian必备软件
-function install_prepare_software_on_debian()
-{
-    sudo apt-get update
-    sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison
-    sudo apt-get install -y build-essential python python-dev python3 python3-dev python3-pip fontconfig libfile-next-perl
-    sudo apt-get install -y universal-ctags ripgrep clang astyle ccls global xclip python-pygments
-    read -p "Do you want to install the lasted VIM ? [y/N] " ch
-    ch=${ch:-N} # 如果用户直接按回车，则使用默认值 'N'
-    if [[ $ch =~ ^[Yy]$ ]]; then
-        compile_vim_on_debian
-    fi
-}
-
-# 安装centos必备软件
-function install_prepare_software_on_centos()
-{
-    version=$(get_centos_version)
-    if [ $version -ge 8 ];then
-        sudo dnf install -y epel-release
-        sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel make cmake python2 python2-devel python3-devel python3-pip fontconfig
-        sudo dnf install -y ripgrep clang astyle ccls global xclip python-pygments
-    else
-        sudo yum install -y ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel python3-pip fontconfig
-        sudo yum install -y ripgrep clang astyle ccls global xclip python-pygments
-        compile_vim_on_centos
-    fi
-}
-
-# 安装fedora必备软件
-function install_prepare_software_on_fedora()
-{
-    sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel python3-pip fontconfig
-    sudo dnf install -y ripgrep clang astyle ccls global xclip python-pygments
-}
-
 # 安装archlinux必备软件
-function install_prepare_software_on_archlinux()
+function install_prepare_software_by_pacman()
 {
     sudo pacman -S --noconfirm vim cmake gcc gcc-libs autoconf automake libtool flex bison fontconfig
     sudo pacman -S --noconfirm python python-pip python-pygments python-pynvim python-setuptools
     sudo pacman -S --noconfirm ctags ripgrep clang astyle ccls global xclip fd nodejs npm yarn
     sudo ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
-}
-
-# 安装opensuse必备软件
-function install_prepare_software_on_opensuse()
-{
-    sudo zypper refresh
-    sudo zypper install -y vim ctags gcc gcc-c++ cmake python-devel python3-devel python3-pip fontconfig ncurses5-devel
-    sudo zypper install -y ripgrep clang astyle ccls global xclip python-pygments
-}
-
-# 安装gentoo必备软件
-function install_prepare_software_on_gentoo()
-{
-    install_software_on_gentoo app-editors/vim dev-util/ctags sys-devel/automake sys-devel/gcc dev-util/cmake  media-libs/fontconfig
-    install_software_on_gentoo dev-lang/python dev-python/pygments dev-perl/File-Next
-    install_software_on_gentoo dev-util/ripgrep dev-util/clang dev-util/astyle dev-util/ccls dev-util/global dev-util/xclip
-    su - -c "ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5" -s /bin/bash
-}
-
-function install_software_on_gentoo()
-{
-    pkgs=$*
-    pkg_need_install=""
-    for pkg in ${pkgs}
-    do
-        if qlist -I | grep -Eq $pkg; then
-            echo "$pkg is already installed."
-        else
-            pkg_need_install="$pkg_need_install $pkg"
-        fi
-    done
-
-    if sudo -l | grep -Eq "emerge"; then
-        sudo emerge -v $pkg_need_install 
-    else
-        echo "Need Root password:"
-        su - -c "emerge -v $pkg_need_install" -s /bin/bash
-    fi
 }
 
 # 安装mac平台字体
@@ -648,39 +509,12 @@ function install_vimplus_on_linux()
 {
     distro=`get_linux_distro`
     echo "Linux distro: "${distro}
-
-    if [ ${distro} == "Ubuntu" ]; then
-        install_prepare_software_on_ubuntu_like
-    elif [ ${distro} == "Deepin" ]; then
-        install_prepare_software_on_ubuntu_like
-    elif [ ${distro} == "LinuxMint" ]; then
-        install_prepare_software_on_ubuntu_like
-    elif [ ${distro} == "elementaryOS" ]; then
-        install_prepare_software_on_ubuntu_like
-    elif [ ${distro} == "Debian" ]; then
-        install_prepare_software_on_debian
-    elif [ ${distro} == "Raspbian" ]; then
-        install_prepare_software_on_debian
-    elif [ ${distro} == "UOS" ]; then
-        install_prepare_software_on_debian
-    elif [ ${distro} == "Kali" ]; then
-        install_prepare_software_on_debian
-    elif [ ${distro} == "Parrot" ]; then
-        install_prepare_software_on_debian
-    elif [ ${distro} == "CentOS" ]; then
-        install_prepare_software_on_centos
-    elif [ ${distro} == "fedora" ]; then
-        install_prepare_software_on_fedora
-    elif [ ${distro} == "openSUSE" ]; then
-        install_prepare_software_on_opensuse
-    elif [ ${distro} == "ArchLinux" ]; then
-        install_prepare_software_on_archlinux
-    elif [ ${distro} == "ManjaroLinux" ]; then
-        install_prepare_software_on_archlinux
-    elif [ ${distro} == "Gentoo" ]; then
-        install_prepare_software_on_gentoo
+    if [ ${distro} == "Unknow" ]; then
+        return
+    elif [ ${distro} == "ArchLinux" ] || [ ${distro} == "ManjaroLinux" ]; then
+        install_prepare_software_by_pacman
     else
-        echo "Not support linux distro: "${distro}
+        install_prepare_software_by_apt
     fi
     begin_install_vimplus
 }
