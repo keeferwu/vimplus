@@ -96,8 +96,9 @@ function backup_vimrc_file()
     if [ $is_exist == 1 ]; then
         time=$(get_datetime)
         backup_vimrc=$old_vimrc"_bak_"$time
-        read -p "Find "$old_vimrc" already exists,backup "$old_vimrc" to "$backup_vimrc"? [Y/N] " ch
-        if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
+        read -p "Find "$old_vimrc" already exists,backup "$old_vimrc" to "$backup_vimrc"? [Y/n] " ch
+        ch=${ch:-Y} # 如果用户直接按回车，则使用默认值 'Y'
+        if [[ $ch =~ ^[Yy]$ ]]; then
             cp $old_vimrc $backup_vimrc
             chown $user":"$user $backup_vimrc
         fi
@@ -114,8 +115,9 @@ function backup_vim_dir()
     if [ $is_exist == 1 ]; then
         time=$(get_datetime)
         backup_vim=$old_vim"_bak_"$time
-        read -p "Find "$old_vim" already exists,backup "$old_vim" to "$backup_vim"? [Y/N] " ch
-        if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
+        read -p "Find "$old_vim" already exists,backup "$old_vim" to "$backup_vim"? [Y/n] " ch
+        ch=${ch:-Y} # 如果用户直接按回车，则使用默认值 'Y'
+        if [[ $ch =~ ^[Yy]$ ]]; then
             cp -R $old_vim $backup_vim
             chown -R $user":"$user $backup_vim
         fi
@@ -402,7 +404,7 @@ function install_prepare_software_on_ubuntu_like()
     sudo apt-get install -y universal-ctags fd-find ripgrep clang astyle ccls global xclip
     if which nodejs >/dev/null 2>&1; then
         nodejs_version=`nodejs --version`
-        echo "Current nvim version is $nodejs_version, make sure it over v16.18.0"
+        echo "Current nvim version is $nodejs_version, make sure it >= v16.18.0"
     else
         curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
         # this will install nodejs and npm
@@ -410,21 +412,24 @@ function install_prepare_software_on_ubuntu_like()
         sudo npm install -g yarn
     fi
 
-    read -p "Do you want to re-install VIM ? [Y/N] " ch
-    if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
-        #compile_vim_on_ubuntu
-        sudo add-apt-repository ppa:jonathonf/vim
-        sudo apt-get update
-        sudo apt-get install -y vim
+    read -p "Do you want to install the lasted VIM ? [y/N] " ch
+    ch=${ch:-N} # 如果用户直接按回车，则使用默认值 'N'
+    if [[ $ch =~ ^[Yy]$ ]]; then
+        compile_vim_on_ubuntu
+    else
+        if which nvim >/dev/null 2>&1; then
+            vim_version=`vim --version | head -n 1 | awk '{print $5}'`
+            echo "Current vim version is $vim_version, make sure it >= 9.0"
+        else
+            sudo apt-get install vim
+        fi
     fi
 
     if which nvim >/dev/null 2>&1; then
         nvim_version=`nvim --version | head -n 1 | awk '{print $2}'`
-        echo "Current nvim version is $nvim_version, the other intstall reference:"
+        echo "Current nvim version is $nvim_version, make sure it >= v0.8.0, the other intstall reference:"
         echo "https://github.com/neovim/neovim/releases"
     else
-        sudo add-apt-repository ppa:neovim-ppa/stable
-        sudo apt-get update
         sudo apt-get install neovim
     fi
 }
@@ -436,9 +441,9 @@ function install_prepare_software_on_debian()
     sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool flex bison
     sudo apt-get install -y build-essential python python-dev python3 python3-dev python3-pip fontconfig libfile-next-perl
     sudo apt-get install -y universal-ctags ripgrep clang astyle ccls global xclip python-pygments
-    read -p "Do you want to re-install VIM ? [Y/N] " ch
-    if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
-        echo "Install VIM by source code"
+    read -p "Do you want to install the lasted VIM ? [y/N] " ch
+    ch=${ch:-N} # 如果用户直接按回车，则使用默认值 'N'
+    if [[ $ch =~ ^[Yy]$ ]]; then
         compile_vim_on_debian
     fi
 }
@@ -578,7 +583,7 @@ function install_vim_plugin()
 function install_ycm()
 {
     read -p "Do you want to install YCM ? [Y/N] " ch
-    if [[ $ch == "Y" ]] || [[ $ch == "y" ]]; then
+    if [[ $ch =~ ^[Yy]$ ]]; then
         rm -rf ~/.ycm_extra_conf.py
         ln -s ${PWD}/.ycm_extra_conf.py ~
         git clone https://gitee.com/chxuan/YouCompleteMe-clang.git ~/.vim/plugged/YouCompleteMe
