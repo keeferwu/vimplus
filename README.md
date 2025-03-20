@@ -26,6 +26,10 @@
         cd .vimplus
         ./install.sh -i
 
+#### 如何高效的使用vimplus?
+
+参考: https://gitee.com/keeferwu/vimplus/wikis/pages
+
 #### 如何设置Nerd Font?
 
     为防止statusline显示乱码，需设置linux终端字体为`Droid Sans Mono Nerd Font`，
@@ -51,10 +55,6 @@ vim .confg/nvim/init.vim
     set runtimepath^=~/.vim runtimepath+=~/.vim/
     let &packpath = &runtimepath
     source ~/.vimrc
-
-#### 如何更新vim-plug?
-
-    curl -fLo ~/.vimplus/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 #### 哪些插件有特殊要求?
 
@@ -134,16 +134,3 @@ gtags 添加自定义配置
         vim-gutentags:      let $GTAGSCONF = expand("~/.globalrc")
         LeaderF:            let g:Lf_Gtagsconf = expand("~/.globalrc")
 
-#### runtimepath包含哪些目录?
-
-runtimepath默认包含以下目录。并非所有这些都必须出现在文件系统中，但如果存在就会被使用。
-
-    ~/.vim   主目录，保存个人偏好的文件。
-    /usr/local/share/vim/vimfiles  系统范围的Vim目录，保存由系统管理员决定的文件。
-    /usr/local/share/vim/vim81   即$VIMRUNTIME，保存与Vim一起分发的文件。
-    /usr/local/share/vim/vimfiles/after     系统范围Vim目录中的“after”目录。系统管理员可以利用该目录来覆盖默认设置，或添加新的设置。
-    ~/.vim/after     主目录中的“after”目录。可以利用该目录用个人偏好覆盖默认设置或系统设置，或添加新的设置。
-
-#### 如何高效的使用vimplus?
-
-参考: https://gitee.com/keeferwu/vimplus/wikis/pages

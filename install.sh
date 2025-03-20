@@ -550,6 +550,9 @@ function update_vim_plugin()
             echo #打印空行
         fi
     done
+    #更新plug.vim
+    echo -e "\033[32m Updating plug.vim ... \033[0m"
+    curl -fLo ${PWD}/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 }
 
 # 安装vim插件
