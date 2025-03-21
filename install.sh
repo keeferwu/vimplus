@@ -360,7 +360,7 @@ function install_prepare_software_by_apt()
 
     install_nodejs_by_apt
 
-    read -p "Do you want to install the lasted VIM ? [y/N] " ch
+    read -p "Do you want to install VIM by latest source ? [y/N] " ch
     ch=${ch:-N} # 如果用户直接按回车，则使用默认值 'N'
     if [[ $ch =~ ^[Yy]$ ]]; then
         compile_vim_by_source
