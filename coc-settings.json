@@ -1,8 +1,13 @@
 {
     "workspace.rootPatterns":[".root", ".git"],
-    "workspace.ignoredFolders": ["$HOME", "$HOME/.cargo/**", "$HOME/.rustup/**", ".git"],
-    "workspace.ignoredFiletypes": ["bin", "exe", "dll", "so", "a", "o"],
+    "workspace.ignoredFolders": ["$HOME", "$HOME/.cargo/**", "$HOME/.rustup/**", "**/.git", "**/.clangd"],
+    "workspace.ignoredFiletypes": ["bin", "so", "a", "o"],
+    "diagnostic.level":"warning",
     "diagnostic.signLevel":"warning",
+    "diagnostic.errorSign":"⛔",
+    "diagnostic.warningSign":"⚠️",
+    "diagnostic.hintSign":"💡",
+    "diagnostic.infoSign":"ℹ️",
     "suggest.autoTrigger": "always",
     "suggest.triggerAfterInsertEnter":true,
     "suggest.minTriggerInputLength": 3,
@@ -13,4 +18,5 @@
     "inlayHint.enableParameter": false,
     "Lua.diagnostics.disable": ["undefined-global", "lowercase-global"],
     "Lua.diagnostics.globals": ["vim"],
+    "rust-analyzer.cargo.targetDir":true
 }
