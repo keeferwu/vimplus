@@ -234,14 +234,16 @@ Plug 'vim-scripts/OmniCppComplete', exists('$VIMLSP') ? {'on': []} : {'for': ['c
 Plug 'neoclide/coc.nvim', exists('$VIMLSP') ? {'branch': 'release'} : {'on': []}
 " 异步运行命令
 Plug 'skywind3000/asyncrun.vim'
-" nvim代码语法高亮
-Plug 'nvim-treesitter/nvim-treesitter', has('nvim') ? {'do': ':TSUpdate'} : {'on': []}
-"多种语言代码语法高亮
-"Plug 'sheerun/vim-polyglot', has('nvim') ? {'on': []} : {}
 " 代码调试
 Plug 'puremourning/vimspector'
 Plug 'jclsn/vimspector-templates', v:version >= 900 ? {} : {'on': []}
 
+" nvim插件库
+Plug 'nvim-lua/plenary.nvim', has('nvim') ? {'branch': 'master'} : {'on': []}
+" nvim代码语法高亮
+Plug 'nvim-treesitter/nvim-treesitter', has('nvim') ? {'do': ':TSUpdate'} : {'on': []}
+" ai代码助手
+Plug 'olimorris/codecompanion.nvim', has('nvim') ? {} : {'on': []}
 call plug#end()
 
 " load vim default plugin
@@ -828,54 +830,3 @@ vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(
 vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
-" nvim-treesitter
-if has('nvim')
-lua << EOF
-require'nvim-treesitter.configs'.setup {
-  -- 安装 language parser
-  -- :TSInstallInfo 命令查看支持的语言
-  ensure_installed = { "vimdoc", "vim", "luadoc", "lua", "c", "cpp", "make", "kconfig" },
-  -- Install parsers synchronously (only applied to `ensure_installed`)
-  sync_install = true,
-  -- 启用代码高亮功能
-  highlight = {
-    enable = true,
-    -- list of language that will be disabled
-    disable = { "rust", "python" },
-    -- use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
-    disable = function(lang, buf)
-        local max_filesize = 1000 * 1024 -- 1000 KB
-        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        if ok and stats and stats.size > max_filesize then
-            return true
-        end
-    end,
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-  -- 启用增量选择
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = '<CR>',
-      node_incremental = '<CR>',
-      node_decremental = '<BS>',
-      scope_incremental = '<TAB>',
-    }
-  },
-  -- 启用基于Treesitter的代码格式化(=) . NOTE: This is an experimental feature.
-  indent = {
-    enable = false
-  }
-}
--- 开启 Folding
-vim.wo.foldmethod = 'expr'
-vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
--- 默认不要折叠
--- https://stackoverflow.com/questions/8316139/how-to-set-the-default-to-unfolded-when-you-open-a-file
-vim.wo.foldlevel = 99
-EOF
-endif
