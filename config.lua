@@ -46,14 +46,74 @@ vim.wo.foldlevel = 99
 
 -- codecompanion
 require("codecompanion").setup({
+  opts = {
+    language = "Chinese",
+    log_level = "DEBUG", -- TRACE|DEBUG|ERROR|INFO
+  },
+
+  display = {
+    action_palette = {
+      width = 95,
+      height = 10,
+      prompt = "Prompt ", -- Prompt used for interactive LLM calls
+      provider = "default", -- default|telescope|mini_pick
+      opts = {
+        show_default_actions = true, -- Show the default actions in the action palette?
+        show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+      },
+    },
+    chat = {
+      auto_scroll = false,
+      intro_message = "Welcome to CodeCompanion ✨! Press ? for options",
+      show_header_separator = false, -- Show header separators in the chat buffer? Set this to false if you're using an external markdown formatting plugin
+      separator = "─", -- The separator between the different messages in the chat buffer
+      show_references = true, -- Show references (from slash commands and variables) in the chat buffer?
+      show_settings = false, -- Show LLM settings at the top of the chat buffer?
+      show_token_count = true, -- Show the token count for each response?
+      start_in_insert_mode = false, -- Open the chat buffer in insert mode?
+    },
+  },
+  --选择模型
+  strategies = {
+    chat = {
+      adapter = "copilot_claude",
+      keymaps = {
+        send = {
+          modes = { n = "<C-s>", i = "<C-s>" },
+        },
+        close = {
+          modes = { n = "<C-c>", i = "<C-c>" },
+        },
+        completion = {
+          modes = { i = "<C-x>" },
+        },
+        -- Add further custom keymaps here
+      },
+    },
+    inline = {
+      adapter = "copilot_claude",
+      layout = "vertical", -- vertical|horizontal|buffer
+      keymaps = {
+        accept_change = {
+          modes = { n = "ga" },
+          description = "Accept the suggested change",
+        },
+        reject_change = {
+          modes = { n = "gr" },
+          description = "Reject the suggested change",
+        },
+      },
+    },
+    cmd = {
+      adapter = "deepseek",
+    },
+  },
+
   adapters = {
     opts = {
       -- show_defaults 会导致copilot不能正常工作
       show_defaults = true,
-      language = "Chinese",
-      -- log_level = "DEBUG",
     },
-
     deepseek = function()
       return require("codecompanion.adapters").extend("deepseek", {
         name = "deepseek",
@@ -69,7 +129,6 @@ require("codecompanion").setup({
         },
       })
     end,
-
     siliconflow_r1 = function()
       return require("codecompanion.adapters").extend("deepseek", {
         name = "siliconflow_r1",
@@ -90,7 +149,6 @@ require("codecompanion").setup({
         },
       })
     end,
-
     siliconflow_v3 = function()
       return require("codecompanion.adapters").extend("deepseek", {
         name = "siliconflow_v3",
@@ -111,7 +169,6 @@ require("codecompanion").setup({
         },
       })
     end,
-
     aliyun_deepseek = function()
       return require("codecompanion.adapters").extend("deepseek", {
         name = "aliyun_deepseek",
@@ -149,7 +206,6 @@ require("codecompanion").setup({
         },
       })
     end,
-
     copilot_claude = function()
       return require("codecompanion.adapters").extend("copilot", {
         name = "copilot_claude",
@@ -160,22 +216,57 @@ require("codecompanion").setup({
         },
       })
     end,
-  },
-  --选择模型
-  strategies = {
-    chat = { adapter = "copilot_claude" },
-    inline = { adapter = "copilot_claude" },
-  },
+    prompt_library = {
+      ["DeepSeek Explain In Chinese"] = {
+        strategy = "chat",
+        description = "中文解释代码",
+        opts = {
+          is_slash_cmd = false,
+          modes = { "v" },
+          short_name = "explain in chinese",
+          auto_submit = true,
+          user_prompt = false,
+          stop_context_insertion = true,
+          adapter = {
+          name = "aliyun_deepseek",
+          model = "deepseek-r1",
+          },
+        },
+        prompts = {
+          {
+            role = "system",
+            content = [[当被要求解释代码时，请遵循以下步骤：
 
-  display = {
-    action_palette = {
-      width = 95,
-      height = 10,
-      prompt = "Prompt ", -- Prompt used for interactive LLM calls
-      provider = "default", -- default|telescope|mini_pick
-      opts = {
-        show_default_actions = true, -- Show the default actions in the action palette?
-        show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+        1. 识别编程语言。
+        2. 描述代码的目的，并引用该编程语言的核心概念。
+        3. 解释每个函数或重要的代码块，包括参数和返回值。
+        4. 突出说明使用的任何特定函数或方法及其作用。
+        5. 如果适用，提供该代码如何融入更大应用程序的上下文。]],
+            opts = {
+              visible = false,
+            },
+          },
+          {
+            role = "user",
+            content = function(context)
+              local input = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+              return string.format(
+                [[请解释 buffer %d 中的这段代码:
+
+        ```%s
+        %s
+        ```
+        ]],
+                context.bufnr,
+                context.filetype,
+                input
+              )
+            end,
+            opts = {
+              contains_code = true,
+            },
+          },
+        },
       },
     },
   },

@@ -244,6 +244,8 @@ Plug 'nvim-lua/plenary.nvim', has('nvim') ? {'branch': 'master'} : {'on': []}
 Plug 'nvim-treesitter/nvim-treesitter', has('nvim') ? {'do': ':TSUpdate'} : {'on': []}
 " ai代码助手
 Plug 'olimorris/codecompanion.nvim', has('nvim') ? {} : {'on': []}
+" 渲染 markdown 和 codecompanion 文件类型
+Plug 'MeanderingProgrammer/render-markdown.nvim', has('nvim') ? {'for': ['markdown', 'codecompanion']} : {'on': []}
 call plug#end()
 
 " load vim default plugin
