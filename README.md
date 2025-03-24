@@ -93,6 +93,13 @@ coc.nvim 是一个使用LSP补全的插件，需要安装对应语言的LSP serv
         Makefile：bear make
         Cmake：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
+codecompanion.nvim 是一种生产力工具，可简化您在 Neovim 中使用 LLM 进行开发的方式。
+
+    1. 用户可在config.lua 中可以自己扩展模型，目前支持的有copilot，deepseek，通义千问。
+       使用模型需要将对应的key添加到环境变量中，例如：export DEEPSEEK_API_KEY=<your key>
+
+    2. 配置和使用参考：https://codecompanion.olimorris.dev/
+
 #### 如何让gtags支持更多语言?
 
 gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  pygments 支持 50+ 种语言。因此我们要安装 pygments
