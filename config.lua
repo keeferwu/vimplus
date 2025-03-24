@@ -82,19 +82,21 @@ require("codecompanion").setup({
   --选择模型
   strategies = {
     chat = {
-      adapter = "deepseek",
+      adapter = "copilot",
       keymaps = {
         send = {
           modes = { n = "<C-s>", i = "<C-s>" },
         },
         close = {
-          modes = { n = "<C-c>", i = "<C-c>" },
+          modes = { n = "<C-q>", i = "<C-q>" },
         },
-        -- Add further custom keymaps here
+        completion = {
+          modes = { i = "<C-/>" },
+        },
       },
     },
     inline = {
-      adapter = "copilot_claude",
+      adapter = "copilot",
       layout = "vertical", -- vertical|horizontal|buffer
       keymaps = {
         accept_change = {
@@ -108,15 +110,27 @@ require("codecompanion").setup({
       },
     },
     cmd = {
-      adapter = "deepseek",
+      adapter = "copilot",
     },
   },
 
   adapters = {
     opts = {
       -- show_defaults 会导致copilot不能正常工作
-      show_defaults = true,
+      show_defaults = false,
     },
+    --[[
+    copilot_claude = function()
+      return require("codecompanion.adapters").extend("copilot", {
+        name = "copilot_claude",
+        schema = {
+          model = {
+            default = "claude-3.7-sonnet",
+          },
+        },
+      })
+    end,]]
+
     deepseek = function()
       return require("codecompanion.adapters").extend("deepseek", {
         name = "deepseek",
@@ -132,9 +146,10 @@ require("codecompanion").setup({
         },
       })
     end,
-    siliconflow_r1 = function()
+
+    siliconflow = function()
       return require("codecompanion.adapters").extend("deepseek", {
-        name = "siliconflow_r1",
+        name = "siliconflow",
         url = "https://api.siliconflow.cn/v1/chat/completions",
         env = {
           api_key = function()
@@ -152,26 +167,7 @@ require("codecompanion").setup({
         },
       })
     end,
-    siliconflow_v3 = function()
-      return require("codecompanion.adapters").extend("deepseek", {
-        name = "siliconflow_v3",
-        url = "https://api.siliconflow.cn/v1/chat/completions",
-        env = {
-          api_key = function()
-            return os.getenv("DEEPSEEK_API_KEY_S")
-          end,
-        },
-        schema = {
-          model = {
-            default = "deepseek-ai/DeepSeek-V3",
-            choices = {
-              "deepseek-ai/DeepSeek-V3",
-              ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true } },
-            },
-          },
-        },
-      })
-    end,
+
     aliyun_deepseek = function()
       return require("codecompanion.adapters").extend("deepseek", {
         name = "aliyun_deepseek",
@@ -192,6 +188,7 @@ require("codecompanion").setup({
       })
     end,
     -- https://help.aliyun.com/zh/model-studio/getting-started/models?spm=a2c4g.11186623.0.0.ce3c4823l7PTRL#9f8890ce29g5u
+    --[[
     aliyun_qwen = function()
       return require("codecompanion.adapters").extend("openai_compatible", {
         name = "aliyun_qwen",
@@ -208,18 +205,9 @@ require("codecompanion").setup({
           },
         },
       })
-    end,
-    copilot_claude = function()
-      return require("codecompanion.adapters").extend("copilot", {
-        name = "copilot_claude",
-        schema = {
-          model = {
-            default = "claude-3.7-sonnet",
-          },
-        },
-      })
-    end,
+    end,]]
   },
+
   prompt_library = {
     ["DeepSeek Explain In Chinese"] = {
       strategy = "chat",

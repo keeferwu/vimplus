@@ -95,7 +95,7 @@ coc.nvim 是一个使用LSP补全的插件，需要安装对应语言的LSP serv
 
 codecompanion.nvim 是一种生产力工具，可简化您在 Neovim 中使用 LLM 进行开发的方式。
 
-    1. 用户可在config.lua 中可以自己扩展模型，目前支持的有copilot，deepseek，通义千问。
+    1. 用户可在config.lua 中可以自己扩展模型，目前支持的有copilot，deepseek。
        使用模型需要将对应的key添加到环境变量中，例如：export DEEPSEEK_API_KEY=<your key>
 
     2. 配置和使用参考：https://codecompanion.olimorris.dev/
