@@ -44,6 +44,12 @@ vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
 -- https://stackoverflow.com/questions/8316139/how-to-set-the-default-to-unfolded-when-you-open-a-file
 vim.wo.foldlevel = 99
 
+-- render-markdown
+require('render-markdown').setup({
+    --渲染 markdown 和 codecompanion 文件类型
+    file_types = { 'markdown', 'codecompanion' },
+})
+
 -- codecompanion
 require("codecompanion").setup({
   opts = {
@@ -76,7 +82,7 @@ require("codecompanion").setup({
   --选择模型
   strategies = {
     chat = {
-      adapter = "copilot_claude",
+      adapter = "deepseek",
       keymaps = {
         send = {
           modes = { n = "<C-s>", i = "<C-s>" },
