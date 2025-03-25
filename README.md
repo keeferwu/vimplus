@@ -85,6 +85,12 @@ vim-gutentags 由于leaderF不支持ctags数据生成，因此使用vim-gutentag
         开启调试信息：let g:gutentags_trace = 1
         手动调试：gtags --gtagslabel native-pygments --skip-unreadable --skip-symlink=a --debug
 
+vimspector 是一个调试插件，需要安装Debug Adapter
+
+    1. :VimspectorInstall <language debug adapter>     #安装adapter
+
+    2. :VimspectorCreateConfig <language template>     #构建.vimspector.json 保存到项目根目录
+
 coc.nvim 是一个使用LSP补全的插件，需要安装对应语言的LSP server
 
     1. 版本要求 vim >= 9.0.0438, nvim >= 0.8.0, nodejs >= 16.18.0
