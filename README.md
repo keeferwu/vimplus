@@ -91,6 +91,10 @@ vimspector 是一个调试插件，需要安装Debug Adapter
 
     2. :VimspectorCreateConfig <language template>     #构建.vimspector.json 保存到项目根目录
 
+    3. vimspector.Console 窗口的输出会受dashboard 的.gdbinit配置影响, 需在.vimspector.json中配置"miDebuggerArgs": "--nx" 或 "--nh" 忽略.gdbinit
+
+    4. 配置和使用参考：https://kongjun18.github.io/archives/vimspector-the-best-debug-plugin-for-vim.pdf
+
 coc.nvim 是一个使用LSP补全的插件，需要安装对应语言的LSP server
 
     1. 版本要求 vim >= 9.0.0438, nvim >= 0.8.0, nodejs >= 16.18.0

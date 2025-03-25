@@ -768,6 +768,7 @@ nnoremap <leader>nR :AsyncRun -mode=term -pos=tab -close<space>
 "endif
 
 " vimspector
+let g:vimspector_base_dir=expand('$HOME/.config/vimspector')
 "let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 nmap <F5>         <Plug>VimspectorContinue
 nmap <S-F5>       <Plug>VimspectorStop
