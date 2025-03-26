@@ -254,9 +254,9 @@ function! s:BufferReadonly()
   if &modifiable == 0 && &filetype !=# 'startify'
     let bufname = len(bufname('%')) ? bufname('%') : &filetype 
     echo bufname . " is readonly!"
-    return 1
+    return v:true
   endif
-  return 0
+  return v:false
 endfunction
 
 " 控制打开的buffer数量
@@ -291,29 +291,41 @@ function! vimplus#qfclose() abort
   return
 endfunction
 
-" 关闭当前的buffer
+" 关闭当前显示的buffer
 function! vimplus#bufclose() abort
-  if s:BufferReadonly()
-    if &buftype ==# 'terminal'
-      execute "bdelete!"
-    endif
+  let last_win = winnr('$')
+  execute last_win . 'wincmd w'
+  if &filetype ==# 'VimspectorPrompt'
+    " lasted window is vimspectorPrompt do nothing
+    echo "vimspector can not be deleted by bufclose"
     return
   endif
-  if winnr('$') > 1
-    execute "only"
-  endif
-  execute "bdelete"
+  while last_win > 0
+    execute last_win . 'wincmd w'
+    execute "bdelete!"
+    let last_win -= 1
+  endwhile
 endfunction
 
 " 关闭当前的tab
 function! vimplus#tabclose() abort
-  if tabpagenr() > 1
-    if &buftype ==# 'terminal' || empty(&filetype)
-      if winnr('$') > 1
-        execute "only"
+  let curr_tab = tabpagenr()
+  if curr_tab > 1
+    let last_win = winnr('$')
+    execute last_win . 'wincmd w'
+    if &filetype ==# 'VimspectorPrompt'
+      " lasted window is vimspectorPrompt do nothing
+      echo "vimspector can not be deleted by tabclose"
+      return
+    endif
+    while last_win > 0
+      execute last_win . 'wincmd w'
+      if vimplus#ignoredfile()
+        execute "bdelete!"
       endif
-      execute "bdelete!"
-    else
+      let last_win -= 1
+    endwhile
+    if curr_tab == tabpagenr()
       execute "tabclose"
     endif
   endif
@@ -321,19 +333,20 @@ endfunction
 
 "关闭vim所有窗口并退出
 function! vimplus#vimclose() abort
-  execute "tabfirst"
-  if s:BufferReadonly()
-    execute "quit"
-    call vimplus#vimclose()
-  endif
-  " last tab id
+  " tab counter
   if tabpagenr('$') > 1
+    execute "tabfirst"
     execute "tabonly"
   endif
-  if winnr('$') > 1
-    execute "only"
-  endif
-  execute "quit"
+  let last_win = winnr('$')
+  while last_win > 0
+    execute last_win . 'wincmd w'
+    if vimplus#ignoredfile()
+      execute "bdelete!"
+    endif
+    let last_win -= 1
+  endwhile
+  execute "qall"
 endfunction
 
 " Highlight EOL whitespace, https://github.com/bronson/vim-trailing-whitespace.git
