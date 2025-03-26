@@ -28,7 +28,9 @@
 
 #### 如何高效的使用vimplus?
 
-参考: https://gitee.com/keeferwu/vimplus/wikis/pages
+    通过空格可呼出快捷键导航，具体使用参考wiki页
+
+https://gitee.com/keeferwu/vimplus/wikis/pages
 
 #### 如何设置Nerd Font?
 
