@@ -5,6 +5,7 @@ if exists('g:loaded_vimplus')
   finish
 endif
 let g:loaded_vimplus = 1
+let g:vimplus_ignored_filetypes = ['startify', 'qf', 'netrw', 'tagbar', 'leaderf', 'codecompanion']
 
 function! vimplus#confirm(title, cb) abort
   if has('nvim')
@@ -100,6 +101,16 @@ function! vimplus#confirm(title, cb) abort
   endif
 endfunction
 
+function! s:IsIgnoredFile()
+  if &buftype ==# 'terminal' || &buftype ==# 'nofile'
+    return v:true
+  endif
+  for ft in g:vimplus_ignored_filetypes
+    if ft ==# &filetype | return v:true | endif
+  endfor
+  return v:false
+endfunction
+
 function! vimplus#holdtimer(time, cmd) abort
   " 定义一个字典来存储定时器ID，键为定时器的触发时间
   if !exists("s:vimplus_timer")
@@ -112,8 +123,10 @@ function! vimplus#holdtimer(time, cmd) abort
     " 从字典中删除该定时器的键
     unlet s:vimplus_timer[a:time]
   endif
-  " 启动一个新的定时器，并将其ID存储在字典中
-  let s:vimplus_timer[a:time] = timer_start(a:time, { -> execute(a:cmd)})
+  if !s:IsIgnoredFile()
+    " 启动一个新的定时器，并将其ID存储在字典中
+    let s:vimplus_timer[a:time] = timer_start(a:time, { -> execute(a:cmd)})
+  endif
 endfunction
 
 function! s:VisualPattern()
@@ -325,24 +338,12 @@ function! vimplus#vimclose() abort
 endfunction
 
 " Highlight EOL whitespace, https://github.com/bronson/vim-trailing-whitespace.git
-if !exists('g:vimplus_whitespace_ignored_filetypes')
-    let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf']
-endif
-
-function! s:MatchWhitespace()
-  for ft in g:vimplus_whitespace_ignored_filetypes
-    if ft ==# &filetype | return 0 | endif
-  endfor
-  if &buftype ==# 'terminal' | return 0 | endif
-  return 1
-endfunction
-
 augroup whitespace
   autocmd!
   highlight default ExtraWhitespace ctermbg=darkred guibg=darkred
   " The above flashes annoyingly while typing, be calmer in insert mode
-  autocmd InsertLeave * if s:MatchWhitespace() | match none /\\\@<![\u3000[:space:]]\+$/ | endif
-  autocmd InsertEnter * if s:MatchWhitespace() | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+\%#\@<!$/ | endif
+  autocmd InsertLeave * if !s:IsIgnoredFile() | match none /\\\@<![\u3000[:space:]]\+$/ | endif
+  autocmd InsertEnter * if !s:IsIgnoredFile() | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+\%#\@<!$/ | endif
 augroup END
 
 function! s:IndentChange(line1,line2,type)

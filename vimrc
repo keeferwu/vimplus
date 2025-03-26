@@ -37,7 +37,7 @@ set colorcolumn =121            " 高亮指定列
 set whichwrap+=<,>,h,l          " 设置光标键跨行
 set ttimeoutlen=0               " 设置<ESC>键响应时间
 set timeoutlen=500              " 默认超时是1000 ms
-set updatetime=300              " 更新时间默认是4s
+"set updatetime=300              " 更新时间默认是4s
 set signcolumn=yes              " 总是显示侧边栏标识
 set virtualedit=block,onemore   " 允许光标出现在最后一个字符的后面
 set bsdir=buffer                " 设定文件浏览器目录为当前目录
@@ -397,7 +397,6 @@ vnoremap <silent> <leader>rc :<c-u>call vimplus#vimgrep('v')<cr>
 nnoremap <silent> <leader>rc :<c-u>call vimplus#vimgrep('n')<cr>
 
 " buffer,table and whitespace
-let g:vimplus_whitespace_ignored_filetypes = ['startify', 'qf', 'leaderf']
 autocmd BufAdd * call vimplus#buflimit(100)
 autocmd TabNew,TabEnter * if tabpagenr() != 1 | let g:lens#disabled = 1 | endif
 autocmd TabClosed,TabLeave * if tabpagenr() != 1 | let g:lens#disabled = 0 | endif
