@@ -397,6 +397,7 @@ vnoremap <silent> <leader>rc :<c-u>call vimplus#vimgrep('v')<cr>
 nnoremap <silent> <leader>rc :<c-u>call vimplus#vimgrep('n')<cr>
 
 " buffer,table and whitespace
+let g:vimplus_ignored_filetypes = ['startify', 'qf', 'netrw', 'tagbar', 'leaderf', 'codecompanion']
 autocmd BufAdd * call vimplus#buflimit(100)
 autocmd TabNew,TabEnter * if tabpagenr() != 1 | let g:lens#disabled = 1 | endif
 autocmd TabClosed,TabLeave * if tabpagenr() != 1 | let g:lens#disabled = 0 | endif
@@ -819,8 +820,10 @@ inoremap <silent><expr> <TAB>
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <CR>
+      \ vimplus#ignoredfile() ? "\<CR>" :
+      \ coc#pum#visible() ? coc#pum#confirm()
+      \ : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
 nmap <silent><nowait> [g <Plug>(coc-diagnostic-prev)

@@ -5,7 +5,6 @@ if exists('g:loaded_vimplus')
   finish
 endif
 let g:loaded_vimplus = 1
-let g:vimplus_ignored_filetypes = ['startify', 'qf', 'netrw', 'tagbar', 'leaderf', 'codecompanion']
 
 function! vimplus#confirm(title, cb) abort
   if has('nvim')
@@ -101,11 +100,11 @@ function! vimplus#confirm(title, cb) abort
   endif
 endfunction
 
-function! s:IsIgnoredFile()
+function! vimplus#ignoredfile() abort
   if &buftype ==# 'terminal' || &buftype ==# 'nofile'
     return v:true
   endif
-  for ft in g:vimplus_ignored_filetypes
+  for ft in get(g:, 'vimplus_ignored_filetypes', 'qf')
     if ft ==# &filetype | return v:true | endif
   endfor
   return v:false
@@ -123,7 +122,7 @@ function! vimplus#holdtimer(time, cmd) abort
     " 从字典中删除该定时器的键
     unlet s:vimplus_timer[a:time]
   endif
-  if !s:IsIgnoredFile()
+  if !vimplus#ignoredfile()
     " 启动一个新的定时器，并将其ID存储在字典中
     let s:vimplus_timer[a:time] = timer_start(a:time, { -> execute(a:cmd)})
   endif
@@ -342,8 +341,8 @@ augroup whitespace
   autocmd!
   highlight default ExtraWhitespace ctermbg=darkred guibg=darkred
   " The above flashes annoyingly while typing, be calmer in insert mode
-  autocmd InsertLeave * if !s:IsIgnoredFile() | match none /\\\@<![\u3000[:space:]]\+$/ | endif
-  autocmd InsertEnter * if !s:IsIgnoredFile() | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+\%#\@<!$/ | endif
+  autocmd InsertLeave * if !vimplus#ignoredfile() | match none /\\\@<![\u3000[:space:]]\+$/ | endif
+  autocmd InsertEnter * if !vimplus#ignoredfile() | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+\%#\@<!$/ | endif
 augroup END
 
 function! s:IndentChange(line1,line2,type)
