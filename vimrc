@@ -238,7 +238,6 @@ Plug 'neoclide/coc.nvim', exists('$VIMLSP') ? {'branch': 'release'} : {'on': []}
 Plug 'skywind3000/asyncrun.vim'
 " 代码调试
 Plug 'puremourning/vimspector'
-Plug 'jclsn/vimspector-templates', v:version >= 900 ? {} : {'on': []}
 
 " nvim插件库
 Plug 'nvim-lua/plenary.nvim', has('nvim') ? {'branch': 'master'} : {'on': []}
