@@ -100,12 +100,14 @@ function! vimplus#confirm(title, cb) abort
   endif
 endfunction
 
-function! vimplus#ignoredfile() abort
-  if &buftype ==# 'terminal' || &buftype ==# 'nofile'
+function! vimplus#ignoredbuffer(bufnr) abort
+  let file_type = getbufvar(a:bufnr, '&filetype')
+  let buf_type = getbufvar(a:bufnr, '&buftype')
+  if buf_type ==# 'terminal' || buf_type ==# 'nofile'
     return v:true
   endif
   for ft in get(g:, 'vimplus_ignored_filetypes', 'qf')
-    if ft ==# &filetype | return v:true | endif
+    if ft ==# file_type | return v:true | endif
   endfor
   return v:false
 endfunction
@@ -122,7 +124,7 @@ function! vimplus#holdtimer(time, cmd) abort
     " 从字典中删除该定时器的键
     unlet s:vimplus_timer[a:time]
   endif
-  if !vimplus#ignoredfile()
+  if !vimplus#ignoredbuffer('%')
     " 启动一个新的定时器，并将其ID存储在字典中
     let s:vimplus_timer[a:time] = timer_start(a:time, { -> execute(a:cmd)})
   endif
@@ -300,11 +302,10 @@ function! vimplus#bufclose() abort
     echo "vimspector can not be deleted by bufclose"
     return
   endif
-  while last_win > 0
-    execute last_win . 'wincmd w'
-    execute "bdelete!"
-    let last_win -= 1
-  endwhile
+  let buf_list = uniq(sort(tabpagebuflist()))
+  for buf in buf_list
+    execute "bdelete! " . buf
+  endfor
 endfunction
 
 " 关闭当前的tab
@@ -318,13 +319,12 @@ function! vimplus#tabclose() abort
       echo "vimspector can not be deleted by tabclose"
       return
     endif
-    while last_win > 0
-      execute last_win . 'wincmd w'
-      if vimplus#ignoredfile()
-        execute "bdelete!"
+    let buf_list = uniq(sort(tabpagebuflist()))
+    for buf in buf_list
+      if vimplus#ignoredbuffer(buf)
+        execute "bdelete! " . buf
       endif
-      let last_win -= 1
-    endwhile
+    endfor
     if curr_tab == tabpagenr()
       execute "tabclose"
     endif
@@ -338,14 +338,12 @@ function! vimplus#vimclose() abort
     execute "tabfirst"
     execute "tabonly"
   endif
-  let last_win = winnr('$')
-  while last_win > 0
-    execute last_win . 'wincmd w'
-    if vimplus#ignoredfile()
-      execute "bdelete!"
+  let buf_list = uniq(sort(tabpagebuflist()))
+  for buf in buf_list
+    if vimplus#ignoredbuffer(buf)
+      execute "bdelete! " . buf
     endif
-    let last_win -= 1
-  endwhile
+  endfor
   execute "qall"
 endfunction
 
@@ -354,8 +352,8 @@ augroup whitespace
   autocmd!
   highlight default ExtraWhitespace ctermbg=darkred guibg=darkred
   " The above flashes annoyingly while typing, be calmer in insert mode
-  autocmd InsertLeave * if !vimplus#ignoredfile() | match none /\\\@<![\u3000[:space:]]\+$/ | endif
-  autocmd InsertEnter * if !vimplus#ignoredfile() | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+\%#\@<!$/ | endif
+  autocmd InsertLeave * if !vimplus#ignoredbuffer('%') | match none /\\\@<![\u3000[:space:]]\+$/ | endif
+  autocmd InsertEnter * if !vimplus#ignoredbuffer('%') | match ExtraWhitespace /\\\@<![\u3000[:space:]]\+\%#\@<!$/ | endif
 augroup END
 
 function! s:IndentChange(line1,line2,type)

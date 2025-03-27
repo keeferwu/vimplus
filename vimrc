@@ -354,7 +354,6 @@ let g:which_key_map.q = {'name' : '+quit',
                     \   }
 let g:which_key_map.n = {'name' : '+new',
                     \    'f' : 'new file',
-                    \    't' : 'new tab',
                     \    'T' : 'new terminal',
                     \    'R' : 'run command asynchronous',
                     \   }
@@ -404,7 +403,6 @@ nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
 nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
 nnoremap <silent> <leader>qt :call vimplus#tabclose()<cr>
-nnoremap <silent> <leader>nt :tabnew<cr>
 nnoremap <silent> <leader>nf :call vimplus#createfile()<cr>
 nnoremap <silent> <leader>df :call vimplus#differ()<cr>
 if has('nvim')
@@ -819,7 +817,7 @@ inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice
 inoremap <silent><expr> <CR>
-      \ vimplus#ignoredfile() ? "\<CR>" :
+      \ vimplus#ignoredbuffer('%') ? "\<CR>" :
       \ coc#pum#visible() ? coc#pum#confirm()
       \ : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " Use `[g` and `]g` to navigate diagnostics
