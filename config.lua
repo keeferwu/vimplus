@@ -93,7 +93,7 @@ require("codecompanion").setup({
   --选择模型
   strategies = {
     chat = {
-      adapter = "copilot",
+      adapter = "copilot", -- copliot\deepseek\siliconflow\aliyun_deepseek
       keymaps = {
         send = {
           modes = { n = "<C-s>", i = "<C-s>" },
@@ -107,7 +107,7 @@ require("codecompanion").setup({
       },
     },
     inline = {
-      adapter = "copilot",
+      adapter = "copilot", -- copliot\deepseek\siliconflow\aliyun_deepseek
       layout = "vertical", -- vertical|horizontal|buffer
       keymaps = {
         accept_change = {
@@ -121,13 +121,13 @@ require("codecompanion").setup({
       },
     },
     cmd = {
-      adapter = "copilot",
+      adapter = "copilot", -- copliot\deepseek\siliconflow\aliyun_deepseek
     },
   },
 
   adapters = {
     opts = {
-      -- show_defaults 会导致copilot不能正常工作
+      -- show default adapter
       show_defaults = false,
     },
     --[[

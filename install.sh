@@ -56,36 +56,13 @@ function get_datetime()
     echo $time
 }
 
-# 判断文件是否存在
-function is_exist_file()
-{
-    filename=$1
-    if [ -f $filename ]; then
-        echo 1
-    else
-        echo 0
-    fi
-}
-
-# 判断目录是否存在
-function is_exist_dir()
-{
-    dir=$1
-    if [ -d $dir ]; then
-        echo 1
-    else
-        echo 0
-    fi
-}
-
 #备份原有的.vimrc文件
 function backup_vimrc_file()
 {
     user=$1
     home_path=$2
     old_vimrc=$home_path".vimrc"
-    is_exist=$(is_exist_file $old_vimrc)
-    if [ $is_exist == 1 ]; then
+    if [ -f $old_vimrc ]; then
         time=$(get_datetime)
         backup_vimrc=$old_vimrc"_bak_"$time
         read -p "Find "$old_vimrc" already exists,backup "$old_vimrc" to "$backup_vimrc"? [Y/n] " ch
@@ -103,8 +80,7 @@ function backup_vim_dir()
     user=$1
     home_path=$2
     old_vim=$home_path".vim"
-    is_exist=$(is_exist_dir $old_vim)
-    if [ $is_exist == 1 ]; then
+    if [ -d $old_vim ]; then
         time=$(get_datetime)
         backup_vim=$old_vim"_bak_"$time
         read -p "Find "$old_vim" already exists,backup "$old_vim" to "$backup_vim"? [Y/n] " ch
@@ -170,8 +146,8 @@ function get_home_path()
     fi
 }
 
-# 在linux上将vimplus安装到指定用户
-function install_config_to_user()
+# 在linux上将vimplus 拷贝到指定用户
+function copy_config_to_user()
 {
     src_username=`get_current_username_on_linux`
     desc_username=$1
@@ -197,28 +173,27 @@ function install_config_to_user()
 
     backup_vimrc_and_vim $desc_username $desc_home_path
 
-	# 拷贝.vimrc
-    rm -rf $desc_home_path".vimrc"
-	cp $src_vimplus_path"vimrc" $desc_home_path".vimrc"
-	chown $desc_username":"$desc_username $desc_home_path".vimrc"
-
-    # 拷贝.vim目录
-    src_vimplus_path=$src_home_path".vimplus/"
+    src_vim_path=$src_home_path".vim/"
     desc_vim_path=$desc_home_path".vim/"
+    # 拷贝.vimrc
+    rm -rf $desc_home_path".vimrc"
+    cp $src_vim_path"vimrc" $desc_home_path".vimrc"
+    chown $desc_username":"$desc_username $desc_home_path".vimrc"
+    # 拷贝.vim目录
     rm -rf $desc_vim_path
     mkdir $desc_vim_path
-    cp    $src_vimplus_path"coc-settings.json"  $desc_vim_path
-    cp -R $src_vimplus_path"doc/"               $desc_vim_path
-    cp -R $src_vimplus_path"colors/"            $desc_vim_path
-    cp -R $src_vimplus_path"autoload/"          $desc_vim_path
-    cp -R $src_vimplus_path"ftplugin/"          $desc_vim_path
-    cp -R $src_vimplus_path"plugged/"           $desc_vim_path
+    cp    $src_vim_path"coc-settings.json"  $desc_vim_path
+    cp -R $src_vim_path"doc/"               $desc_vim_path
+    cp -R $src_vim_path"colors/"            $desc_vim_path
+    cp -R $src_vim_path"autoload/"          $desc_vim_path
+    cp -R $src_vim_path"ftplugin/"          $desc_vim_path
+    cp -R $src_vim_path"plugged/"           $desc_vim_path
     chown -R $desc_username":"$desc_username $desc_vim_path
 
     # 安装字体
     mkdir -p $desc_home_path".local/share/fonts/"
     rm -rf $desc_home_path".local/share/fonts/Droid Sans Mono Nerd Font Complete.otf"
-    cp $src_vimplus_path"fonts/Droid Sans Mono Nerd Font Complete.otf" $desc_home_path".local/share/fonts/"
+    cp $src_vim_path"fonts/Droid Sans Mono Nerd Font Complete.otf" $desc_home_path".local/share/fonts/"
     chown -R $desc_username":"$desc_username $desc_home_path".local/"
     fc-cache -vf $desc_home_path".local/share/fonts/"
 
@@ -229,24 +204,10 @@ function install_config_to_user()
 function install_config_files()
 {
     vimrc_file=$HOME"/.vimrc"
-    vimrc_exist=$(is_exist_file $vimrc_file)
-    if [ $vimrc_exist == 1 ]; then
+    if [ -f $vimrc_file ]; then
         rm -rf $vimrc_file
     fi
     ln -s ${PWD}/vimrc    $vimrc_file
-
-    vim_dir=$HOME"/.vim"
-    vim_exist=$(is_exist_dir $vim_dir)
-    if [ $vim_exist == 1 ]; then
-        rm -rf $vim_dir
-    fi
-    mkdir $vim_dir
-    cp ${PWD}/coc-settings.json $vim_dir
-    ln -s ${PWD}/doc            $vim_dir
-    ln -s ${PWD}/colors         $vim_dir
-    ln -s ${PWD}/autoload       $vim_dir
-    ln -s ${PWD}/ftplugin       $vim_dir
-    ln -s ${PWD}/plugged        $vim_dir
 }
 
 # 获取ubuntu版本
@@ -395,7 +356,7 @@ function install_fonts_on_linux()
 {
     mkdir -p ~/.local/share/fonts
     rm -rf ~/.local/share/fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete.otf
-    cp ./fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete.otf ~/.local/share/fonts
+    cp ${PWD}/fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete.otf ~/.local/share/fonts
 
     fc-cache -vf ~/.local/share/fonts
 }
@@ -536,8 +497,8 @@ function main()
             fi
 
             if [ $(uname) == "Linux" ]; then
-                echo "Install vim configuration to "$OPTARG
-                install_config_to_user $OPTARG
+                echo "copy vim configuration to "$OPTARG
+                copy_config_to_user $OPTARG
             else
                 echo "Not support platform type: "$(uname)
             fi
@@ -551,7 +512,7 @@ function main()
             echo ""
             echo "-p : update vim plugins"
             echo "-i : install vim configuration"
-            echo "-u : install vim configuration to <user>"
+            echo "-u : copy vim configuration to <user>"
             echo ""
             exit 1
             ;;

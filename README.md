@@ -1,17 +1,19 @@
 #### 如何安装vimplus?
 
-    git clone https://gitee.com/keeferwu/vimplus.git ~/.vimplus
-    cd ~/.vimplus
-    ./install.sh -i                 # 当前用户安装
+    注意：此仓库会覆盖原有的.vimrc 和.vim目录，如果有需要，请在安装前做好备份
+
+    git clone https://gitee.com/keeferwu/vimplus.git ~/.vim
+    cd ~/.vim
+    ./install.sh -h                 # install help
 
     已经验证过的系统有 Ubuntu/LinuxMint/ArchLinux/ManjaroLinux
     其他系统未经验证，可能会存在软件依赖或过时的问题,如果不想解决可以在docker中使用vimplus
 
 #### 如何在docker中安装vimplus？
 
-    docker pull ubuntu    #拉取ubuntu镜像
-    docker run --name <container_name> --network=host -it ubuntu:latest /bin/bash   #创建ubuntu容器
-    容器中做如下操作：
+    1. docker pull ubuntu    #拉取ubuntu镜像
+    2. docker run --name <container_name> --network=host -it ubuntu:latest /bin/bash   #创建ubuntu容器
+    3. 容器中做如下操作：
         apt update
         apt install -y sudo bash-completion net-tools inetutils-ping
         apt install -y git wget curl tar vim
@@ -19,16 +21,13 @@
         passwd <user_name>      # 设置密码
         usermod -aG sudo <user_name>   #将用户加入到sudo组
         exit #退出容器
-    docker start <container_name> #再次启动容器
-    docker exec -u <user_name> -w /home/<user_name> -it <container_name> /bin/bash  #以新用户身份进入容器
-    容器中的用户家目录下安装vimplus：
-        git clone https://gitee.com/keeferwu/vimplus.git .vimplus
-        cd .vimplus
-        ./install.sh -i
+    4. docker start <container_name> #再次启动容器
+    5. docker exec -u <user_name> -w /home/<user_name> -it <container_name> /bin/bash  #以新用户身份进入容器中的用户家目录
+    6. 在容器中执行vimplus的安装步骤
 
 #### 如何高效的使用vimplus?
 
-    通过空格可呼出快捷键导航，具体使用参考wiki页
+    通过空格可呼出快捷键导航，具体使用方法参考wiki页
 
 https://gitee.com/keeferwu/vimplus/wikis/pages
 
