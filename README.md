@@ -49,12 +49,6 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
 
 参考：https://zhuanlan.zhihu.com/p/579860830
 
-#### 如何把vim的配置应用到neovim?
-
-    mkdir ~/.config/nvim
-    cp config.lua ~/.config/nvim
-    cp init.vim ~/.config/nvim
-
 #### 哪些插件有特殊要求?
 
 OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件

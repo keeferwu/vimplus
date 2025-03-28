@@ -56,47 +56,23 @@ function get_datetime()
     echo $time
 }
 
-#备份原有的.vimrc文件
-function backup_vimrc_file()
-{
-    user=$1
-    home_path=$2
-    old_vimrc=$home_path".vimrc"
-    if [ -f $old_vimrc ]; then
-        time=$(get_datetime)
-        backup_vimrc=$old_vimrc"_bak_"$time
-        read -p "Find "$old_vimrc" already exists,backup "$old_vimrc" to "$backup_vimrc"? [Y/n] " ch
-        ch=${ch:-Y} # 如果用户直接按回车，则使用默认值 'Y'
-        if [[ $ch =~ ^[Yy]$ ]]; then
-            cp $old_vimrc $backup_vimrc
-            chown $user":"$user $backup_vimrc
-        fi
-    fi
-}
-
 #备份原有的.vim目录
-function backup_vim_dir()
+function backup_vim_config()
 {
-    user=$1
-    home_path=$2
+    home_path=$1
     old_vim=$home_path".vim"
-    if [ -d $old_vim ]; then
+    old_vimrc=$home_path".vimrc"
+    if [ -d $old_vim ] || [ -f $old_vimrc ]; then
         time=$(get_datetime)
         backup_vim=$old_vim"_bak_"$time
-        read -p "Find "$old_vim" already exists,backup "$old_vim" to "$backup_vim"? [Y/n] " ch
+        backup_vimrc=$old_vimrc"_bak_"$time
+        read -p "Find vim config already exists,do you want to backup ? [Y/n] " ch
         ch=${ch:-Y} # 如果用户直接按回车，则使用默认值 'Y'
         if [[ $ch =~ ^[Yy]$ ]]; then
             cp -R $old_vim $backup_vim
-            chown -R $user":"$user $backup_vim
+            cp $old_vimrc $backup_vimrc
         fi
     fi
-}
-
-# 备份原有的.vimrc和.vim
-function backup_vimrc_and_vim()
-{
-    backup_vimrc_file $1 $2
-    backup_vim_dir $1 $2
 }
 
 # 在linux上获取当前用户
@@ -146,6 +122,35 @@ function get_home_path()
     fi
 }
 
+function install_nvim_config()
+{
+    if ! which nvim >/dev/null 2>&1; then
+        echo "nvim is not installed yet, please install it first"
+        return
+    fi
+    home_path=$1
+    nvim_config="$home_path/.config/nvim"
+    if [ -d $nvim_config ]; then
+        time=$(get_datetime)
+        backup_nvim=$nvim_config"_bak_"$time
+        read -p "Find neovim config already exists, backup to "$backup_nvim"? [Y/n] " ch
+        ch=${ch:-Y} # 如果用户直接按回车，则使用默认值 'Y'
+        if [[ $ch =~ ^[Yy]$ ]]; then
+            cp -R $nvim_config $backup_nvim
+        fi
+        rm -rf $nvim_config
+    fi
+
+    mkdir -p $nvim_config
+    # 定义文件内容并写入
+    {
+    echo "set runtimepath^=~/.vim runtimepath+=~/.vim/"
+    echo "let &packpath = &runtimepath"
+    echo "source ~/.vimrc"
+    echo "lua dofile(os.getenv(\"HOME\") .. \"/.vim/config.lua\")"
+    } > "$nvim_config/init.vim"
+}
+
 # 在linux上将vimplus 拷贝到指定用户
 function copy_config_to_user()
 {
@@ -171,7 +176,7 @@ function copy_config_to_user()
     echo "Current home path:"$src_home_path
     echo "Installing vimplus to "$desc_home_path
 
-    backup_vimrc_and_vim $desc_username $desc_home_path
+    backup_vim_config $desc_home_path
 
     src_vim_path=$src_home_path".vim/"
     desc_vim_path=$desc_home_path".vim/"
@@ -182,6 +187,7 @@ function copy_config_to_user()
     # 拷贝.vim目录
     rm -rf $desc_vim_path
     mkdir $desc_vim_path
+    cp    $src_vim_path"config.lua"         $desc_vim_path
     cp    $src_vim_path"coc-settings.json"  $desc_vim_path
     cp -R $src_vim_path"doc/"               $desc_vim_path
     cp -R $src_vim_path"colors/"            $desc_vim_path
@@ -197,6 +203,12 @@ function copy_config_to_user()
     chown -R $desc_username":"$desc_username $desc_home_path".local/"
     fc-cache -vf $desc_home_path".local/share/fonts/"
 
+    read -p "Do you want to config neovim for user "$desc_username"? [y/N] " ch
+    ch=${ch:-N} # 如果用户直接按回车，则使用默认值 'N'
+    if [[ $ch =~ ^[Yy]$ ]]; then
+        install_nvim_config $desc_home_path
+    fi
+
     print_logo
 }
 
@@ -207,7 +219,13 @@ function install_config_files()
     if [ -f $vimrc_file ]; then
         rm -rf $vimrc_file
     fi
-    ln -s ${PWD}/vimrc    $vimrc_file
+    ln -s ${PWD}/vimrc $vimrc_file
+
+    read -p "Do you want to config neovim ? [y/N] " ch
+    ch=${ch:-N} # 如果用户直接按回车，则使用默认值 'N'
+    if [[ $ch =~ ^[Yy]$ ]]; then
+        install_nvim_config $HOME
+    fi
 }
 
 # 获取ubuntu版本
@@ -326,7 +344,7 @@ function install_prepare_software_by_apt()
     if [[ $ch =~ ^[Yy]$ ]]; then
         compile_vim_by_source
     else
-        if which nvim >/dev/null 2>&1; then
+        if which vim >/dev/null 2>&1; then
             vim_version=`vim --version | head -n 1 | awk '{print $5}'`
             echo -e "\033[31m Current vim version is $vim_version, make sure it >= 9.0 \033[0m"
         else
