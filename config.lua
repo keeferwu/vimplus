@@ -64,7 +64,7 @@ require('render-markdown').setup({
 -- codecompanion.nvim
 require("codecompanion").setup({
   opts = {
-    language = "Chinese",
+    -- language = "Chinese",
     log_level = "DEBUG", -- TRACE|DEBUG|ERROR|INFO
   },
 
@@ -93,7 +93,7 @@ require("codecompanion").setup({
   --选择模型
   strategies = {
     chat = {
-      adapter = "copilot", -- copliot\deepseek\siliconflow\aliyun_deepseek
+      adapter = "siliconflow", -- copliot|deepseek|siliconflow|aliyun_deepseek
       keymaps = {
         send = {
           modes = { n = "<C-s>", i = "<C-s>" },
@@ -105,9 +105,20 @@ require("codecompanion").setup({
           modes = { i = "<C-/>" },
         },
       },
+      slash_commands = {
+        ["chinese"] = {
+          description = "language response",
+          callback = function(chat)
+            chat:add_buf_message({ content = "-所有非代码文本的回复使用中文语言。" })
+          end,
+          opts = {
+            contains_code = false,
+          },
+        },
+      },
     },
     inline = {
-      adapter = "copilot", -- copliot\deepseek\siliconflow\aliyun_deepseek
+      adapter = "copilot", -- copliot|deepseek|siliconflow|aliyun_deepseek
       layout = "vertical", -- vertical|horizontal|buffer
       keymaps = {
         accept_change = {
@@ -121,7 +132,7 @@ require("codecompanion").setup({
       },
     },
     cmd = {
-      adapter = "copilot", -- copliot\deepseek\siliconflow\aliyun_deepseek
+      adapter = "copilot", -- copliot|deepseek|siliconflow|aliyun_deepseek
     },
   },
 
@@ -220,19 +231,19 @@ require("codecompanion").setup({
   },
 
   prompt_library = {
-    ["DeepSeek Explain In Chinese"] = {
+    ["Explain Code"] = {
       strategy = "chat",
-      description = "中文解释代码",
+      description = "Explain code in chinese",
       opts = {
         is_slash_cmd = false,
         modes = { "v" },
-        short_name = "explain in chinese",
+        short_name = "explain code",
         auto_submit = true,
         user_prompt = false,
         stop_context_insertion = true,
         adapter = {
-          name = "aliyun_deepseek",
-          model = "deepseek-r1",
+          name = "deepseek",
+          model = "deepseek-coder",
         },
       },
       prompts = {
