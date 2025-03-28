@@ -125,7 +125,9 @@ function get_home_path()
 function install_nvim_config()
 {
     if ! which nvim >/dev/null 2>&1; then
-        echo "nvim is not installed yet, please install it first"
+        echo
+        echo -e "\033[31m nvim is not installed yet, please install it first. \033[0m"
+        echo
         return
     fi
     home_path=$1
@@ -298,16 +300,15 @@ function install_nodejs_by_apt()
 {
     if which nodejs >/dev/null 2>&1; then
         nodejs_version=`nodejs --version`
-        echo -e "\033[31m Current nodejs version is $nodejs_version, make sure it >= v16.18.0 \033[0m"
+        echo
+        echo -e "\033[33m Current nodejs version is $nodejs_version, make sure it >= v16.18.0 \033[0m"
+        echo
     else
         curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
         # install nodejs and npm
         sudo apt-get install -y nodejs
     fi
-    if which npm >/dev/null 2>&1; then
-        npm_version=`npm --version`
-        echo -e "\033[31m Current npm version is $npm_version \033[0m"
-    else
+    if ! which npm >/dev/null 2>&1; then
         sudo apt-get install -y npm
     fi
 }
@@ -346,7 +347,9 @@ function install_prepare_software_by_apt()
     else
         if which vim >/dev/null 2>&1; then
             vim_version=`vim --version | head -n 1 | awk '{print $5}'`
-            echo -e "\033[31m Current vim version is $vim_version, make sure it >= 9.0 \033[0m"
+            echo
+            echo -e "\033[33m Current vim version is $vim_version, make sure it >= 9.0 \033[0m"
+            echo
         else
             sudo apt-get install vim
         fi
@@ -374,7 +377,7 @@ function install_fonts_on_linux()
 {
     mkdir -p ~/.local/share/fonts
     rm -rf ~/.local/share/fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete.otf
-    cp ${PWD}/fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete.otf ~/.local/share/fonts
+    cp ./fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete.otf ~/.local/share/fonts
 
     fc-cache -vf ~/.local/share/fonts
 }
@@ -437,15 +440,6 @@ function install_vimplus_on_mac()
     print_logo
 }
 
-# 在linux平台配置vimplus
-function begin_install_vimplus()
-{
-    install_config_files
-    install_fonts_on_linux
-    install_vim_plugin
-    print_logo
-}
-
 # 在linux平上台安装vimplus
 function install_vimplus_on_linux()
 {
@@ -458,7 +452,10 @@ function install_vimplus_on_linux()
     else
         install_prepare_software_by_apt
     fi
-    begin_install_vimplus
+    install_config_files
+    install_fonts_on_linux
+    install_vim_plugin
+    print_logo
 }
 
 # 获取当前时间戳
