@@ -41,6 +41,7 @@ set timeoutlen=500              " 默认超时是1000 ms
 set signcolumn=yes              " 总是显示侧边栏标识
 set virtualedit=block,onemore   " 允许光标出现在最后一个字符的后面
 set bsdir=buffer                " 设定文件浏览器目录为当前目录
+set splitright                  " 设置分割窗口位置为右侧
 set mouse=a                     " 开启鼠标
 set selection=exclusive
 set selectmode=mouse,key
