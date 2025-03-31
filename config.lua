@@ -93,7 +93,7 @@ require("codecompanion").setup({
   --选择模型
   strategies = {
     chat = {
-      adapter = "siliconflow", -- copliot|deepseek|siliconflow|aliyun_deepseek
+      adapter = "siliconflow_r1", -- copliot|deepseek|siliconflow|aliyun_deepseek
       keymaps = {
         send = {
           modes = { n = "<C-s>", i = "<C-s>" },
@@ -118,7 +118,7 @@ require("codecompanion").setup({
       },
     },
     inline = {
-      adapter = "copilot", -- copliot|deepseek|siliconflow|aliyun_deepseek
+      adapter = "siliconflow_v3", -- copliot|deepseek|siliconflow|aliyun_deepseek
       layout = "vertical", -- vertical|horizontal|buffer
       keymaps = {
         accept_change = {
@@ -132,7 +132,7 @@ require("codecompanion").setup({
       },
     },
     cmd = {
-      adapter = "copilot", -- copliot|deepseek|siliconflow|aliyun_deepseek
+      adapter = "siliconflow_v3", -- copliot|deepseek|siliconflow|aliyun_deepseek
     },
   },
 
@@ -169,9 +169,9 @@ require("codecompanion").setup({
       })
     end,
 
-    siliconflow = function()
+    siliconflow_r1 = function()
       return require("codecompanion.adapters").extend("deepseek", {
-        name = "siliconflow",
+        name = "siliconflow_r1",
         url = "https://api.siliconflow.cn/v1/chat/completions",
         env = {
           api_key = function()
@@ -184,6 +184,27 @@ require("codecompanion").setup({
             choices = {
               ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true } },
               "deepseek-ai/DeepSeek-V3",
+            },
+          },
+        },
+      })
+    end,
+
+    siliconflow_v3 = function()
+      return require("codecompanion.adapters").extend("deepseek", {
+        name = "siliconflow_v3",
+        url = "https://api.siliconflow.cn/v1/chat/completions",
+        env = {
+          api_key = function()
+            return os.getenv("DEEPSEEK_API_KEY_S")
+          end,
+        },
+        schema = {
+          model = {
+            default = "deepseek-ai/DeepSeek-V3",
+            choices = {
+              "deepseek-ai/DeepSeek-V3",
+              ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true } },
             },
           },
         },
