@@ -311,3 +311,57 @@ vim.keymap.set({ "n", "v" }, "<C-z>", "<cmd>CodeCompanionChat Toggle<cr>", { nor
 -- Expand 'cc' into 'CodeCompanion' in the command line
 vim.cmd([[cab cc CodeCompanion]])
 
+-- fidget.nvim
+require("fidget").setup {
+    --option
+}
+
+function llm_role_title(adapter)
+  local parts = {}
+  table.insert(parts, adapter.formatted_name)
+  if adapter.model and adapter.model ~= "" then
+    table.insert(parts, "(" .. adapter.model .. ")")
+  end
+  return table.concat(parts, " ")
+end
+
+function codecompanion_notify_by_fidget()
+  local group = vim.api.nvim_create_augroup("CodeCompanionFidgetHooks", {})
+  local fidget_handles = {}
+
+  vim.api.nvim_create_autocmd({ "User" }, {
+    pattern = "CodeCompanionRequestStarted",
+    group = group,
+    callback = function(request)
+      local handle = require("fidget.progress").handle.create({
+        title = "",
+        -- title = " Thinking... (" .. request.data.strategy .. ")",
+        message = " Thinking... (" .. request.data.strategy .. ")",
+        lsp_client = {
+          name = llm_role_title(request.data.adapter),
+        },
+      })
+      fidget_handles[request.data.id] = handle
+    end,
+  })
+
+  vim.api.nvim_create_autocmd({ "User" }, {
+    pattern = "CodeCompanionRequestFinished",
+    group = group,
+    callback = function(request)
+      local handle =  fidget_handles[request.data.id]
+      fidget_handles[request.data.id] = nil
+      if handle then
+        if request.data.status == "success" then
+          handle.message = "Completed"
+        elseif request.data.status == "error" then
+          handle.message = " Error"
+        else
+          handle.message = "󰜺 Cancelled"
+        end
+        handle:finish()
+      end
+    end,
+  })
+end
+codecompanion_notify_by_fidget()
