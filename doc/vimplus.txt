@@ -27,6 +27,10 @@ Plugin About				    *vimplus-plugin-about*
     `Ctrl+s`		  | 保存内容
     `Ctrl+c`		  | 文本复制
     `Ctrl+v`		  | 文本粘贴
+    `Ctrl+Up`		  | 增加窗口高度
+    `Ctrl+Down`		  | 减少窗口高度
+    `Ctrl+Right`	  | 增加窗口宽度
+    `Ctrl+Left`		  | 减少窗口宽度
     `F2`		  | 代码折叠与展开
     `zR`		  | 展开所有代码
     `:SSave`		  | 保存当前状态为某个session

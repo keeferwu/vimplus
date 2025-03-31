@@ -145,7 +145,8 @@ if exists("$TMUX")
   autocmd VimEnter * ClipBoard
 endif
 
-tnoremap <silent> <ESC> <C-\><C-n>
+"终端下映射ESC退出到normal模式
+tnoremap <silent> <Esc> <C-\><C-n>
 " 保存
 noremap <silent> <c-s> :<c-u>call vimplus#write()<cr>
 " C+z默认会退到后台，重映射为 Esc
@@ -158,6 +159,12 @@ nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
+" 调整窗口高度
+nnoremap <silent> <C-Up>    :resize +5<CR>
+nnoremap <silent> <C-Down>  :resize -5<CR>
+" 调整窗口宽度
+nnoremap <silent> <C-Right> :vertical resize +5<CR>
+nnoremap <silent> <C-Left>  :vertical resize -5<CR>
 
 " 打开文件自动定位到最后编辑的位置
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
