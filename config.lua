@@ -67,7 +67,7 @@ require("codecompanion").setup({
     -- language = "Chinese",
     log_level = "DEBUG", -- TRACE|DEBUG|ERROR|INFO
   },
-
+  -- option default set:codecompanion.nvim/lua/codecompanion/config.lua
   display = {
     action_palette = {
       width = 95,
@@ -135,7 +135,24 @@ require("codecompanion").setup({
       adapter = "siliconflow_v3", -- copliot|deepseek|siliconflow|aliyun_deepseek
     },
   },
-
+  -- prompt_library for codecompanionaction
+  prompt_library = {
+    ["Unit Tests"] = {
+      -- change strategy to chat
+      strategy = "chat",
+    },
+    ["Generate a Commit Message"] = {
+      opts = {
+        auto_submit = false,
+        -- use specific adapter
+        adapter = {
+          name = "siliconflow_v3",
+          model = "deepseek-ai/DeepSeek-V3",
+        },
+      },
+    },
+  },
+  -- adapter extensions
   adapters = {
     opts = {
       -- show default adapter
@@ -230,8 +247,8 @@ require("codecompanion").setup({
         },
       })
     end,
-    -- https://help.aliyun.com/zh/model-studio/getting-started/models?spm=a2c4g.11186623.0.0.ce3c4823l7PTRL#9f8890ce29g5u
     --[[
+    -- https://help.aliyun.com/zh/model-studio/getting-started/models?spm=a2c4g.11186623.0.0.ce3c4823l7PTRL#9f8890ce29g5u
     aliyun_qwen = function()
       return require("codecompanion.adapters").extend("openai_compatible", {
         name = "aliyun_qwen",
@@ -249,60 +266,6 @@ require("codecompanion").setup({
         },
       })
     end,]]
-  },
-
-  prompt_library = {
-    ["Explain Code"] = {
-      strategy = "chat",
-      description = "Explain code in chinese",
-      opts = {
-        is_slash_cmd = false,
-        modes = { "v" },
-        short_name = "explain code",
-        auto_submit = true,
-        user_prompt = false,
-        stop_context_insertion = true,
-        adapter = {
-          name = "deepseek",
-          model = "deepseek-coder",
-        },
-      },
-      prompts = {
-        {
-          role = "system",
-          content = [[当被要求解释代码时，请遵循以下步骤：
-
-  1. 识别编程语言。
-  2. 描述代码的目的，并引用该编程语言的核心概念。
-  3. 解释每个函数或重要的代码块，包括参数和返回值。
-  4. 突出说明使用的任何特定函数或方法及其作用。
-  5. 如果适用，提供该代码如何融入更大应用程序的上下文。]],
-          opts = {
-            visible = false,
-          },
-        },
-        {
-          role = "user",
-          content = function(context)
-            local input = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
-            return string.format(
-  [[请解释 buffer %d 中的这段代码:
-
-  ```%s
-  %s
-  ```
-  ]],
-              context.bufnr,
-              context.filetype,
-              input
-            )
-          end,
-          opts = {
-            contains_code = true,
-          },
-        },
-      },
-    },
   },
 })
 
