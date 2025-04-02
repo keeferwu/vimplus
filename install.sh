@@ -124,11 +124,18 @@ function get_home_path()
 
 function install_nvim_config()
 {
-    if ! which nvim >/dev/null 2>&1; then
+    target_version="v0.10.0"
+    if which nvim >/dev/null 2>&1; then
+        nvim_version=`nvim --version | head -n 1 | awk '{print $2}'`
+        if ! printf '%s\n%s\n' "${nvim_version#v}" "${target_version#v}" | sort -V -C -r; then
+            echo
+            echo -e "\033[33m Current nvim version is $nvim_version, make sure it >= $target_version \033[0m"
+            echo
+        fi
+    else
         echo
-        echo -e "\033[31m nvim is not installed yet, please install it first. \033[0m"
+        echo -e "\033[31m Neovim is not exists, please install it with version >= $target_version \033[0m"
         echo
-        return
     fi
     home_path=$1
     nvim_config="$home_path/.config/nvim"
@@ -300,9 +307,12 @@ function install_nodejs_by_apt()
 {
     if which nodejs >/dev/null 2>&1; then
         nodejs_version=`nodejs --version`
-        echo
-        echo -e "\033[33m Current nodejs version is $nodejs_version, make sure it >= v16.18.0 \033[0m"
-        echo
+        target_version="v16.18.0"
+        if ! printf '%s\n%s\n' "${nodejs_version#v}" "${target_version#v}" | sort -V -C -r; then
+            echo
+            echo -e "\033[33m Current nodejs version is $nodejs_version, make sure it >= $target_version \033[0m"
+            echo
+        fi
     else
         curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
         # install nodejs and npm
@@ -340,18 +350,19 @@ function install_prepare_software_by_apt()
 
     install_nodejs_by_apt
 
-    read -p "Do you want to install VIM by latest source ? [y/N] " ch
-    ch=${ch:-N} # 如果用户直接按回车，则使用默认值 'N'
-    if [[ $ch =~ ^[Yy]$ ]]; then
-        compile_vim_by_source
+    if which vim >/dev/null 2>&1; then
+        vim_version=`vim --version | head -n 1 | awk '{print $5}'`
+        target_version="9.0"
+        if ! printf '%s\n%s\n' "$vim_version" "$target_version" | sort -V -C -r; then
+            echo
+            echo -e "\033[33m Current vim version is $vim_version, make sure it >= $target_version \033[0m"
+            echo
+        fi
     else
-        if which vim >/dev/null 2>&1; then
-            vim_version=`vim --version | head -n 1 | awk '{print $5}'`
-            echo
-            echo -e "\033[33m Current vim version is $vim_version, make sure it >= 9.0 \033[0m"
-            echo
-        else
-            sudo apt-get install vim
+        read -p "VIM is not exists, do you want to install by latest source ? [Y/n] " ch
+        ch=${ch:-Y} # 如果用户直接按回车，则使用默认值 'Y'
+        if [[ $ch =~ ^[Yy]$ ]]; then
+            compile_vim_by_source
         fi
     fi
 }
