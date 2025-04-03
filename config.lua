@@ -170,9 +170,9 @@ require("codecompanion").setup({
       })
     end,]]
 
-    deepseek = function()
+    deepseek_coder = function()
       return require("codecompanion.adapters").extend("deepseek", {
-        name = "deepseek",
+        name = "deepseek_coder",
         env = {
           api_key = function()
             return os.getenv("DEEPSEEK_API_KEY")
@@ -181,6 +181,11 @@ require("codecompanion").setup({
         schema = {
           model = {
             default = "deepseek-coder",
+            choices = {
+              "deepseek-coder",
+              "deepseek-chat",
+              ["deepseek-reasoner"] = { opts = { can_reason = true } },
+            },
           },
         },
       })
@@ -192,7 +197,7 @@ require("codecompanion").setup({
         url = "https://api.siliconflow.cn/v1/chat/completions",
         env = {
           api_key = function()
-            return os.getenv("DEEPSEEK_API_KEY_S")
+            return os.getenv("SILICONFLOW_API_KEY")
           end,
         },
         schema = {
@@ -213,7 +218,7 @@ require("codecompanion").setup({
         url = "https://api.siliconflow.cn/v1/chat/completions",
         env = {
           api_key = function()
-            return os.getenv("DEEPSEEK_API_KEY_S")
+            return os.getenv("SILICONFLOW_API_KEY")
           end,
         },
         schema = {
@@ -234,7 +239,7 @@ require("codecompanion").setup({
         url = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
         env = {
           api_key = function()
-            return os.getenv("DEEPSEEK_API_ALIYUN")
+            return os.getenv("ALIYUN_API_KEY")
           end,
         },
         schema = {
@@ -255,7 +260,7 @@ require("codecompanion").setup({
         env = {
           url = "https://dashscope.aliyuncs.com",
           api_key = function()
-            return os.getenv("DEEPSEEK_API_ALIYUN")
+            return os.getenv("ALIYUN_API_KEY")
           end,
           chat_url = "/compatible-mode/v1/chat/completions",
         },
