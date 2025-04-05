@@ -40,7 +40,6 @@ set timeoutlen=500              " 默认超时是1000 ms
 "set updatetime=300              " 更新时间默认是4s
 set signcolumn=yes              " 总是显示侧边栏标识
 set virtualedit=block,onemore   " 允许光标出现在最后一个字符的后面
-set bsdir=buffer                " 设定文件浏览器目录为当前目录
 set splitright                  " 设置分割窗口位置为右侧
 set mouse=a                     " 开启鼠标
 set selection=exclusive
@@ -60,7 +59,9 @@ set confirm                     " 在处理未保存或只读文件的时候，�
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set langmenu=zh_CN.UTF-8
 set helplang=cn
+if !has('nvim-0.11.0')
 set termencoding=utf-8
+endif
 set encoding=utf8
 set fileencodings=utf8,ucs-bom,gbk,cp936,gb2312,gb18030
 
