@@ -280,7 +280,10 @@ let g:startify_lists = [
             \ ]
 let g:startify_session_root_mark = '.root'
 " session 退出时自动切换工作目录到主目录
-let g:startify_session_before_save = [ "exec 'cd' fnamemodify(findfile(g:startify_session_root_mark, ';'), ':h')" ]
+let g:startify_session_before_save = [
+            \ "exec 'cd' fnamemodify(findfile(g:startify_session_root_mark, ';'), ':h')",
+            \ "normal! zR"
+            \ ]
 let g:startify_session_savevars = [
             \ 'g:colors_name',
             \ ]
@@ -454,7 +457,11 @@ function! ToggleExplorer()
   else
     let g:lens#disabled = 1
     " open current file's dir at left
-    execute 'Vexplore!'
+    if has('nvim')
+      execute 'Vexplore!'
+    else
+      execute 'Vexplore'
+    endif
     let t:expl_buf = bufnr("%")
     let g:lens#disabled = 0
   endif
@@ -465,7 +472,11 @@ function! ChangeToCwd()
     close
     let g:lens#disabled = 1
     " open current dir
-    execute 'Vexplore! ' . getcwd()
+    if has('nvim')
+      execute 'Vexplore! ' . getcwd()
+    else
+      execute 'Vexplore ' . getcwd()
+    endif
     let t:expl_buf = bufnr("%")
     let g:lens#disabled = 0
   endif
