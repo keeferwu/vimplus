@@ -442,26 +442,32 @@ let g:netrw_sort_options = 'i'       "排序忽略大小写
 let g:netrw_hide = 1                 "忽略隐藏文件
 "在 netrw 里隐藏特定文件: ^\..* ->以.开头，^.*\.o$ ->.o结尾
 "let g:netrw_list_hide = '^\..*,^.*\.o$,^.*\.swp$,^.*\.bin$'
-nnoremap <silent> <F3> :call ToggleLexplorer()<CR>
-function! ToggleLexplorer()
+nnoremap <silent> <F3> :call ToggleExplorer()<CR>
+function! ToggleExplorer()
+  if g:netrw_browse_split == 0
+  " dir not support explorer
+    return
+  endif
   if exists("t:expl_buf")
-    Lexplore      " close
+    execute 'bdelete ' . t:expl_buf
     unlet t:expl_buf
   else
     let g:lens#disabled = 1
-    Lexplore %:p:h   " open current file's dir
-    let g:lens#disabled = 0
+    " open current file's dir at left
+    execute 'Vexplore!'
     let t:expl_buf = bufnr("%")
+    let g:lens#disabled = 0
   endif
 endfunction
-autocmd FileType netrw nnoremap <silent><buffer> h :call ChangeToHome()<cr>
-function! ChangeToHome()
-  if t:expl_buf != 0
+autocmd FileType netrw nnoremap <silent><buffer> h :call ChangeToCwd()<cr>
+function! ChangeToCwd()
+  if exists("t:expl_buf")
     close
     let g:lens#disabled = 1
-    Lexplore      " open current dir
+    " open current dir
+    execute 'Vexplore! ' . getcwd()
+    let t:expl_buf = bufnr("%")
     let g:lens#disabled = 0
-    let t:expl_buf = 0
   endif
 endfunction
 
