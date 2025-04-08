@@ -86,24 +86,27 @@ vimspector 是一个调试插件，需要安装Debug Adapter
 
     2. :VimspectorCreateConfig <language template>     #构建.vimspector.json 保存到项目根目录
 
-    3. vimspector.Console 窗口的输出会受dashboard 的.gdbinit配置影响, 需在.vimspector.json中配置"miDebuggerArgs": "--nx" 或 "--nh" 忽略.gdbinit
+    3. vimspector.Console 窗口的输出会受dashboard 的.gdbinit配置影响, 需在.vimspector.json中配置"miDebuggerArgs": "--nx" 忽略.gdbinit
 
-    4. 配置和使用参考：https://kongjun18.github.io/archives/vimspector-the-best-debug-plugin-for-vim.pdf
+配置和使用参考：https://kongjun18.github.io/archives/vimspector-the-best-debug-plugin-for-vim.pdf
 
 coc.nvim 是一个使用LSP补全的插件，需要安装对应语言的LSP server
 
     1. 版本要求 vim >= 9.0.0438, nvim >= 0.8.0, nodejs >= 16.18.0
 
-    2. 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt
-        Makefile：bear make
-        Cmake：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    2. 将扩展名配置到 g:coc_global_extensions 中，vim or nvim 启动时会自动安装这些扩展对应的语言服务器
+
+    3. 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt，生成方法：
+        Makefile架构：bear make
+        Cmake架构：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 codecompanion.nvim 是一种生产力工具，可简化您在 Neovim 中使用 LLM 进行开发的方式。
 
-    1. 用户可在config.lua 中可以自己扩展模型，目前支持的有copilot，deepseek。
-       使用模型需要将对应的key添加到环境变量中，例如：export DEEPSEEK_API_KEY=<your key>
+    1. 配置文件config.lua 中可以自行扩展模型，目前主要配置的是deepseek。
 
-    2. 配置和使用参考：https://codecompanion.olimorris.dev/
+    2. 将模型对应的API key添加到环境变量中，例如：export DEEPSEEK_API_KEY=<your key>
+
+配置和使用参考：https://codecompanion.olimorris.dev/
 
 #### 如何让gtags支持更多语言?
 

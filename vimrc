@@ -256,7 +256,9 @@ Plug 'nvim-treesitter/nvim-treesitter', has('nvim') ? {'do': ':TSUpdate'} : {'on
 Plug 'olimorris/codecompanion.nvim', has('nvim') ? {} : {'on': []}
 " 渲染 markdown 和 codecompanion 文件
 Plug 'MeanderingProgrammer/render-markdown.nvim', has('nvim') ? {} : {'on': []}
+" nvim 消息提示, use for codecompanion
 Plug 'j-hui/fidget.nvim', has('nvim') ? {} : {'on': []}
+
 call plug#end()
 
 " load vim default plugin
