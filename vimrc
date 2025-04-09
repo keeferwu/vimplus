@@ -436,6 +436,7 @@ nnoremap <silent> N :call interestingwords#navigation(0)<cr>
 let g:netrw_banner = 1               "Netrw顶端的横幅
 let g:netrw_liststyle = 3            "显示模式为树形
 let g:netrw_winsize = 20             "netrw窗口的宽度
+let g:netrw_altv = 0                 "在左侧纵向分割的窗口
 let g:netrw_preview = 1              "在纵向分割的窗口中显示预览窗口
 let g:netrw_dirhistmax = 0           "不记录目录跳转历史
 if isdirectory(expand("%"))
@@ -459,11 +460,7 @@ function! ToggleExplorer()
   else
     let g:lens#disabled = 1
     " open current file's dir at left
-    if has('nvim')
-      execute 'Vexplore!'
-    else
-      execute 'Vexplore'
-    endif
+    execute 'Vexplore'
     let t:expl_buf = bufnr("%")
     let g:lens#disabled = 0
   endif
@@ -474,11 +471,7 @@ function! ChangeToCwd()
     close
     let g:lens#disabled = 1
     " open current dir
-    if has('nvim')
-      execute 'Vexplore! ' . getcwd()
-    else
-      execute 'Vexplore ' . getcwd()
-    endif
+    execute 'Vexplore ' . getcwd()
     let t:expl_buf = bufnr("%")
     let g:lens#disabled = 0
   endif
