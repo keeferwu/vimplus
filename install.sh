@@ -153,6 +153,7 @@ function install_nvim_config()
     mkdir -p $nvim_config
     # 定义文件内容并写入
     {
+    echo "let loaded_gtags_cscope = 1"
     echo "set runtimepath^=~/.vim runtimepath+=~/.vim/"
     echo "let &packpath = &runtimepath"
     echo "source ~/.vimrc"
