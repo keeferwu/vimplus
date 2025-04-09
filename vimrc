@@ -591,11 +591,11 @@ nnoremap <silent> <leader>fc :LeaderfCommand<cr>
 nnoremap <silent> <leader>fs :LeaderfColorscheme<cr>
 nnoremap <silent> <leader>fg :LeaderfGit<cr>
 nnoremap <silent> <leader>fc :Leaderf coc<cr>
-nnoremap <silent> <leader>lr :LeaderfRgRecall<cr>
 nnoremap <silent> <leader>lq :cclose \| LeaderfQuickFix<cr>
 nnoremap <silent> <leader>ll :lclose \| LeaderfLocList<cr>
 nnoremap <silent> <leader>lf :Leaderf file --recall<cr>
-nnoremap <silent> <leader>lg :Leaderf! gtags --recall<cr>
+nnoremap <silent> <leader>lg :Leaderf gtags --recall<cr>
+nnoremap <silent> <leader>lr :Leaderf rg --recall<cr>
 let g:Lf_ShowDevIcons = 0
 let g:Lf_IgnoreCurrentBufferName = 1
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
@@ -767,7 +767,7 @@ let g:SuperTabCompleteCase = 'match'
 
 " lens
 let g:lens#animate = 0  "取消动画
-let g:lens#disabled_filetypes = ['netrw', 'tagbar', 'leaderf']
+let g:lens#disabled_filetypes = ['netrw', 'tagbar']
 let g:lens#disabled_buftypes = ['nofile']
 let g:lens#height_resize_max = 40
 let g:lens#height_resize_min = 5
