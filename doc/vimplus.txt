@@ -25,6 +25,8 @@ Plugin About				    *vimplus-plugin-about*
     ----------------------|---------------------------------------
     `<space>`		  | 显示所有<Leader>引导的快捷键
     `Ctrl+s`		  | 保存内容
+    `Ctrl+a`		  | 选中所有
+    `Ctrl+z`		  | 展开折叠
     `Ctrl+c`		  | 文本复制
     `Ctrl+v`		  | 文本粘贴
     `Ctrl+Up`		  | 增加窗口高度
@@ -32,7 +34,6 @@ Plugin About				    *vimplus-plugin-about*
     `Ctrl+Right`	  | 增加窗口宽度
     `Ctrl+Left`		  | 减少窗口宽度
     `F2`		  | 代码折叠与展开
-    `zR`		  | 展开所有代码
     `:SSave`		  | 保存当前状态为某个session
     `:SDelete`		  | 删除某个session
     `F3`		  | 打开/关闭代码资源管理器

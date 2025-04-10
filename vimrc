@@ -150,8 +150,10 @@ endif
 tnoremap <silent> <Esc> <C-\><C-n>
 " 保存
 noremap <silent> <c-s> :<c-u>call vimplus#write()<cr>
-" C+z默认会退到后台，重映射为 Esc
-noremap <silent> <C-z> <Esc>
+" C+z默认会退到后台，重映射为展开所有折叠
+noremap <silent> <C-z> zR
+" 全选
+noremap <silent> <C-a> ggVG
 " 重新映射d 为仅删除不剪切
 nnoremap <silent> d   "_d
 vnoremap <silent> d   "_d
@@ -243,8 +245,6 @@ Plug 'ervandew/supertab', exists('$VIMLSP') ? {'on': []} : {}
 Plug 'vim-scripts/OmniCppComplete', exists('$VIMLSP') ? {'on': []} : {'for': ['c','cpp']}
 " lsp代码补全,需要安装语言服务器
 Plug 'neoclide/coc.nvim', exists('$VIMLSP') ? {'branch': 'release'} : {'on': []}
-" 异步运行命令
-Plug 'skywind3000/asyncrun.vim'
 " 代码调试
 Plug 'puremourning/vimspector'
 
@@ -369,13 +369,18 @@ let g:which_key_map.q = {'name' : '+quit',
 let g:which_key_map.n = {'name' : '+new',
                     \    'f' : 'new file',
                     \    'T' : 'new terminal',
-                    \    'R' : 'run command asynchronous',
+                    \    'a' : 'codecompanion actions (neovim)',
+                    \    'c' : 'codecompanion chat toggle (neovim)',
                     \   }
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
 let g:which_key_map_visual.c = {'name' : '+commenter'}
 let g:which_key_map_visual.r = {'name' : '+grep',
                     \    'c' : 'vimgrep select in current buffer',
+                    \   }
+let g:which_key_map_visual.n = {'name' : '+new',
+                    \    'a' : 'codecompanion actions (neovim)',
+                    \    'c' : 'codecompanion chat toggle (neovim)',
                     \   }
 let g:which_key_map_visual.k = 'color select pattern'
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
@@ -775,14 +780,6 @@ imap <script><silent><nowait><expr> <M-=> codeium#Accept()
 imap <M--> <Cmd>call codeium#Clear()<CR>
 imap <M-,> <Cmd>call codeium#CycleCompletions(-1)<CR>
 imap <M-.> <Cmd>call codeium#CycleCompletions(1)<CR>
-
-" asyncrun.vim
-let g:asyncrun_open = 10
-nnoremap <leader>nR :AsyncRun -mode=term -pos=tab -close<space>
-" screensavar 会浪费cpu资源
-"if executable('asciiquarium')
-  "autocmd CursorHold,CursorHoldI * call vimplus#holdtimer(999*1000, 'AsyncRun -mode=term -pos=curwin -close asciiquarium')
-"endif
 
 " vimspector
 let g:vimspector_base_dir=expand('$HOME/.config/vimspector')
