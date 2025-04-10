@@ -367,7 +367,7 @@ let g:which_key_map.q = {'name' : '+quit',
                     \    'q' : 'quit quickfix',
                     \   }
 let g:which_key_map.o = {'name' : '+open',
-                    \    'T' : 'terminal open',
+                    \    't' : 'new terminal',
                     \    'a' : 'codecompanion actions (neovim)',
                     \    'c' : 'codecompanion chat toggle (neovim)',
                     \   }
@@ -421,9 +421,9 @@ nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
 nnoremap <silent> <leader>qt :call vimplus#tabclose()<cr>
 nnoremap <silent> <leader>df :call vimplus#differ()<cr>
 if has('nvim')
-  nnoremap <silent> <leader>oT :tabnew \| startinsert \| terminal<cr>
+  nnoremap <silent> <leader>ot :tabnew \| startinsert \| terminal<cr>
 else
-  nnoremap <silent> <leader>oT :tabnew \| term ++curwin<cr>
+  nnoremap <silent> <leader>ot :tabnew \| term ++curwin<cr>
 endif
 
 " highlight word
