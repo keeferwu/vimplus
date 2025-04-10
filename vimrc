@@ -438,7 +438,7 @@ nnoremap <silent> N :call interestingwords#navigation(0)<cr>
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
 let g:netrw_liststyle = 3            "显示模式为树形
-let g:netrw_winsize = 20             "netrw窗口的宽度
+let g:netrw_winsize = 40             "netrw窗口的宽度
 let g:netrw_altv = 0                 "在左侧纵向分割的窗口
 let g:netrw_preview = 1              "在纵向分割的窗口中显示预览窗口
 let g:netrw_dirhistmax = 0           "不记录目录跳转历史
@@ -462,21 +462,22 @@ function! ToggleExplorer()
     unlet t:expl_buf
     return
   endif
-  let g:lens#disabled = 1
   " open current file's dir at left
   execute 'Vexplore'
+  wincmd H
+  execute 'vertical resize ' . g:netrw_winsize
+  setlocal winfixwidth
   let t:expl_buf = bufnr("%")
-  let g:lens#disabled = 0
 endfunction
 autocmd FileType netrw nnoremap <silent><buffer> h :call ChangeToCwd()<cr>
 function! ChangeToCwd()
   if exists("t:expl_buf") && t:expl_buf == bufnr("%")
     close
-    let g:lens#disabled = 1
     " open current dir
     execute 'Vexplore ' . getcwd()
+    execute 'vertical resize ' . g:netrw_winsize
+    setlocal winfixwidth
     let t:expl_buf = bufnr("%")
-    let g:lens#disabled = 0
   endif
 endfunction
 
