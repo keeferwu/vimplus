@@ -455,6 +455,16 @@ function! ToggleExplorer()
   " dir not support explorer
     return
   endif
+  if &buftype ==# 'terminal'
+    " terminal buf will do open
+    vsplit | wincmd h
+    if has('nvim')
+      startinsert | terminal
+    else
+      term ++curwin
+    endif
+    return
+  endif
   if exists("t:expl_buf") && bufwinid(t:expl_buf) > 0
     execute 'bdelete ' . t:expl_buf
     unlet t:expl_buf
@@ -763,7 +773,7 @@ let g:SuperTabCompleteCase = 'match'
 " lens
 let g:lens#animate = 0  "取消动画
 let g:lens#disabled_filetypes = ['netrw', 'tagbar']
-let g:lens#disabled_buftypes = ['nofile']
+let g:lens#disabled_buftypes = ['nofile', 'terminal']
 let g:lens#height_resize_max = 40
 let g:lens#height_resize_min = 5
 let g:lens#width_resize_max = 120
