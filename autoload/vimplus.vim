@@ -193,10 +193,9 @@ endfunction
 "expand("%:e")   ---- 文件后缀
 function! s:GetInputFile()
   try
-    let path = fnameescape(fnamemodify(expand("%"), ':h'))
     echohl Question
     call inputsave()
-    let filename = input("File name: ", "", "file")
+    let filename = input("Input file: ", "", "file")
     call inputrestore()
     redraw!
   catch /^Vim:Interrupt$/
@@ -210,19 +209,6 @@ function! s:GetInputFile()
     " remove spaces
     return substitute(filename, ' ', '', 'g')
   endtry
-endfunction
-
-function! vimplus#createfile() abort
-  let filename = s:GetInputFile()
-  if empty(fnamemodify(filename, ':t'))
-    echo "Empty file name!"
-    return
-  endif
-  if filereadable(filename)
-    echo filename . " already exists!"
-    return
-  endif
-  execute 'edit' filename
 endfunction
 
 function! vimplus#differ() abort

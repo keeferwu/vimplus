@@ -366,9 +366,8 @@ let g:which_key_map.q = {'name' : '+quit',
                     \    't' : 'quit tab',
                     \    'q' : 'quit quickfix',
                     \   }
-let g:which_key_map.n = {'name' : '+new',
-                    \    'f' : 'new file',
-                    \    'T' : 'new terminal',
+let g:which_key_map.o = {'name' : '+open',
+                    \    'T' : 'terminal open',
                     \    'a' : 'codecompanion actions (neovim)',
                     \    'c' : 'codecompanion chat toggle (neovim)',
                     \   }
@@ -378,7 +377,7 @@ let g:which_key_map_visual.c = {'name' : '+commenter'}
 let g:which_key_map_visual.r = {'name' : '+grep',
                     \    'c' : 'vimgrep select in current buffer',
                     \   }
-let g:which_key_map_visual.n = {'name' : '+new',
+let g:which_key_map_visual.o = {'name' : '+open',
                     \    'a' : 'codecompanion actions (neovim)',
                     \    'c' : 'codecompanion chat toggle (neovim)',
                     \   }
@@ -422,12 +421,11 @@ nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
 nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
 nnoremap <silent> <leader>qt :call vimplus#tabclose()<cr>
-nnoremap <silent> <leader>nf :call vimplus#createfile()<cr>
 nnoremap <silent> <leader>df :call vimplus#differ()<cr>
 if has('nvim')
-  nnoremap <silent> <leader>nT :tabnew \| startinsert \| terminal<cr>
+  nnoremap <silent> <leader>oT :tabnew \| startinsert \| terminal<cr>
 else
-  nnoremap <silent> <leader>nT :tabnew \| term ++curwin<cr>
+  nnoremap <silent> <leader>oT :tabnew \| term ++curwin<cr>
 endif
 
 " highlight word
@@ -459,20 +457,20 @@ function! ToggleExplorer()
   " dir not support explorer
     return
   endif
-  if exists("t:expl_buf")
+  if exists("t:expl_buf") && bufwinid(t:expl_buf) > 0
     execute 'bdelete ' . t:expl_buf
     unlet t:expl_buf
-  else
-    let g:lens#disabled = 1
-    " open current file's dir at left
-    execute 'Vexplore'
-    let t:expl_buf = bufnr("%")
-    let g:lens#disabled = 0
+    return
   endif
+  let g:lens#disabled = 1
+  " open current file's dir at left
+  execute 'Vexplore'
+  let t:expl_buf = bufnr("%")
+  let g:lens#disabled = 0
 endfunction
 autocmd FileType netrw nnoremap <silent><buffer> h :call ChangeToCwd()<cr>
 function! ChangeToCwd()
-  if exists("t:expl_buf")
+  if exists("t:expl_buf") && t:expl_buf == bufnr("%")
     close
     let g:lens#disabled = 1
     " open current dir
