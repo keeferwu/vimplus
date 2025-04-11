@@ -290,7 +290,7 @@ let g:startify_session_savevars = [
             \ 'g:colors_name',
             \ ]
 "清除terminal的buffer
-let g:startify_session_remove_lines = ['term:\/']
+let g:startify_session_remove_lines = ['term:\/', 'NetrwTreeListing']
 "配置项目工作目录到path,通过gf实现头文件跳转
 "打开session时调整vim为实时调度，避免cpu繁忙啊卡顿: 'exe system("sudo chrt -r -a -p 50 ".getpid())'
 let g:startify_session_savecmds = [
@@ -437,7 +437,7 @@ nnoremap <silent> N :call interestingwords#navigation(0)<cr>
 let g:netrw_banner = 1               "Netrw顶端的横幅
 let g:netrw_liststyle = 3            "显示模式为树形
 let g:netrw_winsize = 40             "netrw窗口的宽度
-let g:netrw_altv = 0                 "在左侧纵向分割的窗口
+"let g:netrw_altv = 0                 "在左侧纵向分割的窗口
 let g:netrw_preview = 1              "在纵向分割的窗口中显示预览窗口
 let g:netrw_dirhistmax = 0           "不记录目录跳转历史
 if isdirectory(expand("%"))
@@ -496,6 +496,7 @@ let g:tagbar_ctags_bin = 'ctags' " tagbar 依赖 ctags 插件
 let g:tagbar_autofocus = 1   " 打开 tagbar 时光标在 tagbar 页面内，默认在 vim 打开的文件内
 let g:tagbar_sort = 0        " 标签不排序，默认排序
 "let g:tagbar_left = 1        " 让 tagbar 在页面左侧显示，默认右边
+let g:tagbar_show_tag_linenumbers = 1 "显示tag行号
 " 在某些情况下自动打开tagbar
 "autocmd BufReadPost *.cpp,*.c,*.lua,*.hpp,*.cc,*.cxx call tagbar#autoopen()
 
