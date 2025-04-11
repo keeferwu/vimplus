@@ -14,7 +14,7 @@
     "suggest.triggerAfterInsertEnter":true,
     "suggest.minTriggerInputLength": 3,
     "suggest.enablePreselect": true,
-    "suggest.noselect": false,
+    "suggest.noselect": true,
     "suggest.labelMaxLength": 100,
     "suggest.removeDuplicateItems":true,
     "inlayHint.enableParameter": false,

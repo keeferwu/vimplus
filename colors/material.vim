@@ -538,6 +538,7 @@ call s:SetHighlight('CocErrorSign', s:red, '', '')
 call s:SetHighlight('CocWarningSign', s:orange, '', '')
 call s:SetHighlight('CocHintSign', s:yellow, '', '')
 call s:SetHighlight('CocInfoSign', s:green, '', '')
+highlight! link CocMenuSel PmenuSbar
 
 if has('nvim')
   " Neovim terminal colors
