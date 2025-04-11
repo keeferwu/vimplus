@@ -238,18 +238,9 @@ function! vimplus#write() abort
   endtry
 endfunction
 
-function! s:BufferReadonly()
-  if &modifiable == 0 && &filetype !=# 'startify'
-    let bufname = len(bufname('%')) ? bufname('%') : &filetype 
-    echo bufname . " is readonly!"
-    return v:true
-  endif
-  return v:false
-endfunction
-
 " 控制打开的buffer数量
 function! vimplus#buflimit(num) abort
-  if a:num == 0 || s:BufferReadonly()
+  if &modifiable == 0 || a:num == 0
     return
   endif
   let last_buf = bufnr("%")
