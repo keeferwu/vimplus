@@ -113,6 +113,18 @@ set nohlsearch                   " 取消高亮搜索结果
 autocmd CursorMoved,CursorMovedI * call vimplus#hlsearch()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 主题设置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set background=dark
+let g:onedark_terminal_italics = get(g:, 'terminal_italics', 1)
+"colorscheme onedark
+let g:material_terminal_italics = get(g:, 'terminal_italics', 1)
+let g:material_theme_style = 'palenight'
+colorscheme material
+" 背景透明
+"hi Normal  ctermfg=252 ctermbg=none
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 自定义设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("nvim")
@@ -128,24 +140,22 @@ else
   cabbrev wqall w<bar>sleep 200m<bar>qall
 endif
 " 复制粘贴到系统剪切板
-" visual block re-mapping
-noremap  <silent> <m-v> <c-v>
-noremap  <silent> <c-v> "+p
-vnoremap <silent> <c-c> "+y
 autocmd VimEnter * call clipboard#check()
-if !has('clipboard')
+if !has('clipboard') || exists('$TMUX')
   noremap  <silent> <c-v> :<c-u>call clipboard#paste()<cr>
   vnoremap <silent> <c-c> :<c-u>call clipboard#yank()<cr>
+else
+  noremap  <silent> <c-v> "+p
+  vnoremap <silent> <c-c> "+y
 endif
 if exists("$TMUX")
   let g:terminal_italics = 0    " tmux 默认不支持斜体
-  noremap  <silent> <c-v> :<c-u>call clipboard#paste()<cr>
-  vnoremap <silent> <c-c> :<c-u>call clipboard#yank()<cr>
   " 使用tmux attach已存在的session时,如果vim中系统剪切版无法使用，需要更新$DISPLAY环境变量
   command! ClipBoard :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '') | echo $DISPLAY
   autocmd VimEnter * ClipBoard
 endif
-
+" visual block re-mapping
+noremap <silent> <m-v> <c-v>
 "终端下映射ESC退出到normal模式
 tnoremap <silent> <Esc> <C-\><C-n>
 " 保存
@@ -173,16 +183,6 @@ nnoremap <silent> <C-Left>  :vertical resize -5<CR>
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
 " 以十六进制显示 vim -b 打开的二进制文件
 autocmd BufReadPost * if &bin | execute "%!xxd" | endif
-
-" 主题设置
-set background=dark
-let g:onedark_terminal_italics = get(g:, 'terminal_italics', 1)
-"colorscheme onedark
-let g:material_terminal_italics = get(g:, 'terminal_italics', 1)
-let g:material_theme_style = 'palenight'
-colorscheme material
-" 背景透明
-"hi Normal  ctermfg=252 ctermbg=none
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 卸载默认插件UnPlug
@@ -322,9 +322,10 @@ vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 " key map中的key必须为半角字符，否则会报错，有些输入法会将shift+space作为半全角切换快捷键
 let g:which_key_map = {}
 let g:which_key_map[' '] = {'name' : '+plugin',
-                    \   'l': "load LSP complete plugin",
-                    \   'i': "install plugin",
-                    \   'u': "update plugin",
+                    \   'l': "plugin LSP complete",
+                    \   'i': "plugin install",
+                    \   'u': "plugin update",
+                    \   'c': "plugin clean",
                     \   }
 let g:which_key_map.w = 'easy motion to word'
 let g:which_key_map.k = 'color/uncolor cword'
@@ -384,6 +385,7 @@ let g:which_key_map_visual.o = {'name' : '+open',
 let g:which_key_map_visual.k = 'color select pattern'
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
 
+" plugin
 function! UseLSPComplete(error, res)
   if !empty(a:error)
     echom a:error
@@ -406,11 +408,7 @@ nnoremap <silent> <leader><leader>l :call vimplus#confirm(lsp_confirm,function("
 " 安装、更新、删除插件
 nnoremap <silent> <leader><leader>i :PlugInstall<cr>
 nnoremap <silent> <leader><leader>u :PlugUpdate<cr>
-"nnoremap <silent> <leader><leader>c :PlugClean<cr>
-
-" 搜索当前文件选中内容输出到quickfix
-vnoremap <silent> <leader>rc :<c-u>call vimplus#vimgrep('v')<cr>
-nnoremap <silent> <leader>rc :<c-u>call vimplus#vimgrep('n')<cr>
+nnoremap <silent> <leader><leader>c :PlugClean<cr>
 
 " buffer,table and whitespace
 let g:vimplus_ignored_filetypes = ['startify', 'qf', 'netrw', 'tagbar', 'leaderf', 'codecompanion']
@@ -420,6 +418,8 @@ nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
 nnoremap <silent> <leader>qq :call vimplus#qfclose()<cr>
 nnoremap <silent> <leader>qt :call vimplus#tabclose()<cr>
 nnoremap <silent> <leader>df :call vimplus#differ()<cr>
+nnoremap <silent> <leader>rc :<c-u>call vimplus#vimgrep('n')<cr>
+vnoremap <silent> <leader>rc :<c-u>call vimplus#vimgrep('v')<cr>
 if has('nvim')
   nnoremap <silent> <leader>ot :tabnew \| startinsert \| terminal<cr>
 else
