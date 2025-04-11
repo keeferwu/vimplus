@@ -225,8 +225,6 @@ Plug 'rust-lang/rust.vim', has('nvim') ? {'on': []} : {'for': 'rust'}
 Plug 'chrisbra/changesPlugin'
 " 代码格式化
 Plug 'vim-autoformat/vim-autoformat', {'on': ['Autoformat','AutoformatLine','RemoveTrailingSpaces']}
-" 自动调整当前窗口大小
-Plug 'camspiers/lens.vim'
 " 使用global工具自动更新tags文件
 Plug 'ludovicchabant/vim-gutentags'
 " 文件模糊搜索工具
@@ -770,15 +768,6 @@ let g:SuperTabRetainCompletionType = 2 " 0 不记录上次的补全方式 1 记�
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabContextDefaultCompletionType = "<c-x><c-n>"
 let g:SuperTabCompleteCase = 'match'
-
-" lens
-let g:lens#animate = 0  "取消动画
-let g:lens#disabled_filetypes = ['netrw', 'tagbar']
-let g:lens#disabled_buftypes = ['nofile', 'terminal']
-let g:lens#height_resize_max = 40
-let g:lens#height_resize_min = 5
-let g:lens#width_resize_max = 120
-let g:lens#width_resize_min = 20
 
 " codeium.vim
 let g:codeium_enabled = 0               " enable codeium need token

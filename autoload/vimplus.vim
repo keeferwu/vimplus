@@ -148,7 +148,7 @@ function! vimplus#vimgrep(mode) abort
   if a:mode == 'v'
       let pattern = s:VisualPattern()
   endif
-  execute 'silent! vimgrep ' . pattern . ' % | bot copen 10'
+  execute 'silent! vimgrep ' . pattern . ' % | bot copen'
   hi QuickFixLine ctermbg=NONE guibg=NONE
   silent! call matchdelete(1223)
   call matchadd('MatchParen', pattern, 0, 1223)
@@ -338,7 +338,6 @@ augroup quickfix
   " 在 quickfix 窗口中按回车跳转，但保持光标在 quickfix 窗口
   autocmd FileType qf nnoremap <silent> <buffer> <cr> <cr>:wincmd p<cr>
   autocmd FileType qf nnoremap <silent> <buffer> q :cclose<cr>
-  autocmd BufEnter * if &buftype == 'quickfix' | resize 10 | endif
 augroup END
 
 " Highlight EOL whitespace, https://github.com/bronson/vim-trailing-whitespace.git
