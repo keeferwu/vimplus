@@ -25,10 +25,13 @@ Plugin About				    *vimplus-plugin-about*
     ----------------------|---------------------------------------
     `<space>`		  | 显示所有<Leader>引导的快捷键
     `Ctrl+s`		  | 保存内容
-    `Ctrl+a`		  | 选中所有
     `Ctrl+z`		  | 展开折叠
     `Ctrl+c`		  | 文本复制
     `Ctrl+v`		  | 文本粘贴
+    `Ctrl+j`		  | 跳转上层窗口
+    `Ctrl+k`		  | 跳转下层窗口
+    `Ctrl+h`		  | 跳转右侧窗口
+    `Ctrl+l`		  | 跳转左侧窗口
     `Ctrl+Up`		  | 增加窗口高度
     `Ctrl+Down`		  | 减少窗口高度
     `Ctrl+Right`	  | 增加窗口宽度
@@ -181,6 +184,7 @@ Text Editing				    *vimplus-text-editing*
     `guu`		  | 全行转为小写
     `gUU`		  | 全行转为大写
     `gg=G`		  | 缩进整个文件
+    `ggVG`		  | 全选整个文件
     `=a{`		  | 缩进光标所在代码块
     `=i{`		  | 缩进光标所在代码块，不缩进"{"
     `<<`		  | 减少缩进
@@ -193,7 +197,7 @@ Text Editing				    *vimplus-text-editing*
     `v`			  | 开始标记
     `y`			  | 复制标记内容
     `V`			  | 开始按行标记
-    `CTRL-V` `->` `ALT-V`       | 开始列标记
+    `ALT-V`		  | 开始列标记
     `y$`		  | 复制当前位置到本行结束的内容
     `yy`		  | 复制当前行
     `Y`			  | 复制当前行，同 yy

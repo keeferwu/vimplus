@@ -154,30 +154,27 @@ if exists("$TMUX")
   command! ClipBoard :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '') | echo $DISPLAY
   autocmd VimEnter * ClipBoard
 endif
-" visual block re-mapping
-noremap <silent> <m-v> <c-v>
-"终端下映射ESC退出到normal模式
-tnoremap <silent> <Esc> <C-\><C-n>
-" 保存
-noremap <silent> <c-s> :<c-u>call vimplus#write()<cr>
-" C+z默认会退到后台，重映射为展开所有折叠
-noremap <silent> <C-z> zR
-" 全选
-noremap <silent> <C-a> ggVG
 " 重新映射d 为仅删除不剪切
 nnoremap <silent> d   "_d
 vnoremap <silent> d   "_d
+" visual block re-mapping
+noremap <silent> <m-v> <c-v>
+" C+z默认会退到后台，重映射为展开所有折叠
+nnoremap <silent> <C-z> zR
+"终端下映射ESC退出到normal模式
+tnoremap <silent> <Esc> <C-\><C-n>
+" 保存
+nnoremap <silent> <C-s> :<C-u>call vimplus#write()<cr>
 " 分屏窗口移动
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
-" 调整窗口高度
-nnoremap <silent> <C-Up>    :resize +5<CR>
-nnoremap <silent> <C-Down>  :resize -5<CR>
-" 调整窗口宽度
-nnoremap <silent> <C-Right> :vertical resize +5<CR>
-nnoremap <silent> <C-Left>  :vertical resize -5<CR>
+nnoremap <silent> <C-j> :wincmd j<cr>
+nnoremap <silent> <C-k> :wincmd k<cr>
+nnoremap <silent> <C-h> :wincmd h<cr>
+nnoremap <silent> <C-l> :wincmd l<cr>
+" 调整窗口高度和宽度
+nnoremap <silent> <C-Up>    :resize +5<cr>
+nnoremap <silent> <C-Down>  :resize -5<cr>
+nnoremap <silent> <C-Right> :vertical resize +5<cr>
+nnoremap <silent> <C-Left>  :vertical resize -5<cr>
 
 " 打开文件自动定位到最后编辑的位置
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif

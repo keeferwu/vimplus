@@ -238,18 +238,9 @@ function! vimplus#write() abort
   endtry
 endfunction
 
-function! s:BufferReadonly()
-  if &modifiable == 0 && &filetype !=# 'startify'
-    let bufname = len(bufname('%')) ? bufname('%') : &filetype 
-    echo bufname . " is readonly!"
-    return v:true
-  endif
-  return v:false
-endfunction
-
 " 控制打开的buffer数量
 function! vimplus#buflimit(num) abort
-  if a:num == 0 || s:BufferReadonly()
+  if &modifiable == 0 || a:num == 0
     return
   endif
   let last_buf = bufnr("%")
@@ -333,11 +324,11 @@ function! vimplus#vimclose() abort
   execute "qall"
 endfunction
 
-augroup quickfix
+augroup bufferkey
   autocmd!
   " 在 quickfix 窗口中按回车跳转，但保持光标在 quickfix 窗口
   autocmd FileType qf nnoremap <silent> <buffer> <cr> <cr>:wincmd p<cr>
-  autocmd FileType qf nnoremap <silent> <buffer> q :cclose<cr>
+  autocmd FileType qf,netrw nnoremap <silent> <buffer> q :close<cr>
 augroup END
 
 " Highlight EOL whitespace, https://github.com/bronson/vim-trailing-whitespace.git
