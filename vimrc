@@ -673,8 +673,9 @@ let g:Lf_CtagsFuncOpts = {
             \   'rust': '--rust-kinds=f',
             \ }
 let g:Lf_GtagsAutoGenerate = 0           " auto create gtags
-let g:Lf_GtagsAutoUpdate = 1             " auto update when buffer write
-let g:Lf_GtagsGutentags = 1              " use vim-gutentags to generate gtags,should make g:Lf_GtagsAutoGenerate = 0 and g:Lf_GtagsAutoUpdate = 0
+let g:Lf_GtagsGutentags = 1              " use vim-gutentags to generate gtags,should make g:Lf_GtagsAutoGenerate = 0
+let g:Lf_GtagsAutoUpdate = 0             " auto update when buffer write
+autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
 let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
 let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
 let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
@@ -682,7 +683,6 @@ let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原�
 nnoremap <silent> <leader>gh :Leaderf gtags_history<cr>
 "nnoremap <silent> <leader>gc :Leaderf gtags_history --cache<cr>
 if g:Lf_GtagsAutoGenerate == 1
-  autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
   nnoremap <silent> <leader>gu :Leaderf gtags --update<cr>
   " 光标15min内没有发生移动，自动更新gtags文件
   autocmd CursorHold,CursorHoldI * if get(g:, 'Lf_GtagsAutoUpdate', 0)|call vimplus#holdtimer(600*1000, 'Leaderf gtags --update')|endif
