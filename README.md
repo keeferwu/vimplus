@@ -97,7 +97,7 @@ coc.nvim 是一个使用LSP补全的插件，需要安装对应语言的LSP serv
     2. 将扩展名配置到 g:coc_global_extensions 中，vim or nvim 启动时会自动安装这些扩展对应的语言服务器
 
     3. 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt，生成方法：
-        Makefile架构：bear make
+        Makefile架构：通过工具bear or compiledb 构建compile_commands.json
         Cmake架构：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 codecompanion.nvim 是一种生产力工具，可简化您在 Neovim 中使用 LLM 进行开发的方式。
