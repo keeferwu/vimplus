@@ -431,8 +431,8 @@ nnoremap <silent> N :call interestingwords#navigation(0)<cr>
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
 let g:netrw_liststyle = 3            "显示模式为树形
-let g:netrw_winsize = 40             "netrw窗口的宽度
-"let g:netrw_altv = 0                 "在左侧纵向分割的窗口
+let g:netrw_winsize = 0              "通过netrw分割的窗口宽度,0:自适应
+"let g:netrw_altv = 0                 "在左侧纵向分割的窗口,默认为右侧
 let g:netrw_preview = 1              "在纵向分割的窗口中显示预览窗口
 let g:netrw_dirhistmax = 0           "不记录目录跳转历史
 if isdirectory(expand("%"))
@@ -446,8 +446,13 @@ let g:netrw_hide = 1                 "忽略隐藏文件
 "let g:netrw_list_hide = '^\..*,^.*\.o$,^.*\.swp$,^.*\.bin$'
 nnoremap <silent> <F3> :call ToggleExplorer()<CR>
 function! ToggleExplorer()
-  if g:netrw_browse_split == 0
-  " dir not support explorer
+  if exists("t:expl_buf") && bufwinid(t:expl_buf) > 0
+    execute 'bdelete ' . t:expl_buf
+    unlet t:expl_buf
+    return
+  endif
+  if &filetype ==# 'netrw'
+    quit
     return
   endif
   if &buftype ==# 'terminal'
@@ -460,15 +465,9 @@ function! ToggleExplorer()
     endif
     return
   endif
-  if exists("t:expl_buf") && bufwinid(t:expl_buf) > 0
-    execute 'bdelete ' . t:expl_buf
-    unlet t:expl_buf
-    return
-  endif
   " open current file's dir at left
   execute 'Vexplore'
-  wincmd H
-  execute 'vertical resize ' . g:netrw_winsize
+  wincmd H | vertical resize 40
   setlocal winfixwidth
   let t:expl_buf = bufnr("%")
 endfunction
@@ -478,7 +477,7 @@ function! ChangeToCwd()
     close
     " open current dir
     execute 'Vexplore ' . getcwd()
-    execute 'vertical resize ' . g:netrw_winsize
+    wincmd H | vertical resize 40
     setlocal winfixwidth
     let t:expl_buf = bufnr("%")
   endif
