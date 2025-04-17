@@ -132,12 +132,14 @@ if has("nvim")
   " unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
   set clipboard+=unnamed
   let g:python3_host_prog = '/usr/bin/python3'
+  nnoremap <silent> <s-t> :tabnew \| startinsert \| terminal<cr>
 else
   "fix some plugin use BufWitePost cause vim crash when use command wq
   cabbrev wq w<bar>sleep 200m<bar>q
   cabbrev wqa w<bar>sleep 200m<bar>qall
   cabbrev wqal w<bar>sleep 200m<bar>qall
   cabbrev wqall w<bar>sleep 200m<bar>qall
+  nnoremap <silent> <s-t> :tabnew \| term ++curwin<cr>
 endif
 " 复制粘贴到系统剪切板
 autocmd VimEnter * call clipboard#check()
@@ -362,20 +364,11 @@ let g:which_key_map.q = {'name' : '+quit',
                     \    't' : 'quit tab',
                     \    'q' : 'quit quickfix',
                     \   }
-let g:which_key_map.o = {'name' : '+open',
-                    \    't' : 'new terminal',
-                    \    'a' : 'codecompanion actions (neovim)',
-                    \    'c' : 'codecompanion chat toggle (neovim)',
-                    \   }
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
 let g:which_key_map_visual.c = {'name' : '+commenter'}
 let g:which_key_map_visual.r = {'name' : '+grep',
                     \    'c' : 'vimgrep select in current buffer',
-                    \   }
-let g:which_key_map_visual.o = {'name' : '+open',
-                    \    'a' : 'codecompanion actions (neovim)',
-                    \    'c' : 'codecompanion chat toggle (neovim)',
                     \   }
 let g:which_key_map_visual.k = 'color select pattern'
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
@@ -415,11 +408,6 @@ nnoremap <silent> <leader>qt :call vimplus#tabclose()<cr>
 nnoremap <silent> <leader>df :call vimplus#differ()<cr>
 nnoremap <silent> <leader>rc :<c-u>call vimplus#vimgrep('n')<cr>
 vnoremap <silent> <leader>rc :<c-u>call vimplus#vimgrep('v')<cr>
-if has('nvim')
-  nnoremap <silent> <leader>ot :tabnew \| startinsert \| terminal<cr>
-else
-  nnoremap <silent> <leader>ot :tabnew \| term ++curwin<cr>
-endif
 
 " highlight word
 nnoremap <silent> <leader>k :call interestingwords#color('n')<cr>

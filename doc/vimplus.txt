@@ -28,6 +28,7 @@ Plugin About				    *vimplus-plugin-about*
     `Ctrl+z`		  | 展开折叠
     `Ctrl+c`		  | 文本复制
     `Ctrl+v`		  | 文本粘贴
+    `Shift+t`		  | 打开内部终端
     `Ctrl+j`		  | 跳转上层窗口
     `Ctrl+k`		  | 跳转下层窗口
     `Ctrl+h`		  | 跳转右侧窗口
@@ -36,6 +37,8 @@ Plugin About				    *vimplus-plugin-about*
     `Ctrl+Down`		  | 减少窗口高度
     `Ctrl+Right`	  | 增加窗口宽度
     `Ctrl+Left`		  | 减少窗口宽度
+    `Ctrl+a`		  | 打开AI行为列表(neovim)
+    `Ctrl+x`		  | 打开AI聊天窗口(neovim)
     `F2`		  | 代码折叠与展开
     `:SSave`		  | 保存当前状态为某个session
     `:SDelete`		  | 删除某个session
@@ -190,8 +193,6 @@ Text Editing				    *vimplus-text-editing*
     `<<`		  | 减少缩进
     `>>`		  | 增加缩进
     `==`		  | 自动缩进
-    `CTRL-A`		  | 增加数字
-    `CTRL-X`		  | 减少数字
     `p`			  | 粘贴到光标后
     `P`			  | 粘贴到光标前
     `v`			  | 开始标记
