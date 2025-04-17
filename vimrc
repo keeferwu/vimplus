@@ -366,6 +366,15 @@ let g:which_key_map.q = {'name' : '+quit',
                     \    't' : 'quit tab',
                     \    'q' : 'quit quickfix',
                     \   }
+if exists('$VIMLSP')
+let g:which_key_map.j = {'name' : '+cocjump',
+                    \    'd' : 'jumpDefinition',
+                    \    'r' : 'jumpReferences',
+                    \    'c' : 'jumpDeclaration',
+                    \    'i' : 'jumpImplementation',
+                    \    't' : 'jumpTypeDefinition',
+                    \   }
+endif
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
 let g:which_key_map_visual.c = {'name' : '+commenter'}
@@ -580,7 +589,6 @@ nnoremap <silent> <leader>fh :LeaderfHelp<cr>
 nnoremap <silent> <leader>fc :LeaderfCommand<cr>
 nnoremap <silent> <leader>fs :LeaderfColorscheme<cr>
 nnoremap <silent> <leader>fg :LeaderfGit<cr>
-nnoremap <silent> <leader>fc :Leaderf coc<cr>
 nnoremap <silent> <leader>lq :cclose \| LeaderfQuickFix<cr>
 nnoremap <silent> <leader>ll :lclose \| LeaderfLocList<cr>
 nnoremap <silent> <leader>lf :Leaderf file --recall<cr>
@@ -675,6 +683,13 @@ if g:Lf_GtagsAutoGenerate == 1
   nnoremap <silent> <leader>gu :Leaderf gtags --update<cr>
   " 光标15min内没有发生移动，自动更新gtags文件
   autocmd CursorHold,CursorHoldI * if get(g:, 'Lf_GtagsAutoUpdate', 0)|call vimplus#holdtimer(600*1000, 'Leaderf gtags --update')|endif
+endif
+if exists('$VIMLSP')
+nnoremap <silent> <leader>jd :Leaderf coc definitions --auto-jump<cr>
+nnoremap <silent> <leader>jr :Leaderf coc references --auto-jump<cr>
+nnoremap <silent> <leader>jc :Leaderf coc declarations --auto-jump<cr>
+nnoremap <silent> <leader>ji :Leaderf coc implementations --auto-jump<cr>
+nnoremap <silent> <leader>jt :Leaderf coc typeDefinitions --auto-jump<cr>
 endif
 
 " vim-gutentags
