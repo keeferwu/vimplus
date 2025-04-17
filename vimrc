@@ -312,7 +312,9 @@ endfunction
 autocmd FileType startify nnoremap <silent><buffer> d :call SessionDelete()<cr>
 
 " vim-which-key
-let g:which_key_align_by_seperator = 0
+let g:which_key_hspace = 10
+let g:which_key_sort_horizontal = 0
+let g:which_key_align_by_seperator = 1
 let g:mapleader = "\<Space>"      " 定义<leader>键
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
