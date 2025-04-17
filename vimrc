@@ -580,7 +580,7 @@ endif
 " LeaderF
 let g:Lf_ShortcutF = ''
 let g:Lf_ShortcutB = ''
-nnoremap <leader>ff :LeaderfFile<space>
+nnoremap <leader>ff :LeaderfFile<cr>
 nnoremap <silent> <leader>fb :LeaderfBuffer<cr>
 nnoremap <silent> <leader>ft :LeaderfBufTag<cr>
 nnoremap <silent> <leader>fl :LeaderfLine<cr>
@@ -598,9 +598,9 @@ let g:Lf_ShowDevIcons = 0
 let g:Lf_IgnoreCurrentBufferName = 1
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
-"let g:Lf_ExternalCommand = 'find "%s" -type f'  "Lf_WildIgnore 对此选项不起作用
+"let g:Lf_ExternalCommand = 'fdfind --full-path "%s" --type f -I'  "Lf_WildIgnore 对此选项不起作用
 let g:Lf_DefaultExternalTool = 'find'            "rg 默认会自动过滤.ignore .rgignore .gitignore中的文件
-let g:Lf_UseVersionControlTool = 0               "0: 使用 Lf_DefaultExternalTool 定义的工具搜索文件, 1: 使用当前项目所使用的版本控制工具
+let g:Lf_UseVersionControlTool = 1               "0: 使用 Lf_DefaultExternalTool 定义的工具搜索文件, 1: 使用当前项目所使用的版本控制工具
 let g:Lf_RecurseSubmodules = 1                   "当g:Lf_UseVersionControlTool = 1 时，通过git ls-files --recurse-submodules 来搜索子项目中的文件
 let g:Lf_DefaultMode = 'Fuzzy'
 let g:Lf_RootMarkers = ['.root']
