@@ -351,6 +351,10 @@ function install_prepare_software_by_apt()
 
     install_nodejs_by_apt
 
+    if ! which fd >/dev/null 2>&1; then
+        sudo ln -s /usr/bin/fdfind /usr/bin/fd
+    fi
+
     if which vim >/dev/null 2>&1; then
         vim_version=`vim --version | head -n 1 | awk '{print $5}'`
         target_version="9.0"

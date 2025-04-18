@@ -598,13 +598,14 @@ let g:Lf_ShowDevIcons = 0
 let g:Lf_IgnoreCurrentBufferName = 1
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
-"let g:Lf_ExternalCommand = 'fdfind --full-path "%s" --type f -I'  "Lf_WildIgnore 对此选项不起作用
+"let g:Lf_ExternalCommand = 'fd --full-path "%s" --type f -I'  "Lf_WildIgnore 对此选项不起作用
 let g:Lf_DefaultExternalTool = 'find'            "rg 默认会自动过滤.ignore .rgignore .gitignore中的文件
-let g:Lf_UseVersionControlTool = 1               "0: 使用 Lf_DefaultExternalTool 定义的工具搜索文件, 1: 使用当前项目所使用的版本控制工具
+let g:Lf_UseVersionControlTool = 0               "0: 使用 Lf_DefaultExternalTool 定义的工具搜索文件, 1: 使用当前项目所使用的版本控制工具
 let g:Lf_RecurseSubmodules = 1                   "当g:Lf_UseVersionControlTool = 1 时，通过git ls-files --recurse-submodules 来搜索子项目中的文件
 let g:Lf_DefaultMode = 'Fuzzy'
 let g:Lf_RootMarkers = ['.root']
 let g:Lf_WorkingDirectoryMode = 'Aa'
+let g:Lf_CacheDirectory = expand($HOME.'/.vim/cache')
 let g:Lf_UseCache = 1
 let g:Lf_NeedCacheTime = 1
 let g:Lf_NumberOfCache = 10
@@ -696,15 +697,24 @@ endif
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
 let g:gutentags_project_root = ['.root']
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
-"let s:gutentags_path_exclude = '\( -path "*.git*" -o -path "*clangd*" -o -path "*obj*" -o -path "*htmlpages*" -o -path "./boot*" -o -path "./os*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" \)'
-" -name: 匹配文件名，-iname: 匹配文件名时忽略大小写， -wholename: 匹配文件名及其路径
-"let s:gutentags_file_exclude = '\( -type f -not -iname "*makefile*" -not -iname "*.txt" -not -name "*.map" -not -name "*.o" -not -name "*.tgt" -not -name "*.x86" -not -wholename ".gitignore" \)'
-"let g:gutentags_file_list_command = 'find . ' . s:gutentags_path_exclude . ' -a -prune -o ' . s:gutentags_file_exclude . ' -print'
-let s:gutentags_file_list_exclude = g:Lf_WildIgnore.dir + g:Lf_WildIgnore.file + ['boot','os','htmlpages','x86_run','*.mib','*.txt']
-let g:gutentags_file_list_command = "fdfind --type f -I"
-for ign in s:gutentags_file_list_exclude
-  let g:gutentags_file_list_command .= " --exclude " . "'" . ign . "'"
-endfor
+" 所生成的数据文件的名称
+let g:gutentags_ctags_tagfile = 'tags'
+if !exists('g:Lf_GtagsGutentags')
+  " 将自动生成的 ctags/gtags 文件全部放入 ~/.vim/tags 目录中，避免污染工程目录
+  let g:gutentags_cache_dir = expand('~/.vim/cache/tags')
+  let s:gutentags_path_exclude = '\( -path "*.git*" -o -path "*clangd*" -o -path "*obj*" -o -path "./build*" -o -path "./target*" \)'
+  " -name: 匹配文件名，-iname: 匹配文件名时忽略大小写， -wholename: 匹配文件名及其路径
+  let s:gutentags_file_exclude = '\( -type f -not -iname "*makefile*" -not -iname "*.txt" -not -name "*.o" -not -wholename ".gitignore" \)'
+  let g:gutentags_file_list_command = 'find . ' . s:gutentags_path_exclude . ' -a -prune -o ' . s:gutentags_file_exclude . ' -print'
+else
+  " generate gtags data to leaderF
+  let g:gutentags_cache_dir = expand(g:Lf_CacheDirectory.'/LeaderF/gtags/')
+  let s:gutentags_file_list_exclude = g:Lf_WildIgnore.dir + g:Lf_WildIgnore.file + ['boot','os','htmlpages','cmwut','x86_run','*.mib','*.txt']
+  let g:gutentags_file_list_command = "fd --type f -I"
+  for ign in s:gutentags_file_list_exclude
+    let g:gutentags_file_list_command .= " --exclude " . "'" . ign . "'"
+  endfor
+endif
 let g:gutentags_ctags_exclude = ['*/.git/*', '*/.clangd/*', '*/configs/*', '*.json', '*.mib', '*.db', '*.css', '*.js', '*.html']
 let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
 " i 表示如果有继承, 则标识出父类; a 表示类成员调用权限 (public or private); S 表示如果是函数, 则标识函数的signature.
@@ -714,15 +724,6 @@ let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--languages=c,c++,asm,l
 "let g:gutentags_ctags_extra_args += ['--c++-kinds=+px', '--c-kinds=+px']
 " 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
 let g:gutentags_ctags_extra_args += ['--extras=+q', '--output-format=e-ctags']
-" 所生成的数据文件的名称
-let g:gutentags_ctags_tagfile = 'tags'
-if !exists('g:Lf_GtagsGutentags')
-  " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
-  let g:gutentags_cache_dir = expand('~/.cache/tags')
-else
-  " generate gtags data to leaderF
-  let g:gutentags_cache_dir = expand('~/.cache/LeaderF/gtags')
-endif
 let g:gutentags_trace = 0
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
