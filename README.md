@@ -42,6 +42,8 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
     通过命令 vim --version | grep "clipboard" 查看vim 是否支持系统剪切板
     clipboard 前边是 - 号，即为不支持，ubuntu下可以安装vim-gnome 或vim-gtk
 
+    使用ctrl+c,ctrl+v 已完全替代了 "+y","+p" 的功能，且不需要vim支持clipboard
+
     当使用ssh远程连接server，系统剪切版无法使用，查看DISPLAY环境变量为空
     解决办法：
     ssh server 端：修改 /etc/ssh/sshd_config  ---> X11Forwarding yes
@@ -66,11 +68,8 @@ Codeium 是一款智能补全插件，需要登录到官网生成token，注意�
 
 vim-gutentags 由于leaderF不支持ctags数据生成，因此使用vim-gutentags生成索引数据到leaderf 缓存目录
 
-    1. 当项目过大时gtags生成数据量比较大，生成的过程也比较长，可通过如下变量过滤掉跟项目中不需要生成索引数据的目录和文件
-        let s:gutentags_path_exclude = '\( -path "*.git*" -o -path "*clangd*" -o -path "*obj*" -o -path "*htmlpages*" -o -path "./boot*" -o -path "./os*" -o -path "./image*" -o -path "./x86_run*" -o -path "./target*" \)'
-        " -name: 匹配文件名，-iname: 匹配文件名时忽略大小写， -wholename: 匹配文件名及其路径
-        let s:gutentags_file_exclude = '\( -type f -not -iname "*makefile*" -not -iname "*.txt" -not -name "*.map" -not -name "*.o" -not -name "*.tgt" -not -name "*.x86" -not -wholename ".gitignore" \)'
-        let g:gutentags_ctags_exclude = ['*/.git/*', '*/.clangd/*', '*/configs/*', '*.json', '*.mib', '*.db', '*.css', '*.js', '*.html']
+    1. 当项目过大时gtags生成数据量比较大，生成的过程也比较长，解决方法：
+        将不需要生成索引数据的目录和文件追加到g:gutentags_file_list_exclude
 
     2. 在项目的子目录下通过新建.root 文件让vim-gutentags 给项目创建多个索引数据
         例：如上在s:gutentags_path_exclude 中已过滤掉了项目的子目录os，因此不会在根目录的索引数据中生成os相关的索引，
