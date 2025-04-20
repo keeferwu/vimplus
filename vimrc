@@ -268,7 +268,7 @@ let g:startify_session_sort = 1          " sort by last open time
 let g:startify_session_persistence = 1
 let g:startify_bookmarks = []
 let g:startify_commands = [
-            \ {'h': ['vim help', 'h ref']},
+            \ {'h': ['health check', 'vert checkhealth']},
             \ {'c': ['gtags cache', 'Leaderf gtags_history --cache']},
             \ ]
 " 相对于默认配置把sessions放在第一个
@@ -448,12 +448,8 @@ let g:netrw_hide = 1                 "忽略隐藏文件
 "let g:netrw_list_hide = '^\..*,^.*\.o$,^.*\.swp$,^.*\.bin$'
 nnoremap <silent> <F3> :call ToggleExplorer()<CR>
 function! ToggleExplorer()
-  if exists("t:expl_buf") && bufwinid(t:expl_buf) > 0
-    execute 'bdelete ' . t:expl_buf
+  if exists("t:expl_buf") && win_gotoid(bufwinid(t:expl_buf))
     unlet t:expl_buf
-    return
-  endif
-  if &filetype ==# 'netrw'
     quit
     return
   endif
