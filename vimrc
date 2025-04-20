@@ -132,7 +132,8 @@ if has("nvim")
   " unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
   set clipboard+=unnamed
   let g:python3_host_prog = '/usr/bin/python3'
-  nnoremap <silent> <s-t> :tabnew \| startinsert \| terminal<cr>
+  autocmd TermOpen * startinsert
+  nnoremap <silent> <s-t> :tabnew \| terminal<cr>
 else
   "fix some plugin use BufWitePost cause vim crash when use command wq
   cabbrev wq w<bar>sleep 200m<bar>q
@@ -325,6 +326,7 @@ let g:which_key_map[' '] = {'name' : '+plugin',
                     \   'i': "plugin install",
                     \   'u': "plugin update",
                     \   'c': "plugin clean",
+                    \   'h': "vimplus help",
                     \   }
 let g:which_key_map.w = 'easy motion to word'
 let g:which_key_map.k = 'color/uncolor cword'
@@ -404,6 +406,7 @@ function! UseLSPComplete(error, res)
 endfunction
 let lsp_confirm = "NOTE: vim/nvim will be closed, and you should export VIMLSP to env."
 nnoremap <silent> <leader><leader>l :call vimplus#confirm(lsp_confirm,function("UseLSPComplete"))<cr>
+nnoremap <silent> <leader><leader>h :vert help vimplus<cr>
 " 安装、更新、删除插件
 nnoremap <silent> <leader><leader>i :PlugInstall<cr>
 nnoremap <silent> <leader><leader>u :PlugUpdate<cr>
@@ -456,12 +459,7 @@ function! ToggleExplorer()
   endif
   if &buftype ==# 'terminal'
     " terminal buf will do open
-    vsplit | wincmd h
-    if has('nvim')
-      startinsert | terminal
-    else
-      term ++curwin
-    endif
+    vert terminal
     return
   endif
   " open current file's dir at left

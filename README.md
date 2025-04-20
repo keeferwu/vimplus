@@ -27,7 +27,8 @@
 
 #### 如何高效的使用vimplus?
 
-    通过空格可呼出快捷键导航，具体使用方法参考wiki页
+    1. 查看帮助文档:h vimplus
+    2. 空格呼出快捷键导航，使用方法参考wiki页
 
 https://gitee.com/keeferwu/vimplus/wikis/pages
 
