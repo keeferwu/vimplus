@@ -134,6 +134,7 @@ if has("nvim")
   let g:python3_host_prog = '/usr/bin/python3'
   autocmd TermOpen * startinsert
   nnoremap <silent> <s-t> :tabnew \| terminal<cr>
+  command! CheckHealth :checkhealth
 else
   "fix some plugin use BufWitePost cause vim crash when use command wq
   cabbrev wq w<bar>sleep 200m<bar>q
@@ -268,7 +269,7 @@ let g:startify_session_sort = 1          " sort by last open time
 let g:startify_session_persistence = 1
 let g:startify_bookmarks = []
 let g:startify_commands = [
-            \ {'h': ['health check', 'vert checkhealth']},
+            \ {'h': ['check health', 'CheckHealth']},
             \ {'c': ['gtags cache', 'Leaderf gtags_history --cache']},
             \ ]
 " 相对于默认配置把sessions放在第一个
