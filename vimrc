@@ -647,10 +647,12 @@ nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <leader>rs :LeaderfRgInteractive<cr>
 " Leaderf git
 let g:Lf_GitCommands = [
+            \   {"Leaderf git status":                             "show git status"},
             \   {"Leaderf git log --explorer":                     "fuzzy search and view the log in an explorer tabpage"},
-            \   {"Leaderf git log --current-file":                 "fuzzy search and view the log of current file"},
+            \   {"Leaderf git log --current-file --explorer":      "fuzzy search and view the log of current file in explorer tabpage"},
             \   {"Leaderf git diff --side-by-side":                "fuzzy search and view the side-by-side diffs"},
-            \   {"Leaderf git diff --side-by-side --current-file": "view the side-by-side diffs of the current file"},
+            \   {"Leaderf git diff --current-file --side-by-side": "view the side-by-side diffs of the current file"},
+            \   {"Leaderf git diff HEAD --side-by-side":           "fuzzy search and view the side-by-side diffs of `git diff HEAD`"},
             \   {"Leaderf git blame -w":                           "ignore whitespace when git blame current file"},
             \   {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
             \ ]
