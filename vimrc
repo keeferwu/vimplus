@@ -127,6 +127,33 @@ colorscheme material
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 自定义设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let $PROJECT_ROOT = '.root'    "定义环境变量标识项目根目录
+" 打开文件自动定位到最后编辑的位置
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
+" 以十六进制显示 vim -b 打开的二进制文件
+autocmd BufReadPost * if &bin | execute "%!xxd" | endif
+" 重新映射d 为仅删除不剪切
+nnoremap <silent> d   "_d
+vnoremap <silent> d   "_d
+" visual block re-mapping
+noremap <silent> <m-v> <c-v>
+" C+z默认会退到后台，重映射为展开所有折叠
+nnoremap <silent> <C-z> zR
+"终端下映射ESC退出到normal模式
+tnoremap <silent> <Esc> <C-\><C-n>
+" 保存
+nnoremap <silent> <C-s> :<C-u>call vimplus#write()<cr>
+" 分屏窗口移动
+nnoremap <silent> <C-j> :wincmd j<cr>
+nnoremap <silent> <C-k> :wincmd k<cr>
+nnoremap <silent> <C-h> :wincmd h<cr>
+nnoremap <silent> <C-l> :wincmd l<cr>
+" 调整窗口高度和宽度
+nnoremap <silent> <C-Up>    :resize +5<cr>
+nnoremap <silent> <C-Down>  :resize -5<cr>
+nnoremap <silent> <C-Right> :vertical resize +5<cr>
+nnoremap <silent> <C-Left>  :vertical resize -5<cr>
+
 if has("nvim")
   " unnamedplus:所有的操作都会自动被粘贴进 system clipboard 中
   " unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
@@ -158,32 +185,6 @@ if exists("$TMUX")
   command! ClipBoard :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '') | echo $DISPLAY
   autocmd VimEnter * ClipBoard
 endif
-" 重新映射d 为仅删除不剪切
-nnoremap <silent> d   "_d
-vnoremap <silent> d   "_d
-" visual block re-mapping
-noremap <silent> <m-v> <c-v>
-" C+z默认会退到后台，重映射为展开所有折叠
-nnoremap <silent> <C-z> zR
-"终端下映射ESC退出到normal模式
-tnoremap <silent> <Esc> <C-\><C-n>
-" 保存
-nnoremap <silent> <C-s> :<C-u>call vimplus#write()<cr>
-" 分屏窗口移动
-nnoremap <silent> <C-j> :wincmd j<cr>
-nnoremap <silent> <C-k> :wincmd k<cr>
-nnoremap <silent> <C-h> :wincmd h<cr>
-nnoremap <silent> <C-l> :wincmd l<cr>
-" 调整窗口高度和宽度
-nnoremap <silent> <C-Up>    :resize +5<cr>
-nnoremap <silent> <C-Down>  :resize -5<cr>
-nnoremap <silent> <C-Right> :vertical resize +5<cr>
-nnoremap <silent> <C-Left>  :vertical resize -5<cr>
-
-" 打开文件自动定位到最后编辑的位置
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
-" 以十六进制显示 vim -b 打开的二进制文件
-autocmd BufReadPost * if &bin | execute "%!xxd" | endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 卸载默认插件UnPlug
@@ -279,7 +280,7 @@ let g:startify_lists = [
             \ { 'header': ['   Bookmarks'],             'type': 'bookmarks' },
             \ { 'header': ['   Commands'],              'type': 'commands' },
             \ ]
-let g:startify_session_root_mark = '.root'
+let g:startify_session_root_mark = $PROJECT_ROOT
 " session 退出时自动切换工作目录到主目录
 let g:startify_session_before_save = [
             \ "exec 'cd' fnamemodify(findfile(g:startify_session_root_mark, ';'), ':h')",
@@ -599,7 +600,7 @@ let g:Lf_DefaultExternalTool = 'find'            "rg 默认会自动过滤.ignor
 let g:Lf_UseVersionControlTool = 0               "0: 使用 Lf_DefaultExternalTool 定义的工具搜索文件, 1: 使用当前项目所使用的版本控制工具
 let g:Lf_RecurseSubmodules = 1                   "当g:Lf_UseVersionControlTool = 1 时，通过git ls-files --recurse-submodules 来搜索子项目中的文件
 let g:Lf_DefaultMode = 'Fuzzy'
-let g:Lf_RootMarkers = ['.root']
+let g:Lf_RootMarkers = [$PROJECT_ROOT]
 let g:Lf_WorkingDirectoryMode = 'Aa'
 let g:Lf_CacheDirectory = expand($HOME.'/.vim/cache')
 let g:Lf_UseCache = 1
@@ -691,7 +692,7 @@ endif
 
 " vim-gutentags
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
-let g:gutentags_project_root = ['.root']
+let g:gutentags_project_root = [$PROJECT_ROOT]
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = 'tags'
