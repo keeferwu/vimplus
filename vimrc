@@ -449,31 +449,32 @@ let g:netrw_hide = 1                 "忽略隐藏文件
 "let g:netrw_list_hide = '^\..*,^.*\.o$,^.*\.swp$,^.*\.bin$'
 nnoremap <silent> <F3> :call ToggleExplorer()<CR>
 function! ToggleExplorer()
-  if exists("t:expl_buf") && win_gotoid(bufwinid(t:expl_buf))
-    unlet t:expl_buf
-    quit
-    return
-  endif
   if &buftype ==# 'terminal'
     " terminal buf will do open
     vert terminal
     return
   endif
+  let winid = get(t:, 'netrw_winid', 0)
+  if win_gotoid(winid)
+    let t:netrw_winid = 0
+    close
+    return
+  endif
   " open current file's dir at left
   execute 'Vexplore'
+  let t:netrw_winid = bufwinid("%")
   wincmd H | vertical resize 40
   setlocal winfixwidth
-  let t:expl_buf = bufnr("%")
 endfunction
 autocmd FileType netrw nnoremap <silent><buffer> h :call ChangeToCwd()<cr>
 function! ChangeToCwd()
-  if exists("t:expl_buf") && t:expl_buf == bufnr("%")
+  if t:netrw_winid == bufwinid("%")
     close
     " open current dir
     execute 'Vexplore ' . getcwd()
+    let t:netrw_winid = bufwinid("%")
     wincmd H | vertical resize 40
     setlocal winfixwidth
-    let t:expl_buf = bufnr("%")
   endif
 endfunction
 
