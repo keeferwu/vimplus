@@ -645,6 +645,7 @@ let g:Lf_RgExGlob = ["**/.git/**", "x86_run/*", "target/*", "*.{map,map2,o,tgt,x
 "Leaderf rg -e<Space>
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <leader>rs :LeaderfRgInteractive<cr>
+let g:Lf_GitInlineBlameEnable = 0  " show inline blame, will case buffer load slow
 " Leaderf git
 let g:Lf_GitCommands = [
             \   {"Leaderf git status":                             "show git status"},
