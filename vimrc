@@ -672,18 +672,19 @@ let g:Lf_CtagsFuncOpts = {
             \ }
 let g:Lf_GtagsAutoGenerate = 0           " auto create gtags
 let g:Lf_GtagsGutentags = 1              " use vim-gutentags to generate gtags,should make g:Lf_GtagsAutoGenerate = 0
-let g:Lf_GtagsAutoUpdate = 0             " auto update when buffer write
-autocmd FileType startify let g:Lf_GtagsAutoUpdate = 1
+let g:Lf_GtagsAutoUpdate = 1             " auto update when buffer write
 let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
 let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
 let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
 let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
 nnoremap <silent> <leader>gh :Leaderf gtags_history<cr>
 "nnoremap <silent> <leader>gc :Leaderf gtags_history --cache<cr>
-if g:Lf_GtagsAutoGenerate == 1
+if get(g:, 'Lf_GtagsAutoGenerate', 0)
   nnoremap <silent> <leader>gu :Leaderf gtags --update<cr>
   " 光标15min内没有发生移动，自动更新gtags文件
-  autocmd CursorHold,CursorHoldI * if get(g:, 'Lf_GtagsAutoUpdate', 0)|call vimplus#holdtimer(600*1000, 'Leaderf gtags --update')|endif
+  autocmd CursorHold,CursorHoldI * if get(g:, 'autoloaded_startify', 0) | call vimplus#holdtimer(600*1000, 'Leaderf gtags --update') | endif
+  " 当文件在外部改变时，自动更新gtags
+  autocmd FileChangedShellPost * if get(g:, 'autoloaded_startify', 0) | call execute('Leaderf gtags --update') | endif
 endif
 if exists('$VIMLSP')
 nnoremap <silent> <leader>jd :Leaderf coc definitions --auto-jump<cr>
@@ -730,7 +731,6 @@ let g:gutentags_trace = 0
 "写更新有时会导致gtags数据丢失部分内容
 let g:gutentags_generate_on_write = 0
 let g:gutentags_generate_on_new = 0
-"仅有通过startify session 打开文件，gtags数据才进行更新
 autocmd FileType startify let g:gutentags_generate_on_new = 1
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
@@ -751,7 +751,9 @@ if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
   let g:gutentags_auto_add_gtags_cscope = 0
   nnoremap <silent> <leader>gu :GutentagsUpdate!<cr>
   " 光标10min内没有发生移动，自动更新gtags文件
-  autocmd CursorHold,CursorHoldI * if get(g:, 'gutentags_generate_on_new', 0)|call vimplus#holdtimer(600*1000, 'GutentagsUpdate!')|endif
+  autocmd CursorHold,CursorHoldI * if get(g:, 'autoloaded_startify', 0) | call vimplus#holdtimer(600*1000, 'GutentagsUpdate!') | endif
+  " 当文件在外部改变时，自动更新gtags
+  autocmd FileChangedShellPost * if get(g:, 'autoloaded_startify', 0) | call execute('GutentagsUpdate!') | endif
 endif
 
 " OmniCppComplete

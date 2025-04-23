@@ -112,6 +112,14 @@ function! vimplus#ignoredbuffer(bufnr) abort
   return v:false
 endfunction
 
+function! vimplus#gittracked() abort
+  let result = system('git rev-parse --is-inside-work-tree')
+  if result ==# 'true'
+    return v:true
+  endif
+  return v:false
+endfunction
+
 function! vimplus#holdtimer(time, cmd) abort
   " 定义一个字典来存储定时器ID，键为定时器的触发时间
   if !exists("s:vimplus_timer")
