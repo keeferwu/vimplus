@@ -342,7 +342,17 @@ let g:which_key_map.d = {'name' : '+different',
                     \    'H' : 'stage hunk current change revert',
                     \   }
 let g:which_key_map.c = {'name' : '+commenter'}
-let g:which_key_map.f = {'name' : '+leaderf'}
+let g:which_key_map.f = {'name' : '+leaderf',
+                    \    'f' : 'leaderf file',
+                    \    'b' : 'leaderf buffer',
+                    \    'm' : 'leaderf mru',
+                    \    't' : 'leaderf buftag',
+                    \    'l' : 'leaderf line',
+                    \    'g' : 'leaderf git',
+                    \    'c' : 'leaderf command',
+                    \    's' : 'leaderf colorscheme',
+                    \    'h' : 'leaderf help',
+                    \   }
 let g:which_key_map.l = {'name' : '+list',
                     \    'f' : 'leaderf file list',
                     \    'g' : 'leaderf gtags list',
@@ -577,7 +587,7 @@ endif
 " LeaderF
 let g:Lf_ShortcutF = ''
 let g:Lf_ShortcutB = ''
-nnoremap <leader>ff :LeaderfFile<cr>
+nnoremap <silent> <leader>ff :execute "LeaderfFile " . input("Search directory: ", "", 'dir')<cr>
 nnoremap <silent> <leader>fb :LeaderfBuffer<cr>
 nnoremap <silent> <leader>ft :LeaderfBufTag<cr>
 nnoremap <silent> <leader>fl :LeaderfLine<cr>
@@ -586,8 +596,8 @@ nnoremap <silent> <leader>fh :LeaderfHelp<cr>
 nnoremap <silent> <leader>fc :LeaderfCommand<cr>
 nnoremap <silent> <leader>fs :LeaderfColorscheme<cr>
 nnoremap <silent> <leader>fg :LeaderfGit<cr>
-nnoremap <silent> <leader>lq :cclose \| LeaderfQuickFix<cr>
-nnoremap <silent> <leader>ll :lclose \| LeaderfLocList<cr>
+nnoremap <silent> <leader>lq :cclose<bar> LeaderfQuickFix<cr>
+nnoremap <silent> <leader>ll :lclose<bar> LeaderfLocList<cr>
 nnoremap <silent> <leader>lf :Leaderf file --recall<cr>
 nnoremap <silent> <leader>lg :Leaderf gtags --recall<cr>
 nnoremap <silent> <leader>lr :Leaderf rg --recall<cr>
@@ -649,13 +659,12 @@ let g:Lf_GitInlineBlameEnable = 0  " show inline blame, will case buffer load sl
 " Leaderf git
 let g:Lf_GitCommands = [
             \   {"Leaderf git status":                             "show git status"},
+            \   {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
             \   {"Leaderf git log --explorer":                     "fuzzy search and view the log in an explorer tabpage"},
             \   {"Leaderf git log --current-file --explorer":      "fuzzy search and view the log of current file in explorer tabpage"},
             \   {"Leaderf git diff --side-by-side":                "fuzzy search and view the side-by-side diffs"},
             \   {"Leaderf git diff --current-file --side-by-side": "view the side-by-side diffs of the current file"},
             \   {"Leaderf git diff HEAD --side-by-side":           "fuzzy search and view the side-by-side diffs of `git diff HEAD`"},
-            \   {"Leaderf git blame -w":                           "ignore whitespace when git blame current file"},
-            \   {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
             \ ]
 " 项目根目录存在gtags.file文件，gtags 会以该文件为基础生成数据，生成gtags.file的方式参考 g:gutentags_file_list_command
 " 或者将要过滤的类型添加到 ~/.globalrc 中的:skip
