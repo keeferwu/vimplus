@@ -92,11 +92,9 @@ vimspector 是一个调试插件，需要安装Debug Adapter
 
 coc.nvim 是一个使用LSP补全的插件，需要安装对应语言的LSP server
 
-    1. 版本要求 vim >= 9.0.0438, nvim >= 0.8.0, nodejs >= 16.18.0
+    1. 将扩展名配置到 g:coc_global_extensions 中，vim/nvim 启动时会自动安装这些扩展对应的语言服务器
 
-    2. 将扩展名配置到 g:coc_global_extensions 中，vim or nvim 启动时会自动安装这些扩展对应的语言服务器
-
-    3. 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt，生成方法：
+    2. 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt，生成方法：
         Makefile架构：通过工具bear or compiledb 构建compile_commands.json
         Cmake架构：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 

@@ -357,7 +357,7 @@ function install_prepare_software_by_apt()
 
     if which vim >/dev/null 2>&1; then
         vim_version=`vim --version | head -n 1 | awk '{print $5}'`
-        target_version="9.0"
+        target_version="9.1"
         if ! printf '%s\n%s\n' "$vim_version" "$target_version" | sort -V -C -r; then
             echo
             echo -e "\033[33m Current vim version is $vim_version, make sure it >= $target_version \033[0m"
