@@ -1,6 +1,10 @@
-#### 如何安装vimplus?
+#### 版本要求
 
-    注意：此仓库会覆盖原有的.vimrc 和.vim目录，如果有需要，请在安装前做好备份
+    vim >= v9.1 or nvim >= v0.10.0,
+
+#### 安装vimplus
+
+    如有需要请在clone前备份好原有的.vimrc 和.vim目录
 
     git clone https://gitee.com/keeferwu/vimplus.git ~/.vim
     cd ~/.vim
@@ -9,7 +13,7 @@
     已经验证过的系统有 Ubuntu/LinuxMint/ArchLinux/ManjaroLinux
     其他系统未经验证，可能会存在软件依赖或过时的问题,如果不想解决可以在docker中使用vimplus
 
-#### 如何在docker中安装vimplus？
+#### 在docker中安装vimplus
 
     1. docker pull ubuntu    #拉取ubuntu镜像
     2. docker run --name <container_name> --network=host -it ubuntu:latest /bin/bash   #创建ubuntu容器
@@ -25,34 +29,29 @@
     5. docker exec -u <user_name> -w /home/<user_name> -it <container_name> /bin/bash  #以新用户身份进入容器中的用户家目录
     6. 在容器中执行vimplus的安装步骤
 
-#### 如何高效的使用vimplus?
+#### 使用vimplus
 
     1. 查看帮助文档:h vimplus
     2. 空格呼出快捷键导航，使用方法参考wiki页
 
 https://gitee.com/keeferwu/vimplus/wikis/pages
 
-#### 如何设置Nerd Font?
+#### 设置Nerd Font
 
     为防止statusline显示乱码，需设置linux终端字体为`Droid Sans Mono Nerd Font`，
     不同的终端有不同的设置方法。
 
-#### 如何配置vim 支持系统剪切板?
+#### 配置ssh 远程复制粘贴
 
-    当使用 "+y","+p" 无法将vim的内容复制到终端时
-    通过命令 vim --version | grep "clipboard" 查看vim 是否支持系统剪切板
-    clipboard 前边是 - 号，即为不支持，ubuntu下可以安装vim-gnome 或vim-gtk
-
-    使用ctrl+c,ctrl+v 已完全替代了 "+y","+p" 的功能，且不需要vim支持clipboard
-
-    当使用ssh远程连接server，系统剪切版无法使用，查看DISPLAY环境变量为空
-    解决办法：
+    通过快捷键ctrl+c,ctrl+v 实现了vim/nvim 对系统剪切板的复制和粘贴。
+    当系统剪切板在本地可以正常使用，但通过ssh远程连接时无法使用时，
+    查看DISPLAY环境变量是否为空，如何为空解决办法如下：
     ssh server 端：修改 /etc/ssh/sshd_config  ---> X11Forwarding yes
     ssh client 端：ssh 连接时使用-Y 或 -X 选项， 并启动Xserver
 
 参考：https://zhuanlan.zhihu.com/p/579860830
 
-#### 哪些插件有特殊要求?
+#### 插件的特殊要求
 
 OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件
 
@@ -106,7 +105,7 @@ codecompanion.nvim 是一种生产力工具，可简化您在 Neovim 中使用 L
 
 配置和使用参考：https://codecompanion.olimorris.dev/
 
-#### 如何让gtags支持更多语言?
+#### 配置gtags支持更多语言
 
 gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  pygments 支持 50+ 种语言。因此我们要安装 pygments
 
