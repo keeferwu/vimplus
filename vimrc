@@ -381,7 +381,7 @@ let g:which_key_map.q = {'name' : '+quit',
                     \    'q' : 'quit quickfix',
                     \   }
 if exists('$VIMLSP')
-let g:which_key_map.j = {'name' : '+cocjump',
+let g:which_key_map.j = {'name' : '+jump',
                     \    'd' : 'jumpDefinition',
                     \    'r' : 'jumpReferences',
                     \    'c' : 'jumpDeclaration',
@@ -692,7 +692,7 @@ if get(g:, 'Lf_GtagsAutoGenerate', 0)
   " 光标15min内没有发生移动，自动更新gtags文件
   autocmd CursorHold,CursorHoldI * if get(g:, 'autoloaded_startify', 0) | call vimplus#holdtimer(600*1000, 'Leaderf gtags --update') | endif
   " 当文件在外部改变时，自动更新gtags
-  autocmd FileChangedShellPost * if get(g:, 'autoloaded_startify', 0) | call execute('Leaderf gtags --update') | endif
+  autocmd FileChangedShellPost * if get(g:, 'autoloaded_startify', 0) && !vimplus#ignoredbuffer('%') | execute 'Leaderf gtags --update' | endif
 endif
 if exists('$VIMLSP')
 nnoremap <silent> <leader>jd :Leaderf coc definitions --auto-jump<cr>
@@ -761,7 +761,7 @@ if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
   " 光标10min内没有发生移动，自动更新gtags文件
   autocmd CursorHold,CursorHoldI * if get(g:, 'autoloaded_startify', 0) | call vimplus#holdtimer(600*1000, 'GutentagsUpdate!') | endif
   " 当文件在外部改变时，自动更新gtags
-  autocmd FileChangedShellPost * if get(g:, 'autoloaded_startify', 0) | call execute('GutentagsUpdate!') | endif
+  autocmd FileChangedShellPost * if get(g:, 'autoloaded_startify', 0) && !vimplus#ignoredbuffer('%') | execute 'GutentagsUpdate!' | endif
 endif
 
 " OmniCppComplete
