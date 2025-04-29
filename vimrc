@@ -92,10 +92,7 @@ set showmatch                    " 高亮显示匹配括号
 set foldmethod=indent            " 折叠方式,syntax会导致大文件卡顿
 set foldcolumn=0                 " 设置折叠区域的宽度
 set foldlevelstart=99            " 打开文件是默认不折叠代码
-setlocal foldlevel=1             " 设置折叠层数
-"autocmd BufWinEnter * silent! :%foldopen! "打开文件是默认不折叠代码
 nnoremap <silent> <F2> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
-"注：<space> 不可以随便映射，因为ctrl+] 会应用<space> 映射的命令
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 代码补全
