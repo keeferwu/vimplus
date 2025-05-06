@@ -204,8 +204,8 @@ require("codecompanion").setup({
           model = {
             default = "deepseek-ai/DeepSeek-R1",
             choices = {
-              ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true } },
-              "deepseek-ai/DeepSeek-V3",
+              ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true, can_use_tools = false } },
+              ["deepseek-ai/DeepSeek-V3"]  = { opts = { can_use_tools = true } },
             },
           },
         },
@@ -225,8 +225,8 @@ require("codecompanion").setup({
           model = {
             default = "deepseek-ai/DeepSeek-V3",
             choices = {
-              "deepseek-ai/DeepSeek-V3",
-              ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true } },
+              ["deepseek-ai/DeepSeek-V3"]  = { opts = { can_use_tools = true } },
+              ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true, can_use_tools = false } },
             },
           },
         },
