@@ -297,22 +297,7 @@ endfunction
 function! vimplus#tabclose() abort
   let curr_tab = tabpagenr()
   if curr_tab > 1
-    let last_win = winnr('$')
-    execute last_win . 'wincmd w'
-    if &filetype ==# 'VimspectorPrompt'
-      " lasted window is vimspectorPrompt do nothing
-      echo "vimspector can not be deleted by tabclose"
-      return
-    endif
-    let buf_list = uniq(sort(tabpagebuflist()))
-    for buf in buf_list
-      if vimplus#ignoredbuffer(buf)
-        execute "bdelete! " . buf
-      endif
-    endfor
-    if curr_tab == tabpagenr()
-      execute "tabclose"
-    endif
+    call vimplus#bufclose()
   endif
 endfunction
 
