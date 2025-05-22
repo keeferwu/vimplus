@@ -279,20 +279,6 @@ vim.keymap.set({ "n", "v" }, "<C-x>", "<cmd>CodeCompanionChat Toggle<cr>", { nor
 -- Expand 'cc' into 'CodeCompanion' in the command line
 vim.cmd([[cab cc CodeCompanion]])
 
--- fidget.nvim
-require("fidget").setup {
-    --option
-}
-
-function llm_role_title(adapter)
-  local parts = {}
-  table.insert(parts, adapter.formatted_name)
-  if adapter.model and adapter.model ~= "" then
-    table.insert(parts, "(" .. adapter.model .. ")")
-  end
-  return table.concat(parts, " ")
-end
-
 function codecompanion_notify_by_fidget()
   local group = vim.api.nvim_create_augroup("CodeCompanionFidgetHooks", {})
   local fidget_handles = {}
@@ -301,6 +287,14 @@ function codecompanion_notify_by_fidget()
     pattern = "CodeCompanionRequestStarted",
     group = group,
     callback = function(request)
+      local llm_role_title = function(adapter)
+        local parts = {}
+        table.insert(parts, adapter.formatted_name)
+        if adapter.model and adapter.model ~= "" then
+          table.insert(parts, "(" .. adapter.model .. ")")
+        end
+        return table.concat(parts, " ")
+      end
       local handle = require("fidget.progress").handle.create({
         title = "",
         -- title = " Thinking... (" .. request.data.strategy .. ")",
@@ -333,3 +327,9 @@ function codecompanion_notify_by_fidget()
   })
 end
 codecompanion_notify_by_fidget()
+
+-- fidget.nvim
+require("fidget").setup {
+    --option
+}
+
