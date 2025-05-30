@@ -468,8 +468,11 @@ function! ToggleExplorer()
     close
     return
   endif
+  let bufname = expand('%:t')
   " open current file's dir at left
   execute 'Vexplore'
+  " corsor to current file
+  call search('\V'.bufname, 'w')
   let t:netrw_winid = bufwinid("%")
   wincmd H | vertical resize 40
   setlocal winfixwidth
@@ -784,7 +787,7 @@ let g:SuperTabContextDefaultCompletionType = "<c-x><c-n>"
 let g:SuperTabCompleteCase = 'match'
 
 " codeium.vim
-let g:codeium_enabled = 0               " enable codeium need token
+let g:codeium_enabled = 1               " enable codeium need token
 let g:codeium_disable_bindings = 1      " disable default keybindings
 let g:codeium_no_map_tab = 1            " disabled Codeium use tab keybindings
 imap <script><silent><nowait><expr> <M-=> codeium#Accept()
