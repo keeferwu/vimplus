@@ -457,9 +457,7 @@ let g:netrw_hide = 1                 "忽略隐藏文件
 "let g:netrw_list_hide = '^\..*,^.*\.o$,^.*\.swp$,^.*\.bin$'
 nnoremap <silent> <F3> :call ToggleExplorer()<CR>
 function! ToggleExplorer()
-  if &buftype ==# 'terminal'
-    " terminal buf will do open
-    vert terminal
+  if &buftype ==# 'terminal' || &buftype ==# 'nofile'
     return
   endif
   let winid = get(t:, 'netrw_winid', 0)
@@ -468,8 +466,11 @@ function! ToggleExplorer()
     close
     return
   endif
+  let bufname = expand('%:t')
   " open current file's dir at left
   execute 'Vexplore'
+  " corsor to current file
+  call search('\V'.bufname, 'w')
   let t:netrw_winid = bufwinid("%")
   wincmd H | vertical resize 40
   setlocal winfixwidth
