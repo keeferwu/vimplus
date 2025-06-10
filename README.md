@@ -1,6 +1,6 @@
 #### 版本要求
 
-    vim >= v9.1 or nvim >= v0.10.0,
+    vim >= v9.1 or nvim >= v0.10.0
 
 #### 安装vimplus
 
@@ -51,6 +51,68 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
 
 参考：https://zhuanlan.zhihu.com/p/579860830
 
+#### 插件列表
+
+    call plug#begin('~/.vim/plugged')
+    " 启动页面
+    Plug 'mhinz/vim-startify'
+    " 快捷键提示
+    Plug 'liuchengxu/vim-which-key'
+    " 精简的statusline
+    Plug 'liuchengxu/eleline.vim'
+    " vim 插件环境检测
+    Plug 'rhysd/vim-healthcheck', has('nvim') ? {'on': []} : {'on': 'CheckHealth'}
+    " 函数显示列表
+    Plug 'preservim/tagbar'
+    " 光标快速移动
+    Plug 'easymotion/vim-easymotion'
+    " 显示缩进标线
+    Plug 'Yggdroot/indentLine'
+    " 代码快速注释
+    Plug 'preservim/nerdcommenter'
+    " 彩虹括号
+    Plug 'luochen1990/rainbow'
+    " cpp扩展高亮
+    Plug 'octol/vim-cpp-enhanced-highlight', has('nvim') ? {'on': []} : {'for': ['c','cpp']}
+    " rust代码格式化，语法高亮
+    Plug 'rust-lang/rust.vim', has('nvim') ? {'on': []} : {'for': 'rust'}
+    " 修改显示
+    Plug 'chrisbra/changesPlugin'
+    " 代码格式化
+    Plug 'vim-autoformat/vim-autoformat', {'on': ['Autoformat','AutoformatLine','RemoveTrailingSpaces']}
+    " 使用global工具自动更新tags文件
+    Plug 'ludovicchabant/vim-gutentags'
+    " 文件模糊搜索工具
+    Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
+    " 显示leaderf gtags 搜索历史
+    Plug 'keeferwu/LeaderF-gtags-history'
+    " AI智能插件，需要登录获取token
+    Plug 'Exafunction/codeium.vim', {'branch': 'main'}
+    " 代码块补全，配合ultisnips使用
+    Plug 'honza/vim-snippets'
+    " 代码块模板
+    Plug 'SirVer/ultisnips', exists('$VIMLSP') ? {'on': []} : {}
+    " tab触发补全
+    Plug 'ervandew/supertab', exists('$VIMLSP') ? {'on': []} : {}
+    " c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
+    Plug 'vim-scripts/OmniCppComplete', exists('$VIMLSP') ? {'on': []} : {'for': ['c','cpp']}
+    " lsp代码补全,需要安装语言服务器
+    Plug 'neoclide/coc.nvim', exists('$VIMLSP') ? {'branch': 'release'} : {'on': []}
+    " 代码调试
+    Plug 'puremourning/vimspector'
+
+    " nvim插件库
+    Plug 'nvim-lua/plenary.nvim', has('nvim') ? {'branch': 'master'} : {'on': []}
+    " nvim代码语法高亮
+    Plug 'nvim-treesitter/nvim-treesitter', has('nvim') ? {'do': ':TSUpdate'} : {'on': []}
+    " ai编程助手
+    Plug 'olimorris/codecompanion.nvim', has('nvim') ? {} : {'on': []}
+    " 渲染 markdown 和 codecompanion 文件
+    Plug 'MeanderingProgrammer/render-markdown.nvim', has('nvim') ? {} : {'on': []}
+    " nvim 消息提示, use for codecompanion
+    Plug 'j-hui/fidget.nvim', has('nvim') ? {} : {'on': []}
+    call plug#end()
+
 #### 插件的特殊要求
 
 OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件
@@ -69,11 +131,12 @@ Codeium 是一款智能补全插件，需要登录到官网生成token，注意�
 vim-gutentags 由于leaderF不支持ctags数据生成，因此使用vim-gutentags生成索引数据到leaderf 缓存目录
 
     1. 当项目过大时gtags生成数据量比较大，生成的过程也比较长，解决方法：
-        将不需要生成索引数据的目录和文件追加到g:gutentags_file_list_exclude
+        将不需要生成索引数据的目录和文件追加到
+        find: g:gutentags_file_list_exclude or fd: g:gutentags_file_list_exclude
 
-    2. 在项目的子目录下通过新建.root 文件让vim-gutentags 给项目创建多个索引数据
-        例：如上在s:gutentags_path_exclude 中已过滤掉了项目的子目录os，因此不会在根目录的索引数据中生成os相关的索引，
-        可通过在os目录下新建一个.root文件, 当在vim中访问到 os 下的文件时，会自动生成os下独立的数据索引。
+    2. 在项目的子目录下通过新建.root 文件让vim-gutentags 给项目创建多个索引数据,实现数据的分割
+        例：如上在s:gutentags_path_exclude 中过滤掉子目录os，在os目录下新建一个.root文件,
+        当在vim中访问到 os 下的文件时，会自动生成os下独立的数据索引,与主项目的数据索引分离
 
     3. gtags 数据生成失败调试方法：
         开启调试信息：let g:gutentags_trace = 1

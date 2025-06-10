@@ -280,6 +280,7 @@ let g:startify_lists = [
 let g:startify_session_root_mark = $PROJECT_ROOT
 " session 退出时自动切换工作目录到主目录
 let g:startify_session_before_save = [
+            \ "exec 'cd' fnamemodify(finddir('.git', ';'), ':h')",
             \ "exec 'cd' fnamemodify(findfile(g:startify_session_root_mark, ';'), ':h')",
             \ "normal! zR"
             \ ]
@@ -300,6 +301,9 @@ let g:startify_session_savecmds = [
             \   'hi ChangesSignTextCh  ctermbg=blue  ctermfg=black guibg=blue',
             \   'hi ChangesSignTextDummyCh  ctermfg=NONE ctermbg=blue guifg=NONE guibg=blue',
             \   'hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green',
+            \   'endif',
+            \   'if g:gutentags_file_list_command[:1] == "fd" && !empty(findfile(g:startify_session_root_mark, ";"))',
+            \   'let g:gutentags_file_list_command .= " -I"',
             \   'endif',
             \ ]
 "delete session in starify
@@ -608,7 +612,7 @@ let g:Lf_DefaultExternalTool = 'find'            "rg 默认会自动过滤.ignor
 let g:Lf_UseVersionControlTool = 0               "0: 使用 Lf_DefaultExternalTool 定义的工具搜索文件, 1: 使用当前项目所使用的版本控制工具
 let g:Lf_RecurseSubmodules = 1                   "当g:Lf_UseVersionControlTool = 1 时，通过git ls-files --recurse-submodules 来搜索子项目中的文件
 let g:Lf_DefaultMode = 'Fuzzy'
-let g:Lf_RootMarkers = [$PROJECT_ROOT]
+let g:Lf_RootMarkers = [$PROJECT_ROOT, '.git', '.hg', '.svn']
 let g:Lf_WorkingDirectoryMode = 'Aa'
 let g:Lf_CacheDirectory = expand($HOME.'/.vim/cache')
 let g:Lf_UseCache = 1
@@ -702,7 +706,7 @@ endif
 
 " vim-gutentags
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
-let g:gutentags_project_root = [$PROJECT_ROOT]
+let g:gutentags_project_root = [$PROJECT_ROOT, '.git', '.hg', '.svn']
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = 'tags'
@@ -717,7 +721,7 @@ else
   " generate gtags data to leaderF
   let g:gutentags_cache_dir = expand(g:Lf_CacheDirectory.'/LeaderF/gtags/')
   let s:gutentags_file_list_exclude = g:Lf_WildIgnore.dir + g:Lf_WildIgnore.file + ['boot','os','htmlpages','cmwut','x86_run','*.mib','*.txt']
-  let g:gutentags_file_list_command = "fd --type f -I"
+  let g:gutentags_file_list_command = "fd --type f"
   for ign in s:gutentags_file_list_exclude
     let g:gutentags_file_list_command .= " --exclude " . "'" . ign . "'"
   endfor
