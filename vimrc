@@ -308,7 +308,8 @@ let g:startify_session_savecmds = [
             \   '    let g:gutentags_file_list_command .= " --exclude " . join(g:gutentags_custom_ignore_list, " --exclude ")',
             \   '  endif',
             \   '  if !empty(findfile(g:startify_session_root_mark, ";"))',
-            \   '    let g:gutentags_file_list_command .= " -I"',
+            \   '    let g:gutentags_file_list_command .= " --no-ignore-vcs"',
+            \   '    let g:Lf_RgConfig += ["--no-ignore-vcs"]',
             \   '  endif',
             \   'endif',
             \ ]
@@ -626,11 +627,11 @@ let g:Lf_NeedCacheTime = 1
 let g:Lf_NumberOfCache = 10
 let g:Lf_ShowHidden = 0
 let g:Lf_WildIgnore = {
-            \   'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache','obj','target','build'],
+            \   'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache'],
             \   'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
             \}
 let g:Lf_MruWildIgnore = {
-            \   'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache','obj'],
+            \   'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache'],
             \   'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
             \}
 "let g:Lf_WindowPosition = 'popup'
@@ -658,8 +659,8 @@ let g:Lf_PreviewResult = {
 " --unrestricted:当主项目中的.gitignore 文件忽略掉了子项目目录，该选项可以使搜索不受.gitignore 文件的限制，
 " --no-ignore: 禁用所有与忽略相关的过滤(.igrore .rgignore .gitignore)
 " 在当前仓库搜索子仓库里的内容, 但搜索过程比较慢
-let g:Lf_RgConfig = ["--max-columns=150", "--hidden", "--unrestricted"]
-let g:Lf_RgExGlob = ["**/.git/**", "x86_run/*", "target/*", "*.{map,map2,o,tgt,x86}", "gtags.files", "compile_commands.json"]
+let g:Lf_RgConfig = ["--max-columns=150", "--hidden"]
+let g:Lf_RgExGlob = ["**/.git/**", ".clangd/*", "target/*", "*.{map,map2,o,tgt,x86}", "gtags.files", "compile_commands.json"]
 "Leaderf rg -e<Space>
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <leader>rs :LeaderfRgInteractive<cr>
