@@ -687,6 +687,7 @@ let g:Lf_CtagsFuncOpts = {
             \   'rust': '--rust-kinds=f',
             \ }
 let g:Lf_GtagsAutoGenerate = 0           " auto create gtags
+autocmd FileType startify let g:Lf_GtagsAutoGenerate = 0
 let g:Lf_GtagsGutentags = 1              " use vim-gutentags to generate gtags,should make g:Lf_GtagsAutoGenerate = 0
 let g:Lf_GtagsAutoUpdate = 1             " auto update when buffer write
 let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
@@ -739,8 +740,10 @@ let g:gutentags_trace = 0
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
 "写更新有时会导致gtags数据丢失部分内容
+let g:gutentags_generate_on_missing = 0
 let g:gutentags_generate_on_write = 0
 let g:gutentags_generate_on_new = 0
+autocmd FileType startify let g:gutentags_generate_on_missing = 1
 autocmd FileType startify let g:gutentags_generate_on_new = 1
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
