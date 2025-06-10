@@ -286,6 +286,7 @@ let g:startify_session_before_save = [
             \ ]
 let g:startify_session_savevars = [
             \ 'g:colors_name',
+            \ 'g:gutentags_custom_ignore_list',
             \ ]
 "清除terminal的buffer
 let g:startify_session_remove_lines = ['term:\/', 'NetrwTreeListing', 'CodeCompanion']
@@ -296,14 +297,19 @@ let g:startify_session_savecmds = [
             \   'clearjumps',
             \   'exe "colorscheme " . g:colors_name',
             \   'if !get(g:, "changes_sign_text_utf8", 0)',
-            \   'hi ChangesSignTextAdd ctermbg=green ctermfg=black guibg=green',
-            \   'hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red',
-            \   'hi ChangesSignTextCh  ctermbg=blue  ctermfg=black guibg=blue',
-            \   'hi ChangesSignTextDummyCh  ctermfg=NONE ctermbg=blue guifg=NONE guibg=blue',
-            \   'hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green',
+            \   '  hi ChangesSignTextAdd ctermbg=green ctermfg=black guibg=green',
+            \   '  hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red',
+            \   '  hi ChangesSignTextCh  ctermbg=blue  ctermfg=black guibg=blue',
+            \   '  hi ChangesSignTextDummyCh  ctermfg=NONE ctermbg=blue guifg=NONE guibg=blue',
+            \   '  hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green',
             \   'endif',
-            \   'if g:gutentags_file_list_command[:1] == "fd" && !empty(findfile(g:startify_session_root_mark, ";"))',
-            \   'let g:gutentags_file_list_command .= " -I"',
+            \   'if g:gutentags_file_list_command[:1] == "fd"',
+            \   '  if !empty(g:gutentags_custom_ignore_list)',
+            \   '    let g:gutentags_file_list_command .= " --exclude " . join(g:gutentags_custom_ignore_list, " --exclude ")',
+            \   '  endif',
+            \   '  if !empty(findfile(g:startify_session_root_mark, ";"))',
+            \   '    let g:gutentags_file_list_command .= " -I"',
+            \   '  endif',
             \   'endif',
             \ ]
 "delete session in starify
@@ -710,21 +716,15 @@ let g:gutentags_project_root = [$PROJECT_ROOT, '.git', '.hg', '.svn']
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = 'tags'
-if !exists('g:Lf_GtagsGutentags')
-  " 将自动生成的 ctags/gtags 文件全部放入 ~/.vim/tags 目录中，避免污染工程目录
-  let g:gutentags_cache_dir = expand('~/.vim/cache/tags')
+if !executable('fd')
   let s:gutentags_path_exclude = '\( -path "*.git*" -o -path "*clangd*" -o -path "*obj*" -o -path "./build*" -o -path "./target*" \)'
   " -name: 匹配文件名，-iname: 匹配文件名时忽略大小写， -wholename: 匹配文件名及其路径
   let s:gutentags_file_exclude = '\( -type f -not -iname "*makefile*" -not -iname "*.txt" -not -name "*.o" -not -wholename ".gitignore" \)'
   let g:gutentags_file_list_command = 'find . ' . s:gutentags_path_exclude . ' -a -prune -o ' . s:gutentags_file_exclude . ' -print'
 else
-  " generate gtags data to leaderF
-  let g:gutentags_cache_dir = expand(g:Lf_CacheDirectory.'/LeaderF/gtags/')
-  let s:gutentags_file_list_exclude = g:Lf_WildIgnore.dir + g:Lf_WildIgnore.file + ['boot','os','htmlpages','cmwut','x86_run','*.mib','*.txt']
-  let g:gutentags_file_list_command = "fd --type f"
-  for ign in s:gutentags_file_list_exclude
-    let g:gutentags_file_list_command .= " --exclude " . "'" . ign . "'"
-  endfor
+  let g:gutentags_custom_ignore_list = []
+  let s:gutentags_file_list_exclude = g:Lf_WildIgnore.dir + g:Lf_WildIgnore.file
+  let g:gutentags_file_list_command = "fd --type f --exclude " . join(s:gutentags_file_list_exclude, " --exclude ")
 endif
 let g:gutentags_ctags_exclude = ['*/.git/*', '*/.clangd/*', '*/configs/*', '*.json', '*.mib', '*.db', '*.css', '*.js', '*.html']
 let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
@@ -744,6 +744,8 @@ let g:gutentags_generate_on_new = 0
 autocmd FileType startify let g:gutentags_generate_on_new = 1
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
+" generate gtags data to leaderF
+let g:gutentags_cache_dir = expand(g:Lf_CacheDirectory.'/LeaderF/gtags/')
 if get(g:, 'Lf_GtagsGutentags', 1) && executable('ctags')
   let g:gutentags_modules += ['ctags']
   " 定时器回调执行tjump是同步的，时间过长仍然会卡住vim
