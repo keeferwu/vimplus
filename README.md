@@ -131,10 +131,10 @@ Codeium 是一款智能补全插件，需要登录到官网生成token，注意�
 vim-gutentags 由于leaderF不支持ctags数据生成，因此使用vim-gutentags生成索引数据到leaderf 缓存目录
 
     1. 当项目过大时gtags生成数据量比较大，生成的过程也比较长，解决方法：
-        将不需要生成索引数据的目录和文件追加到 g:gutentags_custom_ignore_list
+        将不需要生成索引数据的目录和文件追加到项目根目录下.fdignore 文件中
 
     2. 在项目的子目录下通过新建.root 文件让vim-gutentags 给项目创建多个索引数据,实现数据的分割
-        例：let g:gutentags_custom_ignore_list += [os]，在os目录下新建一个.root文件,
+        例: 将os 所在路径添加到.fdignore文件，在os目录下新建一个.root文件,
         当在vim中访问到 os 下的文件时，会自动生成os下独立的数据索引,与主项目的数据索引分离
 
     3. gtags 数据生成失败调试方法：
