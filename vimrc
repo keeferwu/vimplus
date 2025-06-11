@@ -124,7 +124,8 @@ colorscheme material
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 自定义设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let $PROJECT_ROOT = '.root'    " 定义环境变量标识项目根目录
+let $PROJECT_ROOT = '.root'     " 定义环境变量标识项目根目录
+let g:project_ignore_list = []  " 配置项目需要忽略的目录和文件
 " 打开文件自动定位到最后编辑的位置
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
 " 以十六进制显示 vim -b 打开的二进制文件
@@ -286,7 +287,7 @@ let g:startify_session_before_save = [
             \ ]
 let g:startify_session_savevars = [
             \ 'g:colors_name',
-            \ 'g:gutentags_ignore_list',
+            \ 'g:project_ignore_list',
             \ ]
 "清除terminal的buffer
 let g:startify_session_remove_lines = ['term:\/', 'NetrwTreeListing', 'CodeCompanion']
@@ -311,10 +312,10 @@ let g:startify_session_savecmds = [
             \   '    let g:gutentags_file_list_command = substitute(g:gutentags_file_list_command, ''--no-ignore-vcs'', '''', ''g'')',
             \   '    let g:Lf_RgConfig = filter(copy(g:Lf_RgConfig), ''v:val !=# "--no-ignore-vcs"'')',
             \   '  endif',
-            \   '  if !empty(g:gutentags_ignore_list)',
-            \   '    let s:gutentags_exclude = map(g:gutentags_ignore_list, ''v:val =~ ''''^".*"$'''' ? v:val : ''''"''''.v:val.''''"'''''')',
+            \   '  if !empty(g:project_ignore_list)',
+            \   '    let s:gutentags_exclude = map(g:project_ignore_list, ''v:val =~ ''''^".*"$'''' ? v:val : ''''"''''.v:val.''''"'''''')',
             \   '    let g:gutentags_file_list_command .= " --exclude " . join(s:gutentags_exclude, " --exclude ")',
-            \   '    let g:Lf_RgExGlob += g:gutentags_ignore_list',
+            \   '    let g:Lf_RgExGlob += g:project_ignore_list',
             \   '  endif',
             \   'endif',
             \ ]
@@ -665,7 +666,12 @@ let g:Lf_PreviewResult = {
 " --no-ignore: 禁用所有与忽略相关的过滤(.igrore .rgignore .gitignore)
 " 在当前仓库搜索子仓库里的内容, 但搜索过程比较慢
 let g:Lf_RgConfig = ["--max-columns=150", "--hidden" , "--no-ignore-vcs"]
-let g:Lf_RgExGlob = ["**/.git/**", ".clangd/*", "target/*", "*.{map,map2,o,tgt,x86}", "compile_commands.json"]
+" **/.git/**: 任意路径下的.git目录及其所有子目录的文件
+" .git/**: 当前路径下.git目录及其所有子目录的文件
+" .git/*: 当前路径下.git目录下的文件和直接子目录的文件
+" .git: 当前路径下.git目录下的文件
+" 通过find -path 测试发现 .git/**, .git/*, .git 效果相同
+let g:Lf_RgExGlob = ["**/.git/**", ".clangd/**", "*.{map,map2,o,a,so,elf}", "compile_commands.json"]
 "Leaderf rg -e<Space>
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <leader>rs :LeaderfRgInteractive<cr>
@@ -723,19 +729,14 @@ let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = 'tags'
 if executable('fd')
-  let g:gutentags_ignore_list = []  " 配置项目需要忽略的目录和文件
   " 在单引号字符串中，单引号 ' 需要用两个单引号 '' 来表示。因此需要将内部的单引号全部替换为两个单引号。
   let s:gutentags_exclude = map(g:Lf_RgExGlob, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
   let g:gutentags_file_list_command = "fd --type f --no-ignore-vcs --exclude " . join(s:gutentags_exclude, " --exclude ")
 else
-  let g:gutentags_ignore_list = {
-        \   'dir': ["*.git*", "*clangd*", "*obj*", "./build*", "./target*"],
-        \   'file': ["*makefile*", "*.txt", "*.o", ".gitignore"]
-        \}
   " -name: 匹配文件名，-iname: 匹配文件名时忽略大小写， -wholename: 匹配文件名及其路径
-  let s:gutentags_exclude = map(g:gutentags_ignore_list.dir, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
+  let s:gutentags_exclude = map(g:Lf_WildIgnore.dir, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
   let g:gutentags_file_list_command = 'find . \( -path ' . join(s:gutentags_exclude, " -o -path ") . '\) -a -prune -o'
-  let s:gutentags_exclude = map(g:gutentags_ignore_list.file, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
+  let s:gutentags_exclude = map(g:Lf_WildIgnore.file, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
   let g:gutentags_file_list_command .= ' \( -type f -not -iname ' . join(s:gutentags_exclude, " -not -iname ") . '\) -print'
 endif
 let g:gutentags_ctags_exclude = ['*/.git/*', '*/.clangd/*', '*/configs/*', '*.json', '*.mib', '*.db', '*.css', '*.js', '*.html']
