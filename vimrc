@@ -749,11 +749,11 @@ let g:gutentags_trace = 0
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
 "写更新有时会导致gtags数据丢失部分内容
-let g:gutentags_generate_on_missing = 0
+let g:gutentags_enabled = 0
+autocmd FileType startify let g:gutentags_enabled = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_new = 1
 let g:gutentags_generate_on_write = 0
-let g:gutentags_generate_on_new = 0
-autocmd FileType startify let g:gutentags_generate_on_missing = 1
-autocmd FileType startify let g:gutentags_generate_on_new = 1
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
 " generate gtags data to leaderF
