@@ -304,14 +304,16 @@ let g:startify_session_savecmds = [
             \   '  hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green',
             \   'endif',
             \   'if g:gutentags_file_list_command[:1] == "fd"',
+            \   '  if empty(findfile(g:startify_session_root_mark, ";"))',
+            \   '    let g:Lf_RootMarkers += [''.git'', ''.hg'', ''.svn'']',
+            \   '    let g:gutentags_project_root += [''.git'', ''.hg'', ''.svn'']',
+            \   '    let g:gutentags_file_list_command = substitute(g:gutentags_file_list_command, ''--no-ignore-vcs'', '''', ''g'')',
+            \   '    let g:Lf_RgConfig = filter(copy(g:Lf_RgConfig), ''v:val !=# "--no-ignore-vcs"'')',
+            \   '  endif',
             \   '  if !empty(g:gutentags_ignore_list)',
             \   '    let s:gutentags_exclude = map(g:gutentags_ignore_list, ''v:val =~ ''''^".*"$'''' ? v:val : ''''"''''.v:val.''''"'''''')',
             \   '    let g:gutentags_file_list_command .= " --exclude " . join(s:gutentags_exclude, " --exclude ")',
             \   '    let g:Lf_RgExGlob += g:gutentags_ignore_list',
-            \   '  endif',
-            \   '  if !empty(findfile(g:startify_session_root_mark, ";"))',
-            \   '    let g:gutentags_file_list_command .= " --no-ignore-vcs"',
-            \   '    let g:Lf_RgConfig += ["--no-ignore-vcs"]',
             \   '  endif',
             \   'endif',
             \ ]
@@ -621,7 +623,7 @@ let g:Lf_DefaultExternalTool = 'find'            "rg 默认会自动过滤.ignor
 let g:Lf_UseVersionControlTool = 0               "0: 使用 Lf_DefaultExternalTool 定义的工具搜索文件, 1: 使用当前项目所使用的版本控制工具
 let g:Lf_RecurseSubmodules = 1                   "当g:Lf_UseVersionControlTool = 1 时，通过git ls-files --recurse-submodules 来搜索子项目中的文件
 let g:Lf_DefaultMode = 'Fuzzy'
-let g:Lf_RootMarkers = [$PROJECT_ROOT, '.git', '.hg', '.svn']
+let g:Lf_RootMarkers = [$PROJECT_ROOT]
 let g:Lf_WorkingDirectoryMode = 'Aa'
 let g:Lf_CacheDirectory = expand($HOME.'/.vim/cache')
 let g:Lf_UseCache = 1
@@ -661,7 +663,7 @@ let g:Lf_PreviewResult = {
 " --unrestricted:当主项目中的.gitignore 文件忽略掉了子项目目录，该选项可以使搜索不受.gitignore 文件的限制，
 " --no-ignore: 禁用所有与忽略相关的过滤(.igrore .rgignore .gitignore)
 " 在当前仓库搜索子仓库里的内容, 但搜索过程比较慢
-let g:Lf_RgConfig = ["--max-columns=150", "--hidden"]
+let g:Lf_RgConfig = ["--max-columns=150", "--hidden" , "--no-ignore-vcs"]
 let g:Lf_RgExGlob = ["**/.git/**", ".clangd/*", "target/*", "*.{map,map2,o,tgt,x86}", "compile_commands.json"]
 "Leaderf rg -e<Space>
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
@@ -690,7 +692,6 @@ let g:Lf_CtagsFuncOpts = {
             \   'rust': '--rust-kinds=f',
             \ }
 let g:Lf_GtagsAutoGenerate = 0           " auto create gtags
-autocmd FileType startify let g:Lf_GtagsAutoGenerate = 0
 let g:Lf_GtagsGutentags = 1              " use vim-gutentags to generate gtags,should make g:Lf_GtagsAutoGenerate = 0
 let g:Lf_GtagsAutoUpdate = 1             " auto update when buffer write
 let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
@@ -716,7 +717,7 @@ endif
 
 " vim-gutentags
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
-let g:gutentags_project_root = [$PROJECT_ROOT, '.git', '.hg', '.svn']
+let g:gutentags_project_root = [$PROJECT_ROOT]
 let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = 'tags'
@@ -724,7 +725,7 @@ if executable('fd')
   let g:gutentags_ignore_list = []  " 配置项目需要忽略的目录和文件
   " 在单引号字符串中，单引号 ' 需要用两个单引号 '' 来表示。因此需要将内部的单引号全部替换为两个单引号。
   let s:gutentags_exclude = map(g:Lf_RgExGlob, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
-  let g:gutentags_file_list_command = "fd --type f --exclude " . join(s:gutentags_exclude, " --exclude ")
+  let g:gutentags_file_list_command = "fd --type f --no-ignore-vcs --exclude " . join(s:gutentags_exclude, " --exclude ")
 else
   let g:gutentags_ignore_list = {
         \   'dir': ["*.git*", "*clangd*", "*obj*", "./build*", "./target*"],
@@ -749,10 +750,9 @@ let g:gutentags_trace = 0
 "打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
 "let g:gutentags_define_advanced_commands = 1
 "写更新有时会导致gtags数据丢失部分内容
-let g:gutentags_enabled = 0
-autocmd FileType startify let g:gutentags_enabled = 1
 let g:gutentags_generate_on_missing = 1
-let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_new = 0
+autocmd FileType startify let g:gutentags_generate_on_new  = 1
 let g:gutentags_generate_on_write = 0
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
