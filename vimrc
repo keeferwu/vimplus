@@ -125,7 +125,6 @@ colorscheme material
 " 自定义设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let $PROJECT_ROOT = '.root'     " 定义环境变量标识项目根目录
-let g:project_ignore_list = []  " 配置项目需要忽略的目录和文件
 " 打开文件自动定位到最后编辑的位置
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
 " 以十六进制显示 vim -b 打开的二进制文件
@@ -279,6 +278,7 @@ let g:startify_lists = [
             \ { 'header': ['   Commands'],              'type': 'commands' },
             \ ]
 let g:startify_session_root_mark = $PROJECT_ROOT
+let g:startify_session_ignore_list = []  " 配置项目需要忽略的目录和文件
 " session 退出时自动切换工作目录到主目录
 let g:startify_session_before_save = [
             \ "exec 'cd' fnamemodify(finddir('.git', ';'), ':h')",
@@ -287,7 +287,7 @@ let g:startify_session_before_save = [
             \ ]
 let g:startify_session_savevars = [
             \ 'g:colors_name',
-            \ 'g:project_ignore_list',
+            \ 'g:startify_session_ignore_list',
             \ ]
 "清除terminal的buffer
 let g:startify_session_remove_lines = ['term:\/', 'NetrwTreeListing', 'CodeCompanion']
@@ -312,12 +312,12 @@ let g:startify_session_savecmds = [
             \   '    let g:gutentags_file_list_command = substitute(g:gutentags_file_list_command, ''--no-ignore-vcs'', '''', ''g'')',
             \   '    let g:Lf_RgConfig = filter(copy(g:Lf_RgConfig), ''v:val !=# "--no-ignore-vcs"'')',
             \   '  endif',
-            \   '  if !empty(g:project_ignore_list)',
-            \   '    let s:gutentags_exclude = map(g:project_ignore_list, ''v:val =~ ''''^".*"$'''' ? v:val : ''''"''''.v:val.''''"'''''')',
-            \   '    let g:gutentags_file_list_command .= " --exclude " . join(s:gutentags_exclude, " --exclude ")',
-            \   '    let g:Lf_RgExGlob += g:project_ignore_list',
+            \   '  if !empty(g:startify_session_ignore_list)',
+            \   '    let g:gutentags_file_list_command .= " --exclude " . join(g:startify_session_ignore_list, " --exclude ")',
+            \   '    let g:Lf_RgExGlob += g:startify_session_ignore_list',
             \   '  endif',
             \   'endif',
+            \   'command! -nargs=0 SessionIgnore :call SessionIgnoreList()',
             \ ]
 "delete session in starify
 function! SessionDelete()
@@ -327,6 +327,25 @@ function! SessionDelete()
   exec 'Startify'
 endfunction
 autocmd FileType startify nnoremap <silent><buffer> d :call SessionDelete()<cr>
+"Add session ignore files
+function! SessionIgnoreList() abort
+  try
+    echohl Question
+    call inputsave()
+    let ignore = input("Ignore list(*.o, target, **/.git/**): ", join(g:startify_session_ignore_list, ", "))
+    call inputrestore()
+    redraw | echo ""
+    if ignore =~ '^\s*$'
+      let g:startify_session_ignore_list = []
+      return
+    endif
+    let g:startify_session_ignore_list = map(split(ignore, '[ ,]\+'), 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
+  catch /^Vim:Interrupt$/
+    echo "Command interrupted"
+  finally
+    echohl None
+  endtry
+endfunction
 
 " vim-which-key
 let g:which_key_hspace = 10
