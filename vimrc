@@ -281,8 +281,7 @@ let g:startify_session_root_mark = $PROJECT_ROOT
 let g:startify_session_ignore_list = []  " 配置项目需要忽略的目录和文件
 " session 退出时自动切换工作目录到主目录
 let g:startify_session_before_save = [
-            \ "exec 'cd' fnamemodify(finddir('.git', ';'), ':h')",
-            \ "exec 'cd' fnamemodify(findfile(g:startify_session_root_mark, ';'), ':h')",
+            \ "let root = findfile(g:startify_session_root_mark, ';') | exec 'cd' fnamemodify(empty(root) ? finddir('.git', ';') : root, ':h')",
             \ "normal! zR"
             \ ]
 let g:startify_session_savevars = [
