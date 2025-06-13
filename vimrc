@@ -268,7 +268,7 @@ let g:startify_session_persistence = 1
 let g:startify_bookmarks = []
 let g:startify_commands = [
             \ {'h': ['check health', 'CheckHealth']},
-            \ {'c': ['gtags cache', 'Leaderf gtags_history --cache']},
+            \ {'c': ['gtags cache', 'Leaderf gtagsHistory --cache']},
             \ ]
 " 相对于默认配置把sessions放在第一个
 let g:startify_lists = [
@@ -323,7 +323,7 @@ let g:startify_session_savecmds = [
 function! SessionDelete()
   let session = split(getline('.'))[-1]
   exec 'SDelete ' . session
-  exec 'Leaderf gtags_history --cache'
+  exec 'Leaderf gtagsHistory --cache'
   exec 'Startify'
 endfunction
 autocmd FileType startify nnoremap <silent><buffer> d :call SessionDelete()<cr>
@@ -724,8 +724,6 @@ let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
 let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
 let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
 let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-nnoremap <silent> <leader>gh :Leaderf gtags_history<cr>
-"nnoremap <silent> <leader>gc :Leaderf gtags_history --cache<cr>
 if get(g:, 'Lf_GtagsAutoGenerate', 0)
   nnoremap <silent> <leader>gu :Leaderf gtags --update<cr>
   " 光标15min内没有发生移动，自动更新gtags文件
