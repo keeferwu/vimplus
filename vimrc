@@ -313,7 +313,6 @@ let g:startify_session_savecmds = [
             \   '  endif',
             \   '  if !empty(g:startify_session_ignore_list)',
             \   '    let g:gutentags_file_list_command .= " --exclude " . join(g:startify_session_ignore_list, " --exclude ")',
-            \   '    let g:Lf_RgExGlob += g:startify_session_ignore_list',
             \   '  endif',
             \   'endif',
             \   'command! -nargs=0 SessionIgnore :call SessionIgnoreList()',
