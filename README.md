@@ -113,6 +113,8 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
     Plug 'j-hui/fidget.nvim', has('nvim') ? {} : {'on': []}
     call plug#end()
 
+注：所有使用的插件已打包到 Release 版本中，其中部分插件根据需求做过优化
+
 #### 插件的特殊要求
 
 OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件
@@ -131,7 +133,7 @@ Codeium 是一款智能补全插件，需要登录到官网生成token，注意�
 vim-gutentags 由于leaderF不支持ctags数据生成，因此使用vim-gutentags生成索引数据到leaderf 缓存目录
 
     1. 当项目过大时gtags生成数据量比较大，生成的过程也比较长，解决方法：
-        将不需要生成索引数据的目录和文件追加到项目根目录下.fdignore 文件中
+        将不需要生成索引数据的目录和文件追加到项目根目录下.fdignore 或.ignore(同时对rg,ag 生效) 文件中
 
     2. 在项目的子目录下通过新建.root 文件让vim-gutentags 给项目创建多个索引数据,实现数据的分割
         例: 将os 所在路径添加到.fdignore文件，在os目录下新建一个.root文件,
