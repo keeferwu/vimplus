@@ -637,8 +637,8 @@ let g:Lf_ShowDevIcons = 0
 let g:Lf_IgnoreCurrentBufferName = 1
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
-"let g:Lf_ExternalCommand = 'fd --full-path "%s" --type f -I'  "Lf_WildIgnore 对此选项不起作用
-let g:Lf_DefaultExternalTool = 'find'            "rg 默认会自动过滤.ignore .rgignore .gitignore中的文件
+"let g:Lf_ExternalCommand = 'fd --full-path "%s" --type f --no-ignore-vcs'  "Lf_WildIgnore 对此选项不起作用
+let g:Lf_DefaultExternalTool = 'find'            "rg,pt,ag,find rg 默认会自动过滤.ignore .rgignore .gitignore中的文件
 let g:Lf_UseVersionControlTool = 0               "0: 使用 Lf_DefaultExternalTool 定义的工具搜索文件, 1: 使用当前项目所使用的版本控制工具
 let g:Lf_RecurseSubmodules = 1                   "当g:Lf_UseVersionControlTool = 1 时，通过git ls-files --recurse-submodules 来搜索子项目中的文件
 let g:Lf_DefaultMode = 'Fuzzy'
@@ -705,7 +705,7 @@ let g:Lf_GitCommands = [
 " 项目根目录存在gtags.file文件，gtags 会以该文件为基础生成数据，生成gtags.file的方式参考 g:gutentags_file_list_command
 " 或者将要过滤的类型添加到 ~/.globalrc 中的:skip
 " 0 - gtags search the target files by itself. 1 - the target files come from FileExplorer. 2 - the target files come from |g:Lf_GtagsfilesCmd.
-let g:Lf_GtagsSource = 0
+let g:Lf_GtagsSource = 1
 let g:Lf_GtagsfilesCmd = {
             \   '.git': 'git ls-files --recurse-submodules',
             \   '.hg': 'hg files',
