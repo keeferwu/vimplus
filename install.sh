@@ -124,7 +124,7 @@ function get_home_path()
 
 function install_nvim_config()
 {
-    target_version="v0.10.0"
+    target_version="v0.11.0"
     if which nvim >/dev/null 2>&1; then
         nvim_version=`nvim --version | head -n 1 | awk '{print $2}'`
         if ! printf '%s\n%s\n' "${nvim_version#v}" "${target_version#v}" | sort -V -C -r; then

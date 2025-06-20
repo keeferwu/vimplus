@@ -1,6 +1,6 @@
 #### 版本要求
 
-    vim >= v9.1 or nvim >= v0.10.0
+    vim >= v9.1 or nvim >= v0.11.0
 
 #### 安装vimplus
 
