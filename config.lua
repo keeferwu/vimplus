@@ -64,7 +64,7 @@ require('render-markdown').setup({
 -- codecompanion.nvim
 require("codecompanion").setup({
   opts = {
-    -- language = "Chinese",
+    language = "Chinese",
     log_level = "DEBUG", -- TRACE|DEBUG|ERROR|INFO
   },
   -- option default set:codecompanion.nvim/lua/codecompanion/config.lua
