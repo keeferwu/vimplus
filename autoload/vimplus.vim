@@ -321,7 +321,7 @@ augroup bufferkey
   autocmd!
   " 在 quickfix 窗口中按回车跳转，但保持光标在 quickfix 窗口
   autocmd FileType qf nnoremap <silent> <buffer> <cr> <cr>:wincmd p<cr>
-  autocmd FileType qf,netrw nnoremap <silent> <buffer> q :close<cr>
+  autocmd FileType qf,netrw,help nnoremap <silent> <buffer> q :close<cr>
 augroup END
 
 " Highlight EOL whitespace, https://github.com/bronson/vim-trailing-whitespace.git
