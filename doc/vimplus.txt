@@ -24,11 +24,11 @@ Plugin About				    *vimplus-plugin-about*
     快捷键		  | 说明
     ----------------------|---------------------------------------
     `<space>`		  | 显示所有<Leader>引导的快捷键
+    `Shift+t`		  | 打开内部终端
     `Ctrl+s`		  | 保存内容
     `Ctrl+z`		  | 展开折叠
     `Ctrl+c`		  | 文本复制
     `Ctrl+v`		  | 文本粘贴
-    `Shift+t`		  | 打开内部终端
     `Ctrl+j`		  | 跳转上层窗口
     `Ctrl+k`		  | 跳转下层窗口
     `Ctrl+h`		  | 跳转右侧窗口
@@ -39,19 +39,15 @@ Plugin About				    *vimplus-plugin-about*
     `Ctrl+Left`		  | 减少窗口宽度
     `Ctrl+a`		  | 打开AI行为列表(neovim)
     `Ctrl+x`		  | 打开AI聊天窗口(neovim)
-    `F2`		  | 代码折叠与展开
-    `:SSave`		  | 保存当前状态为某个session
-    `:SDelete`		  | 删除某个session
-    `F3`		  | 打开/关闭代码资源管理器
-    `F4`		  | 打开/关闭函数列表
     `]h`		  | 跳转到下一处修改的位置
     `[h`		  | 跳转到上一处修改的位置
-    `:CD`		  | 打开/关闭diff 缓存
-    `:CP`		  | 打开/关闭diff preview
     `Alt+=`		  | 接受智能补全填充（插入模式）
     `Alt+,`		  | 智能补全上一条目（插入模式）
     `Alt+.`		  | 智能补全下一条目（插入模式）
     `Alt+-`		  | 清除智能补全填充（插入模式）
+    `F2`		  | 代码折叠与展开
+    `F3`		  | 打开/关闭代码资源管理器
+    `F4`		  | 打开/关闭函数列表
     `F5`		  | 开始或继续调试
     `Shift+F5`		  | 停止调试
     `Ctrl+F5`		  | 暂停调试
@@ -174,7 +170,7 @@ Text Editing				    *vimplus-text-editing*
     `CTRL-6`		  | 上一个buffer 和当前buffer 相互切换
     `CTRL-i`		  | 下一次操作
     `CTRL-o`		  | 上一次操作
-    `u`			  | 撤销  =   CTRL-z
+    `u`			  | 撤销
     `U`			  | 撤销整行操作
     `CTRL-R`		  | 撤销上一次 u 命令
     `J`			  | 连接若干行
@@ -253,7 +249,6 @@ Further Information			    *vimplus-further-information*
 
     快捷键			    | 说明
     --------------------------------|------------------------------------------------------------------------
-    vimdiff file1 file2		    | 显示文件差异
     vim -b filename		    | 打开二进制文件 -> :%!xxd(转换16进制编辑) -> :%!xxd -r(转换回二进制)
     vim -R filename		    | 以只读方式打开（阅读模式）
     vim --startuptime startup.log   | 记录vim 启动时间
