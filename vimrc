@@ -504,7 +504,7 @@ function! ToggleExplorer()
   " open current file's dir at left
   execute 'Vexplore'
   " corsor to current file
-  call search('\V'.bufname, 'w')
+  call search('\V'.bufname, 'b')
   let t:netrw_winid = bufwinid("%")
   wincmd H | vertical resize 40
   setlocal winfixwidth
