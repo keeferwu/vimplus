@@ -137,7 +137,7 @@ noremap <silent> <m-v> <c-v>
 " C+z默认会退到后台，重映射为展开所有折叠
 nnoremap <silent> <C-z> zR
 "终端下映射ESC退出到normal模式
-tnoremap <silent> <Esc> <C-\><C-n>
+"tnoremap <silent> <Esc> <C-\><C-n>
 " 保存
 nnoremap <silent> <C-s> :<C-u>call vimplus#write()<cr>
 " 分屏窗口移动
