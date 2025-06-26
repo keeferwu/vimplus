@@ -144,7 +144,8 @@ nnoremap <silent> <C-Up>    :resize +5<cr>
 nnoremap <silent> <C-Down>  :resize -5<cr>
 nnoremap <silent> <C-Right> :vertical resize +5<cr>
 nnoremap <silent> <C-Left>  :vertical resize -5<cr>
-
+" open terminal
+nnoremap <silent> <s-t> :tabnew \| term ++curwin<cr>
 if has("nvim")
   " unnamedplus:所有的操作都会自动被粘贴进 system clipboard 中
   " unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
@@ -153,13 +154,6 @@ if has("nvim")
   autocmd TermOpen * startinsert
   nnoremap <silent> <s-t> :tabnew \| terminal<cr>
   command! CheckHealth :checkhealth
-else
-  "fix some plugin use BufWitePost cause vim crash when use command wq
-  cabbrev wq w<bar>sleep 200m<bar>q
-  cabbrev wqa w<bar>sleep 200m<bar>qall
-  cabbrev wqal w<bar>sleep 200m<bar>qall
-  cabbrev wqall w<bar>sleep 200m<bar>qall
-  nnoremap <silent> <s-t> :tabnew \| term ++curwin<cr>
 endif
 " 复制粘贴到系统剪切板
 autocmd VimEnter * call clipboard#check()
@@ -176,16 +170,6 @@ if exists("$TMUX")
   command! ClipBoard :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '') | echo $DISPLAY
   autocmd VimEnter * ClipBoard
 endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 卸载默认插件UnPlug
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:deregister(repo)
-  let repo = substitute(a:repo, '[\/]\+$', '', '')
-  let name = fnamemodify(repo, ':t:s?\.git$??')
-  call remove(g:plugs, name)
-endfunction
-command! -nargs=1 -bar UnPlug call s:deregister(<args>)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 插件列表
