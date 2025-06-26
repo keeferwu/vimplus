@@ -469,13 +469,13 @@ let g:netrw_hide = 1                 "忽略隐藏文件
 "let g:netrw_list_hide = '^\..*,^.*\.o$,^.*\.swp$,^.*\.bin$'
 nnoremap <silent> <F3> :call ToggleExplorer()<CR>
 function! ToggleExplorer()
-  if &buftype ==# 'terminal' || &buftype ==# 'nofile'
-    return
-  endif
   let winid = get(t:, 'netrw_winid', 0)
   if win_gotoid(winid)
     let t:netrw_winid = 0
     close
+    return
+  endif
+  if vimplus#ignoredbuffer('%')
     return
   endif
   let bufname = expand('%:t')
