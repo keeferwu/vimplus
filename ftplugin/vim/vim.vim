@@ -1,10 +1,10 @@
-autocmd BufEnter .vimrc execute ":call EnterVimrc()"
-autocmd BufLeave .vimrc execute ":call LeaveVimrc()"
+autocmd BufEnter .vimrc,vimrc execute ":call EnterVimrc()"
+autocmd BufLeave .vimrc,vimrc execute ":call LeaveVimrc()"
 
 let s:lines = []
 
 function! EnterVimrc()
-    if match(getline(18), "vimplus") != -1
+    if match(getline(2), "t@@%") != -1
         call timer_start(0, 'HighlightLogoAsync', {'repeat': 1})
     endif
 endfunction
@@ -45,7 +45,6 @@ function! s:highlight_logo()
     highlight default 87a83 ctermfg=87 ctermbg=83 cterm=bold
 
     if empty(s:lines)
-        " let s:lines = readfile(expand($HOME . "/.vim/ftplugin/vim/vimplus_logo_light.txt"))
         let s:lines = readfile(expand($HOME . "/.vim/ftplugin/vim/vimplus_logo_black.txt"))
     endif
 
