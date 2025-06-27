@@ -1,5 +1,5 @@
-autocmd BufEnter .vimrc,vimrc execute ":call EnterVimrc()"
-autocmd BufLeave .vimrc,vimrc execute ":call LeaveVimrc()"
+"autocmd BufEnter .vimrc,vimrc execute ':call EnterVimrc()'
+"autocmd BufLeave .vimrc,vimrc execute ':call LeaveVimrc()'
 
 let s:lines = []
 
