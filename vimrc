@@ -459,11 +459,7 @@ let g:netrw_winsize = 0              "通过netrw分割的窗口宽度,0:自适�
 "let g:netrw_altv = 0                 "在左侧纵向分割的窗口,默认为右侧
 let g:netrw_preview = 1              "在纵向分割的窗口中显示预览窗口
 let g:netrw_dirhistmax = 0           "不记录目录跳转历史
-if isdirectory(expand("%"))
-  let g:netrw_browse_split = 0         "Netrw打开文件的方式为覆盖当前窗口
-else
-  let g:netrw_browse_split = 4         "Netrw打开文件的方式为覆盖前一窗口（右边窗口）
-endif
+let g:netrw_browse_split = 0         "Netrw打开文件的方式为覆盖当前窗口
 let g:netrw_sort_options = 'i'       "排序忽略大小写
 let g:netrw_hide = 1                 "忽略隐藏文件
 "在 netrw 里隐藏特定文件: ^\..* ->以.开头，^.*\.o$ ->.o结尾
@@ -479,6 +475,8 @@ function! ToggleExplorer()
   if vimplus#ignoredbuffer('%')
     return
   endif
+  "Netrw打开文件的方式为覆盖前一窗口（右边窗口）
+  let g:netrw_browse_split = 4
   let bufname = expand('%:t')
   " open current file's dir at left
   execute 'Vexplore'
