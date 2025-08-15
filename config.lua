@@ -59,6 +59,7 @@ require('nvim-treesitter.configs').setup {
 require('render-markdown').setup({
     --渲染 markdown 和 codecompanion 文件类型
     file_types = { 'markdown', 'codecompanion' },
+    latex = { enabled = false }
 })
 
 -- codecompanion.nvim

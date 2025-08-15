@@ -133,9 +133,8 @@ function install_nvim_config()
             echo
         fi
     else
-        echo
-        echo -e "\033[31m Neovim is not exists, please install it with version >= $target_version \033[0m"
-        echo
+        echo -e "\033[31m Neovim is not exists, will use npm install it\033[0m"
+        npm install -g neovim
     fi
     home_path=$1
     nvim_config="$home_path/.config/nvim"
