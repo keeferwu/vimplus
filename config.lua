@@ -10,6 +10,7 @@ require('nvim-treesitter.configs').setup {
       "make",
       "yaml",
       "markdown",
+      "markdown_inline",
       "python",
       "rust",
       "lua",
@@ -156,8 +157,8 @@ require("codecompanion").setup({
   -- adapter extensions
   adapters = {
     opts = {
-      -- show default adapter
       show_defaults = false,
+      --show_model_choices = false,
     },
     --[[
     copilot_claude = function()
@@ -271,6 +272,10 @@ require("codecompanion").setup({
       })
     end,
 ]]
+  },
+  -- extensions
+  extensions = {
+
   },
 })
 

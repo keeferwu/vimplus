@@ -227,12 +227,16 @@ Plug 'puremourning/vimspector'
 Plug 'nvim-lua/plenary.nvim', has('nvim') ? {'branch': 'master'} : {'on': []}
 " nvim代码语法高亮
 Plug 'nvim-treesitter/nvim-treesitter', has('nvim') ? {'do': ':TSUpdate'} : {'on': []}
-" ai编程助手
+" 代码编程助手
 Plug 'olimorris/codecompanion.nvim', has('nvim') ? {} : {'on': []}
 " 渲染 markdown 和 codecompanion 文件
 Plug 'MeanderingProgrammer/render-markdown.nvim', has('nvim') ? {} : {'on': []}
 " nvim 消息提示, use for codecompanion
 Plug 'j-hui/fidget.nvim', has('nvim') ? {} : {'on': []}
+" codecompanion history extension
+"Plug 'ravitemer/codecompanion-history.nvim', has('nvim') ? {} : {'on': []}
+" 代码仓库索引工具
+"Plug 'Davidyz/VectorCode', has('nvim') ? {} : {'on': []}
 
 call plug#end()
 
