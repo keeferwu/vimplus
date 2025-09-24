@@ -213,13 +213,13 @@ Plug 'Exafunction/codeium.vim', {'branch': 'main'}
 " 代码块补全，配合ultisnips使用
 Plug 'honza/vim-snippets'
 " 代码块模板
-Plug 'SirVer/ultisnips', exists('$VIMLSP') ? {'on': []} : {}
+Plug 'SirVer/ultisnips', exists('$COCLSP') ? {'on': []} : {}
 " tab触发补全
-Plug 'ervandew/supertab', exists('$VIMLSP') ? {'on': []} : {}
+Plug 'ervandew/supertab', exists('$COCLSP') ? {'on': []} : {}
 " c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
-Plug 'vim-scripts/OmniCppComplete', exists('$VIMLSP') ? {'on': []} : {'for': ['c','cpp']}
+Plug 'vim-scripts/OmniCppComplete', exists('$COCLSP') ? {'on': []} : {'for': ['c','cpp']}
 " lsp代码补全,需要安装语言服务器
-Plug 'neoclide/coc.nvim', exists('$VIMLSP') ? {'branch': 'release'} : {'on': []}
+Plug 'neoclide/coc.nvim', exists('$COCLSP') ? {'branch': 'release'} : {'on': []}
 " 代码调试
 Plug 'puremourning/vimspector'
 
@@ -338,7 +338,7 @@ vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 " key map中的key必须为半角字符，否则会报错，有些输入法会将shift+space作为半全角切换快捷键
 let g:which_key_map = {}
 let g:which_key_map[' '] = {'name' : '+plugin',
-                    \   'l': "plugin LSP complete",
+                    \   'l': "plugin lsp coc",
                     \   'i': "plugin install",
                     \   'u': "plugin update",
                     \   'c': "plugin clean",
@@ -394,7 +394,7 @@ let g:which_key_map.q = {'name' : '+quit',
                     \    't' : 'quit tab',
                     \    'q' : 'quit quickfix',
                     \   }
-if exists('$VIMLSP')
+if exists('$COCLSP')
 let g:which_key_map.j = {'name' : '+jump',
                     \    'd' : 'jumpDefinition',
                     \    'r' : 'jumpReferences',
@@ -418,19 +418,19 @@ function! UseLSPComplete(error, res)
     echom a:error
     return
   endif
-  if exists("$VIMLSP")
+  if exists("$COCLSP")
     echohl WarningMsg
-    echom "LSP complete plugin has already been loaded!"
+    echom "COC plugin has already been loaded!"
     echohl None
     return
   endif
   if a:res == 1   "yes
-    "修改的环境变量只在vim下生效，需要在bash下手动export VIMLSP才会在终端中生效
-    "call setenv('VIMLSP', 'yes')
+    "修改的环境变量只在vim下生效，需要在bash下手动export COCLSP才会在终端中生效
+    "call setenv('COCLSP', 'yes')
     call vimplus#vimclose()
   endif
 endfunction
-let lsp_confirm = "NOTE: vim/nvim will be closed, and you should export VIMLSP to env."
+let lsp_confirm = "NOTE: vim/nvim will be closed, and you should export COCLSP to env."
 nnoremap <silent> <leader><leader>l :call vimplus#confirm(lsp_confirm,function("UseLSPComplete"))<cr>
 nnoremap <silent> <leader><leader>h :vert help vimplus<cr>
 " 安装、更新、删除插件
@@ -710,7 +710,7 @@ if get(g:, 'Lf_GtagsAutoGenerate', 0)
   " 当文件在外部改变时，自动更新gtags
   autocmd FileChangedShellPost * call vimplus#holdtimer(&updatetime, 'Leaderf gtags --update')
 endif
-if exists('$VIMLSP')
+if exists('$COCLSP')
 nnoremap <silent> <leader>jd :Leaderf coc definitions --auto-jump<cr>
 nnoremap <silent> <leader>jr :Leaderf coc references --auto-jump<cr>
 nnoremap <silent> <leader>jc :Leaderf coc declarations --auto-jump<cr>
@@ -832,7 +832,7 @@ nmap <F11>        <Plug>VimspectorStepInto
 nmap <S-F11>      <Plug>VimspectorStepOut
 
 " coc.nvim
-if exists('$VIMLSP')
+if exists('$COCLSP')
 " 设置 coc.nvim 的配置文件路径
 let g:coc_config_home = '~/.vim'
 " 自动安装 coc.nvim 扩展
