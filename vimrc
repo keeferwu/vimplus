@@ -810,7 +810,7 @@ imap <M-,> <Cmd>call codeium#CycleCompletions(-1)<CR>
 imap <M-.> <Cmd>call codeium#CycleCompletions(1)<CR>
 
 " vimspector
-let g:vimspector_base_dir=expand('$HOME/.config/vimspector')
+let g:vimspector_base_dir=expand($HOME.'/.config/vimspector')
 "let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 nmap <F5>         <Plug>VimspectorContinue
 nmap <S-F5>       <Plug>VimspectorStop

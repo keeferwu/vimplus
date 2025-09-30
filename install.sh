@@ -410,6 +410,7 @@ function update_vim_plugin()
         then
             cd $curr_dir
             echo -e "\033[32m try fetching code in $curr_dir \033[0m"
+            git gc
             git fetch && git rebase
             if [ $sub_dir == "LeaderF" ]; then
                 #更新LeaderF插件，重新执行其目录下的install.sh脚本
@@ -431,7 +432,7 @@ function install_vim_plugin()
 {
     PLUGDIR=${PWD}/plugged
 
-    wget https://gitee.com/keeferwu/vimplus/releases/download/plugin-2025-06-18/plugged.tar.gz
+    wget https://gitee.com/keeferwu/vimplus/releases/download/plugin-2025-09-30/plugged.tar.gz
     if [ $? -eq 0 ]; then
         if [ -d $PLUGDIR ]; then
             echo -e "\033[33m Remove old $PLUGDIR directory \033[0m"

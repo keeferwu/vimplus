@@ -66,8 +66,14 @@ require('render-markdown').setup({
 -- codecompanion.nvim
 require("codecompanion").setup({
   opts = {
-    language = "Chinese",
     log_level = "DEBUG", -- TRACE|DEBUG|ERROR|INFO
+    language = "Chinese", -- The language used for LLM responses
+    -- If this is false then any default prompt that is marked as containing code
+    -- will not be sent to the LLM. Please note that whilst I have made every
+    -- effort to ensure no code leakage, using this is at your own risk
+    send_code = true,
+    job_start_delay = 1500, -- Delay in milliseconds between cmd tools
+    submit_delay = 2000, -- Delay in milliseconds before auto-submitting the chat buffer
   },
   -- option default set:codecompanion.nvim/lua/codecompanion/config.lua
   display = {
@@ -82,12 +88,14 @@ require("codecompanion").setup({
       },
     },
     chat = {
-      auto_scroll = false,
-      intro_message = "Welcome to CodeCompanion ✨! Press ? for options",
+      auto_scroll = true, -- Automatically scroll down and place the cursor at the end?
       show_header_separator = false, -- Show header separators in the chat buffer? Set this to false if you're using an external markdown formatting plugin
       separator = "─", -- The separator between the different messages in the chat buffer
-      show_references = true, -- Show references (from slash commands and variables) in the chat buffer?
+      show_context = true, -- Show context (from slash commands and variables) in the chat buffer?
+      fold_context = false, -- Fold context in the chat buffer?
+      fold_reasoning = false, -- Fold the reasoning content from the LLM in the chat buffer?
       show_settings = false, -- Show LLM settings at the top of the chat buffer?
+      show_tools_processing = true, -- Show the loading message when tools are being executed?
       show_token_count = true, -- Show the token count for each response?
       start_in_insert_mode = false, -- Open the chat buffer in insert mode?
     },
@@ -156,122 +164,134 @@ require("codecompanion").setup({
   },
   -- adapter extensions
   adapters = {
-    opts = {
-      show_defaults = false,
-      --show_model_choices = false,
+    http = {
+      opts = {
+        allow_insecure = false, -- Allow insecure connections?
+        cache_models_for = 1800, -- Cache adapter models for this long (seconds)
+        proxy = nil, -- [protocol://]host[:port] e.g. socks5://127.0.0.1:9999
+        show_defaults = false, -- not Show default adapters
+        show_model_choices = true, -- Show model choices when changing adapter
+      },
+      --[[
+      copilot_claude = function()
+        return require("codecompanion.adapters").extend("copilot", {
+          name = "copilot_claude",
+          schema = {
+            model = {
+              default = "claude-3.7-sonnet",
+            },
+          },
+        })
+      end,]]
+
+      deepseek_coder = function()
+        return require("codecompanion.adapters").extend("deepseek", {
+          name = "deepseek_coder",
+          env = {
+            api_key = function()
+              return os.getenv("DEEPSEEK_API_KEY")
+            end,
+          },
+          schema = {
+            model = {
+              default = "deepseek-coder",
+              choices = {
+                ["deepseek-coder"] = { opts = { can_use_tools = true } },
+                ["deepseek-reasoner"] = { opts = { can_reason = true, can_use_tools = false } },
+              },
+            },
+          },
+        })
+      end,
+
+      siliconflow_r1 = function()
+        return require("codecompanion.adapters").extend("deepseek", {
+          name = "siliconflow_r1",
+          url = "https://api.siliconflow.cn/v1/chat/completions",
+          env = {
+            api_key = function()
+              return os.getenv("SILICONFLOW_API_KEY")
+            end,
+          },
+          schema = {
+            model = {
+              default = "deepseek-ai/DeepSeek-R1",
+              choices = {
+                ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true, can_use_tools = false } },
+                ["deepseek-ai/DeepSeek-V3"]  = { opts = { can_use_tools = true } },
+              },
+            },
+          },
+        })
+      end,
+
+      siliconflow_v3 = function()
+        return require("codecompanion.adapters").extend("deepseek", {
+          name = "siliconflow_v3",
+          url = "https://api.siliconflow.cn/v1/chat/completions",
+          env = {
+            api_key = function()
+              return os.getenv("SILICONFLOW_API_KEY")
+            end,
+          },
+          schema = {
+            model = {
+              default = "deepseek-ai/DeepSeek-V3",
+              choices = {
+                ["deepseek-ai/DeepSeek-V3"]  = { opts = { can_use_tools = true } },
+                ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true, can_use_tools = false } },
+              },
+            },
+          },
+        })
+      end,
+      --[[
+      aliyun_deepseek = function()
+        return require("codecompanion.adapters").extend("deepseek", {
+          name = "aliyun_deepseek",
+          url = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          env = {
+            api_key = function()
+              return os.getenv("ALIYUN_API_KEY")
+            end,
+          },
+          schema = {
+            model = {
+              default = "deepseek-r1",
+              choices = {
+                ["deepseek-r1"] = { opts = { can_reason = true } },
+              },
+            },
+          },
+        })
+      end,
+      -- https://help.aliyun.com/zh/model-studio/getting-started/models?spm=a2c4g.11186623.0.0.ce3c4823l7PTRL#9f8890ce29g5u
+      aliyun_qwen = function()
+        return require("codecompanion.adapters").extend("openai_compatible", {
+          name = "aliyun_qwen",
+          env = {
+            url = "https://dashscope.aliyuncs.com",
+            api_key = function()
+              return os.getenv("ALIYUN_API_KEY")
+            end,
+            chat_url = "/compatible-mode/v1/chat/completions",
+          },
+          schema = {
+            model = {
+              default = "qwen-coder-plus-latest",
+            },
+          },
+        })
+      end,
+      ]]
     },
-    --[[
-    copilot_claude = function()
-      return require("codecompanion.adapters").extend("copilot", {
-        name = "copilot_claude",
-        schema = {
-          model = {
-            default = "claude-3.7-sonnet",
-          },
-        },
-      })
-    end,]]
-
-    deepseek_coder = function()
-      return require("codecompanion.adapters").extend("deepseek", {
-        name = "deepseek_coder",
-        env = {
-          api_key = function()
-            return os.getenv("DEEPSEEK_API_KEY")
-          end,
-        },
-        schema = {
-          model = {
-            default = "deepseek-coder",
-            choices = {
-              ["deepseek-coder"] = { opts = { can_use_tools = true } },
-              ["deepseek-reasoner"] = { opts = { can_reason = true, can_use_tools = false } },
-            },
-          },
-        },
-      })
-    end,
-
-    siliconflow_r1 = function()
-      return require("codecompanion.adapters").extend("deepseek", {
-        name = "siliconflow_r1",
-        url = "https://api.siliconflow.cn/v1/chat/completions",
-        env = {
-          api_key = function()
-            return os.getenv("SILICONFLOW_API_KEY")
-          end,
-        },
-        schema = {
-          model = {
-            default = "deepseek-ai/DeepSeek-R1",
-            choices = {
-              ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true, can_use_tools = false } },
-              ["deepseek-ai/DeepSeek-V3"]  = { opts = { can_use_tools = true } },
-            },
-          },
-        },
-      })
-    end,
-
-    siliconflow_v3 = function()
-      return require("codecompanion.adapters").extend("deepseek", {
-        name = "siliconflow_v3",
-        url = "https://api.siliconflow.cn/v1/chat/completions",
-        env = {
-          api_key = function()
-            return os.getenv("SILICONFLOW_API_KEY")
-          end,
-        },
-        schema = {
-          model = {
-            default = "deepseek-ai/DeepSeek-V3",
-            choices = {
-              ["deepseek-ai/DeepSeek-V3"]  = { opts = { can_use_tools = true } },
-              ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true, can_use_tools = false } },
-            },
-          },
-        },
-      })
-    end,
---[[
-    aliyun_deepseek = function()
-      return require("codecompanion.adapters").extend("deepseek", {
-        name = "aliyun_deepseek",
-        url = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
-        env = {
-          api_key = function()
-            return os.getenv("ALIYUN_API_KEY")
-          end,
-        },
-        schema = {
-          model = {
-            default = "deepseek-r1",
-            choices = {
-              ["deepseek-r1"] = { opts = { can_reason = true } },
-            },
-          },
-        },
-      })
-    end,
-    -- https://help.aliyun.com/zh/model-studio/getting-started/models?spm=a2c4g.11186623.0.0.ce3c4823l7PTRL#9f8890ce29g5u
-    aliyun_qwen = function()
-      return require("codecompanion.adapters").extend("openai_compatible", {
-        name = "aliyun_qwen",
-        env = {
-          url = "https://dashscope.aliyuncs.com",
-          api_key = function()
-            return os.getenv("ALIYUN_API_KEY")
-          end,
-          chat_url = "/compatible-mode/v1/chat/completions",
-        },
-        schema = {
-          model = {
-            default = "qwen-coder-plus-latest",
-          },
-        },
-      })
-    end,
-]]
+    acp = {
+      claude_code = "claude_code",
+      gemini_cli = "gemini_cli",
+      opts = {
+        show_defaults = true, -- Show default adapters
+      },
+    },
   },
   -- extensions
   extensions = {
