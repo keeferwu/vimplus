@@ -331,7 +331,7 @@ function install_prepare_software_on_mac()
     brew install cmake ninja gcc autoconf automake libtool flex bison wget fontconfig libfile-next-perl
     brew install python3 python3-dev python3-pip python3-pygments python3-pynvim
     brew install universal-ctags global fd ripgrep astyle ccls llvm
-    brew install vim node
+    brew install vim node npm
 
     macos1014=$(is_macos1014)
     if [ $macos1014 == 1 ]; then

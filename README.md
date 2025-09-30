@@ -1,6 +1,8 @@
 #### 版本要求
 
     vim >= v9.1 or nvim >= v0.11.0
+    注：使用vim在保存时偶尔会出现崩溃的情况，建议使用nvim
+        nvim 特有功能：代码语法高亮，AI编程助手, Markdown渲染
 
 #### 安装vimplus
 
@@ -128,7 +130,7 @@ leaderF 插件对c进行更快速的搜索可以Install the C extension
 
 Codeium 是一款智能补全插件，需要登录到官网生成token，注意，访问官网需要代理
 
-    :Codeium Auth
+    默认关闭, 通过let g:codeium_enabled = 1开启, 通过命令:Codeium Auth 添加token
 
 vim-gutentags 由于leaderF不支持ctags数据生成，因此使用vim-gutentags生成索引数据到leaderf 缓存目录
 
