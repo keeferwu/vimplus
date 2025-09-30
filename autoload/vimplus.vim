@@ -284,7 +284,7 @@ function! vimplus#bufclose() abort
   execute last_win . 'wincmd w'
   if &filetype ==# 'VimspectorPrompt'
     " lasted window is vimspectorPrompt do nothing
-    echo "vimspector can not be deleted by bufclose"
+    echo "vimspector can not be closed"
     return
   endif
   let buf_list = uniq(sort(tabpagebuflist()))

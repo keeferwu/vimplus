@@ -459,7 +459,7 @@ nnoremap <silent> N :call interestingwords#navigation(0)<cr>
 " netrw
 let g:netrw_banner = 1               "Netrw顶端的横幅
 let g:netrw_liststyle = 3            "显示模式为树形
-let g:netrw_winsize = 0              "通过netrw分割的窗口宽度,0:自适应
+let g:netrw_winsize = 80              "通过netrw分割的窗口宽度,0:自适应
 "let g:netrw_altv = 0                 "在左侧纵向分割的窗口,默认为右侧
 let g:netrw_preview = 1              "在纵向分割的窗口中显示预览窗口
 let g:netrw_dirhistmax = 0           "不记录目录跳转历史
@@ -468,12 +468,17 @@ let g:netrw_sort_options = 'i'       "排序忽略大小写
 let g:netrw_hide = 1                 "忽略隐藏文件
 "在 netrw 里隐藏特定文件: ^\..* ->以.开头，^.*\.o$ ->.o结尾
 "let g:netrw_list_hide = '^\..*,^.*\.o$,^.*\.swp$,^.*\.bin$'
+autocmd VimLeavePre * if exists("t:netrw_winid") | execute "silent! bdelete " . winbufnr(t:netrw_winid) | endif
 nnoremap <silent> <F3> :call ToggleExplorer()<CR>
 function! ToggleExplorer()
-  let winid = get(t:, 'netrw_winid', 0)
+  let winid = get(t:, 'netrw_winid', -1)
   if win_gotoid(winid)
-    let t:netrw_winid = 0
-    close
+    try
+      let t:netrw_winid = -1
+      close
+    catch /E444/  " 无法关闭最后一个窗口
+      let t:netrw_winid = winid
+    endtry
     return
   endif
   if vimplus#ignoredbuffer('%')
