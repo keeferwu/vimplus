@@ -681,12 +681,14 @@ nnoremap <leader>rs :LeaderfRgInteractive<cr>
 let g:Lf_GitInlineBlameEnable = 0  " show inline blame
 " Leaderf git
 let g:Lf_GitCommands = [
-            \   {"Leaderf git status":                             "show git status"},
-            \   {"Leaderf git blame --date relative":              "show relative date when git blame current file"},
-            \   {"Leaderf git log --explorer":                     "fuzzy search and view the log in an explorer tabpage"},
-            \   {"Leaderf git log --current-file --explorer":      "fuzzy search and view the log of current file in explorer tabpage"},
-            \   {"Leaderf git diff --side-by-side":                "fuzzy search and view the side-by-side diffs"},
-            \   {"Leaderf git diff HEAD --side-by-side":           "fuzzy search and view the side-by-side diffs of `git diff HEAD`"},
+            \   {"Leaderf git status":                              "show git status"},
+            \   {"Leaderf git blame --date relative":               "show relative date when git blame current file"},
+            \   {"Leaderf git log --explorer":                      "fuzzy search and view the log in an explorer tabpage"},
+            \   {"Leaderf git log --current-file --explorer":       "fuzzy search and view the log of current file in explorer tabpage"},
+            \   {"Leaderf git diff --side-by-side":                 "fuzzy search and view the side-by-side diffs"},
+            \   {"Leaderf git diff HEAD --side-by-side":            "fuzzy search and view the side-by-side diffs of `git diff HEAD`"},
+            \   {"LeaderfGitAuthor":                                "fuzzy search and view the log by author"},
+            \   {"LeaderfGitInlineBlameToggle":                     "Toggle inline blame."},
             \ ]
 " 项目根目录存在gtags.file文件，gtags 会以该文件为基础生成数据，生成gtags.file的方式参考 g:gutentags_file_list_command
 " 或者将要过滤的类型添加到 ~/.globalrc 中的:skip
