@@ -72,8 +72,6 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
     Plug 'Yggdroot/indentLine'
     " 代码快速注释
     Plug 'preservim/nerdcommenter'
-    " 彩虹括号
-    Plug 'luochen1990/rainbow'
     " cpp扩展高亮
     Plug 'octol/vim-cpp-enhanced-highlight', has('nvim') ? {'on': []} : {'for': ['c','cpp']}
     " rust代码格式化，语法高亮
