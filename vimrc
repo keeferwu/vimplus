@@ -630,6 +630,8 @@ let g:Lf_PreviewResult = {
             \   'Function': 1,
             \   'Line': 0,
             \   'Colorscheme': 0,
+            \   'Git': 0,
+            \   'Coc': 0,
             \   'Rg': 1,
             \   'Gtags': 1
             \}
