@@ -156,10 +156,13 @@ function! vimplus#vimgrep(mode) abort
   if a:mode == 'v'
       let pattern = s:VisualPattern()
   endif
+  let @/ = pattern
+  silent! call matchdelete(1219)
+  silent! call matchadd('CurSearch', pattern, 0, 1219)
   execute 'silent! vimgrep ' . pattern . ' % | bot copen'
   hi QuickFixLine ctermbg=NONE guibg=NONE
   silent! call matchdelete(1223)
-  call matchadd('MatchParen', pattern, 0, 1223)
+  silent! call matchadd('MatchParen', pattern, 0, 1223)
 endfunction
 
 " 仅当光标处于搜索内容时高亮搜索结果
