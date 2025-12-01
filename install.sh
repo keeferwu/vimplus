@@ -133,8 +133,12 @@ function install_nvim_config()
             echo
         fi
     else
-        echo -e "\033[31m Neovim is not exists, will use npm install it\033[0m"
-        npm install -g neovim
+        echo -e "\033[31m Neovim is not exists, will try install the latest version\033[0m"
+        curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+        sudo rm -rf /opt/nvim-linux-x86_64
+        sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+        sudo rm -rf nvim-linux-x86_64.tar.gz
+        echo -e "\033[33m You should add /opt/nvim-linux-x86_64/bin to PATH\033[0m"
     fi
     home_path=$1
     nvim_config="$home_path/.config/nvim"
@@ -156,7 +160,7 @@ function install_nvim_config()
     echo "set runtimepath^=~/.vim runtimepath+=~/.vim/"
     echo "let &packpath = &runtimepath"
     echo "source ~/.vimrc"
-    echo "lua dofile(os.getenv(\"HOME\") .. \"/.vim/config.lua\")"
+    echo "lua dofile(vim.fn.expand(\"~/.vim/config.lua\"))"
     } > "$nvim_config/init.vim"
 }
 
