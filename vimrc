@@ -437,7 +437,7 @@ nnoremap <silent> <leader><leader>u :PlugUpdate<cr>
 nnoremap <silent> <leader><leader>c :PlugClean<cr>
 
 " buffer,table and whitespace
-let g:vimplus_ignored_filetypes = ['startify', 'qf', 'netrw', 'tagbar', 'leaderf', 'codecompanion']
+let g:vimplus_ignored_filetypes = ['help', 'startify', 'qf', 'netrw', 'tagbar', 'leaderf', 'codecompanion']
 autocmd BufAdd * call vimplus#buflimit(100)
 nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
