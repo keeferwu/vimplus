@@ -1,8 +1,8 @@
 #### 版本要求
 
     vim >= v9.1 or nvim >= v0.11.0
-    注：使用vim在保存时偶尔会出现崩溃的情况，建议使用nvim
-        nvim 特有功能：代码语法高亮，AI编程助手, Markdown渲染
+    注：在vim中使用coc插件在保存时会出现崩溃的情况, 推荐使用nvim
+        nvim 特有插件：代码语法高亮，AI编程助手, Markdown渲染
 
 #### 安装vimplus
 
