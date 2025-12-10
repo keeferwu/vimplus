@@ -416,19 +416,18 @@ function! UseLSPComplete(error, res)
     echom a:error
     return
   endif
-  if exists("$COCLSP")
-    echohl WarningMsg
-    echom "COC plugin has already been loaded!"
-    echohl None
-    return
-  endif
-  if a:res == 1   "yes
+  if !exists("$COCLSP") && a:res == 1  "yes
     "修改的环境变量只在vim下生效，需要在bash下手动export COCLSP才会在终端中生效
     "call setenv('COCLSP', 'yes')
     call vimplus#vimclose()
   endif
+  redraw | echo ""
 endfunction
-let lsp_confirm = "NOTE: vim/nvim will be closed, and you should export COCLSP to env."
+if exists("$COCLSP")
+    let lsp_confirm = "COC plugin has already been loaded!"
+else
+    let lsp_confirm = "NOTE: vim/nvim will be closed, and you should export COCLSP to env."
+endif
 nnoremap <silent> <leader><leader>l :call vimplus#confirm(lsp_confirm,function("UseLSPComplete"))<cr>
 nnoremap <silent> <leader><leader>h :vert help vimplus<cr>
 " 安装、更新、删除插件
