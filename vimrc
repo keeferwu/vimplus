@@ -283,18 +283,18 @@ let g:startify_session_savecmds = [
             \   '  hi ChangesSignTextDummyCh  ctermfg=NONE ctermbg=blue guifg=NONE guibg=blue',
             \   '  hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green',
             \   'endif',
-            \   'if g:gutentags_file_list_command[:1] == "fd"',
-            \   '  if empty(findfile(g:startify_session_root_mark, ";"))',
-            \   '    let g:Lf_UseVersionControlTool = 1',
-            \   '    let g:Lf_RootMarkers += [''.git'', ''.hg'']',
-            \   '    let g:Lf_RgConfig = filter(copy(g:Lf_RgConfig), ''v:val !=# "--no-ignore-vcs"'')',
-            \   '    let g:gutentags_project_root += [''.git'', ''.hg'']',
-            \   '    let g:gutentags_file_list_command = substitute(g:gutentags_file_list_command, ''--no-ignore-vcs'', '''', ''g'')',
-            \   '  endif',
-            \   '  if !empty(g:startify_session_ignore_list)',
-            \   '    let g:Lf_RgExGlob += g:startify_session_ignore_list',
-            \   '    let g:gutentags_file_list_command .= " --exclude " . join(g:startify_session_ignore_list, " --exclude ")',
-            \   '  endif',
+            \   'if executable("fd") && !empty(g:startify_session_ignore_list)',
+            \   '  let g:Lf_RgExGlob += g:startify_session_ignore_list',
+            \   '  let g:Lf_ExternalCommand .= " --exclude " . join(g:startify_session_ignore_list, " --exclude ")',
+            \   '  let g:gutentags_file_list_command .= " --exclude " . join(g:startify_session_ignore_list, " --exclude ")',
+            \   'endif',
+            \   'if empty(findfile(g:startify_session_root_mark, ";"))',
+            \   '  unlet g:Lf_ExternalCommand',
+            \   '  let g:Lf_UseVersionControlTool = 1',
+            \   '  let g:Lf_RootMarkers += [''.git'', ''.hg'']',
+            \   '  let g:Lf_RgConfig = filter(copy(g:Lf_RgConfig), ''v:val !=# "--no-ignore-vcs"'')',
+            \   '  let g:gutentags_project_root += [''.git'', ''.hg'']',
+            \   '  let g:gutentags_file_list_command = {"markers": {".git": "git ls-files", ".hg": "hg files"}}',
             \   'endif',
             \   'command! -nargs=0 SessionIgnore :call SessionIgnoreList()',
             \ ]
@@ -594,8 +594,30 @@ nnoremap <silent> <leader>lr :Leaderf rg --recall<cr>
 let g:Lf_ShowDevIcons = 0
 let g:Lf_IgnoreCurrentBufferName = 1
 let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
+" 默认rg自动忽略.gitignore指定的文件，链接文件，隐藏文件和二进制文件，可通过g:Lf_RgConfig 进行定制
+" 忽略当前及子目录下的.git目录的内容，排除当前目录下x86_run,target 目录的内容，
+" 排除.map结尾的文件，排除gtags.files，compile_commands.json 文件,可搜索隐藏文件。
+" -t: 指定文件类型，-i: 忽略大小写, -g:可指定特定后缀的文件
+" -u: 搜索.gitignore 里的文件, -uu: 搜索隐藏文件 , -uuu: 搜索二进制文件
+" --unrestricted:当主项目中的.gitignore 文件忽略掉了子项目目录，该选项可以使搜索不受.gitignore 文件的限制，
+" --no-ignore: 禁用所有与忽略相关的过滤(.igrore .rgignore .gitignore)
+" 在当前仓库搜索子仓库里的内容, 但搜索过程比较慢
+let g:Lf_RgConfig = ["--max-columns=150", "--hidden" , "--no-ignore-vcs"]
+" **/.git/**: 任意路径下的.git目录及其所有子目录的文件
+" .git/**: 当前路径下.git目录及其所有子目录的文件
+" .git/*: 当前路径下.git目录下的文件和直接子目录的文件
+" .git: 当前路径下.git目录下的文件
+" 通过find -path 测试发现 .git/**, .git/*, .git 效果相同
+let g:Lf_RgExGlob = ["**/.git/**", ".clangd/**", "*.{map,map2,o,a,so,elf,tgt,x86}", "compile_commands.json"]
+"Leaderf rg -e<Space>
+nnoremap <leader>rg <Plug>LeaderfRgPrompt
+nnoremap <leader>rs :LeaderfRgInteractive<cr>
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
-"let g:Lf_ExternalCommand = 'fd --full-path "%s" --type f --no-ignore-vcs'  "Lf_WildIgnore 对此选项不起作用
+if executable('fd')
+"Lf_WildIgnore 对此选项不起作用, 通过g:Lf_RgExGlob 进行过滤
+let s:file_exclude = map(g:Lf_RgExGlob, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
+let g:Lf_ExternalCommand = 'fd --full-path "%s" --type f --no-ignore-vcs --exclude ' . join(s:file_exclude, ' --exclude ')
+endif
 let g:Lf_DefaultExternalTool = 'find'            "rg,pt,ag,find rg 默认会自动过滤.ignore .rgignore .gitignore中的文件
 let g:Lf_UseVersionControlTool = 0               "0: 使用 Lf_DefaultExternalTool 定义的工具搜索文件, 1: 使用当前项目所使用的版本控制工具
 let g:Lf_RecurseSubmodules = 1                   "当g:Lf_UseVersionControlTool = 1 时，通过git ls-files --recurse-submodules 来搜索子项目中的文件
@@ -611,10 +633,7 @@ let g:Lf_WildIgnore = {
             \   'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache'],
             \   'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
             \}
-let g:Lf_MruWildIgnore = {
-            \   'dir': ['.svn','.git','.hg','.vscode','.wine','.deepinwine','.oh-my-zsh','.clangd','.cache'],
-            \   'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]','*.tgt','*.x86']
-            \}
+let g:Lf_MruWildIgnore = g:Lf_WildIgnore
 "let g:Lf_WindowPosition = 'popup'
 let g:Lf_WindowHeight = 0.40
 let g:Lf_PreviewInPopup = 1           "启用预览这个功能 P 弹出窗口
@@ -634,24 +653,6 @@ let g:Lf_PreviewResult = {
             \   'Rg': 1,
             \   'Gtags': 1
             \}
-" 默认rg自动忽略.gitignore指定的文件，链接文件，隐藏文件和二进制文件，可通过g:Lf_RgConfig 进行定制
-" 忽略当前及子目录下的.git目录的内容，排除当前目录下x86_run,target 目录的内容，
-" 排除.map结尾的文件，排除gtags.files，compile_commands.json 文件,可搜索隐藏文件。
-" -t: 指定文件类型，-i: 忽略大小写, -g:可指定特定后缀的文件
-" -u: 搜索.gitignore 里的文件, -uu: 搜索隐藏文件 , -uuu: 搜索二进制文件
-" --unrestricted:当主项目中的.gitignore 文件忽略掉了子项目目录，该选项可以使搜索不受.gitignore 文件的限制，
-" --no-ignore: 禁用所有与忽略相关的过滤(.igrore .rgignore .gitignore)
-" 在当前仓库搜索子仓库里的内容, 但搜索过程比较慢
-let g:Lf_RgConfig = ["--max-columns=150", "--hidden" , "--no-ignore-vcs"]
-" **/.git/**: 任意路径下的.git目录及其所有子目录的文件
-" .git/**: 当前路径下.git目录及其所有子目录的文件
-" .git/*: 当前路径下.git目录下的文件和直接子目录的文件
-" .git: 当前路径下.git目录下的文件
-" 通过find -path 测试发现 .git/**, .git/*, .git 效果相同
-let g:Lf_RgExGlob = ["**/.git/**", ".clangd/**", "*.{map,map2,o,a,so,elf}", "compile_commands.json"]
-"Leaderf rg -e<Space>
-nnoremap <leader>rg <Plug>LeaderfRgPrompt
-nnoremap <leader>rs :LeaderfRgInteractive<cr>
 let g:Lf_GitInlineBlameEnable = 0  " show inline blame
 " Leaderf git
 let g:Lf_GitCommands = [
@@ -668,11 +669,6 @@ let g:Lf_GitCommands = [
 " 或者将要过滤的类型添加到 ~/.globalrc 中的:skip
 " 0 - gtags search the target files by itself. 1 - the target files come from FileExplorer. 2 - the target files come from |g:Lf_GtagsfilesCmd.
 let g:Lf_GtagsSource = 1
-let g:Lf_GtagsfilesCmd = {
-            \   '.git': 'git ls-files --recurse-submodules',
-            \   '.hg': 'hg files',
-            \   'default': 'rg --no-messages --files'
-            \}
 let g:Lf_CtagsFuncOpts = {
             \   'c': '-I __THROW -I __THROWNL -I __nonnull --fields=+niazS --extras=+q --c-kinds=fp',
             \   'rust': '--rust-kinds=f',
@@ -706,15 +702,15 @@ let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = 'tags'
 if executable('fd')
-  " 在单引号字符串中，单引号 ' 需要用两个单引号 '' 来表示。因此需要将内部的单引号全部替换为两个单引号。
-  let s:gutentags_exclude = map(g:Lf_RgExGlob, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
-  let g:gutentags_file_list_command = "fd --type f --no-ignore-vcs --exclude " . join(s:gutentags_exclude, " --exclude ")
+" 在单引号字符串中，单引号 ' 需要用两个单引号 '' 来表示。因此需要将内部的单引号全部替换为两个单引号。
+let s:gutentags_exclude = map(g:Lf_RgExGlob, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
+let g:gutentags_file_list_command = "fd --type f --no-ignore-vcs --exclude " . join(s:gutentags_exclude, " --exclude ")
 else
-  " -name: 匹配文件名，-iname: 匹配文件名时忽略大小写， -wholename: 匹配文件名及其路径
-  let s:gutentags_exclude = map(g:Lf_WildIgnore.dir, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
-  let g:gutentags_file_list_command = 'find . \( -path ' . join(s:gutentags_exclude, " -o -path ") . '\) -a -prune -o'
-  let s:gutentags_exclude = map(g:Lf_WildIgnore.file, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
-  let g:gutentags_file_list_command .= ' \( -type f -not -iname ' . join(s:gutentags_exclude, " -not -iname ") . '\) -print'
+" -name: 匹配文件名，-iname: 匹配文件名时忽略大小写， -wholename: 匹配文件名及其路径
+let s:gutentags_exclude = map(g:Lf_WildIgnore.dir, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
+let g:gutentags_file_list_command = 'find . \( -path ' . join(s:gutentags_exclude, " -o -path ") . '\) -a -prune -o'
+let s:gutentags_exclude = map(g:Lf_WildIgnore.file, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
+let g:gutentags_file_list_command .= ' \( -type f -not -iname ' . join(s:gutentags_exclude, " -not -iname ") . '\) -print'
 endif
 let g:gutentags_ctags_exclude = ['*/.git/*', '*/.clangd/*', '*/configs/*', '*.json', '*.mib', '*.db', '*.css', '*.js', '*.html']
 let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
