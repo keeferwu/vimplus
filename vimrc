@@ -290,7 +290,7 @@ let g:startify_session_savecmds = [
             \   'endif',
             \   'if empty(findfile(g:startify_session_root_mark, ";"))',
             \   '  for root in [''.git'', ''.hg'']',
-            \   '    if !empty(findfile(root, ";"))',
+            \   '    if !empty(finddir(root, ";"))',
             \   '      let $PROJECT_ROOT = root',
             \   '    endif',
             \   '  endfor',
