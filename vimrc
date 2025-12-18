@@ -219,7 +219,7 @@ Plug 'vim-scripts/OmniCppComplete', exists('$COCLSP') ? {'on': []} : {'for': ['c
 " lsp代码补全,需要安装语言服务器
 Plug 'neoclide/coc.nvim', exists('$COCLSP') ? {'branch': 'release'} : {'on': []}
 " 代码调试
-Plug 'puremourning/vimspector'
+Plug 'puremourning/vimspector', {'on': ['VimspectorLaunch']}
 
 " nvim插件库
 Plug 'nvim-lua/plenary.nvim', has('nvim') ? {'branch': 'master'} : {'on': []}
@@ -242,7 +242,7 @@ call plug#end()
 runtime macros/matchit.vim
 
 " vim-startify
-let g:startify_session_dir = '~/.vim/cache/session'
+let g:startify_session_dir = '~/.vim/.cache/session'
 let g:startify_session_sort = 1          " sort by last open time
 let g:startify_session_persistence = 1
 let g:startify_bookmarks = []
@@ -615,7 +615,7 @@ let g:Lf_RgConfig = ["--max-columns=150", "--hidden" , "--no-ignore-vcs"]
 " .git/*: 当前路径下.git目录下的文件和直接子目录的文件
 " .git: 当前路径下.git目录下的文件
 " 通过find -path 测试发现 .git/**, .git/*, .git 效果相同
-let g:Lf_RgExGlob = ["**/.git/**", ".clangd/**", "*.{map,map2,o,a,so,elf,tgt,x86}", "compile_commands.json"]
+let g:Lf_RgExGlob = ["**/.git/**", ".clangd/**", ".cache/**" ,"*.{map,map2,o,a,so,elf,tgt,x86}", "compile_commands.json"]
 "Leaderf rg -e<Space>
 nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <leader>rs :LeaderfRgInteractive<cr>
@@ -631,7 +631,7 @@ let g:Lf_RecurseSubmodules = 1                   "当g:Lf_UseVersionControlTool 
 let g:Lf_DefaultMode = 'Fuzzy'
 let g:Lf_RootMarkers = [$PROJECT_ROOT]
 let g:Lf_WorkingDirectoryMode = 'Aa'
-let g:Lf_CacheDirectory = expand($HOME.'/.vim/cache')
+let g:Lf_CacheDirectory = expand($HOME.'/.vim/.cache')
 let g:Lf_UseCache = 1
 let g:Lf_NeedCacheTime = 1
 let g:Lf_NumberOfCache = 10

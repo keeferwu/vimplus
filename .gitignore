@@ -1,4 +1,3 @@
-session/
+.cache/
 plugged/
-cache/
 plugged.tar.gz

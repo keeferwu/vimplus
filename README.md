@@ -145,11 +145,13 @@ vim-gutentags 由于leaderF不支持ctags数据生成，因此使用vim-gutentag
 
 vimspector 是一个调试插件，需要安装Debug Adapter
 
-    1. :VimspectorInstall <language debug adapter>     #安装adapter
+    1. :VimspectorLaunch      #插件默认不加载， 使用前需要先加载, 通过vimplus帮助文档可查看调试快捷键
 
-    2. :VimspectorCreateConfig <language template>     #构建.vimspector.json 保存到项目根目录
+    2. :VimspectorInstall <language debug adapter>     #安装adapter
 
-    3. vimspector.Console 窗口的输出会受dashboard 的.gdbinit配置影响, 需在.vimspector.json中配置"miDebuggerArgs": "--nx" 忽略.gdbinit
+    3. :VimspectorCreateConfig <language template>     #构建.vimspector.json 保存到项目根目录
+
+    4. vimspector.Console 窗口的输出会受dashboard 的.gdbinit配置影响, 需在.vimspector.json中配置"miDebuggerArgs": "--nx" 忽略.gdbinit
 
 配置和使用参考：https://kongjun18.github.io/archives/vimspector-the-best-debug-plugin-for-vim.pdf
 
