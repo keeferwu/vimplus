@@ -18,7 +18,7 @@
 #### 在docker中安装vimplus
 
     1. docker pull ubuntu    #拉取ubuntu镜像
-    2. docker run --name <container_name> --network=host -it ubuntu:latest /bin/bash   #创建ubuntu容器
+    2. docker run --name <container_name> --network=host -v <host_dir>:<container_dir> -it ubuntu:latest /bin/bash   #创建ubuntu容器
     3. 容器中做如下操作：
         apt update
         apt install -y sudo bash-completion net-tools inetutils-ping
@@ -30,6 +30,7 @@
     4. docker start <container_name> #再次启动容器
     5. docker exec -u <user_name> -w /home/<user_name> -it <container_name> /bin/bash  #以新用户身份进入容器中的用户家目录
     6. 在容器中执行vimplus的安装步骤
+    7. 由于容器中的<container_dir>和宿主机的<host_dir>共享, 因此可以在docker中使用vim/nvim 打开宿主机上的文件
 
 #### 使用vimplus
 

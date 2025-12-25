@@ -82,10 +82,6 @@ require("codecompanion").setup({
       height = 10,
       prompt = "Prompt ", -- Prompt used for interactive LLM calls
       --provider = "default", -- default|telescope|mini_pick
-      opts = {
-        show_default_actions = true, -- Show the default actions in the action palette?
-        show_default_prompt_library = true, -- Show the default prompt library in the action palette?
-      },
     },
     chat = {
       auto_scroll = true, -- Automatically scroll down and place the cursor at the end?
@@ -93,6 +89,7 @@ require("codecompanion").setup({
       separator = "─", -- The separator between the different messages in the chat buffer
       show_context = true, -- Show context (from slash commands and variables) in the chat buffer?
       fold_context = false, -- Fold context in the chat buffer?
+      show_reasoning = true, -- Show reasoning content in the chat buffer?
       fold_reasoning = false, -- Fold the reasoning content from the LLM in the chat buffer?
       show_settings = false, -- Show LLM settings at the top of the chat buffer?
       show_tools_processing = true, -- Show the loading message when tools are being executed?
@@ -101,7 +98,7 @@ require("codecompanion").setup({
     },
   },
   --选择模型
-  strategies = {
+  interactions = {
     chat = {
       adapter = "siliconflow_r1", -- copliot|deepseek|siliconflow|aliyun_deepseek
       keymaps = {
@@ -129,37 +126,12 @@ require("codecompanion").setup({
     },
     inline = {
       adapter = "siliconflow_v3", -- copliot|deepseek|siliconflow|aliyun_deepseek
-      layout = "vertical", -- vertical|horizontal|buffer
-      keymaps = {
-        accept_change = {
-          modes = { n = "ga" },
-          description = "Accept the suggested change",
-        },
-        reject_change = {
-          modes = { n = "gr" },
-          description = "Reject the suggested change",
-        },
-      },
-    },
+  },
     cmd = {
       adapter = "siliconflow_v3", -- copliot|deepseek|siliconflow|aliyun_deepseek
     },
-  },
-  -- prompt_library for codecompanionaction
-  prompt_library = {
-    ["Unit Tests"] = {
-      -- change strategy to chat
-      strategy = "chat",
-    },
-    ["Generate a Commit Message"] = {
-      opts = {
-        auto_submit = false,
-        -- use specific adapter
-        adapter = {
-          name = "siliconflow_v3",
-          model = "deepseek-ai/DeepSeek-V3",
-        },
-      },
+    background = {
+      adapter = "siliconflow_v3", -- copliot|deepseek|siliconflow|aliyun_deepseek
     },
   },
   -- adapter extensions
@@ -285,13 +257,6 @@ require("codecompanion").setup({
       end,
       ]]
     },
-    acp = {
-      claude_code = "claude_code",
-      gemini_cli = "gemini_cli",
-      opts = {
-        show_defaults = true, -- Show default adapters
-      },
-    },
   },
   -- extensions
   extensions = {
@@ -357,23 +322,6 @@ require("codecompanion").setup({
                 format_summary = nil, -- custom function to format generated summary e.g to remove <think/> tags from summary
             },
         },
-        -- Memory system (requires VectorCode CLI)
-        memory = {
-            -- Automatically index summaries when they are generated
-            auto_create_memories_on_summary_generation = true,
-            -- Path to the VectorCode executable
-            vectorcode_exe = "vectorcode",
-            -- Tool configuration
-            tool_opts = { 
-                -- Default number of memories to retrieve
-                default_num = 10 
-            },
-            -- Enable notifications for indexing progress
-            notify = true,
-            -- Index all existing memories on startup
-            -- (requires VectorCode 0.6.12+ for efficient incremental indexing)
-            index_on_startup = false,
-        },
       }
     }
   }
@@ -402,8 +350,8 @@ function codecompanion_notify_by_fidget()
       end
       local handle = require("fidget.progress").handle.create({
         title = "",
-        -- title = " Thinking... (" .. request.data.strategy .. ")",
-        message = " Thinking... (" .. request.data.strategy .. ")",
+        -- title = " Thinking... (" .. request.data.interaction .. ")",
+        message = " Thinking... (" .. request.data.interaction .. ")",
         lsp_client = {
           name = llm_role_title(request.data.adapter),
         },
