@@ -29,7 +29,7 @@ set cursorline                  " 高亮显示当前行
 "set cursorcolumn               " 高亮光标所在列
 set colorcolumn =121            " 高亮指定列
 set whichwrap+=<,>,h,l          " 设置光标键跨行
-set ttimeoutlen=0               " 设置<ESC>键响应时间
+set ttimeoutlen=50              " 设置<ESC>键响应时间
 set timeoutlen=500              " 默认超时是1000 ms
 "set updatetime=300              " 更新时间默认是4s
 set signcolumn=yes              " 总是显示侧边栏标识
@@ -115,6 +115,10 @@ colorscheme material
 " 背景透明
 "hi Normal  ctermfg=252 ctermbg=none
 
+" 默认情况下，vim 会认为 Alt 键是用来 set 8th bit of a typed character，但这同时也需要 terminal 的支持
+" 在插入模式下按 Ctrl-v 然后按 Alt+字母
+" - 如果是 ^[（Esc 后跟字母）→ 发送 Esc 序列 -> 使用 ^[字母 做映射
+" - 如果是单个特殊字符 → 设置了第 8 位 -> 使用 <M-字母> 做映射
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 自定义设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -127,7 +131,11 @@ autocmd BufReadPost * if &bin | execute "%!xxd" | endif
 nnoremap <silent> d   "_d
 vnoremap <silent> d   "_d
 " visual block re-mapping
-noremap <silent> <m-v> <c-v>
+if has('nvim') || has('gui_running')
+nnoremap <silent> <M-v> <C-v>
+else
+nnoremap <silent> v <C-v>
+endif
 " C+z默认会退到后台，重映射为展开所有折叠
 nnoremap <silent> <C-z> zR
 "终端下映射ESC退出到normal模式
@@ -788,10 +796,17 @@ let g:SuperTabCompleteCase = 'match'
 let g:codeium_enabled = 0               " enable codeium need token
 let g:codeium_disable_bindings = 1      " disable default keybindings
 let g:codeium_no_map_tab = 1            " disabled Codeium use tab keybindings
+if has('nvim') || has('gui_running')
 imap <script><silent><nowait><expr> <M-=> codeium#Accept()
 imap <M--> <Cmd>call codeium#Clear()<CR>
 imap <M-,> <Cmd>call codeium#CycleCompletions(-1)<CR>
 imap <M-.> <Cmd>call codeium#CycleCompletions(1)<CR>
+else
+imap <script><silent><nowait><expr> = codeium#Accept()
+imap - <Cmd>call codeium#Clear()<CR>
+imap , <Cmd>call codeium#CycleCompletions(-1)<CR>
+imap . <Cmd>call codeium#CycleCompletions(1)<CR>
+endif
 
 " vimspector
 let g:vimspector_base_dir=expand($HOME.'/.config/vimspector')
