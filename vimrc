@@ -269,7 +269,7 @@ let g:startify_session_root_mark = $PROJECT_ROOT
 let g:startify_session_ignore_list = []  " 配置项目需要忽略的目录和文件
 " session 退出时自动切换工作目录到主目录
 let g:startify_session_before_save = [
-            \ "let root = findfile(g:startify_session_root_mark, ';') | exec 'cd' fnamemodify(empty(root) ? finddir('.git', ';') : root, ':h')",
+            \ "exec 'cd' fnamemodify(get({'root': findfile(g:startify_session_root_mark, ';')}, 'root', finddir('.git', ';')), ':h')",
             \ "normal! zR"
             \ ]
 let g:startify_session_savevars = [
@@ -296,22 +296,16 @@ let g:startify_session_savecmds = [
             \   '  let g:Lf_ExternalCommand .= " --exclude " . join(g:startify_session_ignore_list, " --exclude ")',
             \   '  let g:gutentags_file_list_command .= " --exclude " . join(g:startify_session_ignore_list, " --exclude ")',
             \   'endif',
-            \   'if empty(findfile(g:startify_session_root_mark, ";"))',
-            \   '  for root in [''.git'', ''.hg'']',
-            \   '    if !empty(finddir(root, ";"))',
-            \   '      let $PROJECT_ROOT = root',
-            \   '    endif',
-            \   '  endfor',
-            \   '  if $PROJECT_ROOT !=# g:startify_session_root_mark',
-            \   '    unlet g:Lf_ExternalCommand',
-            \   '    let g:Lf_UseVersionControlTool = 1',
-            \   '    let g:Lf_RootMarkers += [''.git'', ''.hg'']',
-            \   '    let g:Lf_RgConfig = filter(copy(g:Lf_RgConfig), ''v:val !=# "--no-ignore-vcs"'')',
-            \   '    let g:gutentags_project_root += [''.git'', ''.hg'']',
-            \   '    let g:gutentags_file_list_command = {"markers": {".git": "git ls-files", ".hg": "hg files"}}',
-            \   '  endif',
-            \   'endif',
             \   'command! -nargs=0 SessionIgnore :call SessionIgnoreList()',
+            \   'if empty(findfile(g:startify_session_root_mark, ";")) && !empty(finddir(''.git'', ";"))',
+            \   '  let $PROJECT_ROOT = ''.git''',
+            \   '  unlet g:Lf_ExternalCommand',
+            \   '  let g:Lf_UseVersionControlTool = 1',
+            \   '  let g:Lf_RootMarkers = [''.git'']',
+            \   '  let g:Lf_RgConfig = filter(copy(g:Lf_RgConfig), ''v:val !=# "--no-ignore-vcs"'')',
+            \   '  let g:gutentags_project_root = [''.git'']',
+            \   '  let g:gutentags_file_list_command = {"markers": {".git": "git ls-files"}}',
+            \   'endif',
             \ ]
 "delete session in starify
 function! SessionDelete()
