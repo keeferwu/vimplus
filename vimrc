@@ -103,18 +103,6 @@ set smartcase                    " 搜索大写字母不敏感
 set nohlsearch                   " 取消高亮搜索结果
 autocmd CursorMoved,CursorMovedI * call vimplus#hlsearch()
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 主题设置
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set background=dark
-let g:onedark_terminal_italics = get(g:, 'terminal_italics', 1)
-"colorscheme onedark
-let g:material_terminal_italics = get(g:, 'terminal_italics', 1)
-let g:material_theme_style = 'palenight'
-colorscheme material
-" 背景透明
-"hi Normal  ctermfg=252 ctermbg=none
-
 " 默认情况下，vim 会认为 Alt 键是用来 set 8th bit of a typed character，但这同时也需要 terminal 的支持
 " 在插入模式下按 Ctrl-v 然后按 Alt+字母
 " - 如果是 ^[（Esc 后跟字母）→ 发送 Esc 序列 -> 使用 ^[字母 做映射
@@ -178,6 +166,18 @@ if exists("$TMUX")
   command! ClipBoard :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '') | echo $DISPLAY
   autocmd VimEnter * ClipBoard
 endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 主题设置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set background=dark
+let g:onedark_terminal_italics = get(g:, 'terminal_italics', 1)
+"colorscheme onedark
+let g:material_terminal_italics = get(g:, 'terminal_italics', 1)
+let g:material_theme_style = 'palenight'
+colorscheme material
+" 背景透明
+"hi Normal  ctermfg=252 ctermbg=none
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 插件列表
