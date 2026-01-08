@@ -121,8 +121,11 @@ vnoremap <silent> d   "_d
 " visual block re-mapping
 if has('nvim') || has('gui_running')
 nnoremap <silent> <M-v> <C-v>
+" 有些终端仅接收<M-V>
+nnoremap <silent> <M-V> <C-v>
 else
 nnoremap <silent> v <C-v>
+nnoremap <silent> V <C-v>
 endif
 " C+z默认会退到后台，重映射为展开所有折叠
 nnoremap <silent> <C-z> zR
