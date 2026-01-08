@@ -157,17 +157,12 @@ endif
 " 复制粘贴到系统剪切板
 autocmd VimEnter * call clipboard#check()
 if !has('clipboard') || exists('$TMUX')
+  let g:terminal_italics = 0    " tmux 默认不支持斜体
   noremap  <silent> <c-v> :<c-u>call clipboard#paste()<cr>
   vnoremap <silent> <c-c> :<c-u>call clipboard#yank()<cr>
 else
   noremap  <silent> <c-v> "+p
   vnoremap <silent> <c-c> "+y
-endif
-if exists("$TMUX")
-  let g:terminal_italics = 0    " tmux 默认不支持斜体
-  " 使用tmux attach已存在的session时,如果vim中系统剪切版无法使用，需要更新$DISPLAY环境变量
-  command! ClipBoard :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '') | echo $DISPLAY
-  autocmd VimEnter * ClipBoard
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
