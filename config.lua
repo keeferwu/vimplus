@@ -109,7 +109,7 @@ require("codecompanion").setup({
           modes = { n = "<C-q>", i = "<C-q>" },
         },
         completion = {
-          modes = { i = "<C-/>" },
+          modes = { i = "<C-p>" },
         },
       },
       slash_commands = {
@@ -126,7 +126,7 @@ require("codecompanion").setup({
     },
     inline = {
       adapter = "siliconflow_v3", -- copliot|deepseek|siliconflow|aliyun_deepseek
-  },
+    },
     cmd = {
       adapter = "siliconflow_v3", -- copliot|deepseek|siliconflow|aliyun_deepseek
     },
@@ -141,7 +141,7 @@ require("codecompanion").setup({
         allow_insecure = false, -- Allow insecure connections?
         cache_models_for = 1800, -- Cache adapter models for this long (seconds)
         proxy = nil, -- [protocol://]host[:port] e.g. socks5://127.0.0.1:9999
-        show_defaults = false, -- not Show default adapters
+        show_presets = false, -- not Show default adapters
         show_model_choices = true, -- Show model choices when changing adapter
       },
       --[[
@@ -256,6 +256,22 @@ require("codecompanion").setup({
         })
       end,
       ]]
+    },
+    acp = {
+      opts = {
+        show_presets = false, --only display the adapters defined in your user configuration
+      },
+      opencode = function()
+        return require("codecompanion.adapters").extend("opencode", {
+          commands = {
+            -- The default uses the opencode/config.json value
+            default = {
+              "opencode",
+              "acp",
+            },
+          },
+        })
+      end,
     },
   },
   -- extensions
