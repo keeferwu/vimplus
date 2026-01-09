@@ -91,11 +91,14 @@ function! clipboard#yank() abort
 endfunction
 
 " paste from system clipboard
-function! clipboard#paste() abort
+function! clipboard#paste(mode) abort
+  if a:mode ==# 'v'
+   normal! gv"_d
+  endif
   if !empty(s:paste_cmd)
     let @" = system(s:paste_cmd)
   else
     let @" = @+
   endif
-  normal ""p
+  normal! ""P
 endfunction

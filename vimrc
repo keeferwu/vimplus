@@ -156,22 +156,24 @@ if has("nvim")
 endif
 " 复制粘贴到系统剪切板
 autocmd VimEnter * call clipboard#check()
-if !has('clipboard') || exists('$TMUX')
-  let g:terminal_italics = 0    " tmux 默认不支持斜体
-  noremap  <silent> <c-v> :<c-u>call clipboard#paste()<cr>
+if !has('clipboard')
   vnoremap <silent> <c-c> :<c-u>call clipboard#yank()<cr>
+  nnoremap <silent> <c-v> :<c-u>call clipboard#paste('n')<cr>
+  vnoremap <silent> <c-v> :<c-u>call clipboard#paste('v')<cr>
 else
-  noremap  <silent> <c-v> "+p
   vnoremap <silent> <c-c> "+y
+  noremap  <silent> <c-v> "+p
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 主题设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set background=dark
-let g:onedark_terminal_italics = get(g:, 'terminal_italics', 1)
-"colorscheme onedark
-let g:material_terminal_italics = get(g:, 'terminal_italics', 1)
+" tmux 默认不支持斜体
+if !exists('$TMUX')
+let g:onedark_terminal_italics = 1
+let g:material_terminal_italics = 1
+endif
 let g:material_theme_style = 'palenight'
 colorscheme material
 " 背景透明
