@@ -81,7 +81,7 @@ require("codecompanion").setup({
       width = 95,
       height = 10,
       prompt = "Prompt ", -- Prompt used for interactive LLM calls
-      --provider = "default", -- default|telescope|mini_pick
+      --provider = "default", -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks". If not specified, the plugin will autodetect installed providers.
     },
     chat = {
       auto_scroll = true, -- Automatically scroll down and place the cursor at the end?
@@ -95,6 +95,25 @@ require("codecompanion").setup({
       show_tools_processing = true, -- Show the loading message when tools are being executed?
       show_token_count = true, -- Show the token count for each response?
       start_in_insert_mode = false, -- Open the chat buffer in insert mode?
+    },
+  },
+  -- rule for project
+  rules = {
+    project_rule = {
+      description = "Rule files for current project",
+      --@return boolean
+      enabled = function()
+        -- Don't show this group unless file exist
+        return vim.fn.findfile("AGENTS.md", ";") ~= ""
+      end,
+      files = {
+        vim.fn.findfile("AGENTS.md", ".;"),
+      },
+    },
+    opts = {
+      chat = {
+        autoload = {"default", "project_rule"},
+      },
     },
   },
   --选择模型
@@ -123,6 +142,9 @@ require("codecompanion").setup({
           },
         },
       },
+      opts = {
+        completion_provider = "coc", -- blink|cmp|coc|default
+      }
     },
     inline = {
       adapter = "siliconflow_v3", -- copliot|deepseek|siliconflow|aliyun_deepseek
