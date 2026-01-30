@@ -119,7 +119,7 @@ require("codecompanion").setup({
   --选择模型
   interactions = {
     chat = {
-      adapter = "siliconflow_r1", -- copliot|deepseek|siliconflow|aliyun_deepseek
+      adapter = "siliconflow", -- copliot|deepseek|siliconflow|aliyun_deepseek
       keymaps = {
         send = {
           modes = { n = "<C-s>", i = "<C-s>" },
@@ -147,13 +147,13 @@ require("codecompanion").setup({
       }
     },
     inline = {
-      adapter = "siliconflow_v3", -- copliot|deepseek|siliconflow|aliyun_deepseek
+      adapter = "siliconflow", -- copliot|deepseek|siliconflow|aliyun_deepseek
     },
     cmd = {
-      adapter = "siliconflow_v3", -- copliot|deepseek|siliconflow|aliyun_deepseek
+      adapter = "siliconflow", -- copliot|deepseek|siliconflow|aliyun_deepseek
     },
     background = {
-      adapter = "siliconflow_v3", -- copliot|deepseek|siliconflow|aliyun_deepseek
+      adapter = "siliconflow", -- copliot|deepseek|siliconflow|aliyun_deepseek
     },
   },
   -- adapter extensions
@@ -178,7 +178,7 @@ require("codecompanion").setup({
         })
       end,]]
 
-      deepseek_coder = function()
+      deepseek_chat = function()
         return require("codecompanion.adapters").extend("deepseek", {
           name = "deepseek_coder",
           env = {
@@ -188,19 +188,19 @@ require("codecompanion").setup({
           },
           schema = {
             model = {
-              default = "deepseek-coder",
+              default = "deepseek-chat",
               choices = {
-                ["deepseek-coder"] = { opts = { can_use_tools = true } },
-                ["deepseek-reasoner"] = { opts = { can_reason = true, can_use_tools = false } },
+                ["deepseek-chat"] = { opts = { can_use_tools = true } },
+                ["deepseek-reasoner"] = { opts = { can_reason = true, can_use_tools = true } },
               },
             },
           },
         })
       end,
 
-      siliconflow_r1 = function()
-        return require("codecompanion.adapters").extend("deepseek", {
-          name = "siliconflow_r1",
+      siliconflow = function()
+        return require("codecompanion.adapters").extend("openai_compatible", {
+          name = "siliconflow",
           url = "https://api.siliconflow.cn/v1/chat/completions",
           env = {
             api_key = function()
@@ -209,36 +209,16 @@ require("codecompanion").setup({
           },
           schema = {
             model = {
-              default = "deepseek-ai/DeepSeek-R1",
+              default = "Pro/MiniMaxAI/MiniMax-M2.1",
               choices = {
-                ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true, can_use_tools = false } },
-                ["deepseek-ai/DeepSeek-V3"]  = { opts = { can_use_tools = true } },
+                ["MiniMaxAI/MiniMax-M2"]  = { opts = { can_reason = true } },
+                ["Pro/MiniMaxAI/MiniMax-M2.1"] = { opts = { can_reason = true} },
               },
             },
           },
         })
       end,
 
-      siliconflow_v3 = function()
-        return require("codecompanion.adapters").extend("deepseek", {
-          name = "siliconflow_v3",
-          url = "https://api.siliconflow.cn/v1/chat/completions",
-          env = {
-            api_key = function()
-              return os.getenv("SILICONFLOW_API_KEY")
-            end,
-          },
-          schema = {
-            model = {
-              default = "deepseek-ai/DeepSeek-V3",
-              choices = {
-                ["deepseek-ai/DeepSeek-V3"]  = { opts = { can_use_tools = true } },
-                ["deepseek-ai/DeepSeek-R1"] = { opts = { can_reason = true, can_use_tools = false } },
-              },
-            },
-          },
-        })
-      end,
       --[[
       aliyun_deepseek = function()
         return require("codecompanion.adapters").extend("deepseek", {
