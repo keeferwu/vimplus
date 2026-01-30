@@ -99,7 +99,7 @@ require("codecompanion").setup({
   },
   -- rule for project
   rules = {
-    project_rule = {
+    project = {
       description = "Rule files for current project",
       --@return boolean
       enabled = function()
@@ -107,12 +107,12 @@ require("codecompanion").setup({
         return vim.fn.findfile("AGENTS.md", ";") ~= ""
       end,
       files = {
-        vim.fn.findfile("AGENTS.md", ".;"),
+        "AGENTS.md",
       },
     },
     opts = {
       chat = {
-        autoload = {"default", "project_rule"},
+        autoload = {"default", "project"},
       },
     },
   },
@@ -143,7 +143,7 @@ require("codecompanion").setup({
         },
       },
       opts = {
-        completion_provider = "coc", -- blink|cmp|coc|default
+        completion_provider = "default", -- blink|cmp|coc|default
       }
     },
     inline = {
@@ -178,9 +178,9 @@ require("codecompanion").setup({
         })
       end,]]
 
-      deepseek_chat = function()
+      deepseek = function()
         return require("codecompanion.adapters").extend("deepseek", {
-          name = "deepseek_coder",
+          name = "deepseek",
           env = {
             api_key = function()
               return os.getenv("DEEPSEEK_API_KEY")
