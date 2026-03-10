@@ -241,8 +241,6 @@ Plug 'MeanderingProgrammer/render-markdown.nvim', has('nvim') ? {} : {'on': []}
 Plug 'j-hui/fidget.nvim', has('nvim') ? {} : {'on': []}
 " codecompanion history extension
 Plug 'ravitemer/codecompanion-history.nvim', has('nvim') ? {} : {'on': []}
-" 代码仓库索引工具
-"Plug 'Davidyz/VectorCode', has('nvim') ? {} : {'on': []}
 
 call plug#end()
 
