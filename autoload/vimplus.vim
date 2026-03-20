@@ -236,6 +236,9 @@ function! vimplus#differ() abort
 endfunction
 
 function! vimplus#write() abort
+  if vimplus#ignoredbuffer('%')
+    return
+  endif
   try
     " 如果不是普通模式，则切换到普通模式
     if mode() != 'n'
