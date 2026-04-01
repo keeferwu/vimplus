@@ -111,6 +111,22 @@ require("codecompanion").setup({
       },
     },
   },
+  -- mcp server
+  mcp = {
+    servers = {
+      ["context7"] = {
+        cmd = { "npx", "-y", "@upstash/context7-mcp" },
+        env = {
+          CONTEXT7_API_KEY = function()
+            return os.getenv("CONTEXT7_API_KEY")
+          end,
+        },
+      },
+    },
+    opts = {
+      default_servers = { "context7" },
+    },
+  },
   --选择模型
   interactions = {
     chat = {
