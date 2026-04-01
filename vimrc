@@ -239,8 +239,6 @@ Plug 'olimorris/codecompanion.nvim', has('nvim') ? {} : {'on': []}
 Plug 'MeanderingProgrammer/render-markdown.nvim', has('nvim') ? {} : {'on': []}
 " nvim 消息提示, use for codecompanion
 Plug 'j-hui/fidget.nvim', has('nvim') ? {} : {'on': []}
-" codecompanion history extension
-Plug 'ravitemer/codecompanion-history.nvim', has('nvim') ? {} : {'on': []}
 
 call plug#end()
 
