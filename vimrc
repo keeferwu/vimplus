@@ -298,7 +298,6 @@ let g:startify_session_savecmds = [
             \   '  unlet g:Lf_ExternalCommand',
             \   '  let g:Lf_UseVersionControlTool = 1',
             \   '  let g:Lf_RootMarkers = [''.git'']',
-            \   '  let g:Lf_RgConfig = filter(copy(g:Lf_RgConfig), ''v:val !=# "--no-ignore-vcs"'')',
             \   '  let g:gutentags_project_root = [''.git'']',
             \   '  let g:gutentags_file_list_command = {"markers": {".git": "git ls-files"}}',
             \   'endif',
@@ -606,8 +605,9 @@ let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 " -u: 搜索.gitignore 里的文件, -uu: 搜索隐藏文件 , -uuu: 搜索二进制文件
 " --unrestricted:当主项目中的.gitignore 文件忽略掉了子项目目录，该选项可以使搜索不受.gitignore 文件的限制，
 " --no-ignore: 禁用所有与忽略相关的过滤(.igrore .rgignore .gitignore)
-" 在当前仓库搜索子仓库里的内容, 但搜索过程比较慢
-let g:Lf_RgConfig = ["--max-columns=150", "--hidden" , "--no-ignore-vcs"]
+" --no-ignore-vcs : 禁用版本控制忽略(.gitignore .hgignore .svnignore),
+"  如果仅想取消版本控制忽略中的几项，可添加到 .ignore 中取反 (!xxx)
+let g:Lf_RgConfig = ["--max-columns=150", "--hidden"]
 " **/.git/**: 任意路径下的.git目录及其所有子目录的文件
 " .git/**: 当前路径下.git目录及其所有子目录的文件
 " .git/*: 当前路径下.git目录下的文件和直接子目录的文件
@@ -621,7 +621,7 @@ nnoremap <leader>rs :LeaderfRgInteractive<cr>
 if executable('fd')
 "Lf_WildIgnore 对此选项不起作用, 通过g:Lf_RgExGlob 进行过滤
 let s:file_exclude = map(g:Lf_RgExGlob, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
-let g:Lf_ExternalCommand = 'fd --full-path "%s" --type f --no-ignore-vcs --exclude ' . join(s:file_exclude, ' --exclude ')
+let g:Lf_ExternalCommand = 'fd --full-path "%s" --type f --exclude ' . join(s:file_exclude, ' --exclude ')
 endif
 let g:Lf_DefaultExternalTool = 'find'            "rg,pt,ag,find rg 默认会自动过滤.ignore .rgignore .gitignore中的文件
 let g:Lf_UseVersionControlTool = 0               "0: 使用 Lf_DefaultExternalTool 定义的工具搜索文件, 1: 使用当前项目所使用的版本控制工具
