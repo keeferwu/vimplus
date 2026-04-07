@@ -260,7 +260,6 @@ let g:startify_lists = [
             \ { 'header': ['   Commands'],              'type': 'commands' },
             \ ]
 let g:startify_session_root_mark = $PROJECT_ROOT
-let g:startify_session_ignore_list = []  " 配置项目需要忽略的目录和文件
 " session 退出时自动切换工作目录到主目录
 let g:startify_session_before_save = [
             \ "exec 'cd' fnamemodify(get({'root': findfile(g:startify_session_root_mark, ';')}, 'root', finddir('.git', ';')), ':h')",
@@ -268,7 +267,6 @@ let g:startify_session_before_save = [
             \ ]
 let g:startify_session_savevars = [
             \ 'g:colors_name',
-            \ 'g:startify_session_ignore_list',
             \ ]
 "清除terminal的buffer
 let g:startify_session_remove_lines = ['term:\/', 'NetrwTreeListing', 'CodeCompanion']
@@ -285,14 +283,8 @@ let g:startify_session_savecmds = [
             \   '  hi ChangesSignTextDummyCh  ctermfg=NONE ctermbg=blue guifg=NONE guibg=blue',
             \   '  hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green',
             \   'endif',
-            \   'if executable("fd") && !empty(g:startify_session_ignore_list)',
-            \   '  let g:Lf_RgExGlob += g:startify_session_ignore_list',
-            \   '  let g:Lf_ExternalCommand .= " --exclude " . join(g:startify_session_ignore_list, " --exclude ")',
-            \   'endif',
-            \   'command! -nargs=0 SessionIgnore :call SessionIgnoreList()',
             \   'if empty(findfile(g:startify_session_root_mark, ";")) && !empty(finddir(''.git'', ";"))',
             \   '  let $PROJECT_ROOT = ''.git''',
-            \   '  unlet g:Lf_ExternalCommand',
             \   '  let g:Lf_UseVersionControlTool = 1',
             \   '  let g:Lf_RootMarkers = [''.git'']',
             \   'endif',
@@ -305,25 +297,6 @@ function! SessionDelete()
   exec 'Startify'
 endfunction
 autocmd FileType startify nnoremap <silent><buffer> d :call SessionDelete()<cr>
-"Add session ignore files
-function! SessionIgnoreList() abort
-  try
-    echohl Question
-    call inputsave()
-    let ignore = input("Ignore list(*.o, target, **/.git/**): ", join(g:startify_session_ignore_list, ", "))
-    call inputrestore()
-    redraw | echo ""
-    if ignore =~ '^\s*$'
-      let g:startify_session_ignore_list = []
-      return
-    endif
-    let g:startify_session_ignore_list = map(split(ignore, '[ ,]\+'), 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
-  catch /^Vim:Interrupt$/
-    echo "Command interrupted"
-  finally
-    echohl None
-  endtry
-endfunction
 
 " vim-which-key
 let g:which_key_hspace = 10
