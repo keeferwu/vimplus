@@ -1,8 +1,8 @@
 #### 版本要求
 
-    vim >= v9.1 or nvim >= v0.11.0
-    注：在vim中使用coc插件在保存时会出现崩溃的情况, 推荐使用nvim
-        nvim 特有插件：代码语法高亮，AI编程助手, Markdown渲染
+    vim >= v9.1
+    nvim >= v0.11.0
+    nodejs >= v16.18.0
 
 #### 安装vimplus
 
@@ -152,11 +152,13 @@ coc.nvim 是一个使用LSP补全的插件，需要安装对应语言的LSP serv
         Makefile架构：通过工具bear or compiledb 构建compile_commands.json
         Cmake架构：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
+    注：coc插件占用资源相对较高，且在vim中使用会出现崩溃的情况, 因此不建议在vim中或资源紧张的环境下使用
+
 codecompanion.nvim 是一种生产力工具，可简化您在 Neovim 中使用 LLM 进行开发的方式。
 
     1. 配置文件config.lua 中可以自行扩展模型。
 
-    2. 使用模型时，需要将模型对应的API key添加到环境变量中，例如：export DEEPSEEK_API_KEY=<your key>
+    2. 使用模型时，需要将模型对应的API key添加到环境变量中。
 
 配置和使用参考：https://codecompanion.olimorris.dev/
 
@@ -170,7 +172,7 @@ gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  p
 
     2. 在vimrc中配置环境变量：
 
-        let g:Lf_Gtagslabel = 'native-pygments'
+        let g:Lf_Gtagslabel = 'native-pygments'   # 默认已配置
         GTAGSLABEL 告诉 gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
         实际使用 pygments 时，gtags 会启动 python 运行名为 pygments_parser.py 的脚本，通过管道和它通信，完成源代码分析，
         故需保证 gtags 能在 $PATH 里调用 python，且这个 python 安装了 pygments 模块,

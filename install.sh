@@ -378,7 +378,7 @@ function install_prepare_software_by_apt()
 # 安装archlinux必备软件
 function install_prepare_software_by_pacman()
 {
-    sudo pacman -S --noconfirm vim cmake gcc gcc-libs autoconf automake libtool flex bison fontconfig wget
+    sudo pacman -S --noconfirm vim nvim cmake gcc gcc-libs autoconf automake libtool flex bison fontconfig wget
     sudo pacman -S --noconfirm python python-pip python-pygments python-pynvim python-setuptools
     sudo pacman -S --noconfirm ctags ripgrep clang astyle ccls global xclip fd nodejs npm
     sudo ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
