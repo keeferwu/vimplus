@@ -199,9 +199,11 @@ function copy_config_to_user()
     # 拷贝.vim目录
     rm -rf $desc_vim_path
     mkdir $desc_vim_path
+    cp    $src_vim_path"README.md"          $desc_vim_path
     cp    $src_vim_path"config.lua"         $desc_vim_path
     cp    $src_vim_path"coc-settings.json"  $desc_vim_path
     cp -R $src_vim_path"doc/"               $desc_vim_path
+    cp -R $src_vim_path"fonts/"             $desc_vim_path
     cp -R $src_vim_path"colors/"            $desc_vim_path
     cp -R $src_vim_path"autoload/"          $desc_vim_path
     cp -R $src_vim_path"ftplugin/"          $desc_vim_path
