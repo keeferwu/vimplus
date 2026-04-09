@@ -466,7 +466,7 @@ function install_vim_plugin()
 {
     PLUGDIR=${PWD}/plugged
 
-    wget https://gitee.com/keeferwu/vimplus/releases/download/plugin-2026-03-10/plugged.tar.gz
+    wget https://gitee.com/keeferwu/vimplus/releases/download/plugin-2026-04-09/plugged.tar.gz
     if [ $? -eq 0 ]; then
         if [ -d $PLUGDIR ]; then
             echo -e "\033[33m Remove old $PLUGDIR directory \033[0m"
