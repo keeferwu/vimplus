@@ -285,6 +285,7 @@ let g:startify_session_savecmds = [
             \   'endif',
             \   'if empty(findfile(g:startify_session_root_mark, ";")) && !empty(finddir(''.git'', ";"))',
             \   '  let $PROJECT_ROOT = ''.git''',
+            \   '  unlet g:Lf_ExternalCommand',
             \   '  let g:Lf_UseVersionControlTool = 1',
             \   '  let g:Lf_RootMarkers = [''.git'']',
             \   '  let g:gutentags_project_root = [''.git'']',
@@ -640,8 +641,6 @@ let g:Lf_GitCommands = [
             \   {"LeaderfGitAuthor":                                "fuzzy search and view the log by author"},
             \   {"LeaderfGitInlineBlameToggle":                     "Toggle inline blame."},
             \ ]
-" 项目根目录存在gtags.file文件，gtags 会以该文件为基础生成数据，生成gtags.file的方式参考 g:gutentags_file_list_command
-" 或者将要过滤的类型添加到 ~/.globalrc 中的:skip
 " 0 - gtags search the target files by itself. 1 - the target files come from FileExplorer. 2 - the target files come from |g:Lf_GtagsfilesCmd.
 let g:Lf_GtagsSource = 1
 let g:Lf_CtagsFuncOpts = {
