@@ -269,26 +269,32 @@ function compile_vim_by_source()
     sudo apt-get remove vim vim-runtime  vim-tiny vim-common vim-gui-common
     sudo apt-get purge vim vim-runtime  vim-tiny vim-common vim-gui-common
 
-    sudo apt-get install -y libncurses5-dev libncurses5 python3-dev ruby-dev lua5.1 liblua5.1-dev luajit libluajit-5.1-dev libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev libperl-dev
+    sudo apt-get install -y libncurses5-dev libncurses5 python2-dev python3-dev ruby-dev
+    sudo apt-get install -y lua5.1 liblua5.1-dev luajit libluajit-5.1-dev
+    sudo apt-get install -y libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev libperl-dev
 
     rm -rf ~/vim_source
     git clone https://github.com/vim/vim.git ~/vim_source
     cd ~/vim_source
     if [ $? -eq 0 ]; then
+         make distclean
+         # gcc version should over 9.4.0
         ./configure --with-features=huge \
                 --enable-multibyte \
-                --enable-rubyinterp=yes \
+                --enable-pythoninterp=yes \
+                --with-python-config-dir=$(python2-config --configdir) \
                 --enable-python3interp=yes \
                 --with-python3-config-dir=$(python3-config --configdir) \
                 --enable-perlinterp=yes \
+                --enable-rubyinterp=yes \
                 --enable-luainterp=yes \
                 --with-luajit \
                 --enable-gui=gtk2 \
                 --with-x \
                 --enable-cscope \
+                --enable-terminal \
                 --enable-fail-if-missing \
                 --prefix=/usr/local
-
         sudo make
         sudo make install
 
@@ -301,10 +307,37 @@ function compile_vim_by_source()
     fi
     #如果缺少软件依赖可能会导致configure配置失败，导致安装的vim不支持python
     #remove vim which is installed by source
-    #sudo rm -rf /usr/bin/vim
-    #sudo rm -rf /usr/local/bin/vim
     #sudo rm -rf /usr/local/share/vim
-    #sudo rm -rf /usr/local/man/man1/vim.1
+    #sudo rm /usr/local/bin/eview
+    #sudo rm /usr/local/bin/evim
+    #sudo rm /usr/local/bin/ex
+    #sudo rm /usr/local/bin/gview
+    #sudo rm /usr/local/bin/gvim
+    #sudo rm /usr/local/bin/gvimdiff
+    #sudo rm /usr/local/bin/rgview
+    #sudo rm /usr/local/bin/rgvim
+    #sudo rm /usr/local/bin/rview
+    #sudo rm /usr/local/bin/rvim
+    #sudo rm /usr/local/bin/view
+    #sudo rm /usr/local/bin/vim
+    #sudo rm /usr/local/bin/vimdiff
+    #sudo rm /usr/local/bin/vimtutor
+    #sudo rm /usr/local/bin/xxd
+    #sudo rm /usr/local/man/man1/eview.1
+    #sudo rm /usr/local/man/man1/evim.1
+    #sudo rm /usr/local/man/man1/ex.1
+    #sudo rm /usr/local/man/man1/gview.1
+    #sudo rm /usr/local/man/man1/gvim.1
+    #sudo rm /usr/local/man/man1/gvimdiff.1
+    #sudo rm /usr/local/man/man1/rgview.1
+    #sudo rm /usr/local/man/man1/rgvim.1
+    #sudo rm /usr/local/man/man1/rview.1
+    #sudo rm /usr/local/man/man1/rvim.1
+    #sudo rm /usr/local/man/man1/view.1
+    #sudo rm /usr/local/man/man1/vim.1
+    #sudo rm /usr/local/man/man1/vimdiff.1
+    #sudo rm /usr/local/man/man1/vimtutor.1
+    #sudo rm /usr/local/man/man1/xxd.1
 }
 
 # 在ubuntu上安装nodejs
