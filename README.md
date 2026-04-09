@@ -81,6 +81,8 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
     Plug 'chrisbra/changesPlugin'
     " 代码格式化
     Plug 'vim-autoformat/vim-autoformat', {'on': ['Autoformat','AutoformatLine','RemoveTrailingSpaces']}
+    " 使用global工具自动更新tags文件
+    Plug 'ludovicchabant/vim-gutentags'
     " 文件模糊搜索工具
     Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
     " 显示leaderf gtags 搜索历史
@@ -121,14 +123,21 @@ OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件
     cd /usr/include/
     sudo ctags -I __THROW -I __THROWNL -I __nonnull -R --c-kinds=+p  --fields=+iaS --extra=+q
 
-leaderF 插件可以自动生成gtags数据库
-
-    默认情况下生成的gtags数据库会受版本控制器的影响，如何版本控制器中有一些文件或目录不想忽略，
-    可在.ignore(同时应用于fd,rg,ag 等工具) 中添加取反操作，例如 !xxx/
-
 Codeium 是一款智能补全插件，需要登录到官网生成token，注意，访问官网需要代理
 
     默认关闭, 通过let g:codeium_enabled = 1开启, 通过命令:Codeium Auth 添加token
+
+vim-gutentags 同时生成gtags 和 ctags(OmniCppComplete需要使用) 数据库到leaderf 缓存目录
+
+    1. 默认情况下生成的gtags数据库会受版本控制器的影响，如果版本控制器中有一些文件或目录不想忽略，
+       可在.ignore(同时应用于fd,rg,ag 等工具) 中添加取反操作，例如 !xxx/
+
+    2. 在项目的子目录下通过新建.root 文件可让vim-gutentags 给项目创建多个索引数据,实现数据的分割
+        例: 在.ignore 添加os/，然后在os目录下新建一个.root文件, 当打开 os 下的文件时，会生成独立的数据索引
+
+    3. gtags 数据生成失败调试方法：
+        开启调试信息：let g:gutentags_trace = 1
+        手动调试：gtags --gtagslabel native-pygments --skip-unreadable --skip-symlink=a --debug
 
 vimspector 是一个调试插件，需要安装Debug Adapter
 
@@ -172,7 +181,8 @@ gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  p
 
     2. 在vimrc中配置环境变量：
 
-        let g:Lf_Gtagslabel = 'native-pygments'   # 默认已配置
+        vim-gutentags:      let $GTAGSLABEL = 'native-pygments'
+        LeaderF:            let g:Lf_Gtagslabel = 'native-pygments'
         GTAGSLABEL 告诉 gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
         实际使用 pygments 时，gtags 会启动 python 运行名为 pygments_parser.py 的脚本，通过管道和它通信，完成源代码分析，
         故需保证 gtags 能在 $PATH 里调用 python，且这个 python 安装了 pygments 模块,
@@ -197,5 +207,6 @@ gtags 添加自定义配置
 
     3. 在vimrc中配置环境变量：
 
-        let g:Lf_Gtagsconf = expand("~/.globalrc")
+        vim-gutentags:      let $GTAGSCONF = expand("~/.globalrc")
+        LeaderF:            let g:Lf_Gtagsconf = expand("~/.globalrc")
 

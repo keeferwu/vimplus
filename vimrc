@@ -208,6 +208,8 @@ Plug 'rust-lang/rust.vim', has('nvim') ? {'on': []} : {'for': 'rust'}
 Plug 'chrisbra/changesPlugin'
 " 代码格式化
 Plug 'vim-autoformat/vim-autoformat', {'on': ['Autoformat','AutoformatLine','RemoveTrailingSpaces']}
+" 使用global工具自动更新tags文件
+Plug 'ludovicchabant/vim-gutentags'
 " 文件模糊搜索工具
 Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 " 显示leaderf gtags 搜索历史
@@ -285,6 +287,8 @@ let g:startify_session_savecmds = [
             \   '  let $PROJECT_ROOT = ''.git''',
             \   '  let g:Lf_UseVersionControlTool = 1',
             \   '  let g:Lf_RootMarkers = [''.git'']',
+            \   '  let g:gutentags_project_root = [''.git'']',
+            \   '  let g:gutentags_file_list_command = {"markers": {".git": "git ls-files"}}',
             \   'endif',
             \ ]
 "delete session in starify
@@ -644,8 +648,8 @@ let g:Lf_CtagsFuncOpts = {
             \   'c': '-I __THROW -I __THROWNL -I __nonnull --fields=+niazS --extras=+q --c-kinds=fp',
             \   'rust': '--rust-kinds=f',
             \ }
-let g:Lf_GtagsAutoGenerate = 1           " auto create gtags
-let g:Lf_GtagsGutentags = 0              " use vim-gutentags to generate gtags,should make g:Lf_GtagsAutoGenerate = 0
+let g:Lf_GtagsAutoGenerate = 0           " auto create gtags
+let g:Lf_GtagsGutentags = 1              " use vim-gutentags to generate gtags,should make g:Lf_GtagsAutoGenerate = 0
 let g:Lf_GtagsAutoUpdate = 1             " auto update when buffer write
 let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
 let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
@@ -664,6 +668,66 @@ nnoremap <silent> <leader>jr :Leaderf coc references --auto-jump<cr>
 nnoremap <silent> <leader>jc :Leaderf coc declarations --auto-jump<cr>
 nnoremap <silent> <leader>ji :Leaderf coc implementations --auto-jump<cr>
 nnoremap <silent> <leader>jt :Leaderf coc typeDefinitions --auto-jump<cr>
+endif
+
+" vim-gutentags
+" gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
+let g:gutentags_project_root = [$PROJECT_ROOT]
+let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
+" 所生成的数据文件的名称
+let g:gutentags_ctags_tagfile = 'tags'
+if executable('fd')
+" 在单引号字符串中，单引号 ' 需要用两个单引号 '' 来表示。因此需要将内部的单引号全部替换为两个单引号。
+let s:gutentags_exclude = map(g:Lf_RgExGlob, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
+let g:gutentags_file_list_command = "fd --type f --exclude " . join(s:gutentags_exclude, " --exclude ")
+else
+" -name: 匹配文件名，-iname: 匹配文件名时忽略大小写， -wholename: 匹配文件名及其路径
+let s:gutentags_exclude = map(g:Lf_WildIgnore.dir, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
+let g:gutentags_file_list_command = 'find . \( -path ' . join(s:gutentags_exclude, " -o -path ") . '\) -a -prune -o'
+let s:gutentags_exclude = map(g:Lf_WildIgnore.file, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
+let g:gutentags_file_list_command .= ' \( -type f -not -iname ' . join(s:gutentags_exclude, " -not -iname ") . '\) -print'
+endif
+let g:gutentags_ctags_exclude = ['*/.git/*', '*/.clangd/*', '*/configs/*', '*.json', '*.mib', '*.db', '*.css', '*.js', '*.html']
+let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
+" i 表示如果有继承, 则标识出父类; a 表示类成员调用权限 (public or private); S 表示如果是函数, 则标识函数的signature.
+" --languages:只检索指定类型的语言
+let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--languages=c,c++,asm,lua']
+" 记录函数声明和各种外部和前向声明
+"let g:gutentags_ctags_extra_args += ['--c++-kinds=+px', '--c-kinds=+px']
+" 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
+let g:gutentags_ctags_extra_args += ['--extras=+q', '--output-format=e-ctags']
+let g:gutentags_trace = 0
+"打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
+"let g:gutentags_define_advanced_commands = 1
+"写更新有时会导致gtags数据丢失部分内容
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_new = 0
+autocmd FileType startify let g:gutentags_generate_on_new  = 1
+let g:gutentags_generate_on_write = 0
+" 同时开启 ctags 和 gtags 支持：
+let g:gutentags_modules = []
+" generate gtags data to leaderF
+let g:gutentags_cache_dir = expand(g:Lf_CacheDirectory.'/LeaderF/gtags/')
+if get(g:, 'Lf_GtagsGutentags', 1) && executable('ctags')
+  let g:gutentags_modules += ['ctags']
+  " 定时器回调执行tjump是同步的，时间过长仍然会卡住vim
+  function! TjumpList(...) abort
+    execute('tjump '.expand('<cword>'))
+  endfunction
+  " 默认情况下crl+] 只会跳到tags中的第一个匹配项，通过tjump显示tags中多个匹配项
+  noremap <silent> <c-]> :call timer_start(1, function('TjumpList'))<cr>
+endif
+" 禁用 gutentags 自动加载 gtags 数据库到cscope,避免多个项目生成数据文件在cosope相互影响。
+let g:gutentags_auto_add_gtags_cscope = 0
+if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
+  let g:gutentags_modules += ['gtags_cscope']
+  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
+  let $GTAGSLABEL = 'native-pygments'
+  nnoremap <silent> <leader>gu :GutentagsUpdate!<cr>
+  " 光标10min内没有发生移动，自动更新gtags文件
+  autocmd CursorHold,CursorHoldI * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(600*1000, 'GutentagsUpdate') | endif
+  " 当文件在外部改变时，自动更新gtags
+  autocmd FileChangedShellPost * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(&updatetime, 'GutentagsUpdate') | endif
 endif
 
 " OmniCppComplete
