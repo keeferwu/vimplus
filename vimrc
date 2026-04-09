@@ -214,14 +214,12 @@ Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 Plug 'keeferwu/LeaderF-gtags-history'
 " AI智能插件，需要登录获取token
 Plug 'Exafunction/codeium.vim', {'branch': 'main'}
-" 代码块补全，配合ultisnips使用
-Plug 'honza/vim-snippets'
-" 代码块模板
-Plug 'SirVer/ultisnips', exists('$COCLSP') ? {'on': []} : {}
 " tab触发补全
 Plug 'ervandew/supertab', exists('$COCLSP') ? {'on': []} : {}
 " c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
 Plug 'vim-scripts/OmniCppComplete', exists('$COCLSP') ? {'on': []} : {'for': ['c','cpp']}
+" 为coc提供代码块模板
+Plug 'honza/vim-snippets', exists('$COCLSP') ? {} : {'on': []}
 " lsp代码补全,需要安装语言服务器
 Plug 'neoclide/coc.nvim', exists('$COCLSP') ? {'branch': 'release'} : {'on': []}
 " 代码调试
