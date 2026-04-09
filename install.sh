@@ -295,16 +295,19 @@ function compile_vim_by_source()
                 --enable-terminal \
                 --enable-fail-if-missing \
                 --prefix=/usr/local
+        if [ $? -ne 0 ]; then
+            echo -e "\033[33m Configure vim source failure! \033[0m"
+            cd -
+            return
+        fi
         sudo make
         sudo make install
-
         sudo update-alternatives --install /usr/bin/vim vim /usr/local/bin/vim 1
         sudo update-alternatives --set vim /usr/local/bin/vim
-
-        cd -
     else
         echo -e "\033[33m Download vim source failure! \033[0m"
     fi
+    cd -
     #如果缺少软件依赖可能会导致configure配置失败，导致安装的vim不支持python
     #remove vim which is installed by source
     #sudo rm -rf /usr/local/share/vim
