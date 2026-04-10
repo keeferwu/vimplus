@@ -576,8 +576,8 @@ let g:Lf_CommandMap = {'<C-K>': ['<Up>'], '<C-J>': ['<Down>']}
 " -u: 搜索.gitignore 里的文件, -uu: 搜索隐藏文件 , -uuu: 搜索二进制文件
 " --unrestricted:当主项目中的.gitignore 文件忽略掉了子项目目录，该选项可以使搜索不受.gitignore 文件的限制，
 " --no-ignore: 禁用所有与忽略相关的过滤(.igrore .rgignore .gitignore)
-" --no-ignore-vcs : 禁用版本控制忽略(.gitignore .hgignore .svnignore),
-"  如果仅想取消版本控制忽略中的几项，可添加到 .ignore 中取反 (!xxx)
+" --no-ignore-vcs : fd，rg，ag 等工具使用此选项可禁用版本控制忽略(.gitignore .hgignore .svnignore),
+" 在没有禁用版本控制器忽略的情况下，如果仅想取消版本控制忽略中的几项，可添加到 .ignore 中取反 (!xxx),
 let g:Lf_RgConfig = ["--max-columns=150", "--hidden"]
 " **/.git/**: 任意路径下的.git目录及其所有子目录的文件
 " .git/**: 当前路径下.git目录及其所有子目录的文件
