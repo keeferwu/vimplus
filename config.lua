@@ -9,6 +9,7 @@ require('nvim-treesitter.configs').setup {
       "cpp",
       "make",
       "yaml",
+      "html",
       "markdown",
       "markdown_inline",
       "python",

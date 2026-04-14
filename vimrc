@@ -659,7 +659,7 @@ if get(g:, 'Lf_GtagsAutoGenerate', 0)
   " 光标15min内没有发生移动，自动更新gtags文件
   autocmd CursorHold,CursorHoldI * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(600*1000, 'Leaderf gtags --update') | endif
   " 当文件在外部改变时，自动更新gtags
-  autocmd FileChangedShellPost * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(&updatetime, 'Leaderf gtags --update') | endif
+  autocmd FileChangedShellPost * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(&timeoutlen, 'Leaderf gtags --update') | endif
 endif
 if exists('$COCLSP')
 nnoremap <silent> <leader>jd :Leaderf coc definitions --auto-jump<cr>
@@ -726,7 +726,7 @@ if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
   " 光标10min内没有发生移动，自动更新gtags文件
   autocmd CursorHold,CursorHoldI * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(600*1000, 'GutentagsUpdate') | endif
   " 当文件在外部改变时，自动更新gtags
-  autocmd FileChangedShellPost * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(&updatetime, 'GutentagsUpdate') | endif
+  autocmd FileChangedShellPost * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(&timeoutlen, 'GutentagsUpdate') | endif
 endif
 
 " OmniCppComplete

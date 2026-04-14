@@ -139,6 +139,8 @@ function install_nvim_config()
         sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
         sudo rm -rf nvim-linux-x86_64.tar.gz
         echo -e "\033[33m You should add /opt/nvim-linux-x86_64/bin to PATH\033[0m"
+        sudo npm install -g neovim
+        pip install --upgrade pynvim
     fi
     home_path=$1
     nvim_config="$home_path/.config/nvim"
@@ -156,7 +158,9 @@ function install_nvim_config()
     mkdir -p $nvim_config
     # 定义文件内容并写入
     {
-    echo "let loaded_gtags_cscope = 1"
+    echo "let g:loaded_gtags_cscope = 1"
+    echo "let g:loaded_perl_provider= 0"
+    echo "let g:loaded_ruby_provider = 0"
     echo "set runtimepath^=~/.vim runtimepath+=~/.vim/"
     echo "let &packpath = &runtimepath"
     echo "source ~/.vimrc"
