@@ -152,7 +152,6 @@ if has("nvim")
   let g:python3_host_prog = '/usr/bin/python3'
   autocmd TermOpen * startinsert
   nnoremap <silent> <s-t> :tabnew \| terminal<cr>
-  command! CheckHealth :checkhealth
 endif
 " 复制粘贴到系统剪切板
 autocmd VimEnter * call clipboard#check()
@@ -169,8 +168,14 @@ endif
 " 主题设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set background=dark
+if exists('$TMUX')
 " tmux 默认不支持斜体
-if !exists('$TMUX')
+let g:onedark_terminal_italics = 0
+let g:material_terminal_italics = 0
+" 使用tmux attach已存在的session时,剪切板需要更新
+command! TmuxClipUpdate :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '')
+autocmd VimEnter * TmuxClipUpdate
+else
 let g:onedark_terminal_italics = 1
 let g:material_terminal_italics = 1
 endif
