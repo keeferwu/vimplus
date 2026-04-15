@@ -807,7 +807,6 @@ let g:coc_global_extensions = [
   \ 'coc-rust-analyzer',
   \ 'coc-pyright',
   \ 'coc-lua',
-  \ 'coc-make',
   \ 'coc-cmake',
   \ 'coc-marketplace'
   \ ]
