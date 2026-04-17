@@ -254,7 +254,6 @@ let g:startify_session_sort = 1          " sort by last open time
 let g:startify_session_persistence = 1
 let g:startify_bookmarks = []
 let g:startify_commands = [
-            \ {'h': ['check health', 'CheckHealth']},
             \ {'c': ['gtags cache', 'Leaderf gtagsHistory --cache']},
             \ ]
 " 相对于默认配置把sessions放在第一个
@@ -320,7 +319,6 @@ let g:which_key_map[' '] = {'name' : '+plugin',
                     \   'i': "plugin install",
                     \   'u': "plugin update",
                     \   'c': "plugin clean",
-                    \   'h': "vimplus help",
                     \   }
 let g:which_key_map.w = 'easy motion to word'
 let g:which_key_map.k = 'color/uncolor cword'
@@ -409,7 +407,6 @@ else
     let lsp_confirm = "NOTE: vim/nvim will be closed, and you should export COCLSP to env."
 endif
 nnoremap <silent> <leader><leader>l :call vimplus#confirm(lsp_confirm,function("UseLSPComplete"))<cr>
-nnoremap <silent> <leader><leader>h :vert help vimplus<cr>
 " 安装、更新、删除插件
 nnoremap <silent> <leader><leader>i :PlugInstall<cr>
 nnoremap <silent> <leader><leader>u :PlugUpdate<cr>
