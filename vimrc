@@ -138,11 +138,12 @@ nnoremap <silent> <C-j> :wincmd j<cr>
 nnoremap <silent> <C-k> :wincmd k<cr>
 nnoremap <silent> <C-h> :wincmd h<cr>
 nnoremap <silent> <C-l> :wincmd l<cr>
-" 调整窗口高度和宽度
-nnoremap <silent> <C-Up>    :resize +5<cr>
-nnoremap <silent> <C-Down>  :resize -5<cr>
-nnoremap <silent> <C-Right> :vertical resize +5<cr>
-nnoremap <silent> <C-Left>  :vertical resize -5<cr>
+" 调整窗口大小
+nnoremap <silent> <C-Up>    :call vimplus#windowsize('up', 5)<CR>
+nnoremap <silent> <C-Down>  :call vimplus#windowsize('down', 5)<CR>
+nnoremap <silent> <C-Left>  :call vimplus#windowsize('left', 5)<CR>
+nnoremap <silent> <C-Right> :call vimplus#windowsize('right', 5)<CR>
+
 " open terminal
 nnoremap <silent> <s-t> :tabnew \| term ++curwin<cr>
 if has("nvim")

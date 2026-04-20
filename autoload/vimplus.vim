@@ -120,6 +120,31 @@ function! vimplus#gittracked() abort
   return v:false
 endfunction
 
+function! vimplus#windowsize(dir, delta) abort
+  let winid = win_getid()
+  let [row, col] = win_screenpos(winid)
+  let height = winheight(winid)
+  let width = winwidth(winid)
+  " 反转条件：窗口紧贴顶部且未占满全高
+  let invert_h = (row == 1) && (height != &lines)
+  " 反转条件：窗口紧贴左侧且未占满全宽
+  let invert_v = (col == 1) && (width != &columns)
+
+  if a:dir ==# 'up'
+    let sign = invert_h ? '-' : '+'
+    execute 'resize ' . sign . a:delta
+  elseif a:dir ==# 'down'
+    let sign = invert_h ? '+' : '-'
+    execute 'resize ' . sign . a:delta
+  elseif a:dir ==# 'left'
+    let sign = invert_v ? '-' : '+'
+    execute 'vertical resize ' . sign . a:delta
+  elseif a:dir ==# 'right'
+    let sign = invert_v ? '+' : '-'
+    execute 'vertical resize ' . sign . a:delta
+  endif
+endfunction
+
 function! vimplus#holdtimer(time, cmd) abort
   " 定义一个字典来存储定时器ID，键为定时器的触发时间
   if !exists("s:vimplus_timer")
