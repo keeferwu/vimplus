@@ -158,6 +158,21 @@ require("codecompanion").setup({
         completion_provider = "default", -- blink|cmp|coc|default
       }
     },
+    cli = {
+      agent = "opencode",
+      agents = {
+        opencode = {
+          cmd = "opencode",
+          args = {},
+          description = "Opencode CLI",
+          provider = "terminal",
+        },
+      },
+      opts = {
+        auto_insert = true, -- Enter insert mode when focusing the CLI terminal
+        reload = true, -- Reload buffers when an agent modifies files on disk
+      },
+    },
     inline = {
       adapter = "siliconflow", -- copliot|deepseek|siliconflow|aliyun_deepseek
     },
@@ -292,6 +307,7 @@ require("codecompanion").setup({
 
 vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
 vim.keymap.set({ "n", "v" }, "<C-x>", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<C-w>", "<cmd>CodeCompanionCLI Ask<cr>", { noremap = true, silent = true })
 -- Expand 'cc' into 'CodeCompanion' in the command line
 vim.cmd([[cab cc CodeCompanion]])
 
