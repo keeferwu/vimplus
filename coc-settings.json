@@ -20,4 +20,5 @@
     "inlayHint.enableParameter": false,
     "Lua.diagnostics.disable": ["undefined-global", "lowercase-global"],
     "Lua.diagnostics.globals": ["vim"]
+    "clangd.arguments": ["--header-insertion=never"]
 }
