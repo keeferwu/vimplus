@@ -153,6 +153,9 @@ if has("nvim")
   let g:python3_host_prog = '/usr/bin/python3'
   autocmd TermOpen * startinsert
   nnoremap <silent> <s-t> :tabnew \| terminal<cr>
+else
+  " coc.nvim 很容易导致vim crash，因此不启用
+  unlet $COCLSP
 endif
 " 复制粘贴到系统剪切板
 autocmd VimEnter * call clipboard#check()
