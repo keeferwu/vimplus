@@ -131,7 +131,7 @@ require("codecompanion").setup({
   --选择模型
   interactions = {
     chat = {
-      adapter = "siliconflow", -- copliot|deepseek|siliconflow|aliyun_deepseek
+      adapter = "omniroute", -- copliot|deepseek|siliconflow|aliyun_deepseek
       keymaps = {
         send = {
           modes = { n = "<C-s>", i = "<C-s>" },
@@ -158,6 +158,15 @@ require("codecompanion").setup({
         completion_provider = "default", -- blink|cmp|coc|default
       }
     },
+    inline = {
+      adapter = "omniroute", -- copliot|deepseek|siliconflow|aliyun_deepseek
+    },
+    cmd = {
+      adapter = "omniroute", -- copliot|deepseek|siliconflow|aliyun_deepseek
+    },
+    background = {
+      adapter = "omniroute", -- copliot|deepseek|siliconflow|aliyun_deepseek
+    },
     cli = {
       agent = "opencode",
       agents = {
@@ -173,14 +182,8 @@ require("codecompanion").setup({
         reload = true, -- Reload buffers when an agent modifies files on disk
       },
     },
-    inline = {
-      adapter = "siliconflow", -- copliot|deepseek|siliconflow|aliyun_deepseek
-    },
-    cmd = {
-      adapter = "siliconflow", -- copliot|deepseek|siliconflow|aliyun_deepseek
-    },
-    background = {
-      adapter = "siliconflow", -- copliot|deepseek|siliconflow|aliyun_deepseek
+    code_review = {
+      enabled = false,
     },
   },
   -- adapter extensions
@@ -193,18 +196,6 @@ require("codecompanion").setup({
         show_presets = false, -- not Show default adapters
         show_model_choices = true, -- Show model choices when changing adapter
       },
-      --[[
-      copilot_claude = function()
-        return require("codecompanion.adapters").extend("copilot", {
-          name = "copilot_claude",
-          schema = {
-            model = {
-              default = "claude-3.7-sonnet",
-            },
-          },
-        })
-      end,]]
-
       deepseek = function()
         return require("codecompanion.adapters").extend("deepseek", {
           name = "deepseek",
@@ -224,7 +215,6 @@ require("codecompanion").setup({
           },
         })
       end,
-
       siliconflow = function()
         return require("codecompanion.adapters").extend("openai_compatible", {
           name = "siliconflow",
@@ -245,46 +235,26 @@ require("codecompanion").setup({
           },
         })
       end,
-
-      --[[
-      aliyun_deepseek = function()
-        return require("codecompanion.adapters").extend("deepseek", {
-          name = "aliyun_deepseek",
-          url = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+      omniroute = function()
+        return require("codecompanion.adapters").extend("openai_compatible", {
+          name = "omniroute",
+          url = "http://omnirouter.nettech-global.com/v1/chat/completions",
           env = {
             api_key = function()
-              return os.getenv("ALIYUN_API_KEY")
+              return os.getenv("OMNIROUTE_API_KEY")
             end,
           },
           schema = {
             model = {
-              default = "deepseek-r1",
+              default = "auto/best-coding",
               choices = {
-                ["deepseek-r1"] = { opts = { can_reason = true } },
+                ["auto/best-coding"] = { opts = { can_reason = true} },
+                ["cameo/high-availability"]  = { opts = { can_reason = true,  can_use_tools = true } },
               },
             },
           },
         })
       end,
-      -- https://help.aliyun.com/zh/model-studio/getting-started/models?spm=a2c4g.11186623.0.0.ce3c4823l7PTRL#9f8890ce29g5u
-      aliyun_qwen = function()
-        return require("codecompanion.adapters").extend("openai_compatible", {
-          name = "aliyun_qwen",
-          env = {
-            url = "https://dashscope.aliyuncs.com",
-            api_key = function()
-              return os.getenv("ALIYUN_API_KEY")
-            end,
-            chat_url = "/compatible-mode/v1/chat/completions",
-          },
-          schema = {
-            model = {
-              default = "qwen-coder-plus-latest",
-            },
-          },
-        })
-      end,
-      ]]
     },
     acp = {
       opts = {
@@ -364,4 +334,50 @@ codecompanion_notify_by_fidget()
 require("fidget").setup {
     --option
 }
+
+-- Relax CLI terminal readiness checks so the first prompt survives a
+-- slow opencode TUI startup. Default MAX_WAIT=5s/MIN_LINES=5/STABLE_FOR=500ms
+-- fires _on_ready() before opencode is reading from the PTY, dropping input.
+local Terminal = require("codecompanion.interactions.cli.providers.terminal")
+
+function Terminal:_poll_until_ready()
+  local POLL_INTERVAL = 150
+  local MAX_WAIT = 25000
+  local MIN_LINES = 1
+  local STABLE_FOR = 1500
+  local started_at = vim.uv.hrtime()
+  local last_count, stable_since = 0, nil
+  self.poll_timer = vim.uv.new_timer()
+  self.poll_timer:start(POLL_INTERVAL, POLL_INTERVAL, vim.schedule_wrap(function()
+    if not self.bufnr or not vim.api.nvim_buf_is_valid(self.bufnr) then
+      return self:_on_ready()
+    end
+    if (vim.uv.hrtime() - started_at) / 1e6 > MAX_WAIT then
+      return self:_on_ready()
+    end
+    local count = self:_count_lines()
+    if count < MIN_LINES then
+      return
+    end
+    if count ~= last_count then
+      last_count = count
+      stable_since = vim.uv.hrtime()
+    elseif not stable_since then
+      stable_since = vim.uv.hrtime()
+    elseif (vim.uv.hrtime() - stable_since) / 1e6 >= STABLE_FOR then
+      return self:_on_ready()
+    end
+  end))
+end
+
+function Terminal:_on_ready()
+  local POST_READY_DELAY = 800
+  self.ready = true
+  self:_close_timer("poll_timer")
+  vim.defer_fn(function()
+    if self.chan and not self.queue:is_empty() then
+      self:_consume()
+    end
+  end, POST_READY_DELAY)
+end
 
