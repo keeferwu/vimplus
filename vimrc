@@ -154,7 +154,7 @@ else
   unlet $COCLSP
 endif
 " Neovim >= 0.10: built-in OSC52 clipboard provider
-let g:clipboard = 'osc52'
+"let g:clipboard = 'osc52'
 " unnamedplus:所有的操作都会自动被粘贴进 system clipboard 中
 " unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
 set clipboard+=unnamed
