@@ -48,10 +48,16 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
 
     通过快捷键ctrl+c,ctrl+v 实现了vim/nvim 对系统剪切板的复制和粘贴。
     当系统剪切板在本地可以正常使用，但通过ssh远程连接时无法使用时，
-    查看DISPLAY环境变量是否为空，如何为空解决办法如下：
+    方案一：使用OSC52
+    ```
+    let g:clipboard = 'osc52'
+    ```
+    方案二：使用X11Forward
+    ```
+    查看DISPLAY环境变量是否为空，如果为空解决办法如下：
     ssh server 端：修改 /etc/ssh/sshd_config  ---> X11Forwarding yes
     ssh client 端：ssh 连接时使用-Y 或 -X 选项， 并启动Xserver
-
+    ```
 参考：https://zhuanlan.zhihu.com/p/579860830
 
 #### 插件列表

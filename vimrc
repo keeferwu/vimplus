@@ -154,7 +154,7 @@ else
   unlet $COCLSP
 endif
 " Neovim >= 0.10: built-in OSC52 clipboard provider
-let g:clipboard = 'osc52'
+"let g:clipboard = 'osc52'
 " unnamedplus:所有的操作都会自动被粘贴进 system clipboard 中
 " unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
 set clipboard+=unnamed
@@ -186,15 +186,17 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set background=dark
 if exists('$TMUX')
-" tmux 默认不支持斜体
-let g:onedark_terminal_italics = 0
-let g:material_terminal_italics = 0
-" 使用tmux attach已存在的session时,剪切板需要更新
-command! TmuxClipUpdate :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '')
-autocmd VimEnter * TmuxClipUpdate
+  " tmux 默认不支持斜体
+  let g:onedark_terminal_italics = 0
+  let g:material_terminal_italics = 0
+  if exists('$DISPLAY')
+    " 使用tmux attach已存在的session时,剪切板需要更新
+    command! TmuxClipUpdate :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '')
+    autocmd VimEnter * TmuxClipUpdate
+  endif
 else
-let g:onedark_terminal_italics = 1
-let g:material_terminal_italics = 1
+  let g:onedark_terminal_italics = 1
+  let g:material_terminal_italics = 1
 endif
 let g:material_theme_style = 'palenight'
 colorscheme material
