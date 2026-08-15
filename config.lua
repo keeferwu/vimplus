@@ -255,6 +255,26 @@ require("codecompanion").setup({
           },
         })
       end,
+      orcarouter = function()
+        return require("codecompanion.adapters").extend("openai_compatible", {
+          name = "orcarouter",
+          url = "https://api.orcarouter.ai/v1/chat/completions",
+          env = {
+            api_key = function()
+              return os.getenv("ORCAROUTER_API_KEY")
+            end,
+          },
+          schema = {
+            model = {
+              default = "orcarouter/auto",
+              choices = {
+                ["orcarouter/auto"] = { opts = { can_reason = true, can_use_tools = true } },
+                ["openai/gpt-5.5"] = { opts = { can_reason = true } },
+              },
+            },
+          },
+        })
+      end,
     },
     acp = {
       opts = {
