@@ -131,7 +131,7 @@ require("codecompanion").setup({
   --选择模型
   interactions = {
     chat = {
-      adapter = "omniroute", -- copliot|deepseek|siliconflow|aliyun_deepseek
+      adapter = "omniroute",
       keymaps = {
         send = {
           modes = { n = "<C-s>", i = "<C-s>" },
@@ -159,13 +159,13 @@ require("codecompanion").setup({
       }
     },
     inline = {
-      adapter = "omniroute", -- copliot|deepseek|siliconflow|aliyun_deepseek
+      adapter = "omniroute",
     },
     cmd = {
-      adapter = "omniroute", -- copliot|deepseek|siliconflow|aliyun_deepseek
+      adapter = "omniroute",
     },
     background = {
-      adapter = "omniroute", -- copliot|deepseek|siliconflow|aliyun_deepseek
+      adapter = "omniroute",
     },
     cli = {
       agent = "opencode",
@@ -196,49 +196,10 @@ require("codecompanion").setup({
         show_presets = false, -- not Show default adapters
         show_model_choices = true, -- Show model choices when changing adapter
       },
-      deepseek = function()
-        return require("codecompanion.adapters").extend("deepseek", {
-          name = "deepseek",
-          env = {
-            api_key = function()
-              return os.getenv("DEEPSEEK_API_KEY")
-            end,
-          },
-          schema = {
-            model = {
-              default = "deepseek-chat",
-              choices = {
-                ["deepseek-chat"] = { opts = { can_use_tools = true } },
-                ["deepseek-reasoner"] = { opts = { can_reason = true, can_use_tools = true } },
-              },
-            },
-          },
-        })
-      end,
-      siliconflow = function()
-        return require("codecompanion.adapters").extend("openai_compatible", {
-          name = "siliconflow",
-          url = "https://api.siliconflow.cn/v1/chat/completions",
-          env = {
-            api_key = function()
-              return os.getenv("SILICONFLOW_API_KEY")
-            end,
-          },
-          schema = {
-            model = {
-              default = "Pro/MiniMaxAI/MiniMax-M2.5",
-              choices = {
-                ["Pro/MiniMaxAI/MiniMax-M2.5"] = { opts = { can_reason = true} },
-                ["Pro/zai-org/GLM-4.7"]  = { opts = { can_reason = true } },
-              },
-            },
-          },
-        })
-      end,
       omniroute = function()
         return require("codecompanion.adapters").extend("openai_compatible", {
           name = "omniroute",
-          url = "http://omnirouter.nettech-global.com/v1/chat/completions",
+          url = "<omniroute base url>/v1/chat/completions",
           env = {
             api_key = function()
               return os.getenv("OMNIROUTE_API_KEY")
@@ -248,8 +209,8 @@ require("codecompanion").setup({
             model = {
               default = "auto/best-coding",
               choices = {
-                ["auto/best-coding"] = { opts = { can_reason = true} },
-                ["cameo/high-availability"]  = { opts = { can_reason = true,  can_use_tools = true } },
+                ["auto/best-coding"] = { opts = { can_reason = true, can_use_tools = true } },
+                ["<custom combo>"]  = { opts = { can_reason = true,  can_use_tools = true } },
               },
             },
           },
