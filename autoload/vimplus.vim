@@ -379,3 +379,16 @@ endfunction
 " 在选中模式下使用快捷键映射TabIndent和SpaceIndent，会导致选中的每一行都会调用命令，影响性能
 command! -range=% TabIndent call <SID>IndentChange(<line1>,<line2>,"Tab")
 command! -range=% SpaceIndent call <SID>IndentChange(<line1>,<line2>,"Space")
+
+" remove trailing spaces commands
+function! s:RemoveTrailingSpaces()
+    let user_gdefault = &gdefault
+    try
+        set nogdefault
+        silent! %s/\s\+$
+    finally
+        let &gdefault = user_gdefault
+    endtry
+endfunction
+command! RemoveTrailingSpaces call s:RemoveTrailingSpaces()
+

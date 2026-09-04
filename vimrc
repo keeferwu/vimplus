@@ -214,8 +214,6 @@ Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vim-which-key'
 " 精简的statusline
 Plug 'liuchengxu/eleline.vim'
-" vim 插件环境检测
-Plug 'rhysd/vim-healthcheck', has('nvim') ? {'on': []} : {'on': 'CheckHealth'}
 " 函数显示列表
 Plug 'preservim/tagbar'
 " 光标快速移动
@@ -230,8 +228,6 @@ Plug 'octol/vim-cpp-enhanced-highlight', has('nvim') ? {'on': []} : {'for': ['c'
 Plug 'rust-lang/rust.vim', has('nvim') ? {'on': []} : {'for': 'rust'}
 " 修改显示
 Plug 'chrisbra/changesPlugin'
-" 代码格式化
-Plug 'vim-autoformat/vim-autoformat', {'on': ['Autoformat','AutoformatLine','RemoveTrailingSpaces']}
 " 使用global工具自动更新tags文件
 Plug 'ludovicchabant/vim-gutentags'
 " 文件模糊搜索工具
@@ -531,15 +527,6 @@ let g:indentLine_concealcursor = 'ic'
 let g:EasyMotion_smartcase = 1
 nmap <silent> <leader>w <Plug>(easymotion-overwin-w)
 
-" vim-autoformat
-"autocmd BufWrite * :Autoformat
-let g:autoformat_remove_trailing_spaces = 1
-let g:autoformat_verbosemode = 1
-let g:formatdef_google = '"clang-format -style=google"'              " google 风格的代码
-let g:formatdef_allman = '"astyle --style=allman --pad-oper"'        " allman风格的代码：{}读占一行
-let g:formatters_cpp = ['allman']
-let g:formatters_c = ['allman']
-
 " vim-cpp-enhanced-highlight
 let g:cpp_class_scope_highlight = 1                    " 高亮显示类的范围
 let g:cpp_member_variable_highlight = 1                " 高亮显示成员变量
@@ -815,6 +802,8 @@ if exists('$COCLSP')
 " 设置 coc.nvim 的配置文件路径
 let g:coc_config_home = '~/.vim'
 " 自动安装 coc.nvim 扩展
+" 格式化命令（coc.nvim 默认不创建，需手动添加）
+command! -nargs=0 CocFormat :call CocActionAsync('format')
 let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-json',
@@ -826,6 +815,11 @@ let g:coc_global_extensions = [
   \ 'coc-cmake',
   \ 'coc-marketplace'
   \ ]
+let g:coc_outline_win_width = 40
+let g:coc_outline_window_position = 'right'  " 或 'left'
+let g:coc_outline_autofocus = 1
+let g:coc_outline_doctype_from_first_comment = 1
+let g:coc_outline_follow_cursor = 1
 function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
