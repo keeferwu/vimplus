@@ -815,11 +815,14 @@ let g:coc_global_extensions = [
   \ 'coc-cmake',
   \ 'coc-marketplace'
   \ ]
-let g:coc_outline_win_width = 40
-let g:coc_outline_window_position = 'right'  " 或 'left'
-let g:coc_outline_autofocus = 1
-let g:coc_outline_doctype_from_first_comment = 1
-let g:coc_outline_follow_cursor = 1
+function! CocToggleOutline() abort
+  if coc#window#find('cocViewId', 'OUTLINE') == -1
+    silent! call CocAction('showOutline', 1)
+  else
+    silent! call CocAction('hideOutline')
+  endif
+endfunction
+nnoremap <silent> <F4> :call CocToggleOutline()<cr>
 function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'

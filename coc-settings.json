@@ -24,6 +24,7 @@
     "inlayHint.enable": true,
     "inlayHint.enableParameter": false,
     "inlayHint.parameterTypes": false,
+    "outline.splitCommand": "botright 40vs",
     "Lua.diagnostics.disable": ["undefined-global", "lowercase-global", "redundant-value", "unused-local"],
     "Lua.diagnostics.globals": ["vim", "vim.api"],
     "clangd.arguments": ["--header-insertion=never", "--background-index", "--fallback-style=llvm"],
