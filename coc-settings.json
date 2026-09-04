@@ -26,5 +26,13 @@
     "inlayHint.parameterTypes": false,
     "Lua.diagnostics.disable": ["undefined-global", "lowercase-global", "redundant-value", "unused-local"],
     "Lua.diagnostics.globals": ["vim", "vim.api"],
-    "clangd.arguments": ["--header-insertion=never", "--background-index", "--fallback-style=llvm"]
+    "clangd.arguments": ["--header-insertion=never", "--background-index", "--fallback-style=llvm"],
+    "pyright.typeCheckingMode": "standard",
+    "pyright.disableOrganizeImports": true,
+    "pyright.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "standard",
+    "python.analysis.autoSearchPaths": true,
+    "python.analysis.useLibraryCodeForTypes": true,
+    "python.analysis.diagnosticMode": "openFilesOnly",
+    "python.analysis.fixAll": ["none"]
 }
