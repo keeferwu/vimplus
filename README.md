@@ -62,15 +62,12 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
 
 #### 插件列表
 
-    call plug#begin('~/.vim/plugged')
     " 启动页面
     Plug 'mhinz/vim-startify'
     " 快捷键提示
     Plug 'liuchengxu/vim-which-key'
     " 精简的statusline
     Plug 'liuchengxu/eleline.vim'
-    " vim 插件环境检测
-    Plug 'rhysd/vim-healthcheck', has('nvim') ? {'on': []} : {'on': 'CheckHealth'}
     " 函数显示列表
     Plug 'preservim/tagbar'
     " 光标快速移动
@@ -81,12 +78,8 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
     Plug 'preservim/nerdcommenter'
     " cpp扩展高亮
     Plug 'octol/vim-cpp-enhanced-highlight', has('nvim') ? {'on': []} : {'for': ['c','cpp']}
-    " rust代码格式化，语法高亮
-    Plug 'rust-lang/rust.vim', has('nvim') ? {'on': []} : {'for': 'rust'}
     " 修改显示
     Plug 'chrisbra/changesPlugin'
-    " 代码格式化
-    Plug 'vim-autoformat/vim-autoformat', {'on': ['Autoformat','AutoformatLine','RemoveTrailingSpaces']}
     " 使用global工具自动更新tags文件
     Plug 'ludovicchabant/vim-gutentags'
     " 文件模糊搜索工具
@@ -95,30 +88,27 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
     Plug 'keeferwu/LeaderF-gtags-history'
     " AI智能插件，需要登录获取token
     Plug 'Exafunction/codeium.vim', {'branch': 'main'}
-    " 代码块补全，配合ultisnips使用
-    Plug 'honza/vim-snippets'
-    " 代码块模板
-    Plug 'SirVer/ultisnips', exists('$COCLSP') ? {'on': []} : {}
     " tab触发补全
     Plug 'ervandew/supertab', exists('$COCLSP') ? {'on': []} : {}
     " c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
     Plug 'vim-scripts/OmniCppComplete', exists('$COCLSP') ? {'on': []} : {'for': ['c','cpp']}
+    " 为coc提供代码块模板
+    Plug 'honza/vim-snippets', exists('$COCLSP') ? {} : {'on': []}
     " lsp代码补全,需要安装语言服务器
     Plug 'neoclide/coc.nvim', exists('$COCLSP') ? {'branch': 'release'} : {'on': []}
     " 代码调试
-    Plug 'puremourning/vimspector'
+    Plug 'puremourning/vimspector', {'on': ['VimspectorLaunch']}
 
     " nvim插件库
     Plug 'nvim-lua/plenary.nvim', has('nvim') ? {'branch': 'master'} : {'on': []}
     " nvim代码语法高亮
     Plug 'nvim-treesitter/nvim-treesitter', has('nvim') ? {'do': ':TSUpdate'} : {'on': []}
-    " ai编程助手
+    " 代码编程助手
     Plug 'olimorris/codecompanion.nvim', has('nvim') ? {} : {'on': []}
     " 渲染 markdown 和 codecompanion 文件
     Plug 'MeanderingProgrammer/render-markdown.nvim', has('nvim') ? {} : {'on': []}
     " nvim 消息提示, use for codecompanion
     Plug 'j-hui/fidget.nvim', has('nvim') ? {} : {'on': []}
-    call plug#end()
 
 注：所有使用的插件已打包到 Release 版本中，其中部分插件根据需求做过优化
 
