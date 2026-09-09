@@ -364,6 +364,7 @@ let g:which_key_map.l = {'name' : '+list',
                     \    'r' : 'leaderf ripgrep list',
                     \    'q' : 'leaderf qickfix list',
                     \    'l' : 'leaderf location list',
+                    \    'd' : 'coc diagnostic list',
                     \   }
 let g:which_key_map.r = {'name' : '+grep',
                     \    'g' : 'ripgrep content with prompt',
@@ -669,13 +670,6 @@ if get(g:, 'Lf_GtagsAutoGenerate', 0)
   " 当文件在外部改变时，自动更新gtags
   autocmd FileChangedShellPost * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(&timeoutlen, 'Leaderf gtags --update') | endif
 endif
-if exists('$COCLSP')
-nnoremap <silent> <leader>jd :Leaderf coc definitions --auto-jump<cr>
-nnoremap <silent> <leader>jr :Leaderf coc references --auto-jump<cr>
-nnoremap <silent> <leader>jc :Leaderf coc declarations --auto-jump<cr>
-nnoremap <silent> <leader>ji :Leaderf coc implementations --auto-jump<cr>
-nnoremap <silent> <leader>jt :Leaderf coc typeDefinitions --auto-jump<cr>
-endif
 
 " vim-gutentags
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
@@ -854,5 +848,12 @@ inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float
 inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
 vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
 vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+
+nnoremap <silent> <leader>ld :CocDiagnostics<cr>
+nnoremap <silent> <leader>jd :Leaderf coc definitions --auto-jump<cr>
+nnoremap <silent> <leader>jr :Leaderf coc references --auto-jump<cr>
+nnoremap <silent> <leader>jc :Leaderf coc declarations --auto-jump<cr>
+nnoremap <silent> <leader>ji :Leaderf coc implementations --auto-jump<cr>
+nnoremap <silent> <leader>jt :Leaderf coc typeDefinitions --auto-jump<cr>
 endif
 
