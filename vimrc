@@ -224,8 +224,6 @@ Plug 'Yggdroot/indentLine'
 Plug 'preservim/nerdcommenter'
 " cpp扩展高亮
 Plug 'octol/vim-cpp-enhanced-highlight', has('nvim') ? {'on': []} : {'for': ['c','cpp']}
-" rust代码格式化，语法高亮
-Plug 'rust-lang/rust.vim', has('nvim') ? {'on': []} : {'for': 'rust'}
 " 修改显示
 Plug 'chrisbra/changesPlugin'
 " 使用global工具自动更新tags文件
