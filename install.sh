@@ -393,7 +393,7 @@ function install_prepare_software_by_apt()
     sudo apt-get install -y flex bison build-essential wget curl fontconfig libfile-next-perl
     sudo apt-get install -y python3 python3-dev python3-pip python3-pygments python3-pynvim
     sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-    sudo apt-get install -y universal-ctags global fd-find ripgrep astyle xclip llvm lldb clang clang-tools clang-format
+    sudo apt-get install -y universal-ctags global fd-find ripgrep astyle xclip llvm lldb clangd clang clang-tools clang-format
 
     install_nodejs_by_apt
 
