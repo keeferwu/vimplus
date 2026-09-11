@@ -64,7 +64,26 @@ function! clipboard#check() abort
   else
     " the logic is based on nvim's clipboard provider
     " in vim8, system() do not support list argv
-    call s:clipboard_health_check()
+    " call s:clipboard_health_check()
+
+    " Neovim >= 0.10: built-in OSC52 clipboard provider
+    let g:clipboard = 'osc52'
+    if !has('nvim') && !has('gui_running')
+      " Vim >= 9.1.1181: official osc52 package (bundled with Vim)
+      packadd osc52
+      " Force-enable OSC52 (skip DA1 auto-detection, reliable over SSH/tmux)
+      let g:osc52_force_avail = v:true
+      " If your terminal can't read the clipboard via OSC52 (Alacritty/Windows
+      " Terminal/wsltty), uncomment to avoid a blocking paste wait:
+      " let s:osc52_disable_paste = v:true
+      set clipmethod+=osc52
+    endif
+  endif
+
+  if !has('clipboard') && get(g:, 'clipboard', '') !=# 'osc52'
+    vnoremap <silent> <c-c> :<c-u>call clipboard#yank()<cr>
+    nnoremap <silent> <c-v> :<c-u>call clipboard#paste('n')<cr>
+    vnoremap <silent> <c-v> :<c-u>call clipboard#paste('v')<cr>
   endif
 endfunction
 
