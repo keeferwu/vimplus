@@ -374,9 +374,9 @@ function install_prepare_software_on_mac()
 {
     xcode-select --install
 
-    brew install cmake ninja gcc autoconf automake libtool flex bison wget fontconfig libfile-next-perl
+    brew install cmake ninja gcc autoconf automake libtool flex bison wget fontconfig libfile-next-perl bear
     brew install python3 python3-dev python3-pip python3-pygments python3-pynvim
-    brew install universal-ctags global fd ripgrep astyle ccls llvm
+    brew install universal-ctags global fd ripgrep astyle llvm lldb clang clang-tools clang-format
     brew install vim node npm
 
     macos1014=$(is_macos1014)
@@ -389,10 +389,11 @@ function install_prepare_software_on_mac()
 function install_prepare_software_by_apt()
 {
     sudo apt-get update
-    sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool
+    sudo apt-get install -y cmake ninja-build gcc-multilib autoconf automake libtool bear
     sudo apt-get install -y flex bison build-essential wget curl fontconfig libfile-next-perl
     sudo apt-get install -y python3 python3-dev python3-pip python3-pygments python3-pynvim
-    sudo apt-get install -y universal-ctags global fd-find ripgrep astyle xclip ccls llvm
+    sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+    sudo apt-get install -y universal-ctags global fd-find ripgrep astyle xclip llvm lldb clang clang-tools clang-format
 
     install_nodejs_by_apt
 
@@ -420,9 +421,9 @@ function install_prepare_software_by_apt()
 # 安装archlinux必备软件
 function install_prepare_software_by_pacman()
 {
-    sudo pacman -S --noconfirm vim nvim cmake gcc gcc-libs autoconf automake libtool flex bison fontconfig wget
+    sudo pacman -S --noconfirm vim nvim cmake gcc gcc-libs autoconf automake libtool flex bison fontconfig wget bear
     sudo pacman -S --noconfirm python python-pip python-pygments python-pynvim python-setuptools
-    sudo pacman -S --noconfirm ctags ripgrep clang astyle ccls global xclip fd nodejs npm
+    sudo pacman -S --noconfirm ctags ripgrep clang astyle global xclip fd nodejs npm
     sudo ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
 }
 
