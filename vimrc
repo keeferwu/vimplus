@@ -788,7 +788,16 @@ let g:coc_global_extensions = [
   \ 'coc-marketplace'
   \ ]
 function! CocToggleOutline() abort
-  if coc#window#find('cocViewId', 'OUTLINE') == -1
+  let tagbar_toggle = v:true
+  let file_type = getbufvar('%', '&filetype')
+  for ft in ['python', 'rust', 'go']
+    if ft ==# file_type | let tagbar_toggle = v:false  | endif
+  endfor
+  let outline_win = coc#window#find('cocViewId', 'OUTLINE')
+  if tagbar_toggle == v:true && outline_win == -1
+    return execute('TagbarToggle')
+  endif
+  if outline_win == -1
     silent! call CocAction('showOutline', 0)
   else
     silent! call CocAction('hideOutline')
