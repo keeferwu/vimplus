@@ -199,7 +199,7 @@ require("codecompanion").setup({
       omniroute = function()
         return require("codecompanion.adapters").extend("openai_compatible", {
           name = "omniroute",
-          url = "<omniroute base url>/v1/chat/completions",
+          url = "http://localhost:20128/v1/chat/completions",
           env = {
             api_key = function()
               return os.getenv("OMNIROUTE_API_KEY")
@@ -210,7 +210,6 @@ require("codecompanion").setup({
               default = "auto/best-coding",
               choices = {
                 ["auto/best-coding"] = { opts = { can_reason = true, can_use_tools = true } },
-                ["<custom combo>"]  = { opts = { can_reason = true,  can_use_tools = true } },
               },
             },
           },
