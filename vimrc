@@ -749,6 +749,9 @@ endif
 
 " vimspector
 let g:vimspector_base_dir=expand($HOME.'/.config/vimspector')
+if !isdirectory(g:vimspector_base_dir)
+  call mkdir(g:vimspector_base_dir, 'p')
+endif
 "let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 nmap <F5>         <Plug>VimspectorContinue
 nmap <S-F5>       <Plug>VimspectorStop
