@@ -467,7 +467,6 @@ function update_vim_plugin()
             echo -e "\033[32m try fetching code in $curr_dir \033[0m"
             git gc
             git fetch && git rebase
-            echo #打印空行
             if [ $sub_dir == "nvim-treesitter" ]; then
                 target_version="v0.12.0"
                 nvim_version=`nvim --version | head -n 1 | awk '{print $2}'`
@@ -476,6 +475,7 @@ function update_vim_plugin()
                     git checkout -b master origin/master
                 fi
             fi
+            echo #打印空行
         else
             echo -e "\033[33m $curr_dir is not a directory \033[0m"
             echo #打印空行
