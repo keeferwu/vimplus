@@ -138,10 +138,18 @@ function install_nvim_config()
         sudo rm -rf /opt/nvim-linux-x86_64
         sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
         sudo rm -rf nvim-linux-x86_64.tar.gz
-        echo -e "\033[33m You should add /opt/nvim-linux-x86_64/bin to PATH\033[0m"
+        sudo ln -s /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
         sudo npm install -g neovim
-        pip install --upgrade pynvim
+        pip install --upgrade pynvim --break-system-packages
     fi
+
+    if ! which tree-sitter >/dev/null 2>&1; then
+        curl -LO https://github.com/tree-sitter/tree-sitter/releases/download/nightly/tree-sitter-linux-x64.gz
+        gunzip tree-sitter-linux-x64.gz
+        sudo chmod +x tree-sitter
+        sudo mv tree-sitter /usr/local/bin/tree-sitter
+    fi
+
     home_path=$1
     nvim_config="$home_path/.config/nvim"
     if [ -d $nvim_config ]; then
@@ -460,14 +468,19 @@ function update_vim_plugin()
             git gc
             git fetch && git rebase
             echo #打印空行
+            if [ $sub_dir == "nvim-treesitter" ]; then
+                target_version="v0.12.0"
+                nvim_version=`nvim --version | head -n 1 | awk '{print $2}'`
+                if ! printf '%s\n%s\n' "${nvim_version#v}" "${target_version#v}" | sort -V -C -r; then
+                    echo -e "\033[33m Current nvim version is $nvim_version, checkout master branch\033[0m"
+                    git checkout -b master origin/master
+                fi
+            fi
         else
             echo -e "\033[33m $curr_dir is not a directory \033[0m"
             echo #打印空行
         fi
     done
-    #更新plug.vim
-    echo -e "\033[32m Updating plug.vim ... \033[0m"
-    curl -fLo ${PWD}/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 }
 
 # 安装vim插件
@@ -475,7 +488,7 @@ function install_vim_plugin()
 {
     PLUGDIR=${PWD}/plugged
 
-    wget https://gitee.com/keeferwu/vimplus/releases/download/plugin-2026-09-09/plugged.tar.gz
+    wget https://gitee.com/keeferwu/vimplus/releases/download/plugin-2026-10-12/plugged.tar.gz
     if [ $? -eq 0 ]; then
         if [ -d $PLUGDIR ]; then
             echo -e "\033[33m Remove old $PLUGDIR directory \033[0m"

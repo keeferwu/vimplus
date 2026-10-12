@@ -1,20 +1,50 @@
--- nvim-treesitter
+-- nvim-treesitter 兼容层：<0.12 用旧 configs API，>=0.12 用新版 main API
+if vim.fn.has('nvim-0.12') then
+require('nvim-treesitter').setup({
+  install_dir = vim.fn.stdpath('data') .. '/site',
+})
+require('nvim-treesitter').install({
+  'vimdoc',
+  'bash',
+  'c',
+  'cpp',
+  'make',
+  'yaml',
+  'html',
+  'markdown',
+  'markdown_inline',
+  'python',
+  'rust',
+  'lua',
+})
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('UserTreesitterStart', {}),
+  callback = function(args)
+    local max_filesize = 1000 * 1024
+    local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(args.buf))
+    if ok and stats and stats.size > max_filesize then
+      return
+    end
+    pcall(vim.treesitter.start, args.buf)
+  end,
+})
+else
 require('nvim-treesitter.configs').setup {
   -- 安装 language parser
   -- :TSInstallInfo 命令查看支持的语言
   ensure_installed = {
-      "vimdoc",
-      "bash",
-      "c",
-      "cpp",
-      "make",
-      "yaml",
-      "html",
-      "markdown",
-      "markdown_inline",
-      "python",
-      "rust",
-      "lua",
+    'vimdoc',
+    'bash',
+    'c',
+    'cpp',
+    'make',
+    'yaml',
+    'html',
+    'markdown',
+    'markdown_inline',
+    'python',
+    'rust',
+    'lua',
   },
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = true,
@@ -23,11 +53,11 @@ require('nvim-treesitter.configs').setup {
     enable = true,
     -- use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     disable = function(lang, buf)
-        local max_filesize = 1000 * 1024 -- 1000 KB
-        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        if ok and stats and stats.size > max_filesize then
-            return true
-        end
+      local max_filesize = 1000 * 1024 -- 1000 KB
+      local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+      if ok and stats and stats.size > max_filesize then
+          return true
+      end
     end,
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
@@ -50,6 +80,7 @@ require('nvim-treesitter.configs').setup {
     enable = false
   }
 }
+end
 -- 开启 Folding
 -- vim.wo.foldmethod = 'expr'
 -- vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
