@@ -182,6 +182,7 @@ let g:material_theme_style = 'palenight'
 colorscheme material
 " 背景透明
 "hi Normal  ctermfg=252 ctermbg=none
+call eleline#setup()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 插件列表
@@ -192,8 +193,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'mhinz/vim-startify'
 " 快捷键提示
 Plug 'liuchengxu/vim-which-key'
-" 精简的statusline
-Plug 'liuchengxu/eleline.vim'
 " 函数显示列表
 Plug 'preservim/tagbar'
 " 光标快速移动
@@ -485,12 +484,6 @@ let g:tagbar_sort = 0        " 标签不排序，默认排序
 let g:tagbar_show_tag_linenumbers = 1 "显示tag行号
 " 在某些情况下自动打开tagbar
 "autocmd BufReadPost *.cpp,*.c,*.lua,*.hpp,*.cc,*.cxx call tagbar#autoopen()
-
-" eleline
-let g:relative_path_file = 1
-let g:eleline_slim = 0
-let g:eleline_powerline_fonts = 1
-let g:eleline_function_icon = ''
 
 " nerdcommenter
 " default delims to /**/ for cpp or c  file
