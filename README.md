@@ -1,7 +1,7 @@
 #### 版本要求
 
-    vim >= v9.1
-    nvim >= v0.11.0
+    vim >= v9.2
+    nvim >= v0.12.0
     nodejs >= v16.18.0
 
 #### 安装vimplus

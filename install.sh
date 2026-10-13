@@ -124,7 +124,7 @@ function get_home_path()
 
 function install_nvim_config()
 {
-    target_version="v0.11.0"
+    target_version="v0.12.0"
     if which nvim >/dev/null 2>&1; then
         nvim_version=`nvim --version | head -n 1 | awk '{print $2}'`
         if ! printf '%s\n%s\n' "${nvim_version#v}" "${target_version#v}" | sort -V -C -r; then
@@ -282,9 +282,9 @@ function compile_vim_by_source()
     sudo apt-get remove vim vim-runtime  vim-tiny vim-common vim-gui-common
     sudo apt-get purge vim vim-runtime  vim-tiny vim-common vim-gui-common
 
-    sudo apt-get install -y libncurses5-dev libncurses5 python2-dev python3-dev ruby-dev
+    sudo apt-get install -y libncurses-dev libncurses5-dev libncursesw5-dev python3-dev ruby-dev
     sudo apt-get install -y lua5.1 liblua5.1-dev luajit libluajit-5.1-dev
-    sudo apt-get install -y libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev libperl-dev
+    sudo apt-get install -y libgtk-3-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev libperl-dev
 
     rm -rf ~/vim_source
     git clone https://github.com/vim/vim.git ~/vim_source
@@ -294,15 +294,13 @@ function compile_vim_by_source()
          # gcc version should over 9.4.0
         ./configure --with-features=huge \
                 --enable-multibyte \
-                --enable-pythoninterp=yes \
-                --with-python-config-dir=$(python2-config --configdir) \
                 --enable-python3interp=yes \
                 --with-python3-config-dir=$(python3-config --configdir) \
                 --enable-perlinterp=yes \
                 --enable-rubyinterp=yes \
                 --enable-luainterp=yes \
                 --with-luajit \
-                --enable-gui=gtk2 \
+                --enable-gui=gtk3 \
                 --with-x \
                 --enable-cscope \
                 --enable-terminal \
@@ -411,7 +409,7 @@ function install_prepare_software_by_apt()
 
     if which vim >/dev/null 2>&1; then
         vim_version=`vim --version | head -n 1 | awk '{print $5}'`
-        target_version="9.1"
+        target_version="9.2"
         if ! printf '%s\n%s\n' "$vim_version" "$target_version" | sort -V -C -r; then
             echo
             echo -e "\033[33m Current vim version is $vim_version, make sure it >= $target_version \033[0m"
