@@ -38,7 +38,6 @@
     "outline.sortBy": "position",
     "outline.expandLevel": 2,
     "extensions.updateCheck": "weekly",
-    "coc.preferences.formatOnSaveFiletypes": ["lua", "python", "c", "cpp", "json"],
     "Lua.diagnostics.disable": ["undefined-global", "lowercase-global", "redundant-value", "unused-local"],
     "Lua.diagnostics.globals": ["vim", "vim.api"],
     "clangd.path": "clangd",
