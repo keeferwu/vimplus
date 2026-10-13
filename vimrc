@@ -517,7 +517,9 @@ let g:changes_utf8_delete_sign = '✘'
 let g:changes_utf8_modified_sign = '✎'
 let g:changes_linehi_diff = 0
 let g:changes_sign_hi_style = 0
-let g:changes_fast = 0
+let g:changes_fast = 1
+let g:changes_grep_diff = 1
+let g:changes_max_filesize = 500000
 let g:changes_vcs_check = 1
 nnoremap <silent> <leader>dm : ChangesDiffMode<cr>
 nnoremap <silent> <leader>ds : ChangesStyleToggle<cr>
