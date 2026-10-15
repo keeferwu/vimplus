@@ -243,7 +243,9 @@ runtime macros/matchit.vim
 " vim-startify
 let g:startify_session_dir = '~/.vim/.cache/session'
 let g:startify_session_sort = 1          " sort by last open time
-let g:startify_session_persistence = 1
+" vim 9.2 起 :mksession 输出 Vim9 script，nvim 无法 source，
+" 故 vim 侧关闭自动持久化，session 统一由 nvim（legacy）保存
+let g:startify_session_persistence = has('nvim') ? 1 : 0
 let g:startify_bookmarks = []
 let g:startify_commands = [
             \ {'c': ['gtags cache', 'Leaderf gtagsHistory --cache']},
