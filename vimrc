@@ -842,5 +842,8 @@ nnoremap <silent> <leader>jr :Leaderf coc references --auto-jump<cr>
 nnoremap <silent> <leader>jc :Leaderf coc declarations --auto-jump<cr>
 nnoremap <silent> <leader>ji :Leaderf coc implementations --auto-jump<cr>
 nnoremap <silent> <leader>jt :Leaderf coc typeDefinitions --auto-jump<cr>
+" coc 的 node 进程不响应 SIGTERM：nvim 退出时会为它等待 ~2 秒超时（再 SIGKILL），
+" 表现为退出时无提示卡顿 1~2 秒。退出前直接 SIGKILL 它所在的整个进程组（连同 coc 拉起的 clangd/pyright 等语言服务器）。
+autocmd VimLeavePre * call system(['sh', '-c', 'pkill -9 -g "$(pgrep -P ' . getpid() . ' -f "[c]oc\.nvim/build/index\.js")" 2>/dev/null'])
 endif
 
