@@ -104,7 +104,6 @@ require("codecompanion").setup({
     -- will not be sent to the LLM. Please note that whilst I have made every
     -- effort to ensure no code leakage, using this is at your own risk
     send_code = true,
-    job_start_delay = 1500, -- Delay in milliseconds between cmd tools
     submit_delay = 2000, -- Delay in milliseconds before auto-submitting the chat buffer
   },
   -- option default set:codecompanion.nvim/lua/codecompanion/config.lua
@@ -124,7 +123,6 @@ require("codecompanion").setup({
       show_reasoning = true, -- Show reasoning content in the chat buffer?
       fold_reasoning = false, -- Fold the reasoning content from the LLM in the chat buffer?
       show_settings = false, -- Show LLM settings at the top of the chat buffer?
-      show_tools_processing = true, -- Show the loading message when tools are being executed?
       show_token_count = true, -- Show the token count for each response?
       start_in_insert_mode = false, -- Open the chat buffer in insert mode?
     },
@@ -149,9 +147,7 @@ require("codecompanion").setup({
       ["context7"] = {
         cmd = { "npx", "-y", "@upstash/context7-mcp" },
         env = {
-          CONTEXT7_API_KEY = function()
-            return os.getenv("CONTEXT7_API_KEY")
-          end,
+          CONTEXT7_API_KEY = os.getenv("CONTEXT7_API_KEY"),
         },
       },
     },
@@ -162,7 +158,7 @@ require("codecompanion").setup({
   --选择模型
   interactions = {
     chat = {
-      adapter = "omniroute",
+      adapter = "deepseek",
       keymaps = {
         send = {
           modes = { n = "<C-s>", i = "<C-s>" },
@@ -190,13 +186,13 @@ require("codecompanion").setup({
       }
     },
     inline = {
-      adapter = "omniroute",
+      adapter = "deepseek",
     },
     cmd = {
-      adapter = "omniroute",
+      adapter = "deepseek",
     },
     background = {
-      adapter = "omniroute",
+      adapter = "deepseek",
     },
     cli = {
       agent = "opencode",
@@ -210,7 +206,6 @@ require("codecompanion").setup({
       },
       opts = {
         auto_insert = true, -- Enter insert mode when focusing the CLI terminal
-        reload = true, -- Reload buffers when an agent modifies files on disk
       },
     },
     code_review = {
@@ -227,6 +222,25 @@ require("codecompanion").setup({
         show_presets = false, -- not Show default adapters
         show_model_choices = true, -- Show model choices when changing adapter
       },
+      deepseek = function()
+        return require("codecompanion.adapters").extend("deepseek", {
+          name = "deepseek",
+          env = {
+            api_key = function()
+              return os.getenv("DEEPSEEK_API_KEY")
+            end,
+          },
+          schema = {
+            model = {
+              default = "deepseek-flash",
+              choices = {
+                ["deepseek-flash"] = { opts = { can_use_tools = true } },
+                ["deepseek-v4-pro"] = { opts = { can_reason = true, can_use_tools = true } },
+              },
+            },
+          },
+        })
+      end,
       omniroute = function()
         return require("codecompanion.adapters").extend("openai_compatible", {
           name = "omniroute",
@@ -311,7 +325,7 @@ function codecompanion_notify_by_fidget()
       local handle = require("fidget.progress").handle.create({
         title = "",
         -- title = " Thinking... (" .. request.data.interaction .. ")",
-        message = " Thinking... (" .. request.data.interaction .. ")",
+        message = " Thinking... (" .. (request.data.interaction or "chat") .. ")",
         lsp_client = {
           name = llm_role_title(request.data.adapter),
         },
@@ -327,12 +341,14 @@ function codecompanion_notify_by_fidget()
       local handle =  fidget_handles[request.data.id]
       fidget_handles[request.data.id] = nil
       if handle then
-        if request.data.status == "success" then
-          handle.message = "Completed"
-        elseif request.data.status == "error" then
+        local status = request.data.status
+        if status == "error" then
           handle.message = " Error"
-        else
+        elseif status == "cancelled" then
           handle.message = "󰜺 Cancelled"
+        else
+          -- Sync request events carry no status, report them as completed
+          handle.message = "Completed"
         end
         handle:finish()
       end
