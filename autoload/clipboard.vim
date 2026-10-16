@@ -79,12 +79,6 @@ function! clipboard#check() abort
       set clipmethod+=osc52
     endif
   endif
-
-  if !has('clipboard') && get(g:, 'clipboard', '') !=# 'osc52'
-    vnoremap <silent> <c-c> :<c-u>call clipboard#yank()<cr>
-    nnoremap <silent> <c-v> :<c-u>call clipboard#paste('n')<cr>
-    vnoremap <silent> <c-v> :<c-u>call clipboard#paste('v')<cr>
-  endif
 endfunction
 
 function! s:get_selection_text()

@@ -153,13 +153,21 @@ else
   " coc.nvim 很容易导致vim crash，因此不启用
   unlet $COCLSP
 endif
+" Neovim: g:clipboard 必须在 provider 初始化之前设置才会生效（否则报
+" "clipboard: No provider"）。
+call clipboard#check()
 " unnamedplus:所有的操作都会自动被粘贴进 system clipboard 中
 " unnamed:必须手动执行 +y 或 +p 等操作,才能复制粘贴到system clipboard 中
-set clipboard+=unnamed
+set clipboard+=unnamedplus
 " 复制粘贴到系统剪切板
-vnoremap <silent> <c-c> "+y
-noremap  <silent> <c-v> "+p
-autocmd VimEnter * call clipboard#check()
+if !has('clipboard') && get(g:, 'clipboard', '') !=# 'osc52'
+  vnoremap <silent> <c-c> :<c-u>call clipboard#yank()<cr>
+  vnoremap <silent> <c-v> :<c-u>call clipboard#paste('v')<cr>
+  nnoremap <silent> <c-v> :<c-u>call clipboard#paste('n')<cr>
+else
+  vnoremap <silent> <c-c> "+y
+  noremap  <silent> <c-v> "+p
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 主题设置
