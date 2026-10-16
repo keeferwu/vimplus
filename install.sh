@@ -292,6 +292,9 @@ function compile_vim_by_source()
     if [ $? -eq 0 ]; then
          make distclean
          # gcc version should over 9.4.0
+         # --without-wayland: --with-features=huge 默认会带上 wayland，而 vim 启动时
+         # 即连接 Wayland，并在每个同步 system() 里 wayland_update()->roundtrip 泵事件；
+         # 在 WSL/SSH 下该 roundtrip 会永久阻塞（表现为保存文件时卡死）。这里显式关闭。
         ./configure --with-features=huge \
                 --enable-multibyte \
                 --enable-python3interp=yes \
@@ -302,6 +305,7 @@ function compile_vim_by_source()
                 --with-luajit \
                 --enable-gui=gtk3 \
                 --with-x \
+                --without-wayland \
                 --enable-cscope \
                 --enable-terminal \
                 --enable-fail-if-missing \
