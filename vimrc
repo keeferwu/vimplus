@@ -738,6 +738,8 @@ let g:SuperTabCompleteCase = 'match'
 
 " codeium.vim
 let g:codeium_enabled = 0               " enable codeium need token
+let g:codeium_os = 'Linux'              " 直接指定，跳过启动回调里两次 system('uname')
+let g:codeium_arch = 'x86_64'
 let g:codeium_disable_bindings = 1      " disable default keybindings
 let g:codeium_no_map_tab = 1            " disabled Codeium use tab keybindings
 if has('nvim') || has('gui_running')
