@@ -174,6 +174,14 @@ function! s:VisualPattern()
   endtry
 endfunction
 
+function! s:SafeMatchDelete(id)
+try
+  call matchdelete(a:id)
+catch /E803:/
+  " 忽略不存在的 ID
+endtry
+endfunction
+
 function! vimplus#vimgrep(mode) abort
   if a:mode == 'n'
       let pattern = expand('<cword>')
@@ -182,11 +190,11 @@ function! vimplus#vimgrep(mode) abort
       let pattern = s:VisualPattern()
   endif
   let @/ = pattern
-  silent! call matchdelete(1219)
+  silent! call s:SafeMatchDelete(1219)
   silent! call matchadd('CurSearch', pattern, 0, 1219)
   execute 'silent! vimgrep ' . pattern . ' % | bot copen'
   hi QuickFixLine ctermbg=NONE guibg=NONE
-  silent! call matchdelete(1223)
+  silent! call s:SafeMatchDelete(1223)
   silent! call matchadd('MatchParen', pattern, 0, 1223)
 endfunction
 
@@ -199,14 +207,14 @@ function! vimplus#hlsearch() abort
   endif
   if search_text == ' '
     let @/ = ''
-    silent! call matchdelete(1219)
+    silent! call s:SafeMatchDelete(1219)
     return
   endif
   " 搜索内容是否能在当前buffer中搜索到结果
   if search(search_text, 'nw')
     let line_text = getline('.')
     " 清除高亮匹配项
-    silent! call matchdelete(1219)
+    silent! call s:SafeMatchDelete(1219)
     " 当前行中第一个匹配项
     let [search_text, start_col, end_col] = matchstrpos(line_text, search_text)
     while(search_text != "")

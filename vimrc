@@ -191,6 +191,8 @@ colorscheme material
 " 背景透明
 "hi Normal  ctermfg=252 ctermbg=none
 call eleline#setup()
+" 退出报错日志：augroup 与全部逻辑在 autoload/errorlog.vim 内，
+"call errorlog#start_errmsg_watch()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 插件列表
@@ -696,7 +698,10 @@ if get(g:, 'Lf_GtagsGutentags', 1) && executable('ctags')
   let g:gutentags_modules += ['ctags']
   " 定时器回调执行tjump是同步的，时间过长仍然会卡住vim
   function! TjumpList(...) abort
-    execute('tjump '.expand('<cword>'))
+    try
+      execute('tjump '.expand('<cword>'))
+    catch
+    endtry
   endfunction
   " 默认情况下crl+] 只会跳到tags中的第一个匹配项，通过tjump显示tags中多个匹配项
   noremap <silent> <c-]> :call timer_start(1, function('TjumpList'))<cr>
