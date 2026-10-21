@@ -20,7 +20,7 @@ require('nvim-treesitter').install({
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('UserTreesitterStart', {}),
   callback = function(args)
-    local max_filesize = 1000 * 1024
+    local max_filesize = 4000 * 1024
     local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(args.buf))
     if ok and stats and stats.size > max_filesize then
       return
