@@ -361,6 +361,8 @@ codecompanion_notify_by_fidget()
 require("fidget").setup {
     --option
 }
+-- Route all vim.notify() messages through fidget's floating window
+vim.notify = require("fidget").notify
 
 -- Relax CLI terminal readiness checks so the first prompt survives a
 -- slow opencode TUI startup. Default MAX_WAIT=5s/MIN_LINES=5/STABLE_FOR=500ms
