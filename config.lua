@@ -91,10 +91,15 @@ end
 -- render-markdown.nvim
 require('render-markdown').setup({
     --渲染 markdown 和 codecompanion 文件类型
-    file_types = { 'markdown', 'codecompanion' },
-    latex = { enabled = false }
+    file_types = { 'markdown', 'codecompanion', 'opencode_output' },
+    latex = { enabled = false },
+    anti_conceal = { enabled = false }
 })
 
+if vim.fn.executable('opencode') then
+-- opencode.nvim
+require('opencode').setup({})
+else
 -- codecompanion.nvim
 require("codecompanion").setup({
   opts = {
@@ -409,4 +414,4 @@ function Terminal:_on_ready()
     end
   end, POST_READY_DELAY)
 end
-
+end

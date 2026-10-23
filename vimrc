@@ -238,12 +238,14 @@ Plug 'puremourning/vimspector', {'on': ['VimspectorLaunch']}
 Plug 'nvim-lua/plenary.nvim', has('nvim') ? {'branch': 'master'} : {'on': []}
 " nvim代码语法高亮
 Plug 'nvim-treesitter/nvim-treesitter', has('nvim') ? {'do': ':TSUpdate'} : {'on': []}
-" 代码编程助手
-Plug 'olimorris/codecompanion.nvim', has('nvim') ? {} : {'on': []}
-" 渲染 markdown 和 codecompanion 文件
+" 渲染 markdown文件
 Plug 'MeanderingProgrammer/render-markdown.nvim', has('nvim') ? {} : {'on': []}
+" opencode 助手
+Plug 'sudo-tee/opencode.nvim', has('nvim') && executable('opencode')  ? {} : {'on': []}
 " nvim 消息提示, use for codecompanion
-Plug 'j-hui/fidget.nvim', has('nvim') ? {} : {'on': []}
+Plug 'j-hui/fidget.nvim', has('nvim') && !executable('opencode') ? {} : {'on': []}
+" 代码编程助手
+Plug 'olimorris/codecompanion.nvim', has('nvim') && !executable('opencode') ? {} : {'on': []}
 
 call plug#end()
 
