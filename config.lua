@@ -98,7 +98,41 @@ require('render-markdown').setup({
 
 if vim.fn.executable('opencode') then
 -- opencode.nvim
-require('opencode').setup({})
+require('opencode').setup({
+  default_mode = 'build',
+  lock_session_to_directory = true,
+  server = {
+    url = nil,
+    port = nil,
+  },
+  keymap = {
+    -- <leader>oD / <leader>ot 作为 which-key 的二级菜单
+    editor = {
+      ['<leader>ot'] = false,
+      ['<leader>otf'] = { 'toggle_focus', desc = 'Toggle focus' },
+      ['<leader>oDu'] = { 'copy_server_url', desc = 'Copy server url' },
+    },
+    input_window = {
+      ['<leader>oD'] = false,
+      ['<leader>oO'] = false,
+      ['<leader>oDm'] = { 'debug_message', desc = 'Open raw message debug view' },
+      ['<leader>oDo'] = { 'debug_output', desc = 'Open raw output debug view' },
+      ['<leader>oDs'] = { 'debug_session', desc = 'Open raw session debug view' },
+    },
+    output_window = {
+      ['<leader>oD'] = false,
+      ['<leader>oO'] = false,
+      ['<leader>oDm'] = { 'debug_message', desc = 'Open raw message debug view' },
+      ['<leader>oDo'] = { 'debug_output', desc = 'Open raw output debug view' },
+      ['<leader>oDs'] = { 'debug_session', desc = 'Open raw session debug view' },
+    },
+  },
+  -- oDm/oDo/oDs 调试视图需要开启 debug.enabled
+  debug = {
+    enabled = true,
+  },
+})
+vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>Opencode<cr>", { noremap = true, silent = true })
 else
 -- codecompanion.nvim
 require("codecompanion").setup({

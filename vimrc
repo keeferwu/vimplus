@@ -386,6 +386,82 @@ let g:which_key_map.j = {'name' : '+jump',
                     \    't' : 'jumpTypeDefinition',
                     \   }
 endif
+if has('nvim') && executable('opencode')
+" opencode debug 分组：普通 editor 窗口只显示全局的 oDu；
+" input/output 面板窗口只显示面板专属的 oDm/oDo/oDs。
+function! OpencodeDebugGroup() abort
+  if &filetype ==# 'opencode' || &filetype ==# 'opencode_output'
+    return {
+          \ 'name': '+debug',
+          \ 'm': [':Opencode debug_message', 'message debug view'],
+          \ 'o': [':Opencode debug_output', 'output debug view'],
+          \ 's': [':Opencode debug_session', 'session debug view'],
+          \ 'u': 'which_key_ignore',
+          \ }
+  endif
+  return {
+        \ 'name': '+debug',
+        \ 'u': [':Opencode copy_server_url', 'copy server url'],
+        \ 'm': 'which_key_ignore',
+        \ 'o': 'which_key_ignore',
+        \ 's': 'which_key_ignore',
+        \ }
+endfunction
+" opencode.nvim: 全局映射全部注册到 which-key（普通模式）
+let g:which_key_map.o = {'name' : '+opencode',
+                    \   'g': [':Opencode', 'toggle panel'],
+                    \   'i': [':Opencode open_input', 'open input'],
+                    \   'I': [':Opencode open_input_new_session', 'new session input'],
+                    \   'N': [':Opencode open_session_tab', 'new session tab'],
+                    \   '<': [':Opencode prev_session_tab', 'previous tab'],
+                    \   '>': [':Opencode next_session_tab', 'next tab'],
+                    \   '?': [':Opencode select_session_tab', 'select tab'],
+                    \   '1': [':Opencode select_session_tab 1', 'tab 1'],
+                    \   '2': [':Opencode select_session_tab 2', 'tab 2'],
+                    \   '3': [':Opencode select_session_tab 3', 'tab 3'],
+                    \   '4': [':Opencode select_session_tab 4', 'tab 4'],
+                    \   '5': [':Opencode select_session_tab 5', 'tab 5'],
+                    \   '6': [':Opencode select_session_tab 6', 'tab 6'],
+                    \   '7': [':Opencode select_session_tab 7', 'tab 7'],
+                    \   '8': [':Opencode select_session_tab 8', 'tab 8'],
+                    \   '9': [':Opencode select_session_tab 9', 'tab 9'],
+                    \   'h': [':Opencode select_history', 'prompt history'],
+                    \   'o': [':Opencode open_output', 'focus output'],
+                    \   'T': [':Opencode timeline', 'session timeline'],
+                    \   'q': [':Opencode close', 'close panel'],
+                    \   'Q': [':Opencode close_session_tab', 'close session tab'],
+                    \   's': [':Opencode select_session', 'select session'],
+                    \   'S': [':Opencode navigate_session_tree child picker', 'child session'],
+                    \   'P': [':Opencode navigate_session_tree parent', 'parent session'],
+                    \   'B': [':Opencode navigate_session_tree sibling picker', 'sibling session'],
+                    \   'R': [':Opencode rename_session', 'rename session'],
+                    \   'p': [':Opencode configure_provider', 'provider/model'],
+                    \   'V': [':Opencode configure_variant', 'model variant'],
+                    \   'z': [':Opencode toggle_zoom', 'zoom panel'],
+                    \   'v': [':Opencode paste_image', 'paste image'],
+                    \   'd': [':Opencode diff open', 'open diff'],
+                    \   ']': [':Opencode diff next', 'next diff'],
+                    \   '[': [':Opencode diff prev', 'previous diff'],
+                    \   'c': [':Opencode diff close', 'close diff'],
+                    \   'x': [':Opencode swap_position', 'swap panel position'],
+                    \   '/': [':Opencode quick_chat', 'quick chat'],
+                    \   'r': {'name' : '+revert/restore',
+                    \         'a': [':Opencode diff_revert_all_last_prompt', 'revert all (last prompt)'],
+                    \         't': [':Opencode diff_revert_this_last_prompt', 'revert this (last prompt)'],
+                    \         'A': [':Opencode diff_revert_all', 'revert all changes'],
+                    \         'T': [':Opencode diff_revert_this', 'revert this change'],
+                    \         'r': [':Opencode diff_restore_snapshot_file', 'restore file snapshot'],
+                    \         'R': [':Opencode diff_restore_snapshot_all', 'restore all snapshots'],
+                    \        },
+                    \   't': {'name' : '+toggle',
+                    \         'f': [':Opencode toggle_focus', 'toggle focus'],
+                    \         'r': [':Opencode toggle_reasoning_output', 'reasoning output'],
+                    \         't': [':Opencode toggle_tool_output', 'tool output'],
+                    \         'm': [':Opencode toggle_max_messages', 'max messages'],
+                    \        },
+                    \   'D': function('OpencodeDebugGroup'),
+                    \   }
+endif
 call which_key#register('<Space>', "g:which_key_map", 'n')
 let g:which_key_map_visual = {}
 let g:which_key_map_visual.c = {'name' : '+commenter'}
@@ -393,6 +469,18 @@ let g:which_key_map_visual.r = {'name' : '+grep',
                     \    'c' : 'vimgrep select in current buffer',
                     \   }
 let g:which_key_map_visual.k = 'color select pattern'
+if has('nvim') && executable('opencode')
+" 可视模式只保留选区相关项：y/Y//，其余 opencode 映射在菜单中隐藏
+let g:which_key_map_visual.o = deepcopy(g:which_key_map.o)
+for s:key in keys(g:which_key_map_visual.o)
+  if s:key !=# 'name' && s:key !=# '/'
+    let g:which_key_map_visual.o[s:key] = ['', 'which_key_ignore']
+  endif
+endfor
+let g:which_key_map_visual.o.y = [':Opencode add_visual_selection', 'add selection to context']
+let g:which_key_map_visual.o.Y = [':Opencode add_visual_selection_inline', 'insert selection inline']
+let g:which_key_map_visual.o['/'] = [':Opencode quick_chat', 'quick chat with selection']
+endif
 call which_key#register('<Space>', "g:which_key_map_visual", 'v')
 
 " plugin
@@ -420,7 +508,7 @@ nnoremap <silent> <leader><leader>u :PlugUpdate<cr>
 nnoremap <silent> <leader><leader>c :PlugClean<cr>
 
 " buffer,table and whitespace
-let g:vimplus_ignored_filetypes = ['help', 'startify', 'qf', 'netrw', 'tagbar', 'leaderf', 'codecompanion']
+let g:vimplus_ignored_filetypes = ['help', 'startify', 'qf', 'netrw', 'tagbar', 'leaderf', 'codecompanion', 'opencode', 'opencode_output']
 autocmd BufAdd * call vimplus#buflimit(100)
 nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
