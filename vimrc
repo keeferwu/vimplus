@@ -238,6 +238,10 @@ Plug 'puremourning/vimspector', {'on': ['VimspectorLaunch']}
 Plug 'nvim-lua/plenary.nvim', has('nvim') ? {'branch': 'master'} : {'on': []}
 " nvim代码语法高亮
 Plug 'nvim-treesitter/nvim-treesitter', has('nvim') ? {'do': ':TSUpdate'} : {'on': []}
+" render-markdown 图标依赖
+Plug 'nvim-mini/mini.icons', has('nvim') ? {} : {'on': []}
+" opencode 后端依赖
+Plug 'nvim-mini/mini.pick', has('nvim') ? {} : {'on': []}
 " 渲染 markdown文件
 Plug 'MeanderingProgrammer/render-markdown.nvim', has('nvim') ? {} : {'on': []}
 " opencode 助手

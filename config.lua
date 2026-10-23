@@ -88,6 +88,20 @@ end
 -- https://stackoverflow.com/questions/8316139/how-to-set-the-default-to-unfolded-when-you-open-a-file
 -- vim.wo.foldlevel = 99
 
+-- mini.icons：文件/文件类型图标，供 mini.pick、render-markdown 等使用
+require('mini.icons').setup({
+  style = 'glyph',
+})
+
+-- mini.pick：opencode.nvim 的 picker 后端
+require('mini.pick').setup({
+  window = {
+    config = {
+      border = 'rounded',
+    },
+  },
+})
+
 -- render-markdown.nvim
 require('render-markdown').setup({
     --渲染 markdown 和 codecompanion 文件类型
@@ -99,6 +113,7 @@ require('render-markdown').setup({
 if vim.fn.executable('opencode') then
 -- opencode.nvim
 require('opencode').setup({
+  preferred_picker = 'mini.pick',
   default_mode = 'build',
   lock_session_to_directory = true,
   server = {
