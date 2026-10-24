@@ -100,6 +100,16 @@ require('mini.pick').setup({
       border = 'rounded',
     },
   },
+  mappings = {
+    -- 与 opencode picker 动作键冲突，改到其他键（仅作用于 mini.pick 窗口）
+    choose_in_split = '<M-s>',   -- 原 <C-s>，与 opencode new_session/new_tab 冲突
+    choose_in_tabpage = '<M-t>', -- 原 <C-t>，与 opencode open_in_tab/toggle_connection 冲突
+    paste = '<C-y>',             -- 原 <C-r>，与 opencode rename_session 冲突
+    move_start = '<C-k>',        -- 原 <C-g>，与 opencode toggle_scope 冲突
+    delete_left = '<C-o>',       -- 原 <C-u>，与 opencode timeline undo 冲突
+    mark = '<C-j>',              -- 原 <C-x>，与 opencode history clear_all 冲突
+    scroll_down = '<C-e>',       -- 原 <C-f>，与 opencode fork/toggle_favorite 冲突
+  },
 })
 
 -- render-markdown.nvim
