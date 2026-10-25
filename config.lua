@@ -345,22 +345,6 @@ require("codecompanion").setup({
         })
       end,
     },
-    acp = {
-      opts = {
-        show_presets = false, --only display the adapters defined in your user configuration
-      },
-      opencode = function()
-        return require("codecompanion.adapters").extend("opencode", {
-          commands = {
-            -- The default uses the opencode/config.json value
-            default = {
-              "opencode",
-              "acp",
-            },
-          },
-        })
-      end,
-    },
   }
 })
 
