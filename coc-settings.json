@@ -61,8 +61,8 @@
     "rust-analyzer.completion.autoimport.enable": true,
     "rust-analyzer.hover.documentation.enable": true,
     "rust-analyzer.lens.enable": true,
-    "rust-analyzer.lens.run.enable": true,
-    "rust-analyzer.lens.debug.enable": true,
+    "rust-analyzer.lens.run.enable": false,
+    "rust-analyzer.lens.debug.enable": false,
     "rust-analyzer.lens.implementations.enable": true,
     "rust-analyzer.updates.checkOnStartup": false
 }
