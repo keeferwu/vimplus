@@ -95,8 +95,9 @@ function! vimplus#confirm(title, cb) abort
     if !(confirm ==? "y" || confirm ==? "\r")
       echohl Moremsg | echo 'Cancelled.' | echohl None
       call a:cb(v:null, 0)
-    end
-    call a:cb(v:null, 1)
+    else
+      call a:cb(v:null, 1)
+    endif
   endif
 endfunction
 
@@ -106,7 +107,7 @@ function! vimplus#ignoredbuffer(bufnr) abort
   if buf_type ==# 'terminal' || buf_type ==# 'nofile'
     return v:true
   endif
-  for ft in get(g:, 'vimplus_ignored_filetypes', 'qf')
+  for ft in get(g:, 'vimplus_ignored_filetypes', ['qf'])
     if ft ==# file_type | return v:true | endif
   endfor
   return v:false
@@ -114,7 +115,7 @@ endfunction
 
 function! vimplus#gittracked() abort
   let result = system('git rev-parse --is-inside-work-tree')
-  if result ==# 'true'
+  if result =~# '^true'
     return v:true
   endif
   return v:false
@@ -168,7 +169,8 @@ function! s:VisualPattern()
     let x_save = getreg("x", 1)
     let type = getregtype("x")
     norm! gv"xy
-    return escape(@x, '\"')
+    " 整行/跨行选择时 @x 含有换行，转换成正则 \n，避免破坏 :vimgrep 命令
+    return substitute(escape(@x, '\"'), "\n", '\\n', 'g')
   finally
     call setreg("x", x_save, type)
   endtry
@@ -183,16 +185,20 @@ endtry
 endfunction
 
 function! vimplus#vimgrep(mode) abort
-  if a:mode == 'n'
+  if a:mode ==# 'n'
       let pattern = expand('<cword>')
-  endif
-  if a:mode == 'v'
+  elseif a:mode ==# 'v'
       let pattern = s:VisualPattern()
+  else
+      return
+  endif
+  if empty(pattern)
+    return
   endif
   let @/ = pattern
   silent! call s:SafeMatchDelete(1219)
   silent! call matchadd('CurSearch', pattern, 0, 1219)
-  execute 'silent! vimgrep ' . pattern . ' % | bot copen'
+  execute 'silent! vimgrep /' . escape(pattern, '/') . '/ % | bot copen'
   hi QuickFixLine ctermbg=NONE guibg=NONE
   silent! call s:SafeMatchDelete(1223)
   silent! call matchadd('MatchParen', pattern, 0, 1223)
@@ -200,6 +206,7 @@ endfunction
 
 " 仅当光标处于搜索内容时高亮搜索结果
 function! vimplus#hlsearch() abort
+  silent! call s:SafeMatchDelete(1219)
   let search_text = @/
  "文件超过10000行不生效
   if empty(search_text) || line("$") > 10000
@@ -207,24 +214,21 @@ function! vimplus#hlsearch() abort
   endif
   if search_text == ' '
     let @/ = ''
-    silent! call s:SafeMatchDelete(1219)
     return
   endif
   " 搜索内容是否能在当前buffer中搜索到结果
   if search(search_text, 'nw')
     let line_text = getline('.')
-    " 清除高亮匹配项
-    silent! call s:SafeMatchDelete(1219)
     " 当前行中第一个匹配项
-    let [search_text, start_col, end_col] = matchstrpos(line_text, search_text)
-    while(search_text != "")
+    let [match_text, start_col, end_col] = matchstrpos(line_text, search_text)
+    while(match_text != "")
       " 光标如果处于匹配项中，高亮匹配项
-      if col('.') >= start_col && col('.') <= end_col
-        silent! call matchadd('CurSearch', search_text, 0, 1219)
+      if col('.') > start_col && col('.') <= end_col
+        silent! call matchadd('CurSearch', '\V' . escape(match_text, '\'), 0, 1219)
         nohlsearch
       endif
       " 当前行的下一个匹配项
-      let [search_text, start_col, end_col] = matchstrpos(line_text, search_text, end_col)
+      let [match_text, start_col, end_col] = matchstrpos(line_text, search_text, end_col)
     endwhile
   endif
 endfunction
@@ -240,11 +244,11 @@ function! s:GetInputFile()
     echohl Question
     call inputsave()
     let filename = input("Input file: ", "", "file")
-    call inputrestore()
     redraw!
   catch /^Vim:Interrupt$/
     echo "Command interrupted"
   finally
+    call inputrestore()
     echohl None
     " interrupt will cause filename unlet
     if !exists("filename")
@@ -257,6 +261,10 @@ endfunction
 
 function! vimplus#differ() abort
   let filename = s:GetInputFile()
+  " input() 被中断时不会返回字符串
+  if type(filename) != type('')
+    return
+  endif
   if empty(fnamemodify(filename, ':t'))
     echo "Empty file name!"
     return
@@ -265,7 +273,7 @@ function! vimplus#differ() abort
     echo filename . " not exists!"
     return
   endif
-  execute 'vertical diffsplit' filename
+  execute 'vertical diffsplit ' . fnameescape(filename)
 endfunction
 
 function! vimplus#write() abort
@@ -279,9 +287,12 @@ function! vimplus#write() abort
     endif
     " 尝试正常写入文件
     execute 'write'
-  catch /^Vim\%((\a\+)\)\=:E212/
-    " 如果捕获到 E212 错误，使用 sudo 写入文件
-    execute 'write !sudo tee -i %'
+  catch /^Vim\%((\a\+)\)\=:E\%(45\|212\)/
+    " 如果捕获到 E45/E212 错误，使用 sudo 写入文件
+    execute 'write !sudo tee -i ' . shellescape(escape(expand('%:p'), '%#')) . ' > /dev/null'
+    if v:shell_error == 0
+      setlocal nomodified
+    endif
   endtry
 endfunction
 
@@ -292,14 +303,19 @@ function! vimplus#buflimit(num) abort
   endif
   let last_buf = bufnr("%")
   let first_buf = last_buf
-  let first_used = localtime()
+  let first_used = -1
   let buf_info = filter(getbufinfo(), 'buflisted(v:val.bufnr)')
   if len(buf_info) <= a:num
     return
   endif
+  " 不删除有未保存修改的 buffer，避免自动清理时触发 E89
+  let buf_info = filter(buf_info, '!get(v:val, "changed", 0)')
+  if empty(buf_info)
+    return
+  endif
   for buf in buf_info
     "查询最早打开的buffer
-    if buf.lastused < first_used
+    if first_used < 0 || buf.lastused < first_used
       let first_buf = buf.bufnr
       let first_used = buf.lastused
     endif
@@ -334,18 +350,35 @@ endfunction
 
 " 关闭当前的tab
 function! vimplus#tabclose() abort
-  let curr_tab = tabpagenr()
-  if curr_tab > 1
-    call vimplus#bufclose()
+  if tabpagenr('$') > 1
+    let last_win = winnr('$')
+    execute last_win . 'wincmd w'
+    if &filetype ==# 'VimspectorPrompt'
+      echo "vimspector can not be closed"
+      return
+    endif
+    let buf_list = uniq(sort(tabpagebuflist()))
+    " 只关闭当前 tab，避免误删其他 tab 仍在显示的共享 buffer
+    execute "tabclose!"
+    for buf in buf_list
+      if buflisted(buf) && empty(win_findbuf(buf))
+        execute "silent! bdelete! " . buf
+      endif
+    endfor
   endif
 endfunction
 
 "关闭vim所有窗口并退出
 function! vimplus#vimclose() abort
   " tab counter
-  if tabpagenr('$') > 1
+  " 有其他 tab 存在未保存修改时不做 tabonly，交给 qall 提示处理
+  if tabpagenr('$') > 1 && empty(filter(getbufinfo(), 'v:val.changed'))
     execute "tabfirst"
-    execute "tabonly"
+    try
+      execute "tabonly"
+    catch /E\%(37\|445\)/
+      " 交给 qall 统一处理
+    endtry
   endif
   let buf_list = uniq(sort(tabpagebuflist()))
   for buf in buf_list
