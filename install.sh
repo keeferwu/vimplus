@@ -323,39 +323,6 @@ function compile_vim_by_source()
         echo -e "\033[33m Download vim source failure! \033[0m"
     fi
     cd -
-    #如果缺少软件依赖可能会导致configure配置失败，导致安装的vim不支持python
-    #remove vim which is installed by source
-    #sudo rm -rf /usr/local/share/vim
-    #sudo rm /usr/local/bin/eview
-    #sudo rm /usr/local/bin/evim
-    #sudo rm /usr/local/bin/ex
-    #sudo rm /usr/local/bin/gview
-    #sudo rm /usr/local/bin/gvim
-    #sudo rm /usr/local/bin/gvimdiff
-    #sudo rm /usr/local/bin/rgview
-    #sudo rm /usr/local/bin/rgvim
-    #sudo rm /usr/local/bin/rview
-    #sudo rm /usr/local/bin/rvim
-    #sudo rm /usr/local/bin/view
-    #sudo rm /usr/local/bin/vim
-    #sudo rm /usr/local/bin/vimdiff
-    #sudo rm /usr/local/bin/vimtutor
-    #sudo rm /usr/local/bin/xxd
-    #sudo rm /usr/local/man/man1/eview.1
-    #sudo rm /usr/local/man/man1/evim.1
-    #sudo rm /usr/local/man/man1/ex.1
-    #sudo rm /usr/local/man/man1/gview.1
-    #sudo rm /usr/local/man/man1/gvim.1
-    #sudo rm /usr/local/man/man1/gvimdiff.1
-    #sudo rm /usr/local/man/man1/rgview.1
-    #sudo rm /usr/local/man/man1/rgvim.1
-    #sudo rm /usr/local/man/man1/rview.1
-    #sudo rm /usr/local/man/man1/rvim.1
-    #sudo rm /usr/local/man/man1/view.1
-    #sudo rm /usr/local/man/man1/vim.1
-    #sudo rm /usr/local/man/man1/vimdiff.1
-    #sudo rm /usr/local/man/man1/vimtutor.1
-    #sudo rm /usr/local/man/man1/xxd.1
 }
 
 # 在ubuntu上安装nodejs
@@ -490,7 +457,7 @@ function install_vim_plugin()
 {
     PLUGDIR=${PWD}/plugged
 
-    wget https://gitee.com/keeferwu/vimplus/releases/download/plugin-2026-10-12/plugged.tar.gz
+    wget https://gitee.com/keeferwu/vimplus/releases/download/plugin-2026-11-02/plugged.tar.gz
     if [ $? -eq 0 ]; then
         if [ -d $PLUGDIR ]; then
             echo -e "\033[33m Remove old $PLUGDIR directory \033[0m"
