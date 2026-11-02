@@ -93,72 +93,23 @@ require('mini.icons').setup({
   style = 'glyph',
 })
 
--- mini.pick：opencode.nvim 的 picker 后端
+-- mini.pick：codecompanion picker 依赖
 require('mini.pick').setup({
   window = {
     config = {
       border = 'rounded',
     },
   },
-  mappings = {
-    -- 与 opencode picker 动作键冲突，改到其他键（仅作用于 mini.pick 窗口）
-    choose_in_split = '<M-s>',   -- 原 <C-s>，与 opencode new_session/new_tab 冲突
-    choose_in_tabpage = '<M-t>', -- 原 <C-t>，与 opencode open_in_tab/toggle_connection 冲突
-    paste = '<C-y>',             -- 原 <C-r>，与 opencode rename_session 冲突
-    move_start = '<C-k>',        -- 原 <C-g>，与 opencode toggle_scope 冲突
-    delete_left = '<C-o>',       -- 原 <C-u>，与 opencode timeline undo 冲突
-    mark = '<C-j>',              -- 原 <C-x>，与 opencode history clear_all 冲突
-    scroll_down = '<C-e>',       -- 原 <C-f>，与 opencode fork/toggle_favorite 冲突
-  },
 })
 
 -- render-markdown.nvim
 require('render-markdown').setup({
     --渲染 markdown 和 codecompanion 文件类型
-    file_types = { 'markdown', 'codecompanion', 'opencode_output' },
+    file_types = { 'markdown', 'codecompanion' },
     latex = { enabled = false },
     anti_conceal = { enabled = false }
 })
 
-if vim.fn.executable('opencode') then
--- opencode.nvim
-require('opencode').setup({
-  preferred_picker = 'mini.pick',
-  default_mode = 'build',
-  lock_session_to_directory = true,
-  server = {
-    url = nil,
-    port = nil,
-  },
-  keymap = {
-    -- <leader>oD / <leader>ot 作为 which-key 的二级菜单
-    editor = {
-      ['<leader>ot'] = false,
-      ['<leader>otf'] = { 'toggle_focus', desc = 'Toggle focus' },
-      ['<leader>oDu'] = { 'copy_server_url', desc = 'Copy server url' },
-    },
-    input_window = {
-      ['<leader>oD'] = false,
-      ['<leader>oO'] = false,
-      ['<leader>oDm'] = { 'debug_message', desc = 'Open raw message debug view' },
-      ['<leader>oDo'] = { 'debug_output', desc = 'Open raw output debug view' },
-      ['<leader>oDs'] = { 'debug_session', desc = 'Open raw session debug view' },
-    },
-    output_window = {
-      ['<leader>oD'] = false,
-      ['<leader>oO'] = false,
-      ['<leader>oDm'] = { 'debug_message', desc = 'Open raw message debug view' },
-      ['<leader>oDo'] = { 'debug_output', desc = 'Open raw output debug view' },
-      ['<leader>oDs'] = { 'debug_session', desc = 'Open raw session debug view' },
-    },
-  },
-  -- oDm/oDo/oDs 调试视图需要开启 debug.enabled
-  debug = {
-    enabled = true,
-  },
-})
-vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>Opencode<cr>", { noremap = true, silent = true })
-else
 -- codecompanion.nvim
 require("codecompanion").setup({
   opts = {
@@ -456,5 +407,4 @@ function Terminal:_on_ready()
       self:_consume()
     end
   end, POST_READY_DELAY)
-end
 end
