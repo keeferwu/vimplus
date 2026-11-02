@@ -110,6 +110,30 @@ require('render-markdown').setup({
     anti_conceal = { enabled = false }
 })
 
+-- fidget.nvim
+require("fidget").setup({
+  notification = {
+    override_vim_notify = true, -- 自动接管 vim.notify，无需再手动赋值
+    filter = vim.log.levels.INFO, -- 默认 INFO，过滤 DEBUG/TRACE
+    window = {
+      border = "rounded",
+      winblend = 0,
+      max_width = 0, -- 0 表示不限制宽度
+    },
+  },
+  progress = {
+    -- 保持 false：在 insert 模式发送时也要显示进度
+    suppress_on_insert = false,
+    display = {
+      progress_ttl = math.huge, -- 进行中一直显示
+      done_ttl = 3, -- 完成后保留 3 秒
+      progress_icon = { "dots" },
+      done_icon = "✔",
+      render_limit = 16,
+    },
+  },
+})
+
 -- codecompanion.nvim
 require("codecompanion").setup({
   opts = {
@@ -185,19 +209,8 @@ require("codecompanion").setup({
           modes = { i = "<C-p>" },
         },
       },
-      slash_commands = {
-        ["chinese"] = {
-          description = "language response",
-          callback = function(chat)
-            chat:add_buf_message({ content = "-所有非代码文本的回复使用中文语言。" })
-          end,
-          opts = {
-            contains_code = false,
-          },
-        },
-      },
       opts = {
-        completion_provider = "default", -- blink|cmp|coc|default
+        completion_provider = "coc", -- blink|cmp|coc|default
       }
     },
     inline = {
@@ -210,12 +223,12 @@ require("codecompanion").setup({
       adapter = "deepseek",
     },
     cli = {
-      agent = "opencode",
+      agent = "pi",
       agents = {
-        opencode = {
-          cmd = "opencode",
+        pi = {
+          cmd = "pi",
           args = {},
-          description = "Opencode CLI",
+          description = "Pi CLI",
           provider = "terminal",
         },
       },
@@ -247,9 +260,9 @@ require("codecompanion").setup({
           },
           schema = {
             model = {
-              default = "deepseek-flash",
+              default = "deepseek-v4-flash",
               choices = {
-                ["deepseek-flash"] = { opts = { can_use_tools = true } },
+                ["deepseek-v4-flash"] = { opts = { can_reason = true, can_use_tools = true } },
                 ["deepseek-v4-pro"] = { opts = { can_reason = true, can_use_tools = true } },
               },
             },
@@ -305,106 +318,89 @@ vim.keymap.set({ "n", "v" }, "<C-w>", "<cmd>CodeCompanionCLI Ask<cr>", { noremap
 -- Expand 'cc' into 'CodeCompanion' in the command line
 vim.cmd([[cab cc CodeCompanion]])
 
-function codecompanion_notify_by_fidget()
-  local group = vim.api.nvim_create_augroup("CodeCompanionFidgetHooks", {})
-  local fidget_handles = {}
+local function codecompanion_notify_by_fidget()
+  local ok, progress = pcall(require, "fidget.progress")
+  if not ok then
+    return
+  end
 
-  vim.api.nvim_create_autocmd({ "User" }, {
+  local group = vim.api.nvim_create_augroup("CodeCompanionFidgetHooks", { clear = true })
+  local handles = {}
+
+  local STATUS = {
+    success = " Completed",
+    error = " Error",
+    cancelled = " Cancelled",
+  }
+
+  local function finish(id, message)
+    local entry = handles[id]
+    if not entry then
+      return
+    end
+    handles[id] = nil
+    entry.handle.message = message
+    entry.handle:finish()
+  end
+
+  vim.api.nvim_create_autocmd("User", {
     pattern = "CodeCompanionRequestStarted",
     group = group,
+    desc = "Show a Fidget progress handle for a CodeCompanion request",
     callback = function(request)
-      local llm_role_title = function(adapter)
-        local parts = {}
-        table.insert(parts, adapter.formatted_name)
-        if adapter.model and adapter.model ~= "" then
-          table.insert(parts, "(" .. adapter.model .. ")")
-        end
-        return table.concat(parts, " ")
+      local data = request.data or {}
+      if not data.id then
+        return
       end
-      local handle = require("fidget.progress").handle.create({
-        title = "",
-        -- title = " Thinking... (" .. request.data.interaction .. ")",
-        message = " Thinking... (" .. (request.data.interaction or "chat") .. ")",
-        lsp_client = {
-          name = llm_role_title(request.data.adapter),
-        },
-      })
-      fidget_handles[request.data.id] = handle
+
+      -- 同一个 id 重复开始时，先结束旧 handle，避免泄漏
+      if handles[data.id] then
+        finish(data.id, " Superseded")
+      end
+
+      local adapter = data.adapter or {}
+      local name = adapter.formatted_name or "CodeCompanion"
+      if adapter.model and adapter.model ~= "" then
+        name = name .. " (" .. adapter.model .. ")"
+      end
+
+      handles[data.id] = {
+        bufnr = data.bufnr,
+        handle = progress.handle.create({
+          message = " Thinking... (" .. (data.interaction or "chat") .. ")",
+          lsp_client = { name = name },
+        }),
+      }
     end,
   })
 
-  vim.api.nvim_create_autocmd({ "User" }, {
+  vim.api.nvim_create_autocmd("User", {
     pattern = "CodeCompanionRequestFinished",
     group = group,
+    desc = "Finish the Fidget progress handle for a CodeCompanion request",
     callback = function(request)
-      local handle =  fidget_handles[request.data.id]
-      fidget_handles[request.data.id] = nil
-      if handle then
-        local status = request.data.status
-        if status == "error" then
-          handle.message = " Error"
-        elseif status == "cancelled" then
-          handle.message = "󰜺 Cancelled"
-        else
-          -- Sync request events carry no status, report them as completed
-          handle.message = "Completed"
+      local data = request.data or {}
+      local message = STATUS[data.status]
+        or (data.interaction and " Error" or " Completed")
+      finish(data.id, message)
+    end,
+  })
+
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "CodeCompanionChatStopped",
+    group = group,
+    desc = "Mark in-flight Fidget handles as cancelled when a chat stops",
+    callback = function(request)
+      local bufnr = request.data and request.data.bufnr
+      if not bufnr then
+        return
+      end
+      for id, entry in pairs(handles) do
+        if entry.bufnr == bufnr then
+          finish(id, " Cancelled")
         end
-        handle:finish()
       end
     end,
   })
 end
 codecompanion_notify_by_fidget()
-
--- fidget.nvim
-require("fidget").setup {
-    --option
-}
--- Route all vim.notify() messages through fidget's floating window
-vim.notify = require("fidget").notify
-
--- Relax CLI terminal readiness checks so the first prompt survives a
--- slow opencode TUI startup. Default MAX_WAIT=5s/MIN_LINES=5/STABLE_FOR=500ms
--- fires _on_ready() before opencode is reading from the PTY, dropping input.
-local Terminal = require("codecompanion.interactions.cli.providers.terminal")
-
-function Terminal:_poll_until_ready()
-  local POLL_INTERVAL = 150
-  local MAX_WAIT = 25000
-  local MIN_LINES = 1
-  local STABLE_FOR = 1500
-  local started_at = vim.uv.hrtime()
-  local last_count, stable_since = 0, nil
-  self.poll_timer = vim.uv.new_timer()
-  self.poll_timer:start(POLL_INTERVAL, POLL_INTERVAL, vim.schedule_wrap(function()
-    if not self.bufnr or not vim.api.nvim_buf_is_valid(self.bufnr) then
-      return self:_on_ready()
-    end
-    if (vim.uv.hrtime() - started_at) / 1e6 > MAX_WAIT then
-      return self:_on_ready()
-    end
-    local count = self:_count_lines()
-    if count < MIN_LINES then
-      return
-    end
-    if count ~= last_count then
-      last_count = count
-      stable_since = vim.uv.hrtime()
-    elseif not stable_since then
-      stable_since = vim.uv.hrtime()
-    elseif (vim.uv.hrtime() - stable_since) / 1e6 >= STABLE_FOR then
-      return self:_on_ready()
-    end
-  end))
-end
-
-function Terminal:_on_ready()
-  local POST_READY_DELAY = 800
-  self.ready = true
-  self:_close_timer("poll_timer")
-  vim.defer_fn(function()
-    if self.chan and not self.queue:is_empty() then
-      self:_consume()
-    end
-  end, POST_READY_DELAY)
-end
