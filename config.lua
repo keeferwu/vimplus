@@ -198,6 +198,141 @@ require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = "deepseek",
+      sessions = {
+        enabled = true,
+        autosave = false,
+        continuous_save = true,
+        save_dir = vim.fs.normalize("~/.vim/.cache/codecompanion/sessions"),
+      },
+      slash_commands = {
+        ["save"] = {
+          description = "Save the chat as a persistent session",
+          enabled = function(opts)
+            opts = opts or {}
+            return require("codecompanion.interactions.chat.sessions").enabled()
+              and opts.adapter
+              and opts.adapter.type == "http"
+          end,
+          callback = function(chat)
+            local utils = require("codecompanion.utils")
+            local sessions = require("codecompanion.interactions.chat.sessions")
+
+            if vim.tbl_isempty(chat.messages or {}) then
+              return utils.notify("Nothing to save - chat is empty", vim.log.levels.WARN)
+            end
+
+            local function default_title()
+              if chat.title and chat.title ~= "" then
+                return vim.trim(chat.title:gsub("%s+", " "))
+              end
+              for _, msg in ipairs(chat.messages or {}) do
+                if
+                  msg.role == "user"
+                  and type(msg.content) == "string"
+                  and not (msg._meta and msg._meta.tag)
+                  and not (msg.opts and msg.opts.visible == false)
+                then
+                  local title = vim.trim(msg.content:gsub("%s+", " "))
+                  if title ~= "" then
+                    if vim.fn.strchars(title) > 50 then
+                      local truncated = vim.fn.strcharpart(title, 0, 50)
+                      local boundary = truncated:match("^(.*)%s")
+                      title = vim.trim(boundary or truncated)
+                    end
+                    return title
+                  end
+                end
+              end
+              return ""
+            end
+
+            vim.ui.input({ prompt = " Session Title: ", default = default_title() }, function(input)
+              if input == nil then
+                return
+              end
+              if not chat.bufnr or not vim.api.nvim_buf_is_valid(chat.bufnr) then
+                return
+              end
+              input = vim.trim(input)
+              if input == "" then
+                return utils.notify("Session title cannot be empty", vim.log.levels.WARN)
+              end
+              sessions.save(chat, { title = input })
+            end)
+          end,
+          opts = {
+            contains_code = false,
+          },
+        },
+        ["delete"] = {
+          description = "Delete a saved chat session",
+          enabled = function(opts)
+            opts = opts or {}
+            return require("codecompanion.interactions.chat.sessions").enabled()
+              and opts.adapter
+              and opts.adapter.type == "http"
+          end,
+          callback = function()
+            local utils = require("codecompanion.utils")
+            local sessions = require("codecompanion.interactions.chat.sessions")
+            local storage = require("codecompanion.interactions.chat.sessions.storage")
+            local list = storage.list()
+
+            if vim.tbl_isempty(list) then
+              return utils.notify("No saved sessions", vim.log.levels.INFO)
+            end
+
+            local function has_files(stem)
+              for _, part in ipairs({ "meta", "chat", "ui" }) do
+                if vim.uv.fs_stat(storage.path(stem, part)) then
+                  return true
+                end
+              end
+              return false
+            end
+
+            vim.ui.select(list, {
+              prompt = "Delete session:",
+              format_item = function(session)
+                local base = sessions.format(session)
+                local cwd = session.meta.cwd and vim.fn.fnamemodify(session.meta.cwd, ":~") or ""
+                return cwd == "" and base or base .. "  [" .. cwd .. "]"
+              end,
+              preview_item = function(session)
+                local ok, lines = pcall(vim.fn.readfile, storage.path(session.stem, "ui"))
+                return ok and lines or {}
+              end,
+            }, function(choice)
+              if not choice then
+                return
+              end
+
+              local title = choice.meta.title or choice.stem
+              if vim.fn.confirm(("Delete session '%s'?"):format(title), "&Yes\n&No", 2) ~= 1 then
+                return
+              end
+
+              storage.delete(choice.stem)
+              if has_files(choice.stem) then
+                return utils.notify("Failed to delete session: " .. choice.stem, vim.log.levels.ERROR)
+              end
+
+              -- 停止所有使用该 session 的 chat 的保存跟踪，避免又被写回来
+              for _, entry in ipairs(require("codecompanion").buf_get_chat()) do
+                local open = entry.chat
+                if open and open.title and open.title == choice.meta.title then
+                  sessions.untrack(open.id)
+                end
+              end
+
+              utils.notify("Session deleted: " .. choice.stem, vim.log.levels.INFO)
+            end)
+          end,
+          opts = {
+            contains_code = false,
+          },
+        },
+      },
       keymaps = {
         send = {
           modes = { n = "<C-s>", i = "<C-s>" },
@@ -221,6 +356,11 @@ require("codecompanion").setup({
     },
     background = {
       adapter = "deepseek",
+      chat = {
+        opts = {
+          enabled = true, -- 启用后台回调，包括自动生成聊天标题
+        },
+      },
     },
     cli = {
       agent = "pi",
