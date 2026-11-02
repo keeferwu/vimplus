@@ -205,6 +205,16 @@ require("codecompanion").setup({
         save_dir = vim.fs.normalize("~/.vim/.cache/codecompanion/sessions"),
       },
       slash_commands = {
+        -- 覆盖内置 /help：不再插入 vim help 文档，而是显示 `?` 的 Options 浮窗
+        ["help"] = {
+          description = "Show chat keymaps, editor context and tools",
+          callback = function()
+            vim.schedule(function()
+              vim.cmd("stopinsert")
+              require("codecompanion.interactions.chat.keymaps").options.callback()
+            end)
+          end,
+        },
         ["save"] = {
           description = "Save the chat as a persistent session",
           enabled = function(opts)
