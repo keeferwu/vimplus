@@ -510,6 +510,12 @@ let g:NERDAltDelims_c = 1
 let g:indentLine_enabled = 1
 let g:indentLine_leadingSpaceEnabled = 0
 let g:indentLine_concealcursor = 'ic'
+" 终端里跑 TUI(opencode/pi 等)时不显示对齐线（Vim 无 TermOpen 事件）
+if has('nvim')
+  autocmd TermOpen term://* let b:indentLine_enabled = 0 | silent! IndentLinesDisable
+else
+  autocmd TerminalOpen * let b:indentLine_enabled = 0 | silent! IndentLinesDisable
+endif
 
 " vim-easymotion
 let g:EasyMotion_smartcase = 1
