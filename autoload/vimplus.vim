@@ -176,12 +176,15 @@ function! s:VisualPattern()
   endtry
 endfunction
 
-function! s:SafeMatchDelete(id)
-try
-  call matchdelete(a:id)
-catch /E803:/
-  " 忽略不存在的 ID
-endtry
+" 先确认 ID 存在再删除，避免 matchdelete() 抛 E803
+function! s:SafeMatchDelete(id) abort
+  if empty(filter(getmatches(), 'v:val.id == a:id'))
+    return
+  endif
+  try
+    call matchdelete(a:id)
+  catch
+  endtry
 endfunction
 
 function! vimplus#vimgrep(mode) abort
