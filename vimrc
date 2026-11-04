@@ -810,7 +810,8 @@ let g:coc_global_extensions = [
   \ 'coc-pyright',
   \ 'coc-lua',
   \ 'coc-cmake',
-  \ 'coc-marketplace'
+  \ 'coc-marketplace',
+  \ 'coc-tsserver'
   \ ]
 function! CocToggleOutline() abort
   let tagbar_toggle = v:true

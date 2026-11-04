@@ -16,6 +16,7 @@ require('nvim-treesitter').install({
   'python',
   'rust',
   'lua',
+  'typescript',
 })
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('UserTreesitterStart', {}),
