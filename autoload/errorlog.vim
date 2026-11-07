@@ -86,7 +86,7 @@ endfunction
 
 " 返回日志文件路径，可通过 g:vimplus_error_log 覆盖
 function! errorlog#exit_error_log() abort
-  return get(g:, 'vimplus_error_log', expand('~/.vim/.cache/exit-errors.log'))
+  return get(g:, 'vimplus_error_log', expand('~/.vim/cache/exit-errors.log'))
 endfunction
 
 " 退出阶段调用：把当前会话捕获到的错误追加写入日志

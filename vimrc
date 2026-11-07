@@ -110,6 +110,13 @@ autocmd CursorMoved,CursorMovedI * call vimplus#hlsearch()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 自定义设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" viminfo/shada 统一放到自己的 cache 目录；写它的临时文件也在同目录，不再落在 $HOME
+call mkdir($HOME . '/.vim/cache/viminfo', 'p')
+if has('nvim')
+  set shadafile=~/.vim/cache/viminfo/shada
+else
+  set viminfofile=~/.vim/cache/viminfo/viminfo
+endif
 let $PROJECT_ROOT = '.root'     " 定义环境变量标识项目根目录
 " 打开文件自动定位到最后编辑的位置
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
@@ -255,7 +262,7 @@ call plug#end()
 runtime macros/matchit.vim
 
 " vim-startify
-let g:startify_session_dir = '~/.vim/.cache/session'
+let g:startify_session_dir = '~/.vim/cache/session'
 let g:startify_session_sort = 1          " sort by last open time
 " vim 9.2 起 :mksession 输出 Vim9 script，nvim 无法 source，
 " 故 vim 侧关闭自动持久化，session 统一由 nvim（legacy）保存
@@ -604,7 +611,7 @@ let g:Lf_RecurseSubmodules = 1                   "当g:Lf_UseVersionControlTool 
 let g:Lf_DefaultMode = 'Fuzzy'
 let g:Lf_RootMarkers = [$PROJECT_ROOT]
 let g:Lf_WorkingDirectoryMode = 'Aa'
-let g:Lf_CacheDirectory = expand($HOME.'/.vim/.cache')
+let g:Lf_CacheDirectory = expand($HOME.'/.vim/cache')
 let g:Lf_UseCache = 1
 let g:Lf_NeedCacheTime = 1
 let g:Lf_NumberOfCache = 10

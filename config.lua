@@ -189,7 +189,7 @@ require("codecompanion").setup({
         enabled = true,
         autosave = false,
         continuous_save = true,
-        save_dir = vim.fs.normalize("~/.vim/.cache/codecompanion/sessions"),
+        save_dir = vim.fs.normalize("~/.vim/cache/codecompanion/sessions"),
       },
       slash_commands = {
         -- 覆盖内置 /help：不再插入 vim help 文档，而是显示 `?` 的 Options 浮窗
