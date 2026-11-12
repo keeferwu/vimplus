@@ -146,6 +146,26 @@ function! vimplus#windowsize(dir, delta) abort
   endif
 endfunction
 
+" 选择分屏方式打开 terminal：1 垂直分窗，2 水平分窗，3 new tab
+function! vimplus#openterminal(...) abort
+  let choice = a:0 ? a:1 : confirm('Open terminal:', "&Vertical split\n&Horizontal split\n&New tab")
+  if choice == 1
+    execute 'rightbelow vnew'
+  elseif choice == 2
+    execute 'belowright new'
+  elseif choice == 3
+    execute 'tabnew'
+  else
+    return
+  endif
+  " nvim 不支持 ++curwin；新窗口已是空 buffer，:terminal 会直接在当前窗口打开
+  if has('nvim')
+    execute 'terminal'
+  else
+    execute 'terminal ++curwin'
+  endif
+endfunction
+
 function! vimplus#holdtimer(time, cmd) abort
   " 定义一个字典来存储定时器ID，键为定时器的触发时间
   if !exists("s:vimplus_timer")

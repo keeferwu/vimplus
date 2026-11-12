@@ -136,8 +136,6 @@ nnoremap <silent> V <C-v>
 endif
 " C+z默认会退到后台，重映射为展开所有折叠
 nnoremap <silent> <C-z> zR
-"终端下映射ESC退出到normal模式
-"tnoremap <silent> <Esc> <C-\><C-n>
 " 保存
 nnoremap <silent> <C-s> :<C-u>call vimplus#write()<cr>
 " 分屏窗口移动
@@ -151,11 +149,23 @@ nnoremap <silent> <C-Down>  :call vimplus#windowsize('down', 5)<CR>
 nnoremap <silent> <C-Left>  :call vimplus#windowsize('left', 5)<CR>
 nnoremap <silent> <C-Right> :call vimplus#windowsize('right', 5)<CR>
 " open terminal
-nnoremap <silent> <s-t> :tabnew \| term ++curwin<cr>
+nnoremap <silent> <s-t> :call vimplus#openterminal()<cr>
+" 连按两次 Esc terminal进入 Normal
+tnoremap <silent> <Esc><Esc> <C-\><C-n>
 if has("nvim")
   let g:python3_host_prog = '/usr/bin/python3'
-  autocmd TermOpen * startinsert
-  nnoremap <silent> <s-t> :tabnew \| terminal<cr>
+  " nvim 用 b:term_normal 阻止normal 模式自动回插；
+  tnoremap <silent> <Esc><Esc> <Cmd>let b:term_normal = 1<CR><C-\><C-n>
+  " 打开或切回终端窗口、意外退出 terminal-mode（鼠标滚动等）时自动进入插入模式
+  augroup terminal_insert
+    autocmd!
+    autocmd TermOpen * startinsert
+    " 重新进入 terminal-mode 时清掉“主动 Normal”标记
+    autocmd TermEnter * unlet! b:term_normal
+    " 延迟到窗口切换完成后判断，避免点击其他窗口时把 Insert 模式带过去
+    autocmd BufEnter,WinEnter,TermLeave *
+          \ call timer_start(0, {-> &buftype ==# 'terminal' && !get(b:, 'term_normal', 0) && mode(1)[0] !=# 't' ? execute('startinsert') : 0})
+  augroup END
 else
   " coc.nvim 很容易导致vim crash，因此不启用
   unlet $COCLSP
