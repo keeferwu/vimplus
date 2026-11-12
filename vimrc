@@ -166,9 +166,6 @@ if has("nvim")
     autocmd BufEnter,WinEnter,TermLeave *
           \ call timer_start(0, {-> &buftype ==# 'terminal' && !get(b:, 'term_normal', 0) && mode(1)[0] !=# 't' ? execute('startinsert') : 0})
   augroup END
-else
-  " coc.nvim 很容易导致vim crash，因此不启用
-  unlet $COCLSP
 endif
 " Neovim: g:clipboard 必须在 provider 初始化之前设置才会生效（否则报
 " "clipboard: No provider"）。
