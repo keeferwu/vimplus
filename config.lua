@@ -342,7 +342,7 @@ require("codecompanion").setup({
         },
       },
       opts = {
-        completion_provider = "coc", -- blink|cmp|coc|default
+        --completion_provider = "default", -- blink|cmp|coc|default
       }
     },
     inline = {
