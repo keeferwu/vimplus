@@ -86,8 +86,8 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
     Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
     " 显示leaderf gtags 搜索历史
     Plug 'keeferwu/LeaderF-gtags-history'
-    " AI补全插件，需要 GitHub Copilot 账号
-    Plug 'github/copilot.vim'
+    " AI智能插件，需要登录获取token
+    Plug 'Exafunction/codeium.vim', {'branch': 'main'}
     " tab触发补全
     Plug 'ervandew/supertab', exists('$COCLSP') ? {'on': []} : {}
     " c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
@@ -119,9 +119,9 @@ OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件
     cd /usr/include/
     sudo ctags -I __THROW -I __THROWNL -I __nonnull -R --c-kinds=+p  --fields=+iaS --extra=+q
 
-GitHub Copilot 是一款智能补全插件，需要 GitHub 账号（Copilot Free 免费额度即可）
+Codeium 是一款智能补全插件，需要登录到官网生成token，注意，访问官网需要代理
 
-    默认关闭,通过 let g:copilot_enabled = 1 开启，首次使用执行 :Copilot setup 在浏览器完成授权, :Copilot status 查看状态
+    默认关闭, 通过let g:codeium_enabled = 1开启, 通过命令:Codeium Auth 添加token
 
 vim-gutentags 同时生成gtags 和 ctags(OmniCppComplete需要使用) 数据库到leaderf 缓存目录
 
