@@ -38,6 +38,8 @@
     "outline.sortBy": "position",
     "outline.expandLevel": 2,
     "extensions.updateCheck": "weekly",
+    "github-copilot.statusIcon": "💻",
+    "Lua.workspace.checkThirdParty": false,
     "Lua.diagnostics.disable": ["undefined-global", "lowercase-global", "redundant-value", "unused-local"],
     "Lua.diagnostics.globals": ["vim", "vim.api"],
     "clangd.path": "clangd",

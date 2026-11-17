@@ -805,7 +805,8 @@ let g:coc_global_extensions = [
   \ 'coc-lua',
   \ 'coc-cmake',
   \ 'coc-marketplace',
-  \ 'coc-tsserver'
+  \ 'coc-tsserver',
+  \ 'coc-github-copilot'
   \ ]
 function! CocToggleOutline() abort
   let tagbar_toggle = v:true
@@ -838,6 +839,9 @@ inoremap <silent><expr> <TAB>
       \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+" Alt-= accept / Alt-- cancel inline (copilot) completion
+inoremap <silent><expr> <M-=> coc#inline#visible() ? coc#inline#accept() : ""
+inoremap <silent><expr> <M--> coc#inline#visible() ? coc#inline#cancel() : ""
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice
 inoremap <silent><expr> <CR>
