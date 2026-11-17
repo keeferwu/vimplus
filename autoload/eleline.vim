@@ -19,7 +19,6 @@ let s:gui = has('gui_running')
 let s:is_win = has('win32')
 let s:git_branch_cmd = add(s:is_win ? ['cmd', '/c'] : ['bash', '-c'], 'git branch')
 let s:git_branch_symbol = s:font ? "  \ue0a0" : '  Git'
-let s:codeium_symbol = s:font ? " \U1F4BB" : ' Ai'
 let s:jobs = {}
 
 function! ElelineBufnrWinnr() abort
@@ -284,16 +283,6 @@ function! ElelineCoc() abort
   return ''
 endfunction
 
-function! CodeiumStatus() abort
-  if s:is_tmp_file()
-    return ''
-  endif
-  if exists('g:loaded_codeium')
-    return s:codeium_symbol.':'.codeium#GetStatusString()
-  endif
-  return ''
-endfunction
-
 function! GutentagsStatus() abort
   if s:is_tmp_file()
     return ''
@@ -322,10 +311,9 @@ function! s:StatusLine() abort
   let l:warning = s:def('ElelineWarning')
   let l:tags = ' %{GutentagsStatus()} '
   let l:coc = '%{ElelineCoc()}'
-  let l:codeium = '%{CodeiumStatus()}'
   let l:func = '%#ElelineFunction#%{ElelineFunction()}%*'
   let l:prefix = l:bufnr_winnr.l:paste
-  let l:common = l:curfname.'%='.l:func.'%='.l:branch.l:error.l:warning.l:tags.l:coc.l:codeium
+  let l:common = l:curfname.'%='.l:func.'%='.l:branch.l:error.l:warning.l:tags.l:coc
   if &buftype == "quickfix"
 	return l:bufnr_winnr.'%='.'%l/%L'
   endif
