@@ -153,6 +153,7 @@ nnoremap <silent> <s-t> :call vimplus#openterminal()<cr>
 " 连按两次 Esc terminal进入 Normal
 tnoremap <silent> <Esc><Esc> <C-\><C-n>
 if has("nvim")
+  let $COCLSP = 1
   let g:python3_host_prog = '/usr/bin/python3'
   " nvim 用 b:term_normal 阻止normal 模式自动回插；
   tnoremap <silent> <Esc><Esc> <Cmd>let b:term_normal = 1<CR><C-\><C-n>
@@ -201,7 +202,15 @@ else
   let g:material_terminal_italics = 1
 endif
 let g:material_theme_style = 'palenight'
-colorscheme material
+" 记住上次使用的主题（cache/ 不入库）：没有记录/名字失效则用 material
+let s:scheme_file = expand('~/.vim/cache/last_scheme')
+let s:scheme = filereadable(s:scheme_file) ? get(readfile(s:scheme_file), 0, '') : ''
+autocmd ColorScheme * call writefile([get(g:, 'colors_name', '')], s:scheme_file)
+try
+  exe 'colorscheme' (empty(s:scheme) ? 'material' : s:scheme)
+catch
+  colorscheme material
+endtry
 " 背景透明
 "hi Normal  ctermfg=252 ctermbg=none
 call eleline#setup()
@@ -289,9 +298,7 @@ let g:startify_session_before_save = [
             \ "exec 'cd' fnamemodify(get({'root': findfile(g:startify_session_root_mark, ';')}, 'root', finddir('.git', ';')), ':h')",
             \ "normal! zR"
             \ ]
-let g:startify_session_savevars = [
-            \ 'g:colors_name',
-            \ ]
+let g:startify_session_savevars = []
 "清除terminal的buffer
 let g:startify_session_remove_lines = ['term:\/', 'NetrwTreeListing', 'CodeCompanion']
 "配置项目工作目录到path,通过gf实现头文件跳转
@@ -299,7 +306,6 @@ let g:startify_session_remove_lines = ['term:\/', 'NetrwTreeListing', 'CodeCompa
 let g:startify_session_savecmds = [
             \   'let &path=&path.getcwd()."/**"',
             \   'clearjumps',
-            \   'exe "colorscheme " . g:colors_name',
             \   'if !get(g:, "changes_sign_text_utf8", 0)',
             \   '  hi ChangesSignTextAdd ctermbg=green ctermfg=black guibg=green',
             \   '  hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red',
