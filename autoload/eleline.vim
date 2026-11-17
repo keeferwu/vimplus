@@ -19,7 +19,7 @@ let s:gui = has('gui_running')
 let s:is_win = has('win32')
 let s:git_branch_cmd = add(s:is_win ? ['cmd', '/c'] : ['bash', '-c'], 'git branch')
 let s:git_branch_symbol = s:font ? "  \ue0a0" : '  Git'
-let s:codeium_symbol = s:font ? " \U1F4BB" : ' Ai'
+let s:copilot_symbol = s:font ? " \U1F4BB" : ' Ai'
 let s:jobs = {}
 
 function! ElelineBufnrWinnr() abort
@@ -284,14 +284,31 @@ function! ElelineCoc() abort
   return ''
 endfunction
 
-function! CodeiumStatus() abort
-  if s:is_tmp_file()
+" Copilot 状态：OFF=禁用 / --=未就绪或异常 / ON=就绪 / N/M=候选
+function! CopilotStatus() abort
+  if s:is_tmp_file() || !exists('g:loaded_copilot')
     return ''
   endif
-  if exists('g:loaded_codeium')
-    return s:codeium_symbol.':'.codeium#GetStatusString()
-  endif
-  return ''
+  try
+    if !copilot#Enabled()
+      return s:copilot_symbol.':OFF'
+    endif
+    " 未运行或状态非 Normal（含启动中）均视为未就绪
+    let l:client = copilot#RunningClient()
+    let l:status = empty(l:client) ? {} : get(l:client, 'status', {})
+    if get(l:status, 'kind', get(l:status, 'status', 'Starting')) !=# 'Normal'
+      return s:copilot_symbol.':--'
+    endif
+    " 插入模式且 ghost text 实际可见时才报候选数
+    if mode() =~# '^[iR]' && exists('*copilot#GetDisplayedSuggestion')
+          \ && !empty(copilot#GetDisplayedSuggestion().item)
+      let l:s = b:_copilot
+      return s:copilot_symbol.':'.(get(l:s, 'choice', 0) + 1).'/'.len(l:s.suggestions)
+    endif
+    return s:copilot_symbol.':ON'
+  catch
+    return s:copilot_symbol.':--'
+  endtry
 endfunction
 
 function! GutentagsStatus() abort
@@ -322,10 +339,10 @@ function! s:StatusLine() abort
   let l:warning = s:def('ElelineWarning')
   let l:tags = ' %{GutentagsStatus()} '
   let l:coc = '%{ElelineCoc()}'
-  let l:codeium = '%{CodeiumStatus()}'
+  let l:copilot = '%{CopilotStatus()}'
   let l:func = '%#ElelineFunction#%{ElelineFunction()}%*'
   let l:prefix = l:bufnr_winnr.l:paste
-  let l:common = l:curfname.'%='.l:func.'%='.l:branch.l:error.l:warning.l:tags.l:coc.l:codeium
+  let l:common = l:curfname.'%='.l:func.'%='.l:branch.l:error.l:warning.l:tags.l:coc.l:copilot
   if &buftype == "quickfix"
 	return l:bufnr_winnr.'%='.'%l/%L'
   endif

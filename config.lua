@@ -364,7 +364,7 @@ require("codecompanion").setup({
       agents = {
         pi = {
           cmd = "pi",
-          args = {},
+          args = {"--no-session"},
           description = "Pi CLI",
           provider = "terminal",
         },

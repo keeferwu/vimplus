@@ -235,8 +235,8 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 " 显示leaderf gtags 搜索历史
 Plug 'keeferwu/LeaderF-gtags-history'
-" AI智能插件，需要登录获取token
-Plug 'Exafunction/codeium.vim', {'branch': 'main'}
+" AI补全插件，需要 GitHub Copilot 账号，首次用 :Copilot setup 登录
+Plug 'github/copilot.vim'
 " tab触发补全
 Plug 'ervandew/supertab', exists('$COCLSP') ? {'on': []} : {}
 " c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
@@ -765,22 +765,20 @@ let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabContextDefaultCompletionType = "<c-x><c-n>"
 let g:SuperTabCompleteCase = 'match'
 
-" codeium.vim
-let g:codeium_enabled = 0               " enable codeium need token
-let g:codeium_os = 'Linux'              " 直接指定，跳过启动回调里两次 system('uname')
-let g:codeium_arch = 'x86_64'
-let g:codeium_disable_bindings = 1      " disable default keybindings
-let g:codeium_no_map_tab = 1            " disabled Codeium use tab keybindings
+" copilot.vim
+let g:copilot_enabled = 0               " default disable copliot
+let g:copilot_no_tab_map = 1            " Tab 留给 coc/supertab，避免冲突
+let g:copilot_version = v:false         " 用插件自带的 language server，不走 npx 下载
 if has('nvim') || has('gui_running')
-imap <script><silent><nowait><expr> <M-=> codeium#Accept()
-imap <M--> <Cmd>call codeium#Clear()<CR>
-imap <M-,> <Cmd>call codeium#CycleCompletions(-1)<CR>
-imap <M-.> <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <script><silent><nowait><expr> <M-=> copilot#Accept()
+imap <M--> <Plug>(copilot-dismiss)
+imap <M-,> <Plug>(copilot-previous)
+imap <M-.> <Plug>(copilot-next)
 else
-imap <script><silent><nowait><expr> = codeium#Accept()
-imap - <Cmd>call codeium#Clear()<CR>
-imap , <Cmd>call codeium#CycleCompletions(-1)<CR>
-imap . <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <script><silent><nowait><expr> = copilot#Accept()
+imap - <Plug>(copilot-dismiss)
+imap , <Plug>(copilot-previous)
+imap . <Plug>(copilot-next)
 endif
 
 " vimspector
