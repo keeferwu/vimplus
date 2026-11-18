@@ -160,7 +160,7 @@ codecompanion.nvim 是一种生产力工具，可简化您在 Neovim 中使用 L
 
     2. 使用模型时，需要将模型对应的API key添加到环境变量中。
 
-    3. 已内置 OrcaRouter 适配器（智能路由网关）：设置 `adapter = "orcarouter"`，并把 `ORCAROUTER_API_KEY` 加入环境变量即可使用，模型默认 `orcarouter/auto`。更多信息见 https://www.orcarouter.ai
+    3. :codecompanionCLI 默认通过内置终端联动Pi agent，可通过配置修改为其他agent工具
 
 配置和使用参考：https://codecompanion.olimorris.dev/
 
