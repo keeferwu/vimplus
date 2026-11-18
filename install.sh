@@ -510,10 +510,10 @@ function get_now_timestamp()
 function main()
 {
     if [ $# -lt 1 ]; then
-        echo "$0 {-p|-i|-u|-h}"
+        echo "$0 {-p|-i|-u|-c|-h}"
         exit 1
     fi
-    while getopts ":hiu:p" opt
+    while getopts ":hciu:p" opt
     do
         case "$opt" in
         p)
@@ -524,6 +524,14 @@ function main()
                 install_vim_plugin
             fi
             update_vim_plugin
+            exit 0
+            ;;
+        c)
+            echo "Configure vim"
+            install_config_files
+            install_fonts_on_linux
+            install_vim_plugin
+            print_logo
             exit 0
             ;;
         i)
@@ -569,6 +577,7 @@ function main()
             echo "-p : update vim plugins"
             echo "-i : install vim configuration"
             echo "-u : copy vim configuration to <user>"
+            echo "-c : configure vim"
             echo ""
             exit 1
             ;;

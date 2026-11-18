@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# Host wrapper to run vim or neovim from the vimplus Docker image using host config.
+# Call this script as `vim` or `nvim` (e.g. via symlink), or invoke it directly as
+# `exec vim|nvim ...` to choose the editor inside the container.
+# Host home is bind-mounted so ~/.vim, ~/.vimrc, ~/.config/nvim and other user config stay on the host.
+#
+# Usage:
+#   vim [vim args...]
+#   nvim [nvim args...]
+#   exec vim [vim args...]
+#   exec nvim [nvim args...]
+# Environment:
+#   VIMPLUS_IMAGE   Docker image name/tag (default: vimplus:latest)
+
+set -euo pipefail
+
+IMAGE="${VIMPLUS_IMAGE:-vimplus:latest}"
+HOST_HOME="${HOME}"
+PWD_REAL="$(pwd -P)"
+BASE_NAME="$(basename "$0")"
+
+case "$BASE_NAME" in
+    vim|nvim)
+        CMD="$BASE_NAME"
+        ;;
+    exec)
+        case "${1:-}" in
+            vim|nvim)
+                CMD="$1"
+                shift
+                ;;
+            *)
+                echo "Usage: exec {vim|nvim} [args...]" >&2
+                exit 2
+                ;;
+        esac
+        ;;
+    *)
+        echo "Invalid script name '$BASE_NAME'; expected 'vim', 'nvim', or 'exec'." >&2
+        exit 2
+        ;;
+esac
+
+DOCKER=(docker)
+if ! "${DOCKER[@]}" info >/dev/null 2>&1; then
+    if command -v sudo >/dev/null 2>&1 && sudo -n docker info >/dev/null 2>&1; then
+        DOCKER=(sudo docker)
+    else
+        echo "docker is not available or not permitted" >&2
+        exit 1
+    fi
+fi
+
+ARGS=(
+    --rm -it
+    -e TERM="${TERM:-xterm-256color}"
+    -e COLORTERM="${COLORTERM:-}"
+    -e DISPLAY="${DISPLAY:-}"
+    -e SSH_AUTH_SOCK="${SSH_AUTH_SOCK:-}"
+    -v "$HOST_HOME:$HOST_HOME"
+    -w "$PWD_REAL"
+)
+
+# Mount current working directory when it is outside HOME
+case "$PWD_REAL" in
+    "$HOST_HOME"|"$HOST_HOME"/*) ;;
+    *) ARGS+=( -v "$PWD_REAL:$PWD_REAL" ) ;;
+esac
+
+# Preserve file ownership for files created/edited inside container
+if [ "$(id -u)" -ne 0 ]; then
+    ARGS+=( --user "$(id -u):$(id -g)" )
+    ARGS+=( -e "HOME=$HOST_HOME" )
+    [ -f /etc/passwd ] && ARGS+=( -v "/etc/passwd:/etc/passwd:ro" )
+    [ -f /etc/group ]  && ARGS+=( -v "/etc/group:/etc/group:ro" )
+fi
+
+exec "${DOCKER[@]}" run "${ARGS[@]}" "$IMAGE" "$CMD" "$@"

@@ -15,22 +15,14 @@
     已经验证过的系统有 Ubuntu/LinuxMint/ArchLinux/ManjaroLinux
     其他系统未经验证，可能会存在软件依赖或过时的问题,如果不想解决可以在docker中使用vimplus
 
-#### 在docker中安装vimplus
+#### 在docker中构建vimplus
 
-    1. docker pull ubuntu    #拉取ubuntu镜像
-    2. docker run --name <container_name> --network=host -v <host_dir>:<container_dir> -it ubuntu:latest /bin/bash   #创建ubuntu容器
-    3. 容器中做如下操作：
-        apt update
-        apt install -y sudo bash-completion net-tools inetutils-ping
-        apt install -y git wget curl tar vim
-        useradd -m <user_name>  # 新建用户
-        passwd <user_name>      # 设置密码
-        usermod -aG sudo <user_name>   #将用户加入到sudo组
-        exit #退出容器
-    4. docker start <container_name> #再次启动容器
-    5. docker exec -u <user_name> -w /home/<user_name> -it <container_name> /bin/bash  #以新用户身份进入容器中的用户家目录
-    6. 在容器中执行vimplus的安装步骤
-    7. 由于容器中的<container_dir>和宿主机的<host_dir>共享, 因此可以在docker中使用vim/nvim 打开宿主机上的文件
+    1.git clone https://gitee.com/keeferwu/vimplus.git ~/.vim
+    2.docker build -t vimplus:latest -f ~/.vim/docker/Dockerfile ~/.vim
+    3.cd ~/.vim && ./install.sh -c
+    4.将宿主中的vim/nvim 映射为容器中的vim/nvim，编辑~/.bashrc:
+        alias vim='~/.vim/docker/exec vim'
+        alias nvim='~/.vim/docker/exec nvim'
 
 #### 使用vimplus
 
