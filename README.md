@@ -68,20 +68,14 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
     Plug 'Yggdroot/indentLine'
     " 代码快速注释
     Plug 'preservim/nerdcommenter'
-    " cpp扩展高亮
-    Plug 'octol/vim-cpp-enhanced-highlight', has('nvim') ? {'on': []} : {'for': ['c','cpp']}
     " 修改显示
     Plug 'chrisbra/changesPlugin'
-    " 使用global工具自动更新tags文件
-    Plug 'ludovicchabant/vim-gutentags'
     " 文件模糊搜索工具
     Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
     " 显示leaderf gtags 搜索历史
     Plug 'keeferwu/LeaderF-gtags-history'
     " tab触发补全
     Plug 'ervandew/supertab', exists('$COCLSP') ? {'on': []} : {}
-    " c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
-    Plug 'vim-scripts/OmniCppComplete', exists('$COCLSP') ? {'on': []} : {'for': ['c','cpp']}
     " 为coc提供代码块模板
     Plug 'honza/vim-snippets', exists('$COCLSP') ? {} : {'on': []}
     " lsp代码补全,需要安装语言服务器
@@ -104,12 +98,7 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
 
 #### 插件的特殊要求
 
-OmniCppComplete插件补全标准C需要在/usr/include/ 目录生成tag文件
-
-    cd /usr/include/
-    sudo ctags -I __THROW -I __THROWNL -I __nonnull -R --c-kinds=+p  --fields=+iaS --extra=+q
-
-vim-gutentags 同时生成gtags 和 ctags(OmniCppComplete需要使用) 数据库到leaderf 缓存目录
+Leaderf 会自动生成gtags 数据库到leaderf 缓存目录
 
     1. 工具会根据目录下的.root文件生成gtags数据库，如果项目比较大，可在子目录下新建.root，会生成单独的gtags数据库,
        然后将父项目忽略该子目录，实现数据的分割
@@ -119,8 +108,7 @@ vim-gutentags 同时生成gtags 和 ctags(OmniCppComplete需要使用) 数据库
        可在.ignore(同时应用于fd,rg,ag 等工具) 中添加取反操作，例如 !xxx/
 
     3. gtags 数据生成失败调试方法：
-        开启调试信息：let g:gutentags_trace = 1
-        手动调试：gtags --gtagslabel native-pygments --skip-unreadable --skip-symlink=a --debug
+        gtags --gtagslabel new-ctags --skip-unreadable --skip-symlink=a --debug
 
 vimspector 是一个调试插件，需要安装Debug Adapter
 
@@ -144,6 +132,8 @@ coc.nvim 是一个使用LSP补全的插件，需要安装对应语言的LSP serv
         Makefile架构：通过工具bear or compiledb 构建compile_commands.json
         Cmake架构：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
+    4.coc-github-copilot 是AI智能补全插件，需要登录github后才能使用
+
     注：coc插件占用资源相对较高，且在vim中使用会出现崩溃的情况, 因此不建议在vim中或资源紧张的环境下使用
 
 codecompanion.nvim 是一种生产力工具，可简化您在 Neovim 中使用 LLM 进行开发的方式。
@@ -158,7 +148,7 @@ codecompanion.nvim 是一种生产力工具，可简化您在 Neovim 中使用 L
 
 #### 配置gtags支持更多语言
 
-gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  pygments 支持 50+ 种语言。因此我们要安装 pygments
+gtags 原生支持 C/C++/Java ,  当前配置为new-ctags，如想要更多语言， gtags  可以借助  pygments 支持 50+ 种语言。因此我们要安装 pygments
 
     1. 保证你的 $PATH 里面有 python
 
@@ -166,8 +156,7 @@ gtags 原生支持 C/C++/Java ,  如想要更多语言， gtags  可以借助  p
 
     2. 在vimrc中配置环境变量：
 
-        vim-gutentags:      let $GTAGSLABEL = 'native-pygments'
-        LeaderF:            let g:Lf_Gtagslabel = 'native-pygments'
+        let g:Lf_Gtagslabel = 'native-pygments'
         GTAGSLABEL 告诉 gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
         实际使用 pygments 时，gtags 会启动 python 运行名为 pygments_parser.py 的脚本，通过管道和它通信，完成源代码分析，
         故需保证 gtags 能在 $PATH 里调用 python，且这个 python 安装了 pygments 模块,
@@ -192,6 +181,5 @@ gtags 添加自定义配置
 
     3. 在vimrc中配置环境变量：
 
-        vim-gutentags:      let $GTAGSCONF = expand("~/.globalrc")
-        LeaderF:            let g:Lf_Gtagsconf = expand("~/.globalrc")
+        let g:Lf_Gtagsconf = expand("~/.globalrc")
 

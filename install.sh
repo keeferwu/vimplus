@@ -166,7 +166,6 @@ function install_nvim_config()
     mkdir -p $nvim_config
     # 定义文件内容并写入
     {
-    echo "let g:loaded_gtags_cscope = 1"
     echo "let g:loaded_perl_provider= 0"
     echo "let g:loaded_ruby_provider = 0"
     echo "set runtimepath^=~/.vim runtimepath+=~/.vim/"

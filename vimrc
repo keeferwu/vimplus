@@ -93,6 +93,7 @@ nnoremap <silent> <F2> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set wildmenu                     " vim自身命名行模式智能补全
 set completeopt-=preview         " 补全时不显示窗口，只显示补全列表
+set completeopt+=menuone         " 只有一个匹配项时也弹出补全菜单(否则直接静默插入,看不到菜单)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 搜索设置
@@ -114,8 +115,12 @@ autocmd CursorMoved,CursorMovedI * call vimplus#hlsearch()
 call mkdir($HOME . '/.vim/cache/viminfo', 'p')
 if has('nvim')
   set shadafile=~/.vim/cache/viminfo/shada
+  " nvim 默认加载coc.nvim
+  let $COCLSP = 1
 else
   set viminfofile=~/.vim/cache/viminfo/viminfo
+  " 打开内置语法文件里默认关闭的高亮开关(函数名/类型名等)，见 autoload/highlight.vim
+  call highlight#setup()
 endif
 let $PROJECT_ROOT = '.root'     " 定义环境变量标识项目根目录
 " 打开文件自动定位到最后编辑的位置
@@ -153,7 +158,6 @@ nnoremap <silent> <s-t> :call vimplus#openterminal()<cr>
 " 连按两次 Esc terminal进入 Normal
 tnoremap <silent> <Esc><Esc> <C-\><C-n>
 if has("nvim")
-  let $COCLSP = 1
   let g:python3_host_prog = '/usr/bin/python3'
   " nvim 用 b:term_normal 阻止normal 模式自动回插；
   tnoremap <silent> <Esc><Esc> <Cmd>let b:term_normal = 1<CR><C-\><C-n>
@@ -234,20 +238,14 @@ Plug 'easymotion/vim-easymotion'
 Plug 'Yggdroot/indentLine'
 " 代码快速注释
 Plug 'preservim/nerdcommenter'
-" cpp扩展高亮
-Plug 'octol/vim-cpp-enhanced-highlight', has('nvim') ? {'on': []} : {'for': ['c','cpp']}
 " 修改显示
 Plug 'chrisbra/changesPlugin'
-" 使用global工具自动更新tags文件
-Plug 'ludovicchabant/vim-gutentags'
 " 文件模糊搜索工具
 Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 " 显示leaderf gtags 搜索历史
 Plug 'keeferwu/LeaderF-gtags-history'
 " tab触发补全
 Plug 'ervandew/supertab', exists('$COCLSP') ? {'on': []} : {}
-" c/cpp代码补全 可配合supertab一起使用 缺点：tag 中如果有相同名称的结构体，可能会补全出错
-Plug 'vim-scripts/OmniCppComplete', exists('$COCLSP') ? {'on': []} : {'for': ['c','cpp']}
 " 为coc提供代码块模板
 Plug 'honza/vim-snippets', exists('$COCLSP') ? {} : {'on': []}
 " lsp代码补全,需要安装语言服务器
@@ -318,8 +316,6 @@ let g:startify_session_savecmds = [
             \   '  unlet g:Lf_ExternalCommand',
             \   '  let g:Lf_UseVersionControlTool = 1',
             \   '  let g:Lf_RootMarkers = [''.git'']',
-            \   '  let g:gutentags_project_root = [''.git'']',
-            \   '  let g:gutentags_file_list_command = {"markers": {".git": "git ls-files"}}',
             \   'endif',
             \ ]
 "delete session in starify
@@ -536,15 +532,6 @@ let g:indentLine_fileTypeExclude = get(g:, 'vimplus_ignored_filetypes', ['qf'])
 let g:EasyMotion_smartcase = 1
 nmap <silent> <leader>w <Plug>(easymotion-overwin-w)
 
-" vim-cpp-enhanced-highlight
-let g:cpp_class_scope_highlight = 1                    " 高亮显示类的范围
-let g:cpp_member_variable_highlight = 1                " 高亮显示成员变量
-let g:cpp_class_decl_highlight = 1                     " 高亮显示声明中的类名
-let g:cpp_posix_standard = 1                           " 高亮显示POSIX函数
-let g:cpp_experimental_simple_template_highlight = 1   " 高亮显示模板函数, 在大文件上可能会有点慢
-let g:cpp_experimental_template_highlight = 1          " 高亮显示模板函数, 解决了大文件上慢的问题，但有时会不工作
-let g:cpp_concepts_highlight = 1                       " 高亮显示关键字 "concept "和 "requires" 以及标准库名
-
 " changesPlugin  显示修改的代码
 let g:changes_autocmd = 1
 let g:changes_use_icons = 1
@@ -609,9 +596,9 @@ nnoremap <leader>rg <Plug>LeaderfRgPrompt
 nnoremap <leader>rs :LeaderfRgInteractive<cr>
 "优先级： Lf_ExternalCommand > Lf_UseVersionControlTool > Lf_DefaultExternalTool
 if executable('fd')
-"Lf_WildIgnore 对此选项不起作用, 通过g:Lf_RgExGlob 进行过滤
-let s:file_exclude = map(g:Lf_RgExGlob, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
-let g:Lf_ExternalCommand = 'fd --full-path "%s" --type f --exclude ' . join(s:file_exclude, ' --exclude ')
+  "Lf_WildIgnore 对此选项不起作用, 通过g:Lf_RgExGlob 进行过滤
+  let s:file_exclude = map(g:Lf_RgExGlob, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
+  let g:Lf_ExternalCommand = 'fd --full-path "%s" --type f --exclude ' . join(s:file_exclude, ' --exclude ')
 endif
 let g:Lf_DefaultExternalTool = 'find'            "rg,pt,ag,find rg 默认会自动过滤.ignore .rgignore .gitignore中的文件
 let g:Lf_UseVersionControlTool = 0               "0: 使用 Lf_DefaultExternalTool 定义的工具搜索文件, 1: 使用当前项目所使用的版本控制工具
@@ -666,99 +653,21 @@ let g:Lf_CtagsFuncOpts = {
             \   'c': '-I __THROW -I __THROWNL -I __nonnull --fields=+niazS --extras=+q --c-kinds=fp',
             \   'rust': '--rust-kinds=f',
             \ }
-let g:Lf_GtagsAutoGenerate = 0           " auto create gtags
-let g:Lf_GtagsGutentags = 1              " use vim-gutentags to generate gtags,should make g:Lf_GtagsAutoGenerate = 0
+let g:Lf_GtagsAutoGenerate = 1           " auto create gtags
+let g:Lf_GtagsGutentags = 1              " 兼容 vim-gutentags 的目录格式，如果使用vim-gutentags generate gtags,should make g:Lf_GtagsAutoGenerate = 0
 let g:Lf_GtagsAutoUpdate = 1             " auto update when buffer write
 let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
 let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
 let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
-let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
+let g:Lf_Gtagslabel = 'new-ctags'        " 使用universal-ctags 解析器，可跳转到全局变量定义,且支持更多语言
 if get(g:, 'Lf_GtagsAutoGenerate', 0)
+  noremap <silent> <c-]> <Plug>LeaderfGtagsDefinition
   nnoremap <silent> <leader>gu :Leaderf gtags --update<cr>
   " 光标15min内没有发生移动，自动更新gtags文件
   "autocmd CursorHold,CursorHoldI * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(600*1000, 'Leaderf gtags --update') | endif
   " 当文件在外部改变时，自动更新gtags
   autocmd FileChangedShellPost * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(&timeoutlen, 'Leaderf gtags --update') | endif
 endif
-
-" vim-gutentags
-" gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
-let g:gutentags_project_root = [$PROJECT_ROOT]
-let g:gutentags_add_default_project_roots = 0  "不匹配默认的标志
-" 所生成的数据文件的名称
-let g:gutentags_ctags_tagfile = 'tags'
-if executable('fd')
-" 在单引号字符串中，单引号 ' 需要用两个单引号 '' 来表示。因此需要将内部的单引号全部替换为两个单引号。
-let s:gutentags_exclude = map(g:Lf_RgExGlob, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
-let g:gutentags_file_list_command = "fd --type f --exclude " . join(s:gutentags_exclude, " --exclude ")
-else
-" -name: 匹配文件名，-iname: 匹配文件名时忽略大小写， -wholename: 匹配文件名及其路径
-let s:gutentags_exclude = map(g:Lf_WildIgnore.dir, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
-let g:gutentags_file_list_command = 'find . \( -path ' . join(s:gutentags_exclude, " -o -path ") . '\) -a -prune -o'
-let s:gutentags_exclude = map(g:Lf_WildIgnore.file, 'v:val =~ ''^".*"$'' ? v:val : ''"''.v:val.''"''')
-let g:gutentags_file_list_command .= ' \( -type f -not -iname ' . join(s:gutentags_exclude, " -not -iname ") . '\) -print'
-endif
-let g:gutentags_ctags_exclude = ['*/.git/*', '*/.clangd/*', '*/configs/*', '*.json', '*.mib', '*.db', '*.css', '*.js', '*.html']
-let g:gutentags_ctags_extra_args = ['-I __THROW', '-I __THROWNL', '-I __nonnull']
-" i 表示如果有继承, 则标识出父类; a 表示类成员调用权限 (public or private); S 表示如果是函数, 则标识函数的signature.
-" --languages:只检索指定类型的语言
-let g:gutentags_ctags_extra_args += ['--fields=+niazS', '--languages=c,c++,asm,lua']
-" 记录函数声明和各种外部和前向声明
-"let g:gutentags_ctags_extra_args += ['--c++-kinds=+px', '--c-kinds=+px']
-" 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
-let g:gutentags_ctags_extra_args += ['--extras=+q', '--output-format=e-ctags']
-let g:gutentags_trace = 0
-"打开一些特殊的命令GutentagsToggleEnabled,GutentagsToggleTrace
-"let g:gutentags_define_advanced_commands = 1
-"写更新有时会导致gtags数据丢失部分内容
-let g:gutentags_generate_on_missing = 1
-let g:gutentags_generate_on_new = 0
-autocmd FileType startify let g:gutentags_generate_on_new  = 1
-let g:gutentags_generate_on_write = 0
-" 同时开启 ctags 和 gtags 支持：
-let g:gutentags_modules = []
-" generate gtags data to leaderF
-let g:gutentags_cache_dir = expand(g:Lf_CacheDirectory.'/LeaderF/gtags/')
-if get(g:, 'Lf_GtagsGutentags', 1) && executable('ctags')
-  let g:gutentags_modules += ['ctags']
-  " 定时器回调执行tjump是同步的，时间过长仍然会卡住vim
-  function! TjumpList(...) abort
-    try
-      execute('tjump '.expand('<cword>'))
-    catch
-    endtry
-  endfunction
-  " 默认情况下crl+] 只会跳到tags中的第一个匹配项，通过tjump显示tags中多个匹配项
-  noremap <silent> <c-]> :call timer_start(1, function('TjumpList'))<cr>
-endif
-" 禁用 gutentags 自动加载 gtags 数据库到cscope,避免多个项目生成数据文件在cosope相互影响。
-let g:gutentags_auto_add_gtags_cscope = 0
-if get(g:, 'Lf_GtagsGutentags', 1) && executable('gtags-cscope')
-  let g:gutentags_modules += ['gtags_cscope']
-  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
-  let $GTAGSLABEL = 'native-pygments'
-  nnoremap <silent> <leader>gu :GutentagsUpdate!<cr>
-  " 光标10min内没有发生移动，自动更新gtags文件
-  "autocmd CursorHold,CursorHoldI * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(600*1000, 'GutentagsUpdate') | endif
-  " 当文件在外部改变时，自动更新gtags
-  autocmd FileChangedShellPost * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(&timeoutlen, 'GutentagsUpdate') | endif
-endif
-
-" OmniCppComplete
-set tags=/usr/include/tags         "指定tags搜索路径，补全标准C库
-let OmniCpp_GlobalScopeSearch = 1  "全局查找控制。0:禁止；1:允许(缺省)
-let OmniCpp_NamespaceSearch = 1    "命名空间查找控制0 : 禁止查找命名空间1 : 查找当前文件缓冲区内的命名空间(缺省) 2 : 查找当前文件缓冲区和包含文件中的命名空间
-let OmniCpp_DisplayMode = 1        "类成员显示控制(是否显示全部公有(public)私有(private)保护(protected)成员)  0 : 自动 1 : 显示所有成员
-let OmniCpp_ShowScopeInAbbr = 0    "选项用来控制匹配项所在域的显示位置。缺省情况下，omni显示的补全提示菜单中总是将匹配项所在域信息显示在缩略信息最后一列。0 : 信息缩略中不显示匹配项所在域(缺省)1 : 显示匹配项所在域，并移除缩略信息中最后一列
-let OmniCpp_ShowAccess = 1         "是否显示访问控制信息('+', '-', '#')。0/1, 缺省为1(显示)
-let OmniCpp_ShowPrototypeInAbbr = 1  "是否是补全提示缩略信息中显示函数原型。0 : 不显示(缺省) 1 : 显示原型
-let OmniCpp_MayCompleteDot = 1       "在'.'号后是否自动运行omnicppcomplete给出提示信息。0/1, 缺省为1
-let OmniCpp_MayCompleteArrow = 1     "在"->"后是否自动运行omnicppcomplete给出提示信息。0/1, 缺省为1
-let OmniCpp_MayCompleteScope = 0     "在域标识符"::"后是否自动运行omnicppcomplete给出提示信息。0/1, 缺省为0
-let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]  "默认命名空间列表，项目间使用','隔开。
-let OmniCpp_SelectFirstItem = 2      "是否自动选择第一个匹配项。仅当"completeopt"不为"longest"时有效。0 : 不选择第一项(缺省) 1 : 选择第一项并插入到光标位置 2 : 选择第一项但不插入光标位置
-autocmd CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif  "自动关闭补全窗口
-set completeopt=menuone,menu,longest
 
 " supertab
 let g:SuperTabRetainCompletionType = 2 " 0 不记录上次的补全方式 1 记住上次的补全方式,直到用其他的补全命令改变它 2 记住上次的补全方式,直到按ESC退出插入模式为止
