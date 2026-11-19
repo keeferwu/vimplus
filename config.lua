@@ -166,6 +166,10 @@ require("codecompanion").setup({
       show_token_count = true, -- Show the token count for each response?
       start_in_insert_mode = false, -- Open the chat buffer in insert mode?
     },
+    input = {
+      -- Ask 浮窗不显示状态栏（statusline 会吃掉一行，且信息无用）
+      window = { opts = { statusline = "" } },
+    },
   },
   -- rule for project
   rules = {
