@@ -301,22 +301,18 @@ let g:startify_session_savevars = []
 let g:startify_session_remove_lines = ['term:\/', 'NetrwTreeListing', 'CodeCompanion']
 "配置项目工作目录到path,通过gf实现头文件跳转
 "打开session时调整vim为实时调度，避免cpu繁忙啊卡顿: 'exe system("sudo chrt -r -a -p 50 ".getpid())'
+function! StartifySessionSetup() abort
+  let &path = &path.getcwd() . '/**'
+  if empty(findfile(g:startify_session_root_mark, ';')) && !empty(finddir('.git', ';'))
+    let $PROJECT_ROOT = '.git'
+    unlet! g:Lf_ExternalCommand
+    let g:Lf_UseVersionControlTool = 1
+    let g:Lf_RootMarkers = ['.git']
+  endif
+endfunction
 let g:startify_session_savecmds = [
-            \   'let &path=&path.getcwd()."/**"',
             \   'clearjumps',
-            \   'if !get(g:, "changes_sign_text_utf8", 0)',
-            \   '  hi ChangesSignTextAdd ctermbg=green ctermfg=black guibg=green',
-            \   '  hi ChangesSignTextDel ctermbg=red  ctermfg=black guibg=red',
-            \   '  hi ChangesSignTextCh  ctermbg=blue  ctermfg=black guibg=blue',
-            \   '  hi ChangesSignTextDummyCh  ctermfg=NONE ctermbg=blue guifg=NONE guibg=blue',
-            \   '  hi ChangesSignTextDummyAdd ctermfg=NONE ctermbg=green guifg=NONE guibg=green',
-            \   'endif',
-            \   'if empty(findfile(g:startify_session_root_mark, ";")) && !empty(finddir(''.git'', ";"))',
-            \   '  let $PROJECT_ROOT = ''.git''',
-            \   '  unlet g:Lf_ExternalCommand',
-            \   '  let g:Lf_UseVersionControlTool = 1',
-            \   '  let g:Lf_RootMarkers = [''.git'']',
-            \   'endif',
+            \   'call StartifySessionSetup()',
             \ ]
 "delete session in starify
 function! SessionDelete()
