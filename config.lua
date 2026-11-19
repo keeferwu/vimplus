@@ -368,6 +368,12 @@ require("codecompanion").setup({
           description = "Pi CLI",
           provider = "terminal",
         },
+        opencode = {
+          cmd = "opencode",
+          args = {},
+          description = "OpenCode CLI",
+          provider = "terminal",
+        },
       },
       opts = {
         auto_insert = true, -- Enter insert mode when focusing the CLI terminal
