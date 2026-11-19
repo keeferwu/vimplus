@@ -659,7 +659,7 @@ let g:Lf_GtagsAutoUpdate = 1             " auto update when buffer write
 let g:Lf_GtagsSkipUnreadable = 1         " skip unreadable files
 let g:Lf_GtagsAcceptDotfiles = 0         " not accept hidden files
 let g:Lf_GtagsSkipSymlink = 'a'          " f - skip file link, d - skip directorie link, a - skip all link
-let g:Lf_Gtagslabel = 'new-ctags'        " 使用universal-ctags 解析器，可跳转到全局变量定义,且支持更多语言
+let g:Lf_Gtagslabel = 'native-pygments'  " gtags 默认 C/C++/Java 等六种原生支持的代码直接使用 gtags 本地分析器，而其他语言使用 pygments 模块。
 if get(g:, 'Lf_GtagsAutoGenerate', 0)
   noremap <silent> <c-]> <Plug>LeaderfGtagsDefinition
   nnoremap <silent> <leader>gu :Leaderf gtags --update<cr>

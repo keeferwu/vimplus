@@ -108,7 +108,7 @@ Leaderf 会自动生成gtags 数据库到leaderf 缓存目录
        可在.ignore(同时应用于fd,rg,ag 等工具) 中添加取反操作，例如 !xxx/
 
     3. gtags 数据生成失败调试方法：
-        gtags --gtagslabel new-ctags --skip-unreadable --skip-symlink=a --debug
+        gtags --gtagslabel native-pygments --skip-unreadable --skip-symlink=a --debug
 
 vimspector 是一个调试插件，需要安装Debug Adapter
 
@@ -148,7 +148,7 @@ codecompanion.nvim 是一种生产力工具，可简化您在 Neovim 中使用 L
 
 #### 配置gtags支持更多语言
 
-gtags 原生支持 C/C++/Java ,  当前配置为new-ctags，如想要更多语言， gtags  可以借助  pygments 支持 50+ 种语言。因此我们要安装 pygments
+gtags 原生支持 C/C++/Java , 如想要更多语言， gtags  可以借助  pygments 支持 50+ 种语言。因此我们要安装 pygments
 
     1. 保证你的 $PATH 里面有 python
 
