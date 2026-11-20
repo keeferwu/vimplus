@@ -123,6 +123,7 @@ else
   call highlight#setup()
 endif
 let $PROJECT_ROOT = '.root'     " 定义环境变量标识项目根目录
+let g:vimplus_ignored_filetypes = ['help', 'startify', 'qf', 'netrw', 'tagbar', 'leaderf', 'codecompanion']
 " 打开文件自动定位到最后编辑的位置
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
 " 以十六进制显示 vim -b 打开的二进制文件
@@ -192,19 +193,8 @@ endif
 " 主题设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set background=dark
-if exists('$TMUX')
-  " tmux 默认不支持斜体
-  let g:onedark_terminal_italics = 0
-  let g:material_terminal_italics = 0
-  if exists('$DISPLAY')
-    " 使用tmux attach已存在的session时,剪切板需要更新
-    command! TmuxClipUpdate :let $DISPLAY=substitute(system("tmux show-env | sed -n 's/^DISPLAY=//p'"), '\n', '', '')
-    autocmd VimEnter * TmuxClipUpdate
-  endif
-else
-  let g:onedark_terminal_italics = 1
-  let g:material_terminal_italics = 1
-endif
+let g:onedark_terminal_italics = 1
+let g:material_terminal_italics = 1
 let g:material_theme_style = 'palenight'
 " 记住上次使用的主题（cache/ 不入库）：没有记录/名字失效则用 material
 let s:scheme_file = expand('~/.vim/cache/last_scheme')
@@ -244,15 +234,14 @@ Plug 'chrisbra/changesPlugin'
 Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
 " 显示leaderf gtags 搜索历史
 Plug 'keeferwu/LeaderF-gtags-history'
+" 代码调试
+Plug 'puremourning/vimspector', {'on': ['VimspectorLaunch']}
 " tab触发补全
 Plug 'ervandew/supertab', exists('$COCLSP') ? {'on': []} : {}
 " 为coc提供代码块模板
 Plug 'honza/vim-snippets', exists('$COCLSP') ? {} : {'on': []}
 " lsp代码补全,需要安装语言服务器
 Plug 'neoclide/coc.nvim', exists('$COCLSP') ? {'branch': 'release'} : {'on': []}
-" 代码调试
-Plug 'puremourning/vimspector', {'on': ['VimspectorLaunch']}
-
 " nvim插件库
 Plug 'nvim-lua/plenary.nvim', has('nvim') ? {'branch': 'master'} : {'on': []}
 " nvim代码语法高亮
@@ -436,7 +425,6 @@ nnoremap <silent> <leader><leader>u :PlugUpdate<cr>
 nnoremap <silent> <leader><leader>c :PlugClean<cr>
 
 " buffer,table and whitespace
-let g:vimplus_ignored_filetypes = ['help', 'startify', 'qf', 'netrw', 'tagbar', 'leaderf', 'codecompanion']
 autocmd BufAdd * call vimplus#buflimit(100)
 nnoremap <silent> <leader>qb :call vimplus#bufclose()<cr>
 nnoremap <silent> <leader>qa :call vimplus#vimclose()<cr>
@@ -515,6 +503,10 @@ let g:tagbar_show_tag_linenumbers = 1 "显示tag行号
 " 在某些情况下自动打开tagbar
 "autocmd BufReadPost *.cpp,*.c,*.lua,*.hpp,*.cc,*.cxx call tagbar#autoopen()
 
+" vim-easymotion
+let g:EasyMotion_smartcase = 1
+nmap <silent> <leader>w <Plug>(easymotion-overwin-w)
+
 " nerdcommenter
 " default delims to /**/ for cpp or c  file
 let g:NERDAltDelims_cpp = 1
@@ -528,9 +520,11 @@ let g:indentLine_concealcursor = 'ic'
 let g:indentLine_bufTypeExclude = ['terminal', 'nofile']
 let g:indentLine_fileTypeExclude = get(g:, 'vimplus_ignored_filetypes', ['qf'])
 
-" vim-easymotion
-let g:EasyMotion_smartcase = 1
-nmap <silent> <leader>w <Plug>(easymotion-overwin-w)
+" supertab
+let g:SuperTabRetainCompletionType = 2 " 0 不记录上次的补全方式 1 记住上次的补全方式,直到用其他的补全命令改变它 2 记住上次的补全方式,直到按ESC退出插入模式为止
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType = "<c-x><c-n>"
+let g:SuperTabCompleteCase = 'match'
 
 " changesPlugin  显示修改的代码
 let g:changes_autocmd = 1
@@ -668,12 +662,6 @@ if get(g:, 'Lf_GtagsAutoGenerate', 0)
   " 当文件在外部改变时，自动更新gtags
   autocmd FileChangedShellPost * if !empty(findfile($PROJECT_ROOT, ';')) | call vimplus#holdtimer(&timeoutlen, 'Leaderf gtags --update') | endif
 endif
-
-" supertab
-let g:SuperTabRetainCompletionType = 2 " 0 不记录上次的补全方式 1 记住上次的补全方式,直到用其他的补全命令改变它 2 记住上次的补全方式,直到按ESC退出插入模式为止
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabContextDefaultCompletionType = "<c-x><c-n>"
-let g:SuperTabCompleteCase = 'match'
 
 " vimspector
 let g:vimspector_base_dir=expand($HOME.'/.config/vimspector')
