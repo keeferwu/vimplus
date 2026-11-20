@@ -291,10 +291,14 @@ let g:startify_lists = [
             \ { 'header': ['   Commands'],              'type': 'commands' },
             \ ]
 let g:startify_session_root_mark = $PROJECT_ROOT
-" session 退出时自动切换工作目录到主目录
+" 保存 session 前 cd 到项目根：marker 文件优先，找不到才退回 .git 目录
+function! StartifySessionCdRoot() abort
+  let root = findfile(g:startify_session_root_mark, ';')
+  exec 'cd' fnamemodify(empty(root) ? finddir('.git', ';') : root, ':h')
+endfunction
 let g:startify_session_before_save = [
-            \ "exec 'cd' fnamemodify(get({'root': findfile(g:startify_session_root_mark, ';')}, 'root', finddir('.git', ';')), ':h')",
-            \ "normal! zR"
+            \ 'normal! zR',
+            \ 'call StartifySessionCdRoot()'
             \ ]
 let g:startify_session_savevars = []
 "清除terminal的buffer
