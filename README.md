@@ -10,10 +10,10 @@
 
     git clone https://gitee.com/keeferwu/vimplus.git ~/.vim
     cd ~/.vim
-    ./install.sh -h                 # install help
+    ./install.sh
 
     已经验证过的系统有 Ubuntu/LinuxMint/ArchLinux/ManjaroLinux
-    其他系统未经验证，可能会存在软件依赖或过时的问题,如果不想解决可以在docker中使用vimplus
+    其他系统未经验证，可能会存在软件依赖或过时的问题,如果不想解决可以使用docker构建vimplus
 
 #### 在docker中构建vimplus
 
@@ -35,22 +35,6 @@ https://gitee.com/keeferwu/vimplus/wikis/pages
 
     为防止statusline显示乱码，需设置linux终端字体为`Droid Sans Mono Nerd Font`，
     不同的终端有不同的设置方法。
-
-#### 配置ssh 远程复制粘贴
-
-    通过快捷键ctrl+c,ctrl+v 实现了vim/nvim 对系统剪切板的复制和粘贴。
-    当系统剪切板在本地可以正常使用，但通过ssh远程连接时无法使用时，
-    方案一：使用OSC52
-    ```
-    let g:clipboard = 'osc52'
-    ```
-    方案二：使用X11Forward
-    ```
-    查看DISPLAY环境变量是否为空，如果为空解决办法如下：
-    ssh server 端：修改 /etc/ssh/sshd_config  ---> X11Forwarding yes
-    ssh client 端：ssh 连接时使用-Y 或 -X 选项， 并启动Xserver
-    ```
-参考：https://zhuanlan.zhihu.com/p/579860830
 
 #### 插件列表
 
@@ -124,25 +108,27 @@ vimspector 是一个调试插件，需要安装Debug Adapter
 
 coc.nvim 是一个使用LSP补全的插件，需要安装对应语言的LSP server
 
-    1. 使能coc 插件需要配置环境变量：export COCLSP=1
+    1. nvim中默认已加载coc插件，使用vim时要使能coc 插件需要配置环境变量：export COCLSP=1
 
-    2. 将扩展名配置到 g:coc_global_extensions 中，vim/nvim 启动时会自动安装这些扩展对应的语言服务器
+    2. coc启动时会自动安装g:coc_global_extensions 配置的扩展
 
     3. 插件使用 clangd 补全C/C++ 需要在项目根目录生成compile_commands.json or compile_flags.txt，生成方法：
         Makefile架构：通过工具bear or compiledb 构建compile_commands.json
         Cmake架构：cmake (SOURCE_DIR) -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-    4.coc-github-copilot 是AI智能补全插件，需要登录github后才能使用
+    4.coc-github-copilot 是coc中的AI智能补全扩展，需要登录github后才能使用
 
-    注：coc插件占用资源相对较高，且在vim中使用会出现崩溃的情况, 因此不建议在vim中或资源紧张的环境下使用
+    注：coc插件占用资源相对较高,因此不建议在资源紧张的环境下使用
 
-codecompanion.nvim 是一种生产力工具，可简化您在 Neovim 中使用 LLM 进行开发的方式。
+codecompanion.nvim 是一种AI生产力工具，可简化您在 Neovim 中使用 LLM 进行开发的方式。
 
     1. 配置文件config.lua 中可以自行扩展模型。
 
     2. 使用模型时，需要将模型对应的API key添加到环境变量中。
 
     3. :codecompanionCLI 默认通过内置终端联动Pi agent，可通过配置修改为其他agent工具
+
+    4. 默认快捷键: <ctl+a> --> CodeCompanionActions，<ctl+w> -->CodeCompanionCLI Ask
 
 配置和使用参考：https://codecompanion.olimorris.dev/
 
